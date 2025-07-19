@@ -6,42 +6,42 @@ export const categories = [
     name: "Smartphones",
     slug: "smartphones",
     description: "Latest smartphones and mobile devices",
-    image: "/src/assets/hero2.jpg",
+    image: "/src/assets/hero/hero2.jpg",
   },
   {
     id: 2,
     name: "Laptops",
     slug: "laptops",
     description: "High-performance laptops and notebooks",
-    image: "/src/assets/hero3.jpg",
+    image: "/src/assets/hero/hero3.jpg",
   },
   {
     id: 3,
     name: "Gaming",
     slug: "gaming",
     description: "Gaming accessories and peripherals",
-    image: "/src/assets/hero3.jpg",
+    image: "/src/assets/hero/hero3.jpg",
   },
   {
     id: 4,
     name: "Smart Home",
     slug: "smart-home",
     description: "Smart home devices and automation",
-    image: "/src/assets/hero4.webp",
+    image: "/src/assets/hero/hero4.webp",
   },
   {
     id: 5,
     name: "Audio",
     slug: "audio",
     description: "Headphones, speakers, and audio equipment",
-    image: "/src/assets/hero1.jpg",
+    image: "/src/assets/hero/hero1.jpg",
   },
   {
     id: 6,
     name: "Tablets",
     slug: "tablets",
     description: "Tablets and e-readers",
-    image: "/src/assets/hero2.jpg",
+    image: "/src/assets/hero/hero2.jpg",
   },
 ];
 
@@ -63,7 +63,7 @@ export const products = [
     reviewCount: 2847,
     inStock: true,
     stockCount: 45,
-    images: ["/src/assets/hero2.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero2.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "6.7-inch Super Retina XDR display",
       "A17 Pro chip with 6-core GPU",
@@ -100,7 +100,7 @@ export const products = [
     reviewCount: 1923,
     inStock: true,
     stockCount: 32,
-    images: ["/src/assets/hero2.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero2.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "6.8-inch Dynamic AMOLED 2X",
       "Snapdragon 8 Gen 3",
@@ -137,7 +137,7 @@ export const products = [
     reviewCount: 1456,
     inStock: true,
     stockCount: 28,
-    images: ["/src/assets/hero2.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero2.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "6.7-inch LTPO OLED display",
       "Google Tensor G3",
@@ -176,7 +176,7 @@ export const products = [
     reviewCount: 892,
     inStock: true,
     stockCount: 15,
-    images: ["/src/assets/hero3.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero3.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "16.2-inch Liquid Retina XDR",
       "M3 Max chip with 40-core GPU",
@@ -213,7 +213,7 @@ export const products = [
     reviewCount: 634,
     inStock: true,
     stockCount: 22,
-    images: ["/src/assets/hero3.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero3.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "15.6-inch 4K OLED display",
       "Intel Core i9-13900H",
@@ -250,7 +250,7 @@ export const products = [
     reviewCount: 445,
     inStock: true,
     stockCount: 18,
-    images: ["/src/assets/hero3.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero3.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "16-inch QHD+ 240Hz display",
       "AMD Ryzen 9 7940HS",
@@ -289,7 +289,7 @@ export const products = [
     reviewCount: 3421,
     inStock: true,
     stockCount: 8,
-    images: ["/src/assets/hero3.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero3.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "Custom AMD Zen 2 CPU",
       "Ultra-high speed SSD",
@@ -326,7 +326,7 @@ export const products = [
     reviewCount: 1876,
     inStock: true,
     stockCount: 67,
-    images: ["/src/assets/hero3.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero3.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "Ultra-lightweight 60g design",
       "HERO 25K sensor",
@@ -365,7 +365,7 @@ export const products = [
     reviewCount: 8934,
     inStock: true,
     stockCount: 156,
-    images: ["/src/assets/hero4.webp", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero4.webp", "/src/assets/hero/hero1.jpg"],
     features: [
       "Improved audio quality",
       "Built-in temperature sensor",
@@ -402,7 +402,7 @@ export const products = [
     reviewCount: 2156,
     inStock: true,
     stockCount: 34,
-    images: ["/src/assets/hero4.webp", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero4.webp", "/src/assets/hero/hero1.jpg"],
     features: [
       "Auto-learning capability",
       "Energy-saving features",
@@ -441,7 +441,7 @@ export const products = [
     reviewCount: 4567,
     inStock: true,
     stockCount: 43,
-    images: ["/src/assets/hero1.jpg", "/src/assets/hero2.jpg"],
+    images: ["/src/assets/hero/hero1.jpg", "/src/assets/hero/hero2.jpg"],
     features: [
       "Industry-leading noise canceling",
       "30-hour battery life",
@@ -478,7 +478,7 @@ export const products = [
     reviewCount: 6789,
     inStock: true,
     stockCount: 89,
-    images: ["/src/assets/hero1.jpg", "/src/assets/hero2.jpg"],
+    images: ["/src/assets/hero/hero1.jpg", "/src/assets/hero/hero2.jpg"],
     features: [
       "Active Noise Cancellation",
       "Adaptive Transparency",
@@ -517,7 +517,7 @@ export const products = [
     reviewCount: 1234,
     inStock: true,
     stockCount: 26,
-    images: ["/src/assets/hero2.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero2.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "12.9-inch Liquid Retina XDR",
       "M2 chip performance",
@@ -554,7 +554,7 @@ export const products = [
     reviewCount: 567,
     inStock: true,
     stockCount: 19,
-    images: ["/src/assets/hero2.jpg", "/src/assets/hero1.jpg"],
+    images: ["/src/assets/hero/hero2.jpg", "/src/assets/hero/hero1.jpg"],
     features: [
       "14.6-inch Dynamic AMOLED 2X",
       "Snapdragon 8 Gen 2",
@@ -584,7 +584,7 @@ export const heroSlides = [
     subtitle: "Discover cutting-edge technology",
     description:
       "Shop the newest smartphones, laptops, and gadgets with exclusive deals",
-    image: "/src/assets/hero1.jpg",
+    image: "/src/assets/hero/hero1.jpg",
     cta: "Shop Now",
     link: "/shop",
   },
@@ -594,7 +594,7 @@ export const heroSlides = [
     subtitle: "Level up your gaming experience",
     description:
       "Premium gaming gear, consoles, and accessories for every gamer",
-    image: "/src/assets/hero3.jpg",
+    image: "/src/assets/hero/hero3.jpg",
     cta: "Explore Gaming",
     link: "/shop/gaming",
   },
@@ -604,7 +604,7 @@ export const heroSlides = [
     subtitle: "Transform your living space",
     description:
       "Intelligent devices that make your home smarter and more efficient",
-    image: "/src/assets/hero4.webp",
+    image: "/src/assets/hero/hero4.webp",
     cta: "Go Smart",
     link: "/shop/smart-home",
   },
@@ -614,21 +614,21 @@ export const heroSlides = [
     subtitle: "Where technology meets retail",
     description:
       "Explore our premium electronics showcase and professional displays",
-    image: "/src/assets/hero5.jpg",
+    image: "/src/assets/hero/hero5.jpg",
     cta: "View Collection",
     link: "/shop",
   },
 ];
 
 export const brands = [
-  { id: 1, name: "Apple", logo: "/src/assets/hero1.jpg" },
-  { id: 2, name: "Samsung", logo: "/src/assets/hero1.jpg" },
-  { id: 3, name: "Google", logo: "/src/assets/hero1.jpg" },
-  { id: 4, name: "Sony", logo: "/src/assets/hero1.jpg" },
-  { id: 5, name: "Dell", logo: "/src/assets/hero1.jpg" },
-  { id: 6, name: "ASUS", logo: "/src/assets/hero1.jpg" },
-  { id: 7, name: "Logitech", logo: "/src/assets/hero1.jpg" },
-  { id: 8, name: "Amazon", logo: "/src/assets/hero1.jpg" },
+  { id: 1, name: "Apple", logo: "/src/assets/hero/hero1.jpg" },
+  { id: 2, name: "Samsung", logo: "/src/assets/hero/hero1.jpg" },
+  { id: 3, name: "Google", logo: "/src/assets/hero/hero1.jpg" },
+  { id: 4, name: "Sony", logo: "/src/assets/hero/hero1.jpg" },
+  { id: 5, name: "Dell", logo: "/src/assets/hero/hero1.jpg" },
+  { id: 6, name: "ASUS", logo: "/src/assets/hero/hero1.jpg" },
+  { id: 7, name: "Logitech", logo: "/src/assets/hero/hero1.jpg" },
+  { id: 8, name: "Amazon", logo: "/src/assets/hero/hero1.jpg" },
 ];
 
 export const testimonials = [
@@ -639,7 +639,7 @@ export const testimonials = [
     content:
       "Amazing selection of electronics! Fast shipping and excellent customer service. My new laptop arrived perfectly packaged.",
     rating: 5,
-    avatar: "/src/assets/hero1.jpg",
+    avatar: "/src/assets/hero/hero1.jpg",
   },
   {
     id: 2,
@@ -648,7 +648,7 @@ export const testimonials = [
     content:
       "Best place for gaming gear! Got my PS5 and accessories here. Great prices and authentic products.",
     rating: 5,
-    avatar: "/src/assets/hero1.jpg",
+    avatar: "/src/assets/hero/hero1.jpg",
   },
   {
     id: 3,
@@ -657,7 +657,7 @@ export const testimonials = [
     content:
       "Transformed my home with their smart devices. The setup guides were helpful and support was responsive.",
     rating: 5,
-    avatar: "/src/assets/hero1.jpg",
+    avatar: "/src/assets/hero/hero1.jpg",
   },
 ];
 

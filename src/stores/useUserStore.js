@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
+import { useCartStore } from "./useCartStore.js";
+import { useWishlistStore } from "./useWishlistStore.js";
 
 export const useUserStore = create((set, get) => ({
   user: null,
@@ -246,10 +248,6 @@ export const useUserStore = create((set, get) => ({
   // Clear all stores when user logs out
   clearAllStores: async () => {
     try {
-      // Import stores statically to avoid dynamic import warnings
-      const { useCartStore } = await import('./useCartStore.js');
-      const { useWishlistStore } = await import('./useWishlistStore.js');
-      
       // Clear cart store
       useCartStore.setState({ 
         cart: [], 
@@ -328,9 +326,6 @@ useUserStore.subscribe(
       // Clear other stores when user becomes null
       setTimeout(async () => {
         try {
-          const { useCartStore } = await import('./useCartStore.js');
-          const { useWishlistStore } = await import('./useWishlistStore.js');
-          
           useCartStore.setState({ 
             cart: [], 
             coupon: null, 

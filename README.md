@@ -13,21 +13,6 @@ A modern, production-ready e-commerce platform built with React, Vite, and Tailw
 
 ## 📁 Project Structure
 
-```
-src/
-├── assets/           # Organized assets
-│   ├── hero/        # Hero section images
-│   ├── products/    # Product images
-│   └── categories/  # Category images
-├── components/      # Reusable components
-│   └── ui/         # UI component library
-├── config/         # Configuration files
-├── data/           # Mock data and utilities
-├── hooks/          # Custom React hooks
-├── lib/            # Utility libraries
-├── pages/          # Page components
-└── stores/         # Zustand state stores
-```
 
 ## 🛠️ Tech Stack
 

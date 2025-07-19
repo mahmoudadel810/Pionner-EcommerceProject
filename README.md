@@ -2,7 +2,7 @@
 
 A modern, production-ready e-commerce platform built with React, Vite, and Tailwind CSS.
 
-## 🚀 Features
+## Features
 
 - **Modern UI/UX**: Built with React 18 and Tailwind CSS
 - **Responsive Design**: Mobile-first approach with custom hooks
@@ -11,10 +11,11 @@ A modern, production-ready e-commerce platform built with React, Vite, and Tailw
 - **Performance Optimized**: Vite for fast development and builds
 - **Production Ready**: Optimized for deployment with proper error handling
 
-## 📁 Project Structure
+## Project Structure
 
 
-## 🛠️ Tech Stack
+
+## Tech Stack
 
 - **Frontend**: React 18, Vite, Tailwind CSS
 - **State Management**: Zustand
@@ -23,7 +24,7 @@ A modern, production-ready e-commerce platform built with React, Vite, and Tailw
 - **Build Tool**: Vite
 - **Package Manager**: pnpm
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -58,7 +59,7 @@ pnpm build
 
 The build output will be in the `dist/` directory.
 
-## 📦 Available Scripts
+## Available Scripts
 
 - `pnpm dev` - Start development server
 - `pnpm build` - Build for production
@@ -66,7 +67,7 @@ The build output will be in the `dist/` directory.
 - `pnpm lint` - Run ESLint
 - `pnpm lint:fix` - Fix ESLint issues
 
-## 🏗️ Architecture
+## Architecture
 
 ### State Management
 - **useCartStore**: Shopping cart functionality
@@ -81,7 +82,7 @@ The build output will be in the `dist/` directory.
 - **UI**: shadcn/ui component library
 - **Hooks**: Custom React hooks for business logic
 
-## 🎨 Design System
+## Design System
 
 The project uses a consistent design system with:
 - **Colors**: Tailwind CSS color palette
@@ -89,7 +90,7 @@ The project uses a consistent design system with:
 - **Spacing**: Consistent spacing scale
 - **Components**: Reusable UI components
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 Create a `.env` file in the root directory:
@@ -102,7 +103,7 @@ VITE_APP_NAME=Pionner E-Commerce
 ### Vite Configuration
 The project uses Vite for fast development and optimized builds. Configuration is in `vite.config.js`.
 
-## 📱 Responsive Design
+## Responsive Design
 
 The application is fully responsive with:
 - Mobile-first approach
@@ -110,7 +111,7 @@ The application is fully responsive with:
 - Optimized images and assets
 - Touch-friendly interactions
 
-## 🚀 Deployment
+## Deployment
 
 ### Vercel (Recommended)
 1. Connect your GitHub repository to Vercel
@@ -126,7 +127,7 @@ The project can be deployed to any static hosting platform:
 - Firebase Hosting
 - GitHub Pages
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -134,11 +135,11 @@ The project can be deployed to any static hosting platform:
 4. Add tests if applicable
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
 
-## 🆘 Support
+## Support
 
 For support and questions:
 - Create an issue on GitHub

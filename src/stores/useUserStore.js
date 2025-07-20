@@ -87,6 +87,11 @@ export const useUserStore = create((set, get) => ({
           sessionStorage.setItem('refreshToken', refreshToken);
         }
         
+        // Also store user data for profile access
+        if (response.data?.data?.user) {
+          localStorage.setItem('user', JSON.stringify(response.data));
+        }
+        
         set({ user: response.data, loading: false, justLoggedOut: false });
         toast.success("Login successful!");
         return response.data;

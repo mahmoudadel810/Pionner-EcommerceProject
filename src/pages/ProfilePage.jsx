@@ -9,10 +9,14 @@ import {
   Edit,
   Save,
   X,
+  Key,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
+import tokenManager from "../utils/tokenManager";
 
 const ProfilePage = () => {
   const { user, checkAuth, setUser } = useUserStore();
@@ -25,6 +29,8 @@ const ProfilePage = () => {
   });
   const [avatar, setAvatar] = useState(null); // File object
   const [avatarPreview, setAvatarPreview] = useState(user?.data?.user?.profileImage || "");
+  const [showTokens, setShowTokens] = useState(false);
+  const [tokenInfo, setTokenInfo] = useState(null);
 
   // Memoize fetchOrders to prevent infinite re-renders
   const fetchOrders = useCallback(async () => {
@@ -49,6 +55,11 @@ const ProfilePage = () => {
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
+
+  // Update token info
+  useEffect(() => {
+    setTokenInfo(tokenManager.getTokenInfo());
+  }, []);
 
   // Handle avatar file change
   const handleAvatarChange = e => {
@@ -372,6 +383,107 @@ const ProfilePage = () => {
                 </div>
               </motion.div>
             )}
+
+            {/* Token Debug Section */}
+            <div className="bg-card rounded-2xl shadow-lg border border-border p-6 mb-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-foreground">
+                  Authentication Tokens
+                </h3>
+                <button
+                  onClick={() => setShowTokens(!showTokens)}
+                  className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
+                >
+                  {showTokens ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showTokens ? "Hide" : "Show"} Tokens
+                </button>
+              </div>
+
+              {tokenInfo && (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Key size={16} className="text-primary" />
+                    <span className="text-sm font-medium">
+                      Authentication Status: {tokenInfo.isAuthenticated ? "✅ Authenticated" : "❌ Not Authenticated"}
+                    </span>
+                  </div>
+
+                  {showTokens && (
+                    <div className="space-y-4">
+                      {/* Access Token */}
+                      {tokenInfo.accessToken && (
+                        <div className="bg-gray-50 rounded-lg p-4">
+                          <h4 className="font-medium text-gray-900 mb-2">Access Token</h4>
+                          <div className="space-y-2">
+                            <div className="text-xs text-gray-600">
+                              <strong>Expires:</strong> {tokenInfo.accessToken.expiresAt ? tokenInfo.accessToken.expiresAt.toLocaleString() : "Unknown"}
+                            </div>
+                            <div className="text-xs text-gray-600">
+                              <strong>User ID:</strong> {tokenInfo.accessToken.decoded?.userId || "Unknown"}
+                            </div>
+                            <div className="bg-gray-100 rounded p-2">
+                              <code className="text-xs break-all">{tokenInfo.accessToken.value}</code>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Refresh Token */}
+                      {tokenInfo.refreshToken && (
+                        <div className="bg-gray-50 rounded-lg p-4">
+                          <h4 className="font-medium text-gray-900 mb-2">Refresh Token</h4>
+                          <div className="space-y-2">
+                            <div className="text-xs text-gray-600">
+                              <strong>Expires:</strong> {tokenInfo.refreshToken.expiresAt ? tokenInfo.refreshToken.expiresAt.toLocaleString() : "Unknown"}
+                            </div>
+                            <div className="text-xs text-gray-600">
+                              <strong>User ID:</strong> {tokenInfo.refreshToken.decoded?.userId || "Unknown"}
+                            </div>
+                            <div className="bg-gray-100 rounded p-2">
+                              <code className="text-xs break-all">{tokenInfo.refreshToken.value}</code>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Storage Locations */}
+                      <div className="bg-blue-50 rounded-lg p-4">
+                        <h4 className="font-medium text-blue-900 mb-2">Token Storage Locations</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                          <div>
+                            <strong className="text-blue-900">localStorage:</strong>
+                            <div className="text-blue-700">
+                              Access: {tokenInfo.allTokens.localStorage.accessToken ? "✅" : "❌"}
+                            </div>
+                            <div className="text-blue-700">
+                              Refresh: {tokenInfo.allTokens.localStorage.refreshToken ? "✅" : "❌"}
+                            </div>
+                          </div>
+                          <div>
+                            <strong className="text-blue-900">sessionStorage:</strong>
+                            <div className="text-blue-700">
+                              Access: {tokenInfo.allTokens.sessionStorage.accessToken ? "✅" : "❌"}
+                            </div>
+                            <div className="text-blue-700">
+                              Refresh: {tokenInfo.allTokens.sessionStorage.refreshToken ? "✅" : "❌"}
+                            </div>
+                          </div>
+                          <div>
+                            <strong className="text-blue-900">Cookies:</strong>
+                            <div className="text-blue-700">
+                              Access: {tokenInfo.allTokens.cookies.accessToken ? "✅" : "❌"}
+                            </div>
+                            <div className="text-blue-700">
+                              Refresh: {tokenInfo.allTokens.cookies.refreshToken ? "✅" : "❌"}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* Orders Section */}
             <div className="bg-card rounded-2xl shadow-lg border border-border p-6">

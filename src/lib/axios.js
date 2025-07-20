@@ -13,6 +13,11 @@ const axiosInstance = axios.create({
 // Request interceptor for production
 axiosInstance.interceptors.request.use(
   (config) => {
+    // Add access token from localStorage if available
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
     return config;
   },
   (error) => {
@@ -23,6 +28,17 @@ axiosInstance.interceptors.request.use(
 // Response interceptor for error handling
 axiosInstance.interceptors.response.use(
   (response) => {
+    // Capture tokens from headers if present
+    const accessToken = response.headers['x-access-token'];
+    const refreshToken = response.headers['x-refresh-token'];
+    
+    if (accessToken) {
+      localStorage.setItem('accessToken', accessToken);
+    }
+    if (refreshToken) {
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+    
     return response;
   },
   (error) => {

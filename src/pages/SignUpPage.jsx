@@ -202,7 +202,6 @@ const SignUpPage = () => {
     try {
       const data = await signup(formData);
       if (data?.success) {
-        toast.success(data?.message);
         navigate("/login");
       }
     } catch (error) {

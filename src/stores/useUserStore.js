@@ -73,6 +73,20 @@ export const useUserStore = create((set, get) => ({
       if (response.data && response.data.success) {
         // Store user data in localStorage for persistence
         localStorage.setItem('user', JSON.stringify(response.data));
+        
+        // Store tokens from headers for cross-origin requests
+        const accessToken = response.headers['x-access-token'];
+        const refreshToken = response.headers['x-refresh-token'];
+        
+        if (accessToken) {
+          localStorage.setItem('accessToken', accessToken);
+          sessionStorage.setItem('accessToken', accessToken);
+        }
+        if (refreshToken) {
+          localStorage.setItem('refreshToken', refreshToken);
+          sessionStorage.setItem('refreshToken', refreshToken);
+        }
+        
         set({ user: response.data, loading: false, justLoggedOut: false });
         toast.success("Login successful!");
         return response.data;
@@ -165,7 +179,11 @@ export const useUserStore = create((set, get) => ({
       
       // Clear any stored tokens or auth data
       localStorage.removeItem('user');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       sessionStorage.removeItem('user');
+      sessionStorage.removeItem('accessToken');
+      sessionStorage.removeItem('refreshToken');
       
       // Clear all stores
       await get().clearAllStores();
@@ -185,7 +203,11 @@ export const useUserStore = create((set, get) => ({
       // Even if logout fails on server, clear local state
       set({ user: null, checkingAuth: false, justLoggedOut: true });
       localStorage.removeItem('user');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       sessionStorage.removeItem('user');
+      sessionStorage.removeItem('accessToken');
+      sessionStorage.removeItem('refreshToken');
       
       // Clear all stores even on error
       await get().clearAllStores();

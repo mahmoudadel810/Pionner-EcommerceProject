@@ -28,15 +28,18 @@ axiosInstance.interceptors.request.use(
 // Response interceptor for error handling
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Capture tokens from headers if present
+    // Capture tokens from headers if present (for cross-origin requests)
     const accessToken = response.headers['x-access-token'];
     const refreshToken = response.headers['x-refresh-token'];
     
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken);
+      // Also set in sessionStorage for immediate use
+      sessionStorage.setItem('accessToken', accessToken);
     }
     if (refreshToken) {
       localStorage.setItem('refreshToken', refreshToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
     }
     
     return response;

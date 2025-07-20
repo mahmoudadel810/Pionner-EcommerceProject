@@ -10,7 +10,7 @@ const API_CONFIG = {
       GET_FEATURED: '/products/getFeaturedProducts',
       GET_BY_ID: (id) => `/products/${id}`,
       GET_BY_CATEGORY: (category) => `/products/category/${category}`,
-    },
+    },  
     AUTH: {
       LOGIN: '/auth/login',
       REGISTER: '/auth/register',
@@ -43,6 +43,7 @@ export const buildApiUrl = (endpoint) => {
 
 // Helper function to get base URL without /v1 suffix for axios baseURL
 export const getApiBaseUrl = () => {
+  // Keep the full URL including /api/v1 for proper routing
   return API_CONFIG.BASE_URL.replace('/v1', '');
 };
 

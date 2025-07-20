@@ -62,8 +62,10 @@ axiosInstance.interceptors.response.use(
                            document.cookie.split('; ').find(row => row.startsWith('refreshToken='))?.split('=')[1];
         
         if (refreshToken) {
-          // Try to refresh the token
-          const response = await axios.post('/v1/auth/refresh-token', {}, {
+          // Try to refresh the token - use correct endpoint path
+          const response = await axios.post(`${getApiBaseUrl()}/v1/auth/refresh-token`, {}, {
+            baseURL: '',
+            withCredentials: true,
             headers: {
               'Authorization': `Bearer ${refreshToken}`
             }

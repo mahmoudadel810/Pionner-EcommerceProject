@@ -118,6 +118,7 @@ const LoginPage = () => {
     // If there are validation errors, don't submit
     if (Object.keys(newErrors).length > 0) {
       toast.error("Please fix the errors before submitting");
+      console.log("Validation errors:", newErrors);
       return;
     }
 
@@ -492,3 +493,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+

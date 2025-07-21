@@ -12,56 +12,66 @@ const axiosInstance = axios.create({
 
 // Request interceptor for production
 axiosInstance.interceptors.request.use(
-  (config) => {
+  (config) =>
+  {
     // Try to get token from multiple sources (cookies, localStorage, sessionStorage)
-    let accessToken = localStorage.getItem('accessToken') || 
-                     sessionStorage.getItem('accessToken') ||
-                     document.cookie.split('; ').find(row => row.startsWith('accessToken='))?.split('=')[1];
-    
-    if (accessToken) {
+    let accessToken = document.cookie.split("; ").find(row => row.startsWith("accessToken="))?.split("=")[1] || localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+
+    if (accessToken)
+    {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
   },
-  (error) => {
+  (error) =>
+  {
     return Promise.reject(error);
   }
 );
 
 // Response interceptor for error handling
 axiosInstance.interceptors.response.use(
-  (response) => {
+  (response) =>
+  {
     // Capture tokens from headers if present (for cross-origin requests)
     const accessToken = response.headers['x-access-token'];
     const refreshToken = response.headers['x-refresh-token'];
-    
-    if (accessToken) {
+
+    if (accessToken)
+    {
       localStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('accessToken', accessToken);
+      document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24 * 7}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`; // 7 days
       console.log('✅ Access token stored successfully');
     }
-    if (refreshToken) {
+    if (refreshToken)
+    {
       localStorage.setItem('refreshToken', refreshToken);
       sessionStorage.setItem('refreshToken', refreshToken);
+      document.cookie = `refreshToken=${refreshToken}; path=/; max-age=${60 * 60 * 24 * 30}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`; // 30 days
       console.log('✅ Refresh token stored successfully');
     }
-    
+
     return response;
   },
-  async (error) => {
+  async (error) =>
+  {
     const originalRequest = error.config;
-    
+
     // Handle 401 errors (token expired)
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry)
+    {
       originalRequest._retry = true;
-      
-      try {
+
+      try
+      {
         // Try to get refresh token from multiple sources
-        const refreshToken = localStorage.getItem('refreshToken') || 
-                           sessionStorage.getItem('refreshToken') ||
-                           document.cookie.split('; ').find(row => row.startsWith('refreshToken='))?.split('=')[1];
-        
-        if (refreshToken) {
+        const refreshToken = localStorage.getItem('refreshToken') ||
+          sessionStorage.getItem('refreshToken') ||
+          document.cookie.split('; ').find(row => row.startsWith('refreshToken='))?.split('=')[1];
+
+        if (refreshToken)
+        {
           // Try to refresh the token - use correct endpoint path
           const response = await axios.post(`${getApiBaseUrl()}/v1/auth/refresh-token`, {}, {
             baseURL: '',
@@ -70,21 +80,24 @@ axiosInstance.interceptors.response.use(
               'Authorization': `Bearer ${refreshToken}`
             }
           });
-          
-          if (response.data?.success) {
+
+          if (response.data?.success)
+          {
             // Update tokens
             const newAccessToken = response.headers['x-access-token'];
-            if (newAccessToken) {
+            if (newAccessToken)
+            {
               localStorage.setItem('accessToken', newAccessToken);
               sessionStorage.setItem('accessToken', newAccessToken);
               originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-              
+
               // Retry the original request
               return axiosInstance(originalRequest);
             }
           }
         }
-      } catch (refreshError) {
+      } catch (refreshError)
+      {
         // Refresh failed, redirect to login
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
@@ -94,9 +107,11 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
-    
+
     return Promise.reject(error);
   }
 );
 
 export default axiosInstance;
+
+

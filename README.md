@@ -113,8 +113,8 @@ The application is fully responsive with:
 
 ## Deployment
 
-### Vercel (Recommended)
-1. Connect your GitHub repository to Vercel
+### Render.com (Recommended)
+1. Connect your GitHub repository to Render.com
 2. Configure build settings:
    - Build Command: `pnpm build`
    - Output Directory: `dist`

@@ -27,7 +27,7 @@ class AuthTester {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Origin': 'https://pionner-ecommerce-project.vercel.app',
+                    'Origin': 'https://pionner-v-1.onrender.com',
                     ...headers
                 }
             };
@@ -190,7 +190,7 @@ class AuthTester {
         const productsResponse = await fetch(`${BASE_URL}/products/getProducts?limit=1`, {
             headers: {
                 'Authorization': `Bearer ${this.accessToken}`,
-                'Origin': 'https://pionner-ecommerce-project.vercel.app'
+                'Origin': 'https://pionner-v-1.onrender.com'
             }
         });
 
@@ -205,7 +205,7 @@ class AuthTester {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${this.accessToken}`,
-                    'Origin': 'https://pionner-ecommerce-project.vercel.app'
+                    'Origin': 'https://pionner-v-1.onrender.com'
                 },
                 body: JSON.stringify({ productId })
             });
@@ -219,7 +219,7 @@ class AuthTester {
                 const getWishlistResponse = await fetch(`${BASE_URL}/wishlist`, {
                     headers: {
                         'Authorization': `Bearer ${this.accessToken}`,
-                        'Origin': 'https://pionner-ecommerce-project.vercel.app'
+                        'Origin': 'https://pionner-v-1.onrender.com'
                     }
                 });
 

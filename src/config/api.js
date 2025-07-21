@@ -1,7 +1,7 @@
 // Centralized API configuration
 const API_CONFIG = {
   // Base URL for API calls
-  BASE_URL: 'https://pionner-server-prod-v0-1.onrender.com/api/v1/',
+  BASE_URL: 'https://pionner-server-prod-v0-1.onrender.com/api/v1',
 
   // API endpoints
   ENDPOINTS: {

@@ -25,6 +25,7 @@ const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
 const EmailConfirmationPage = lazy(() => import("./pages/EmailConfirmationPage"));
 const PurchaseSuccessPage = lazy(() => import("./pages/PurchaseSuccessPage"));
 const PurchaseCancelPage = lazy(() => import("./pages/PurchaseCancelPage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
 // Components
 import Navbar from "./components/Navbar";
@@ -172,7 +173,7 @@ const AppContent = () => {
             />
 
             {/* Catch all */}
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </motion.div>
       </Suspense>

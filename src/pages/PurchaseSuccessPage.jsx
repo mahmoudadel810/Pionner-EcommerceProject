@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { CheckCircle, Package, Mail, Home, ShoppingBag, AlertCircle, Loader2 } from "lucide-react";
 import { usePaymentStore } from "../stores/usePaymentStore";
 import { useCartStore } from "../stores/useCartStore";
@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 
 const PurchaseSuccessPage = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const { handleCheckoutSuccess } = usePaymentStore();
   const { clearCart } = useCartStore();
   const { user, checkAuth, clearLogoutFlag } = useUserStore();
@@ -17,6 +18,7 @@ const PurchaseSuccessPage = () => {
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [successProcessed, setSuccessProcessed] = useState(false);
 
   useEffect(() => {
     const processPaymentSuccess = async () => {
@@ -49,13 +51,28 @@ const PurchaseSuccessPage = () => {
           const result = await handleCheckoutSuccess(sessionId);
           if (result.success) {
             setOrderDetails(result.data);
+            setSuccessProcessed(true);
+            
+            // Show success message
+            toast.success('🎉 Order confirmed! Your purchase was successful and will be delivered soon!');
+            
             // Clear the cart after successful payment
             try {
               await clearCart();
+              console.log('Cart cleared successfully after payment');
             } catch (cartError) {
               console.log('Cart clear error (non-critical):', cartError);
               // Don't fail the whole process if cart clearing fails
             }
+            
+            // Auto-redirect to home after 8 seconds
+            setTimeout(() => {
+              toast.success('Redirecting to home page...');
+              navigate('/');
+            }, 8000);
+          } else {
+            setError('Payment confirmation failed. Please contact support.');
+            toast.error('Payment confirmation failed. Please contact support.');
           }
         } catch (error) {
           console.error('Error processing payment success:', error);
@@ -280,13 +297,16 @@ const PurchaseSuccessPage = () => {
               <span>Continue Shopping</span>
             </Link>
 
-            <Link
-              to="/"
-              className="flex-1 bg-background border border-border text-foreground py-3 px-6 rounded-lg font-medium hover:bg-background/80 transition-colors duration-300 flex items-center justify-center space-x-2"
+            <button
+              onClick={() => {
+                toast.success('Redirecting to home page...');
+                navigate('/');
+              }}
+              className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300 flex items-center justify-center space-x-2"
             >
               <Home size={20} />
-              <span>Go Home</span>
-            </Link>
+              <span>Go Home Now</span>
+            </button>
           </motion.div>
 
           {/* Additional Info */}

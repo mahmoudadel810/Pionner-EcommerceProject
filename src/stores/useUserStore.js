@@ -122,11 +122,40 @@ export const useUserStore = create((set, get) => ({
 
       // Handle specific login errors
       const errorMessage = error.response?.data?.message || error.message || "An error occurred during login.";
+      const statusCode = error.response?.status;
 
-      // Show toast for login errors
-      if (error.response?.status === 400 || error.response?.status === 401)
+      // Show specific toast messages based on error type
+      if (statusCode === 400 || statusCode === 401)
       {
-        toast.error('Invalid email or password');
+        // Check for specific error messages
+        if (errorMessage.toLowerCase().includes('email') && errorMessage.toLowerCase().includes('not found'))
+        {
+          toast.error('Account not found. Please check your email or sign up.');
+        }
+        else if (errorMessage.toLowerCase().includes('password') && errorMessage.toLowerCase().includes('incorrect'))
+        {
+          toast.error('Incorrect password. Please try again.');
+        }
+        else if (errorMessage.toLowerCase().includes('email') && errorMessage.toLowerCase().includes('not verified'))
+        {
+          toast.error('Please verify your email address first.');
+        }
+        else
+        {
+          toast.error('Invalid email or password. Please check your credentials.');
+        }
+      }
+      else if (statusCode === 429)
+      {
+        toast.error('Too many login attempts. Please try again later.');
+      }
+      else if (statusCode >= 500)
+      {
+        toast.error('Server error. Please try again later.');
+      }
+      else
+      {
+        toast.error(errorMessage || 'Login failed. Please try again.');
       }
 
       return {

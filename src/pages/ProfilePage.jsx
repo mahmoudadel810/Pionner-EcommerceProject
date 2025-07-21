@@ -17,7 +17,7 @@ import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import tokenManager from "../utils/tokenManager";
-import { API_CONFIG } from "../lib/apiConfig";
+import { API_CONFIG } from "../config/api.js";
 import { buildApiUrl } from "../utils/apiUtils";
 
 const ProfilePage = () => {

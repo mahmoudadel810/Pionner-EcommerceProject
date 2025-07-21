@@ -10,7 +10,7 @@ import { Skeleton } from "../components/ui/skeleton";
 import { Search, Grid3X3, List, Filter, Package, Layers, Sparkles, X, RefreshCw, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import axios from "../lib/axios";
 import toast from "react-hot-toast";
-import { API_CONFIG } from "../lib/apiConfig";
+import { API_CONFIG } from "../config/api.js";
 import { buildApiUrl } from "../lib/apiUtils";
 
 const CategoriesPage = () => {

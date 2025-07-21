@@ -4,7 +4,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { CheckCircle, XCircle, Loader2, Mail } from "lucide-react";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
-import { API_CONFIG } from "../lib/apiConfig";
+import { API_CONFIG } from "../config/api.js";
 import { buildApiUrl } from "../lib/apiUtils";
 
 const EmailConfirmationPage = () => {

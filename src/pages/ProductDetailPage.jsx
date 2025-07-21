@@ -18,7 +18,7 @@ import { usePaymentStore } from "../stores/usePaymentStore";
 import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
-import { API_CONFIG } from "../lib/apiConfig";
+import { API_CONFIG } from "../config/api.js";
 import { buildApiUrl } from "../lib/apiUtils";
 
 const ProductDetailPage = () => {

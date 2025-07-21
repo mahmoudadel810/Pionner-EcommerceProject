@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import axios from "../lib/axios";
+import API_CONFIG, { buildApiUrl } from "../config/api.js";
 
 export const useProductStore = create(set => ({
   products: [],
@@ -12,10 +13,7 @@ export const useProductStore = create(set => ({
   createProduct: async productData => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.post(
-        "/v1/products/createProduct",
-        productData
-      );
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.CREATE), productData);
       if (response.data) {
         set(prevState => ({
           products: [...prevState.products, response.data],
@@ -40,7 +38,7 @@ export const useProductStore = create(set => ({
   fetchAllProducts: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get("/v1/products/getProducts?limit=50");
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_ALL) + "?limit=50");
       if (response.data && response.data.success) {
         // Handle paginated response
         const products = response.data.data || [];
@@ -62,9 +60,7 @@ export const useProductStore = create(set => ({
   fetchProductsByCategory: async category => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get(
-        `/v1/products/getProductsByCategory/${category}`
-      );
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_CATEGORY(category)));
       if (response.data && response.data.success) {
         set({ products: response.data.data, loading: false });
         return { success: true, data: response.data.data };
@@ -84,9 +80,7 @@ export const useProductStore = create(set => ({
   deleteProduct: async productId => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.delete(
-        `/v1/products/deleteProduct/${productId}`
-      );
+      const response = await axios.delete(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.DELETE(productId)));
       if (response.data) {
         set(prevProducts => ({
           products: prevProducts.products.filter(
@@ -111,9 +105,7 @@ export const useProductStore = create(set => ({
   toggleFeaturedProduct: async productId => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.patch(
-        `/v1/products/toggleFeaturedProduct/${productId}`
-      );
+      const response = await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.TOGGLE_FEATURED(productId)));
       if (response.data) {
         set(prevProducts => ({
           products: prevProducts.products.map(product =>
@@ -140,7 +132,7 @@ export const useProductStore = create(set => ({
   fetchFeaturedProducts: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get("/v1/products/getFeaturedProducts");
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_FEATURED));
       if (response.data && response.data.success) {
         set({ products: response.data.data, loading: false });
         return { success: true, data: response.data.data };

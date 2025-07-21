@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
+import API_CONFIG, { buildApiUrl } from "../config/api.js";
 
 export const usePaymentStore = create((set, get) => ({
   loading: false,
@@ -24,7 +25,7 @@ export const usePaymentStore = create((set, get) => ({
         payload.couponCode = coupon.code;
       }
 
-      const response = await axios.post("/v1/payments/createCheckoutSession", payload);
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.PAYMENT.CREATE_CHECKOUT_SESSION), payload);
       
       if (response.data && response.data.success) {
         set({ 
@@ -49,7 +50,7 @@ export const usePaymentStore = create((set, get) => ({
   handleCheckoutSuccess: async (sessionId) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.post("/v1/payments/checkoutSuccess", {
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.PAYMENT.CHECKOUT_SUCCESS), {
         sessionId
       });
       

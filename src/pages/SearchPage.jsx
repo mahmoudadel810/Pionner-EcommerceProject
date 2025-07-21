@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import { useUserStore } from "../stores/useUserStore";
+import { API_CONFIG } from "../lib/apiConfig";
+import { buildApiUrl } from "../lib/apiUtils";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
@@ -101,7 +103,7 @@ const SearchPage = () => {
       };
 
       const queryString = new URLSearchParams(params).toString();
-      const response = await axios.get(`/v1/products/search?${queryString}`);
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.SEARCH) + `?${queryString}`);
       
       if (response.data.success) {
         const data = response.data.data;

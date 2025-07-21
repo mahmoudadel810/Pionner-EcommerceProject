@@ -48,6 +48,8 @@ import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import axios from "../lib/axios";
 import "../App.css";
+import { API_CONFIG } from "../lib/apiConfig";
+import { buildApiUrl } from "../lib/apiUtils";
 
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -194,9 +196,8 @@ const Navbar = memo(() => {
       // Debounced API call for suggestions
       const timeoutId = setTimeout(async () => {
         try {
-          const response = await axios.get(
-            `/v1/products/searchSuggestions?search=${encodeURIComponent(value)}&limit=4`
-          );
+          const url = buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.SEARCH_SUGGESTIONS) + `?search=${encodeURIComponent(value)}&limit=4`;
+          const response = await axios.get(url);
           if (response.data.success) {
             const suggestions = response.data.data || [];
             setSearchSuggestions(suggestions);

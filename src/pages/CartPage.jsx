@@ -16,6 +16,8 @@ import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
+import { API_CONFIG } from "../lib/apiConfig";
+import { buildApiUrl } from "../lib/apiUtils";
 
 const CartPage = () => {
   const {
@@ -54,7 +56,7 @@ const CartPage = () => {
   const handleMoveToWishlist = async product => {
     try {
       // Temporarily suppress toasts by calling the API directly
-      const removeResponse = await axios.post("/v1/cart/removeFromCart", { 
+      const removeResponse = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.REMOVE), { 
         productId: product._id 
       });
       
@@ -67,7 +69,7 @@ const CartPage = () => {
         useCartStore.getState().calculateTotals();
         
         // Add to wishlist
-        const wishlistResponse = await axios.post("/v1/wishlist/add", {
+        const wishlistResponse = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.WISHLIST.ADD), {
           productId: product._id,
         });
         

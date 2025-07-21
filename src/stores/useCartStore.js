@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
+import API_CONFIG, { buildApiUrl } from "../config/api.js";
 
 export const useCartStore = create((set, get) => ({
   cart: [],
@@ -17,7 +18,7 @@ export const useCartStore = create((set, get) => ({
 
   getMyCoupon: async () => {
     try {
-      const response = await axios.get("/v1/coupons/getCoupon");
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.GET));
       if (response.data) {
         set({ coupon: response.data });
         return { success: true, data: response.data };
@@ -32,7 +33,7 @@ export const useCartStore = create((set, get) => ({
 
   applyCoupon: async code => {
     try {
-      const response = await axios.post("/v1/coupons/validateCoupon", { code });
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.VALIDATE), { code });
       if (response.data) {
         set({ coupon: response.data, isCouponApplied: true });
         get().calculateTotals();
@@ -58,7 +59,7 @@ export const useCartStore = create((set, get) => ({
 
   getCartItems: async () => {
     try {
-      const response = await axios.get("/v1/cart/getCartProducts");
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CART.GET));
       if (response.data && response.data.success) {
         const cartItems = response.data.data || [];
         set({ cart: cartItems });
@@ -88,7 +89,7 @@ export const useCartStore = create((set, get) => ({
 
   clearCart: async () => {
     try {
-      await axios.post("/v1/cart/removeFromCart", {});
+      await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.REMOVE), {});
       set({ cart: [], coupon: null, total: 0, subtotal: 0 });
       toast.success("Cart cleared successfully");
       return { success: true };
@@ -107,7 +108,7 @@ export const useCartStore = create((set, get) => ({
       
       if (existingItem) {
         // Product is in cart, remove it
-        const response = await axios.post("/v1/cart/removeFromCart", {
+        const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.REMOVE), {
           productId: product._id,
         });
 
@@ -123,7 +124,7 @@ export const useCartStore = create((set, get) => ({
         }
       } else {
         // Product is not in cart, add it
-        const response = await axios.post("/v1/cart/addToCart", {
+        const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.ADD), {
           productId: product._id,
         });
 
@@ -159,7 +160,7 @@ export const useCartStore = create((set, get) => ({
   // Keep the original addToCart for backward compatibility
   addToCart: async product => {
     try {
-      const response = await axios.post("/v1/cart/addToCart", {
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.ADD), {
         productId: product._id,
       });
 
@@ -205,7 +206,7 @@ export const useCartStore = create((set, get) => ({
 
   removeFromCart: async productId => {
     try {
-      await axios.post(`/v1/cart/removeFromCart`, { productId });
+      await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.REMOVE), { productId });
       set(prevState => ({
         cart: prevState.cart.filter(item => item._id !== productId),
       }));
@@ -226,7 +227,7 @@ export const useCartStore = create((set, get) => ({
     }
 
     try {
-      const response = await axios.put(`/v1/cart/updateQuantity/${productId}`, {
+      const response = await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.CART.UPDATE_QUANTITY(productId)), {
         quantity,
       });
 

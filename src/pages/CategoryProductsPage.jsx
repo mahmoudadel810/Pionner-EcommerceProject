@@ -13,6 +13,8 @@ import toast from "react-hot-toast";
 import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import { useUserStore } from "../stores/useUserStore";
+import { API_CONFIG } from "../lib/apiConfig";
+import { buildApiUrl } from "../lib/apiUtils";
 
 const CategoryProductsPage = () => {
   const { id } = useParams();
@@ -41,7 +43,7 @@ const CategoryProductsPage = () => {
       setError(null);
 
       // Fetch category details
-      const categoryResponse = await axios.get(`/v1/categories/${id}`);
+      const categoryResponse = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_BY_ID(id)));
       if (categoryResponse.data.success) {
         setCategory(categoryResponse.data.data);
       }
@@ -55,7 +57,7 @@ const CategoryProductsPage = () => {
         ...(searchQuery && { search: searchQuery })
       });
 
-      const productsResponse = await axios.get(`/v1/categories/${id}/products?${params}`);
+      const productsResponse = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_PRODUCTS_BY_ID(id)) + `?${params}`);
       
       if (productsResponse.data.success) {
         setProducts(productsResponse.data.data.data || productsResponse.data.data);

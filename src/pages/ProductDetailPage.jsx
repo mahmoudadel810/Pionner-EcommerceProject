@@ -18,6 +18,8 @@ import { usePaymentStore } from "../stores/usePaymentStore";
 import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
+import { API_CONFIG } from "../lib/apiConfig";
+import { buildApiUrl } from "../lib/apiUtils";
 
 const ProductDetailPage = () => {
   const { id } = useParams();
@@ -41,7 +43,7 @@ const ProductDetailPage = () => {
   const fetchProduct = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`/v1/products/getProduct/${id}`);
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_ID(id)));
       if (response.data && response.data.success) {
         setProduct(response.data.data);
         fetchRelatedProducts(response.data.data.category);
@@ -58,7 +60,7 @@ const ProductDetailPage = () => {
 
   const fetchRelatedProducts = async category => {
     try {
-      const response = await axios.get(`/v1/products/getProductsByCategory/${category}`);
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_CATEGORY(category)));
       if (response.data && response.data.success) {
         setRelatedProducts(
           response.data.data.filter(p => p._id !== id).slice(0, 4)

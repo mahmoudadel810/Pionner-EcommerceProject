@@ -3,6 +3,7 @@ import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
 import { useCartStore } from "./useCartStore.js";
 import { useWishlistStore } from "./useWishlistStore.js";
+import API_CONFIG, { buildApiUrl } from "../config/api.js";
 
 export const useUserStore = create((set, get) => ({
   user: null,
@@ -37,7 +38,7 @@ export const useUserStore = create((set, get) => ({
     }
 
     try {
-      const response = await axios.post("/v1/auth/signup", {
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.SIGNUP), {
         name,
         email,
         phone,
@@ -69,7 +70,7 @@ export const useUserStore = create((set, get) => ({
   login: async (email, password) => {
     set({ loading: true, justLoggedOut: false }); // Clear logout flag on login
     try {
-      const response = await axios.post("/v1/auth/login", { email, password });
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.LOGIN), { email, password });
       if (response.data && response.data.success) {
         // Store user data in localStorage for persistence
         localStorage.setItem('user', JSON.stringify(response.data));
@@ -120,7 +121,7 @@ export const useUserStore = create((set, get) => ({
   forgetPassword: async email => {
     set({ loading: true });
     try {
-      const response = await axios.post("/v1/auth/forgot-password", { email });
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.FORGOT_PASSWORD), { email });
       set({ loading: false });
 
       if (response.data && response.data.success) {
@@ -150,7 +151,7 @@ export const useUserStore = create((set, get) => ({
     }
 
     try {
-      const response = await axios.post("/v1/auth/reset-password", {
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.RESET_PASSWORD), {
         code,
         newPassword,
         confirmNewPassword,
@@ -180,7 +181,7 @@ export const useUserStore = create((set, get) => ({
       set({ user: null, checkingAuth: false, justLoggedOut: true });
       
       // Try to logout on server
-      await axios.post("/v1/auth/logout");
+      await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.LOGOUT));
       
       // Clear any stored tokens or auth data
       localStorage.removeItem('user');
@@ -247,7 +248,7 @@ export const useUserStore = create((set, get) => ({
     }, 5000); // 5 second timeout
     
     try {
-      const response = await axios.get("/v1/auth/profile");
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.PROFILE));
       clearTimeout(timeoutId);
       
       if (response.data && response.data.success && response.data.data) {
@@ -328,7 +329,7 @@ export const useUserStore = create((set, get) => ({
 
     set({ checkingAuth: true });
     try {
-      const response = await axios.post("/v1/auth/refresh-token");
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.REFRESH_TOKEN));
       set({ checkingAuth: false });
       return response.data;
     } catch (error) {

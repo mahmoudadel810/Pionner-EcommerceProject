@@ -17,6 +17,8 @@ import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import tokenManager from "../utils/tokenManager";
+import { API_CONFIG } from "../lib/apiConfig";
+import { buildApiUrl } from "../utils/apiUtils";
 
 const ProfilePage = () => {
   const { user, checkAuth, setUser } = useUserStore();
@@ -35,7 +37,7 @@ const ProfilePage = () => {
   // Memoize fetchOrders to prevent infinite re-renders
   const fetchOrders = useCallback(async () => {
     try {
-      const response = await axios.get("/v1/orders/getUserOrders");
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.GET_USER_ORDERS));
 
       // Fixed: Check if response.data.data exists and is an array
       if (response.data && Array.isArray(response.data.data)) {
@@ -97,7 +99,7 @@ const ProfilePage = () => {
           const imageFormData = new FormData();
           imageFormData.append("image", avatar);
           
-          const imageResponse = await axios.post("/v1/auth/upload-profile-image", imageFormData, {
+          const imageResponse = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.UPLOAD_PROFILE_IMAGE), imageFormData, {
             headers: { "Content-Type": "multipart/form-data" },
           });
           
@@ -120,7 +122,7 @@ const ProfilePage = () => {
         email: formData.email
       };
       
-      const response = await axios.put("/v1/auth/update-profile", updateData);
+      const response = await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.UPDATE_PROFILE), updateData);
 
       if (response.data && response.data.success) {
         toast.success(response.data.message || "Profile updated successfully");
@@ -521,7 +523,7 @@ const ProfilePage = () => {
                     // Cancel handler
                     const handleCancelOrder = async () => {
                       try {
-                        const response = await axios.patch(`/v1/orders/cancel/${order._id}`);
+                        const response = await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.CANCEL(order._id)));
                         if (response.data && response.data.success) {
                           toast.success("Order cancelled successfully");
                           // Update order status in UI

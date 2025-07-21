@@ -10,6 +10,8 @@ import { Skeleton } from "../components/ui/skeleton";
 import { Search, Grid3X3, List, Filter, Package, Layers, Sparkles, X, RefreshCw, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import axios from "../lib/axios";
 import toast from "react-hot-toast";
+import { API_CONFIG } from "../lib/apiConfig";
+import { buildApiUrl } from "../lib/apiUtils";
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -88,7 +90,7 @@ const CategoriesPage = () => {
       };
 
       const queryString = new URLSearchParams(params).toString();
-      const response = await axios.get(`/v1/categories?${queryString}`);
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_ALL) + `?${queryString}`);
       
       if (response.data.success) {
         const data = response.data.data;

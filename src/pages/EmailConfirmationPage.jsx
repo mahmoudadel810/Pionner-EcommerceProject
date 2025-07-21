@@ -4,6 +4,8 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { CheckCircle, XCircle, Loader2, Mail } from "lucide-react";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
+import { API_CONFIG } from "../lib/apiConfig";
+import { buildApiUrl } from "../lib/apiUtils";
 
 const EmailConfirmationPage = () => {
   const [status, setStatus] = useState("loading"); // loading, success, error
@@ -14,7 +16,7 @@ const EmailConfirmationPage = () => {
   useEffect(() => {
     const confirmEmail = async () => {
       try {
-        const response = await axios.get(`/v1/auth/confirm-email/${token}`);
+        const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.CONFIRM_EMAIL(token)));
         
         if (response.data?.success) {
           setStatus("success");

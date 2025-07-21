@@ -17,6 +17,8 @@ import {
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import { useUserStore } from "../stores/useUserStore";
+import { API_CONFIG } from "../lib/apiConfig";
+import { buildApiUrl } from "../lib/apiUtils";
 
 const ContactPage = () => {
   const navigate = useNavigate();
@@ -225,7 +227,7 @@ const ContactPage = () => {
         message: formData.message.trim(),
       };
 
-      const response = await axios.post("/v1/contact/submitContactForm", trimmedData);
+      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CONTACT.SUBMIT), trimmedData);
       
       if (response.data && response.data.success) {
         setSuccessMessage("Message sent successfully! We'll get back to you soon.");

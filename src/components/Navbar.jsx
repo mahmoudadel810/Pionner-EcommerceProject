@@ -49,7 +49,7 @@ import { useWishlistStore } from "../stores/useWishlistStore";
 import axios from "../lib/axios";
 import "../App.css";
 import { API_CONFIG } from "../config/api.js";
-import { buildApiUrl } from "../lib/apiUtils";
+import { buildApiUrl } from "../config/api.js";
 
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -14,7 +14,7 @@ import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import { useUserStore } from "../stores/useUserStore";
 import { API_CONFIG } from "../config/api.js";
-import { buildApiUrl } from "../lib/apiUtils";
+import { buildApiUrl } from "../config/api.js";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();

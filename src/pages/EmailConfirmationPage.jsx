@@ -5,7 +5,7 @@ import { CheckCircle, XCircle, Loader2, Mail } from "lucide-react";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
 import { API_CONFIG } from "../config/api.js";
-import { buildApiUrl } from "../lib/apiUtils";
+import { buildApiUrl } from "../config/api.js";
 
 const EmailConfirmationPage = () => {
   const [status, setStatus] = useState("loading"); // loading, success, error

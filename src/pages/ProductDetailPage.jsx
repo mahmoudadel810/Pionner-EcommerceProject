@@ -19,7 +19,7 @@ import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import { API_CONFIG } from "../config/api.js";
-import { buildApiUrl } from "../lib/apiUtils";
+import { buildApiUrl } from "../config/api.js";
 
 const ProductDetailPage = () => {
   const { id } = useParams();

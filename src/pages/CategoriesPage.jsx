@@ -11,7 +11,7 @@ import { Search, Grid3X3, List, Filter, Package, Layers, Sparkles, X, RefreshCw,
 import axios from "../lib/axios";
 import toast from "react-hot-toast";
 import { API_CONFIG } from "../config/api.js";
-import { buildApiUrl } from "../lib/apiUtils";
+import { buildApiUrl } from "../config/api.js";
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);

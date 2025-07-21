@@ -135,6 +135,7 @@ const LoginPage = () => {
                 email: "Invalid email or password",
                 password: "Invalid email or password",
               });
+              toast.error("Invalid email or password");
               break;
             case "account_locked":
               toast.error("Account is locked. Please contact support.");
@@ -143,9 +144,12 @@ const LoginPage = () => {
               toast.error("Please verify your email address first");
               break;
             default:
-              // Let axios interceptor handle server errors
+              toast.error(loginData.message || "Login failed. Please try again.");
               break;
           }
+        } else {
+          // Always show a toast if login failed for any reason
+          toast.error(loginData?.message || "Login failed. Please try again.");
         }
       }
     } catch (error) {

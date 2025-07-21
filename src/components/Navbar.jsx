@@ -48,7 +48,7 @@ import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import axios from "../lib/axios";
 import "../App.css";
-import { API_CONFIG } from "../config/api.js";
+import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 
 const Navbar = memo(() => {

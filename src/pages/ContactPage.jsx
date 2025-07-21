@@ -230,7 +230,7 @@ const ContactPage = () => {
       const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CONTACT.SUBMIT), trimmedData);
       
       if (response.data && response.data.success) {
-        setSuccessMessage("Message sent successfully! We'll get back to you soon.");
+        toast.success("Message sent successfully! We'll get back to you soon.");
         setErrors({});
         
         // Reset form but keep user data if logged in

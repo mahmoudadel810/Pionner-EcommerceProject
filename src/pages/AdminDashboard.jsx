@@ -44,7 +44,6 @@ const AdminDashboard = () => {
       await fetchOrders();
       await fetchStats();
     } catch (error) {
-      console.error("Error fetching data:", error);
     }
   };
 
@@ -53,7 +52,6 @@ const AdminDashboard = () => {
       const response = await axios.get("/contact");
       setContacts(response.data);
     } catch (error) {
-      console.error("Error fetching contacts:", error);
     }
   };
 
@@ -62,7 +60,6 @@ const AdminDashboard = () => {
       const response = await axios.get("/orders/all");
       setOrders(response.data);
     } catch (error) {
-      console.error("Error fetching orders:", error);
     }
   };
 
@@ -71,7 +68,6 @@ const AdminDashboard = () => {
       const response = await axios.get("/analytics/stats");
       setStats(response.data);
     } catch (error) {
-      console.error("Error fetching stats:", error);
     }
   };
 

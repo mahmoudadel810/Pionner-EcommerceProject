@@ -3,7 +3,6 @@ import { Card, CardContent } from "./ui/card";
 import { cn } from "../lib/utils";
 
 const CategoryItem = ({ category }) => {
-  // console.log(category);
 
   return (
     <Card className="group relative overflow-hidden h-80 w-full cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">

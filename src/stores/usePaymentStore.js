@@ -8,6 +8,47 @@ export const usePaymentStore = create((set, get) => ({
   error: null,
   checkoutSession: null,
 
+  createPaymentIntent: async (cartItems, coupon = null) => {
+    set({ loading: true, error: null });
+    try {
+      const payload = {
+        products: cartItems.map(item => ({
+          _id: item._id,
+          quantity: item.quantity,
+          price: item.price,
+          name: item.name,
+          image: item.image
+        }))
+      };
+
+      if (coupon) {
+        payload.couponCode = coupon.code;
+      }
+
+      const response = await fetch(buildApiUrl('/payments/createPaymentIntent'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+      
+      if (data && data.success) {
+        set({ loading: false });
+        return { success: true, data: data.data };
+      } else {
+        throw new Error(data.message || "Failed to create payment intent");
+      }
+    } catch (error) {
+      const errorMessage = error.message || "Failed to create payment intent";
+      toast.error(errorMessage);
+      set({ error: errorMessage, loading: false });
+      return { success: false, message: errorMessage };
+    }
+  },
+
   createCheckoutSession: async (cartItems, coupon = null) => {
     set({ loading: true, error: null });
     try {

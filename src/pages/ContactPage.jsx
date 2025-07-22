@@ -230,7 +230,24 @@ const ContactPage = () => {
       const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CONTACT.SUBMIT), trimmedData);
       
       if (response.data && response.data.success) {
-        toast.success("Message sent successfully! We'll get back to you soon.");
+        toast.success("Message sent successfully! We'll get back to you soon.", {
+          duration: 5000,
+          style: {
+            background: "rgba(34, 197, 94, 0.95)",
+            color: "white",
+            border: "1px solid rgba(34, 197, 94, 0.3)",
+            borderRadius: "12px",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+            backdropFilter: "blur(10px)",
+            fontSize: "14px",
+            fontWeight: "500",
+            padding: "16px 20px",
+          },
+          iconTheme: {
+            primary: "white",
+            secondary: "#22c55e",
+          },
+        });
         setErrors({});
         
         // Reset form but keep user data if logged in
@@ -242,11 +259,25 @@ const ContactPage = () => {
         });
         setTouched({});
       } else {
-        toast.error("Failed to send message. Please try again.");
+        toast.error("Failed to send message. Please try again.", {
+          style: {
+            background: "rgba(239, 68, 68, 0.95)",
+            color: "white",
+            border: "1px solid rgba(239, 68, 68, 0.3)",
+            borderRadius: "12px",
+            boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+            backdropFilter: "blur(10px)",
+            fontSize: "14px",
+            fontWeight: "500",
+            padding: "16px 20px",
+          },
+          iconTheme: {
+            primary: "white",
+            secondary: "#ef4444",
+          },
+        });
       }
     } catch (error) {
-      console.error("Contact form submission error:", error);
-
       // Handle different types of errors
       if (error.response) {
         // Server responded with error status
@@ -273,12 +304,60 @@ const ContactPage = () => {
                   ...prev,
                   ...Object.keys(serverErrors).reduce((acc, key) => ({ ...acc, [key]: true }), {})
                 }));
-                toast.error("Please fix the validation errors below");
+                toast.error("Please fix the validation errors below", {
+                  style: {
+                    background: "rgba(239, 68, 68, 0.95)",
+                    color: "white",
+                    border: "1px solid rgba(239, 68, 68, 0.3)",
+                    borderRadius: "12px",
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                    backdropFilter: "blur(10px)",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    padding: "16px 20px",
+                  },
+                  iconTheme: {
+                    primary: "white",
+                    secondary: "#ef4444",
+                  },
+                });
               } else {
-                toast.error("Invalid form data. Please check your input.");
+                toast.error("Invalid form data. Please check your input.", {
+                  style: {
+                    background: "rgba(239, 68, 68, 0.95)",
+                    color: "white",
+                    border: "1px solid rgba(239, 68, 68, 0.3)",
+                    borderRadius: "12px",
+                    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                    backdropFilter: "blur(10px)",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    padding: "16px 20px",
+                  },
+                  iconTheme: {
+                    primary: "white",
+                    secondary: "#ef4444",
+                  },
+                });
               }
             } else {
-              toast.error("Invalid form data. Please check your input.");
+              toast.error("Invalid form data. Please check your input.", {
+                style: {
+                  background: "rgba(239, 68, 68, 0.95)",
+                  color: "white",
+                  border: "1px solid rgba(239, 68, 68, 0.3)",
+                  borderRadius: "12px",
+                  boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                  backdropFilter: "blur(10px)",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  padding: "16px 20px",
+                },
+                iconTheme: {
+                  primary: "white",
+                  secondary: "#ef4444",
+                },
+              });
             }
             break;
           case 401:

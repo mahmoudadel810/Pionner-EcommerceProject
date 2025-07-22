@@ -47,7 +47,6 @@ const ProfilePage = () => {
         toast.error("Invalid order data received");
       }
     } catch (error) {
-      console.error("Error fetching orders:", error);
       setOrders([]); // Reset orders on error
       toast.error(error.response?.data?.message || "Failed to fetch orders");
     }
@@ -109,7 +108,6 @@ const ProfilePage = () => {
             throw new Error(imageResponse.data?.message || "Failed to upload profile image");
           }
         } catch (imageError) {
-          console.error("Image upload error:", imageError);
           toast.error("Failed to upload profile image. Please try again.");
           setLoading(false);
           return;
@@ -160,7 +158,6 @@ const ProfilePage = () => {
         toast.error(response.data?.message || "Failed to update profile");
       }
     } catch (error) {
-      console.error("Profile update error:", error);
       toast.error(error.response?.data?.message || "Failed to update profile");
     } finally {
       setLoading(false);

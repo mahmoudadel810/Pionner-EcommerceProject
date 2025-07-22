@@ -106,11 +106,9 @@ export const useAuthForm = (isLogin = true) => {
           }
         } else if (result && !result.success) {
           // Error is already handled in the store, but we can add component-specific logic here
-          console.log("Auth failed:", result.message);
         }
       } catch (error) {
         // Error is already handled in the store
-        console.error("Auth error:", error);
       }
     },
     [formData, isLogin, login, signup, navigate, validateForm]

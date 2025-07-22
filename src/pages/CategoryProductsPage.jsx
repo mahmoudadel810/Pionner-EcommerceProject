@@ -66,7 +66,6 @@ const CategoryProductsPage = () => {
         setError("Failed to fetch products");
       }
     } catch (error) {
-      console.error("Error fetching category products:", error);
       setError(error.response?.data?.message || "Failed to fetch products");
       toast.error("Failed to load products");
     } finally {

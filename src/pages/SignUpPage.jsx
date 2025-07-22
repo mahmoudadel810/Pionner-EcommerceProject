@@ -206,7 +206,6 @@ const SignUpPage = () => {
       }
     } catch (error) {
       // Error is handled in the store
-      console.log(error);
     }
   };
 

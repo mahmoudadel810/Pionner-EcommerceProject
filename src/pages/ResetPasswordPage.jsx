@@ -16,7 +16,6 @@ const ResetPasswordPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordReset, setPasswordReset] = useState(false);
   const [errors, setErrors] = useState({});
-  // console.log(errors);
 
   const handleInputChange = e => {
     setFormData({
@@ -26,7 +25,6 @@ const ResetPasswordPage = () => {
 
     // Clear error when user starts typing
     if (errors[e.target.name]) {
-      console.log("user her");
 
       setErrors(prev => ({
         ...prev,

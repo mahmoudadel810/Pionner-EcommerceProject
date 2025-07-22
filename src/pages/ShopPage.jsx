@@ -37,11 +37,9 @@ const ShopPage = () => {
         if (!isMounted) return;
 
         if (!result?.success) {
-          console.log("Failed to fetch products:", result?.message);
         }
       } catch (error) {
         if (!isMounted) return;
-        console.error("Error fetching products:", error);
       }
     };
 

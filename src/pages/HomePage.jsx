@@ -138,7 +138,6 @@ const HomePage = () => {
         setFeaturedProducts(data.data);
       }
     } catch (error) {
-      console.error('Error fetching featured products:', error);
     }
   }, []);
 

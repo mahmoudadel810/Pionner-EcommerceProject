@@ -127,7 +127,6 @@ const SearchPage = () => {
         setError("Failed to fetch products");
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
       setError(error.response?.data?.message || "Failed to fetch products");
       toast.error("Failed to load search results");
     } finally {

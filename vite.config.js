@@ -10,7 +10,8 @@ export default defineConfig({
     port: 5173,
     host: true,
     cors: true,
-    open: false
+    open: false,
+    allowedHosts: ['5174-ihkfje5ha9ofr4jrb6vtx-7f1f3943.manusvm.computer']
   },
   preview: {
     port: 4173,
@@ -173,3 +174,4 @@ export default defineConfig({
     ],
   },
 });
+

@@ -67,7 +67,6 @@ const ProductDetailPage = () => {
         );
       }
     } catch (error) {
-      console.error("Error fetching related products:", error);
     }
   };
 
@@ -134,7 +133,6 @@ const ProductDetailPage = () => {
         toast.error(result.message || "Failed to create checkout session");
       }
     } catch (error) {
-      console.error("Buy now error:", error);
       if (error.response?.status === 401) {
         toast.error("Please login to purchase items");
         navigate("/login");

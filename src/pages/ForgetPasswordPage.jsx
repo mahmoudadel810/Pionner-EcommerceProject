@@ -14,7 +14,6 @@ const ForgetPasswordPage = () => {
 
     try {
       const res = await forgetPassword(email);
-      console.log(res);
       if (res?.success) {
         setEmailSent(true);
       }

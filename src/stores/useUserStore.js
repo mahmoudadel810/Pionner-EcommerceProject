@@ -26,7 +26,6 @@ export const useUserStore = create((set, get) => ({
       }
     } catch (error)
     {
-      console.error('Error loading user from localStorage:', error);
       localStorage.removeItem('user'); // Clear corrupted data
     }
     return null;
@@ -83,7 +82,6 @@ export const useUserStore = create((set, get) => ({
     try
     {
       const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.LOGIN), { email, password });
-      console.log("Login API response:", response);
       if (response.data && response.data.success)
       {
         // Store user data in localStorage for persistence
@@ -267,7 +265,6 @@ export const useUserStore = create((set, get) => ({
     {
       const errorMessage =
         error.response?.data?.message || "An error occurred during logout";
-      console.error("Logout error:", errorMessage);
 
       // Even if logout fails on server, clear local state
       set({ user: null, checkingAuth: false, justLoggedOut: true });
@@ -312,7 +309,6 @@ export const useUserStore = create((set, get) => ({
     const timeoutId = setTimeout(() =>
     {
       set({ checkingAuth: false, user: null });
-      console.log("Auth check timed out");
     }, 5000); // 5 second timeout
 
     try
@@ -335,7 +331,6 @@ export const useUserStore = create((set, get) => ({
     {
       clearTimeout(timeoutId);
       // Don't show toast for auth check failures as they're expected for non-authenticated users
-      console.log("Auth check failed:", error.response?.data?.message || "No valid session");
       set({ checkingAuth: false, user: null });
       return { success: false, error: error.response?.data?.message || "Auth check failed" };
     }
@@ -370,7 +365,7 @@ export const useUserStore = create((set, get) => ({
       // Stores cleared successfully
     } catch (error)
     {
-      console.error("Error clearing stores:", error);
+      // Error clearing stores
     }
   },
 
@@ -396,8 +391,6 @@ export const useUserStore = create((set, get) => ({
     {
       set({ justLoggedOut: false });
     }, 2000);
-
-    console.log("Force logout completed");
   },
 
   // Debug function removed for production
@@ -416,7 +409,6 @@ export const useUserStore = create((set, get) => ({
     {
       // Clear user state and stop checking auth on refresh failure
       set({ user: null, checkingAuth: false });
-      console.error("Token refresh failed:", error.response?.data?.message || error.message);
       throw error;
     }
   },
@@ -457,7 +449,7 @@ useUserStore.subscribe(
           // Stores cleared due to user state change
         } catch (error)
         {
-          console.error("Error clearing stores on user change:", error);
+          // Error clearing stores on user change
         }
       }, 100); // Small delay to ensure logout process completes
     }
@@ -499,7 +491,6 @@ axios.interceptors.response.use(
       {
         // If refresh token fails, clear user state and don't retry
         refreshPromise = null;
-        console.error("Token refresh failed, logging out user:", refreshError.message);
         useUserStore.getState().logout();
         return Promise.reject(error); // Return the original error, not the refresh error
       }

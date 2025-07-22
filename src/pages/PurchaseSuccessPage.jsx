@@ -22,7 +22,7 @@ const PurchaseSuccessPage = () => {
 
   useEffect(() => {
     const processPaymentSuccess = async () => {
-      if (sessionId && !orderDetails) { // Only process if we have sessionId and haven't processed yet
+      if (sessionId && !successProcessed) { // Only process if we have sessionId and haven't processed yet
         try {
           setLoading(true);
           
@@ -34,18 +34,14 @@ const PurchaseSuccessPage = () => {
             
             // Check if we have any stored authentication data
             const hasRefreshToken = document.cookie.includes('refreshToken');
-            console.log('Has refresh token:', hasRefreshToken);
             
             if (hasRefreshToken) {
               const authResult = await checkAuth(true); // Force auth check
-              console.log('Auth check result:', authResult);
               // Wait a bit for the auth state to update
               await new Promise(resolve => setTimeout(resolve, 500));
-            } else {
-              console.log('No refresh token found, user needs to login again');
             }
           } catch (authError) {
-            console.log('Auth check failed, continuing with payment processing:', authError);
+            console.warn('Auth check failed during payment success:', authError);
           }
           
           const result = await handleCheckoutSuccess(sessionId);
@@ -59,10 +55,9 @@ const PurchaseSuccessPage = () => {
             // Clear the cart after successful payment
             try {
               await clearCart();
-              console.log('Cart cleared successfully after payment');
             } catch (cartError) {
-              console.log('Cart clear error (non-critical):', cartError);
               // Don't fail the whole process if cart clearing fails
+              console.warn('Cart clearing failed:', cartError);
             }
             
             // Auto-redirect to home after 8 seconds
@@ -73,10 +68,13 @@ const PurchaseSuccessPage = () => {
           } else {
             setError('Payment confirmation failed. Please contact support.');
             toast.error('Payment confirmation failed. Please contact support.');
+            setSuccessProcessed(true); // Prevent retry
           }
         } catch (error) {
-          console.error('Error processing payment success:', error);
+          console.error('Payment success processing error:', error);
           setError('Failed to process payment confirmation');
+          toast.error('Failed to process payment confirmation');
+          setSuccessProcessed(true); // Prevent retry
         } finally {
           setLoading(false);
         }
@@ -87,7 +85,7 @@ const PurchaseSuccessPage = () => {
     };
 
     processPaymentSuccess();
-  }, [sessionId, handleCheckoutSuccess, clearCart, checkAuth, orderDetails]);
+  }, [sessionId]); // Only depend on sessionId
 
   // Show loading state
   if (loading) {

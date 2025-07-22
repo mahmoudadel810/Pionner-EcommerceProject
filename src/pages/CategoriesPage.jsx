@@ -81,7 +81,7 @@ const CategoriesPage = () => {
       setError(null);
 
       const params = {
-        search: searchTerm.trim(),
+        search: searchTerm ? searchTerm.trim() : '',
         sortBy,
         sortOrder,
         page: page.toString(),
@@ -90,10 +90,17 @@ const CategoriesPage = () => {
       };
 
       const queryString = new URLSearchParams(params).toString();
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_ALL) + `?${queryString}`);
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_ALL) + `?${queryString}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       
-      if (response.data.success) {
-        const data = response.data.data;
+      const responseData = await response.json();
+      
+      if (responseData.success) {
+        const data = responseData.data;
         setCategories(data.data || data);
         setHasLoaded(true);
         
@@ -115,8 +122,7 @@ const CategoriesPage = () => {
         setError("Failed to fetch categories");
       }
     } catch (error) {
-      console.error("Error fetching categories:", error);
-      setError(error.response?.data?.message || "Failed to fetch categories");
+      setError(error.message || "Failed to fetch categories");
       toast.error("Failed to load categories");
     } finally {
       setLoading(false);

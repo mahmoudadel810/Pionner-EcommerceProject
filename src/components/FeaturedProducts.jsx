@@ -34,7 +34,6 @@ const FeaturedProducts = ({ featuredProducts }) => {
   useEffect(() => {
     if (user) {
       fetchWishlist().catch(error => {
-        console.log("Wishlist fetch error:", error);
       });
     }
   }, [fetchWishlist, user]);

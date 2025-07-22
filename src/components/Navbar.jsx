@@ -171,7 +171,6 @@ const Navbar = memo(() => {
       setIsMenuOpen(false);
       setShowUserDropdown(false);
     } catch (error) {
-      console.error("Logout error:", error);
     }
   }, [logout, navigate]);
 
@@ -508,8 +507,9 @@ const Navbar = memo(() => {
               {/* Mobile Menu Button */}
               <Button
                 variant="ghost"
-                className="lg:hidden p-2.5 rounded-xl transition-colors hover:bg-gray-100"
+                className="flex lg:hidden p-2.5 rounded-xl transition-colors hover:bg-gray-100 z-50"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle mobile menu"
               >
                 {isMenuOpen ? (
                   <X size={24} className="text-gray-600" />
@@ -524,7 +524,7 @@ const Navbar = memo(() => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden absolute inset-0 z-40 bg-white/95 backdrop-blur-xl">
+        <div className="fixed inset-0 z-40 bg-white/95 backdrop-blur-xl lg:hidden">
           <div className="h-full overflow-y-auto">
             <div className="container mx-auto px-4 pt-24 pb-8">
               {/* Mobile Search */}

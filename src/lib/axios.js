@@ -42,14 +42,12 @@ axiosInstance.interceptors.response.use(
       localStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('accessToken', accessToken);
       document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24 * 7}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`; // 7 days
-      console.log('✅ Access token stored successfully');
     }
     if (refreshToken)
     {
       localStorage.setItem('refreshToken', refreshToken);
       sessionStorage.setItem('refreshToken', refreshToken);
       document.cookie = `refreshToken=${refreshToken}; path=/; max-age=${60 * 60 * 24 * 30}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`; // 30 days
-      console.log('✅ Refresh token stored successfully');
     }
 
     return response;
@@ -73,7 +71,7 @@ axiosInstance.interceptors.response.use(
         if (refreshToken)
         {
           // Try to refresh the token - use correct endpoint path
-          const response = await axios.post(`${getApiBaseUrl()}/v1/auth/refresh-token`, {}, {
+          const response = await axios.post(`${getApiBaseUrl()}/auth/refresh-token`, {}, {
             baseURL: '',
             withCredentials: true,
             headers: {

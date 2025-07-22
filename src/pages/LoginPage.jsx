@@ -118,7 +118,6 @@ const LoginPage = () => {
     // If there are validation errors, don't submit
     if (Object.keys(newErrors).length > 0) {
       toast.error("Please fix the errors before submitting");
-      console.log("Validation errors:", newErrors);
       return;
     }
 
@@ -126,6 +125,7 @@ const LoginPage = () => {
       const loginData = await login(formData.email.trim(), formData.password);
 
       if (loginData && loginData.success) {
+        // The success toast is already handled in the store
         navigate("/");
       } else {
         // Handle specific login errors that don't come from the server
@@ -136,39 +136,19 @@ const LoginPage = () => {
                 email: "Invalid email or password",
                 password: "Invalid email or password",
               });
-              toast.error("Invalid email or password");
               break;
             case "account_locked":
-              toast.error("Account is locked. Please contact support.");
               break;
             case "email_not_verified":
-              toast.error("Please verify your email address first");
               break;
             default:
-              toast.error(loginData.message || "Login failed. Please try again.");
               break;
           }
-        } else {
-          // Always show a toast if login failed for any reason
-          toast.error(loginData?.message || "Login failed. Please try again.");
         }
+        // Error toasts are already handled in the store
       }
     } catch (error) {
-      console.error("Login error:", error);
-
-      // Handle network and other errors (not server response errors)
-      if (error.name === "NetworkError" || error.code === "NETWORK_ERROR") {
-        toast.error(
-          "Network error. Please check your connection and try again."
-        );
-      } else if (error.request && !error.response) {
-        // Request was made but no response received
-        toast.error("No response from server. Please try again.");
-      } else if (!error.response) {
-        // Something else happened (not a server error)
-        toast.error("An unexpected error occurred. Please try again.");
-      }
-      // For server response errors (400, 401, 403, etc.), let axios interceptor handle them
+      // Error handling is already done in the store
     }
   };
 

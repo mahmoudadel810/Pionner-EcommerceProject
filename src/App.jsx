@@ -78,13 +78,11 @@ const AppContent = () => {
 
   useEffect(() => {
     if (user) {
-      getCartItems().catch(error =>
-      {
-        console.log("Cart fetch error:", error);
-      
+      getCartItems().catch(error => {
+        // Cart fetch error
       });
       fetchWishlist().catch(error => {
-        console.log("Wishlist fetch error:", error);
+        // Wishlist fetch error
       });
     }
   }, [user]); // Removed getCartItems and fetchWishlist from dependencies

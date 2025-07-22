@@ -25,24 +25,19 @@ export const usePaymentStore = create((set, get) => ({
         payload.couponCode = coupon.code;
       }
 
-      const response = await fetch(buildApiUrl('/payments/createPaymentIntent'), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
+      const response = await axios.post(buildApiUrl('/payments/createPaymentIntent'), payload);
       
-      if (data && data.success) {
+      if (response.data && response.data.success) {
         set({ loading: false });
-        return { success: true, data: data.data };
+        return { success: true, data: response.data.data };
       } else {
-        throw new Error(data.message || "Failed to create payment intent");
+        throw new Error(response.data?.message || "Failed to create payment intent");
       }
     } catch (error) {
-      const errorMessage = error.message || "Failed to create payment intent";
+      const errorMessage = 
+        error.response?.data?.message || 
+        error.message || 
+        "Failed to create payment intent";
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
       return { success: false, message: errorMessage };

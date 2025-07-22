@@ -111,6 +111,15 @@ export const usePaymentStore = create((set, get) => ({
     }
   },
 
+  handlePaymentIntentSuccess: async (paymentIntentId) => {
+    try {
+      const response = await axios.post(buildApiUrl('/payments/paymentIntentSuccess'), { paymentIntentId });
+      return response.data;
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  },
+
   clearCheckoutSession: () => {
     set({ checkoutSession: null, error: null });
   },

@@ -10,82 +10,90 @@ import { toast } from "react-hot-toast";
 const PurchaseSuccessPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { handleCheckoutSuccess } = usePaymentStore();
+  const { handleCheckoutSuccess, handlePaymentIntentSuccess } = usePaymentStore();
   const { clearCart } = useCartStore();
   const { user, checkAuth, clearLogoutFlag } = useUserStore();
   
   const sessionId = searchParams.get('session_id');
+  const paymentIntentId = searchParams.get('payment_intent');
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successProcessed, setSuccessProcessed] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+    
     const processPaymentSuccess = async () => {
-      if (sessionId && !successProcessed) { // Only process if we have sessionId and haven't processed yet
-        try {
-          setLoading(true);
-          
-          // Force authentication check regardless of current user state
-          // This is needed because Stripe redirect might clear the auth state
-          try {
-            // Clear any logout flags that might prevent auth check
-            clearLogoutFlag();
-            
-            // Check if we have any stored authentication data
-            const hasRefreshToken = document.cookie.includes('refreshToken');
-            
-            if (hasRefreshToken) {
-              const authResult = await checkAuth(true); // Force auth check
-              // Wait a bit for the auth state to update
-              await new Promise(resolve => setTimeout(resolve, 500));
-            }
-          } catch (authError) {
-            console.warn('Auth check failed during payment success:', authError);
+      if ((!sessionId && !paymentIntentId) || !isMounted) return;
+      
+      try {
+        setLoading(true);
+        clearLogoutFlag();
+        
+        // Only process if we haven't already processed successfully
+        if (successProcessed) return;
+        
+        // Check authentication if we have a refresh token
+        const hasRefreshToken = document.cookie.includes('refreshToken');
+        if (hasRefreshToken) {
+          await checkAuth(true);
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+        
+        let result;
+        if (sessionId) {
+          result = await handleCheckoutSuccess(sessionId);
+        } else if (paymentIntentId) {
+          result = await handlePaymentIntentSuccess(paymentIntentId);
+        }
+        
+        if (!isMounted) return;
+        
+        if (result?.success) {
+          setOrderDetails(result.data);
+          setSuccessProcessed(true);
+          toast.success('🎉 Order confirmed! Your purchase was successful and will be delivered soon!');
+          try { 
+            await clearCart(); 
+          } catch (error) {
+            console.error('Error clearing cart:', error);
           }
-          
-          const result = await handleCheckoutSuccess(sessionId);
-          if (result.success) {
-            setOrderDetails(result.data);
-            setSuccessProcessed(true);
-            
-            // Show success message
-            toast.success('🎉 Order confirmed! Your purchase was successful and will be delivered soon!');
-            
-            // Clear the cart after successful payment
-            try {
-              await clearCart();
-            } catch (cartError) {
-              // Don't fail the whole process if cart clearing fails
-              console.warn('Cart clearing failed:', cartError);
-            }
-            
-            // Auto-redirect to home after 8 seconds
-            setTimeout(() => {
+          // Redirect after a delay
+          setTimeout(() => {
+            if (isMounted) {
               toast.success('Redirecting to home page...');
               navigate('/');
-            }, 8000);
-          } else {
-            setError('Payment confirmation failed. Please contact support.');
-            toast.error('Payment confirmation failed. Please contact support.');
-            setSuccessProcessed(true); // Prevent retry
-          }
-        } catch (error) {
-          console.error('Payment success processing error:', error);
-          setError('Failed to process payment confirmation');
-          toast.error('Failed to process payment confirmation');
-          setSuccessProcessed(true); // Prevent retry
-        } finally {
+            }
+          }, 8000);
+        } else {
+          const errorMsg = result?.message || 'Payment confirmation failed. Please contact support.';
+          setError(errorMsg);
+          toast.error(errorMsg);
+          setSuccessProcessed(true);
+        }
+      } catch (error) {
+        if (!isMounted) return;
+        
+        const errorMsg = error.response?.data?.message || error.message || 'Failed to process payment confirmation';
+        console.error('Payment processing error:', error);
+        setError(errorMsg);
+        toast.error(errorMsg);
+        setSuccessProcessed(true);
+      } finally {
+        if (isMounted) {
           setLoading(false);
         }
-      } else if (!sessionId) {
-        setLoading(false);
-        setError('No session ID found');
       }
     };
 
     processPaymentSuccess();
-  }, [sessionId]); // Only depend on sessionId
+    
+    // Cleanup function to prevent state updates after unmount
+    return () => {
+      isMounted = false;
+    };
+  }, [sessionId, paymentIntentId, successProcessed, checkAuth, clearCart, clearLogoutFlag, handleCheckoutSuccess, handlePaymentIntentSuccess, navigate]);
 
   // Show loading state
   if (loading) {

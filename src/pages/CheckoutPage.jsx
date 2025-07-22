@@ -20,7 +20,10 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import StripePaymentForm from "../components/StripePaymentForm";
 
 // Initialize Stripe with your publishable key
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_51QYKKnJGGdGKQZGOyour_stripe_publishable_key_here');
+const stripePromise = loadStripe(
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
+    "pk_test_51Oy17F2Lmqh9OD3ZVN8Dn0xnxV4w48IXJnuPVBDLM52yizUAp2z7uKvLU6ksU2NpZRLJFYO2YYM33lCiLPjlm88b00P7RHwiR2"
+);
 
 const CheckoutPage = () => {
   const navigate = useNavigate();

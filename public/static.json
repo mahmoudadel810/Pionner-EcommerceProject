@@ -1,8 +1,19 @@
 {
   "root": "dist",
-  "clean_urls": false,
+  "clean_urls": true,
   "routes": {
-    "/**": "index.html"
+    "/**": "/index.html"
+  },
+  "redirects": [
+    { "source": "/login", "destination": "/auth/login", "type": 301 },
+    { "source": "/register", "destination": "/auth/register", "type": 301 }
+  ],
+  "trailing_slash": false,
+  "headers": {
+    "/**": {
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0"
+    }
   }
 }
-

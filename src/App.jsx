@@ -65,9 +65,9 @@ const AppContent = () => {
     // Initialize user from localStorage first
     const storedUser = initializeUser();
     
-    // Only verify authentication if there's stored user data and user hasn't just logged out
-    if (storedUser && !justLoggedOut) {
-      checkAuth(true); // Force server check only if we have stored user data
+    // Only check auth if user hasn't just logged out and no stored user
+    if (!justLoggedOut && !storedUser) {
+      checkAuth();
     }
     // Preload critical pages after initial load
     const timer = setTimeout(preloadCriticalPages, 2000);

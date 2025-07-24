@@ -36,12 +36,6 @@ export const useProductStore = create(set => ({
   },
 
   fetchAllProducts: async () => {
-    // Prevent duplicate requests if already loading
-    const currentState = useProductStore.getState();
-    if (currentState.loading) {
-      return { success: false, message: "Request already in progress" };
-    }
-    
     set({ loading: true, error: null });
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_ALL) + "?limit=50");
@@ -136,12 +130,6 @@ export const useProductStore = create(set => ({
   },
 
   fetchFeaturedProducts: async () => {
-    // Prevent duplicate requests if already loading
-    const currentState = useProductStore.getState();
-    if (currentState.loading) {
-      return { success: false, message: "Request already in progress" };
-    }
-    
     set({ loading: true, error: null });
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_FEATURED));

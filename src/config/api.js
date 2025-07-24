@@ -1,7 +1,7 @@
 // Centralized API configuration
 const API_CONFIG = {
-  // Base URL for API calls - Updated to v2
-  BASE_URL: 'https://pionner-v2.vercel.app/api/v2',
+  // Base URL for API calls
+  BASE_URL: 'https://pionner-server-prod-v0-1.onrender.com/api/v1',
 
   // API endpoints
   ENDPOINTS: {
@@ -102,9 +102,9 @@ export const buildApiUrl = (endpoint) => {
   return `${API_CONFIG.BASE_URL}${endpoint}`;
 };
 
-// Helper function to get base URL without /v2 suffix for axios baseURL
+// Helper function to get base URL without /v1 suffix for axios baseURL
 export const getApiBaseUrl = () => {
-  // Keep the full URL including /api/v2 for proper routing
+  // Keep the full URL including /api/v1 for proper routing
   return API_CONFIG.BASE_URL;
 };
 

@@ -125,43 +125,202 @@ const CheckoutPage = () => {
             transition={{ delay: 0.1 }}
             className="space-y-6"
           >
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <Lock className="w-5 h-5 text-white" />
+            {/* Shipping Information */}
+            <div className="card-modern p-6">
+              <h2 className="text-xl font-bold mb-6 flex items-center space-x-2">
+                <Truck size={24} className="text-primary" />
+                <span>Shipping Information</span>
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    First Name *
+                  </label>
+                  <input
+                    id="firstName"
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      errors.firstName ? "border-red-500" : "border-border"
+                    }`}
+                    placeholder="Enter first name"
+                  />
+                  {errors.firstName && (
+                    <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+                  )}
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Payment Details</h2>
-                  <p className="text-sm text-gray-600">Your payment information is secure</p>
+                  <label className="block text-sm font-medium mb-2">
+                    Last Name *
+                  </label>
+                  <input
+                    id="lastName"
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      errors.lastName ? "border-red-500" : "border-border"
+                    }`}
+                    placeholder="Enter last name"
+                  />
+                  {errors.lastName && (
+                    <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Email *
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      errors.email ? "border-red-500" : "border-border"
+                    }`}
+                    placeholder="Enter email"
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Phone *
+                  </label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      errors.phone ? "border-red-500" : "border-border"
+                    }`}
+                    placeholder="Enter phone number"
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                  )}
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium mb-2">
+                    Address *
+                  </label>
+                  <input
+                    id="address"
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      errors.address ? "border-red-500" : "border-border"
+                    }`}
+                    placeholder="Enter street address"
+                  />
+                  {errors.address && (
+                    <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    City *
+                  </label>
+                  <input
+                    id="city"
+                    type="text"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      errors.city ? "border-red-500" : "border-border"
+                    }`}
+                    placeholder="Enter city"
+                  />
+                  {errors.city && (
+                    <p className="text-red-500 text-sm mt-1">{errors.city}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    State/Province *
+                  </label>
+                  <input
+                    id="state"
+                    type="text"
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      errors.state ? "border-red-500" : "border-border"
+                    }`}
+                    placeholder="Enter state"
+                  />
+                  {errors.state && (
+                    <p className="text-red-500 text-sm mt-1">{errors.state}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    ZIP Code *
+                  </label>
+                  <input
+                    id="zipCode"
+                    type="text"
+                    name="zipCode"
+                    value={formData.zipCode}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      errors.zipCode ? "border-red-500" : "border-border"
+                    }`}
+                    placeholder="Enter ZIP code"
+                  />
+                  {errors.zipCode && (
+                    <p className="text-red-500 text-sm mt-1">{errors.zipCode}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Country
+                  </label>
+                  <input
+                    id="country"
+                    type="text"
+                    name="country"
+                    value={formData.country}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    disabled
+                  />
                 </div>
               </div>
-
-              {clientSecret && (
-                <Elements options={options} stripe={stripePromise}>
-                  <StripePaymentForm
-                    onSuccess={handlePaymentSuccess}
-                    onError={handlePaymentError}
-                    returnUrl={`${window.location.origin}/purchase-success`}
-                  />
-                </Elements>
-              )}
             </div>
 
-            {/* Security Features */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-              <h3 className="font-semibold text-gray-900 mb-4">Your purchase is protected</h3>
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <Shield className="w-5 h-5 text-green-500" />
-                  <span className="text-sm text-gray-600">SSL encrypted checkout</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Truck className="w-5 h-5 text-blue-500" />
-                  <span className="text-sm text-gray-600">Free shipping on orders over $99</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-purple-500" />
-                  <span className="text-sm text-gray-600">30-day money-back guarantee</span>
+            {/* Security Notice */}
+            <div className="card-modern p-6 bg-blue-50 border-blue-200">
+              <div className="flex items-start space-x-3">
+                <Shield size={20} className="text-blue-600 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-blue-900 mb-2">
+                    Secure Checkout
+                  </h3>
+                  <p className="text-blue-700 text-sm">
+                    Your payment information is encrypted and secure. We use Stripe for 
+                    secure payment processing and never store your credit card details.
+                  </p>
                 </div>
               </div>
             </div>

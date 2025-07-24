@@ -33,8 +33,7 @@ const HeroSlider = memo(() => {
       subtitle: "Latest Technology",
       description:
         "Experience the future with titanium design, advanced cameras, and the powerful A17 Pro chip.",
-      image:
-        "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2087&q=80",
+      image: "/src/assets/hero/iphone-15-pro.jpg",
       cta: "Shop iPhones",
       link: "/shop?category=smartphones",
       accent: "from-blue-500 to-purple-600",
@@ -49,7 +48,7 @@ const HeroSlider = memo(() => {
       description:
         "Dominate every game with RTX 4080, 32GB RAM, and lightning-fast SSD storage.",
       image:
-        "https://images.unsplash.com/photo-1587202372634-32705e3bf49c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2106&q=80",
+        "/src/assets/hero/gaming-pc.jpg",
       cta: "Game On",
       link: "/shop?category=gaming",
       accent: "from-green-500 to-emerald-600",
@@ -64,7 +63,7 @@ const HeroSlider = memo(() => {
       description:
         "Transform your home into a smart ecosystem with voice control, automation, and security.",
       image:
-        "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2061&q=80",
+        "/src/assets/hero/smart-home.jpg",
       cta: "Smart Home",
       link: "/shop?category=smart-home",
       accent: "from-orange-500 to-red-600",
@@ -79,7 +78,7 @@ const HeroSlider = memo(() => {
       description:
         "Immerse yourself in studio-quality sound with noise cancellation and spatial audio.",
       image:
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+        "/src/assets/hero/headphones.jpg",
       cta: "Listen Now",
       link: "/shop?category=audio",
       accent: "from-purple-500 to-pink-600",
@@ -94,7 +93,7 @@ const HeroSlider = memo(() => {
       description:
         "Boost productivity with professional-grade monitors, keyboards, and ergonomic accessories.",
       image:
-        "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+        "/src/assets/hero/workspace.jpg",
       cta: "Shop Tools",
       link: "/shop",
       accent: "from-indigo-500 to-blue-600",

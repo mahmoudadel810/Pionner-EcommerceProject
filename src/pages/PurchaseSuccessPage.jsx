@@ -21,6 +21,87 @@ const PurchaseSuccessPage = () => {
   const [error, setError] = useState(null);
   const [successProcessed, setSuccessProcessed] = useState(false);
 
+  // Generate invoice function
+  const generateInvoice = (order) => {
+    const invoiceContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Invoice - Order ${order.orderId}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          .header { text-align: center; margin-bottom: 30px; }
+          .invoice-details { margin-bottom: 20px; }
+          .products { margin-bottom: 20px; }
+          table { width: 100%; border-collapse: collapse; }
+          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+          th { background-color: #f2f2f2; }
+          .total { font-weight: bold; text-align: right; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>INVOICE</h1>
+          <p>Order ID: ${order.orderId}</p>
+          <p>Date: ${new Date().toLocaleDateString()}</p>
+        </div>
+        
+        <div class="invoice-details">
+          <h3>Order Details</h3>
+          <p><strong>Status:</strong> ${order.order?.status || 'Processing'}</p>
+          <p><strong>Payment Status:</strong> ${order.order?.paymentStatus || 'Paid'}</p>
+          <p><strong>Total Amount:</strong> $${order.order?.totalAmount || '0.00'}</p>
+        </div>
+        
+        <div class="products">
+          <h3>Products</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${order.order?.products?.map(product => `
+                <tr>
+                  <td>${product.productName || 'Product'}</td>
+                  <td>${product.quantity}</td>
+                  <td>$${product.price}</td>
+                  <td>$${(product.price * product.quantity).toFixed(2)}</td>
+                </tr>
+              `).join('') || ''}
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="total">
+          <h3>Total: $${order.order?.totalAmount || '0.00'}</h3>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+          <p>Thank you for your purchase!</p>
+          <p>Pioneer E-Commerce</p>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const blob = new Blob([invoiceContent], { type: 'text/html' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `invoice-${order.orderId}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    toast.success('Invoice downloaded successfully!');
+  };
+
   useEffect(() => {
     let isMounted = true;
     
@@ -294,6 +375,19 @@ const PurchaseSuccessPage = () => {
               <Package size={20} />
               <span>View Orders</span>
             </Link>
+
+            <button
+              onClick={() => {
+                // Generate and download invoice
+                if (orderDetails) {
+                  generateInvoice(orderDetails);
+                }
+              }}
+              className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors duration-300 flex items-center justify-center space-x-2"
+            >
+              <Mail size={20} />
+              <span>Download Invoice</span>
+            </button>
 
             <Link
               to="/shop"

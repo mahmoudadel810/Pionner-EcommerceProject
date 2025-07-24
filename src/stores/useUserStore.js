@@ -81,27 +81,21 @@ export const useUserStore = create((set, get) => ({
     set({ loading: true, justLoggedOut: false }); // Clear logout flag on login
     try
     {
+      // Clear any existing user data before logging in
+      localStorage.removeItem('user');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('accessToken');
+      sessionStorage.removeItem('refreshToken');
+
       const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.LOGIN), { email, password });
       if (response.data && response.data.success)
       {
-        // Store user data in localStorage for persistence
-        // localStorage.setItem("user", JSON.stringify(response.data));
-
-        // Store tokens from headers for cross-origin requests
-        // The axios interceptor now handles setting cookies for tokens
-        // const accessToken = response.headers["x-access-token"];
-        // const refreshToken = response.headers["x-refresh-token"];
-
-        // if (accessToken) {
-        //   localStorage.setItem("accessToken", accessToken);
-        //   sessionStorage.setItem("accessToken", accessToken);
-        // }
-        // if (refreshToken) {
-        //   localStorage.setItem("refreshToken", refreshToken);
-        //   sessionStorage.setItem("refreshToken", refreshToken);
-        // }
-
-        // Also store user data for profile access
+        // Clear any existing user data before setting new user
+        localStorage.removeItem('user');
+        
+        // Store the new user data
         if (response.data?.data?.user)
         {
           localStorage.setItem("user", JSON.stringify(response.data));
@@ -303,11 +297,25 @@ export const useUserStore = create((set, get) => ({
       return;
     }
 
+    // Check if we have any authentication tokens before making the request
+    const hasToken = localStorage.getItem('accessToken') || 
+                    sessionStorage.getItem('accessToken') ||
+                    document.cookie.includes('accessToken');
+    
+    if (!hasToken && !force) {
+      // No token found, clear user data and don't make unnecessary request
+      localStorage.removeItem('user');
+      set({ checkingAuth: false, user: null });
+      return { success: false, user: null };
+    }
+
     set({ checkingAuth: true });
 
     // Add timeout to prevent infinite loading
     const timeoutId = setTimeout(() =>
     {
+      // Clear user data on timeout
+      localStorage.removeItem('user');
       set({ checkingAuth: false, user: null });
     }, 5000); // 5 second timeout
 
@@ -324,13 +332,17 @@ export const useUserStore = create((set, get) => ({
         return { success: true, user: response.data };
       } else
       {
+        // Clear user data when authentication fails
+        localStorage.removeItem('user');
         set({ checkingAuth: false, user: null });
         return { success: false, user: null };
       }
     } catch (error)
     {
       clearTimeout(timeoutId);
-      // Don't show toast for auth check failures as they're expected for non-authenticated users
+      // Clear user data on any auth check error
+      localStorage.removeItem('user');
+      console.log("Auth check failed:", error.response?.data?.message || "No valid session");
       set({ checkingAuth: false, user: null });
       return { success: false, error: error.response?.data?.message || "Auth check failed" };
     }

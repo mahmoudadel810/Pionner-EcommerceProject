@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useInView, useReducedMotion, useAnimation } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useProductStore } from "../stores/useProductStore";
 import { useUserStore } from "../stores/useUserStore";
@@ -113,24 +113,49 @@ const HomePage = () => {
   
   // State
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const hasFetchedRef = useRef(false);
 
-  // Animation refs
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
+  // Performance optimizations
+  const prefersReducedMotion = useReducedMotion();
+  
+  // Animation variants for scroll-triggered elements (memoized)
+  const fadeInUp = React.useMemo(() => ({
+    hidden: { 
+      opacity: prefersReducedMotion ? 1 : 0, 
+      y: prefersReducedMotion ? 0 : 60 
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: prefersReducedMotion ? 0 : 0.6, 
+        ease: "easeOut",
+        // Only animate transform and opacity for better performance
+        opacity: { duration: 0.6 },
+        y: { duration: 0.6 }
+      }
+    }
+  }), [prefersReducedMotion]);
+  
+  // Use Intersection Observer for scroll-triggered animations
+  const controls = useAnimation();
+  const ref = React.useRef();
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  
+  // Only animate when in view and not in reduced motion mode
+  React.useEffect(() => {
+    if (isInView && !prefersReducedMotion) {
+      controls.start("visible");
+    }
+  }, [controls, isInView, prefersReducedMotion]);
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
-  useEffect(() => {
+  // Memoize fetchAllProducts to prevent it from changing on every render
+  const memoizedFetchAllProducts = useCallback(() => {
     fetchAllProducts();
-    fetchFeaturedProducts();
   }, [fetchAllProducts]);
 
-  // Fetch featured products
-  const fetchFeaturedProducts = useCallback(async () => {
+  // Memoize fetchFeaturedProducts with its dependencies
+  const memoizedFetchFeaturedProducts = useCallback(async () => {
     try {
       const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_FEATURED));
       const data = await response.json();
@@ -140,6 +165,17 @@ const HomePage = () => {
     } catch (error) {
     }
   }, []);
+
+  // Initial data fetch - only run once on mount
+  useEffect(() => {
+    if (!hasFetchedRef.current) {
+      memoizedFetchAllProducts();
+      memoizedFetchFeaturedProducts();
+      hasFetchedRef.current = true;
+    }
+  }, [memoizedFetchAllProducts, memoizedFetchFeaturedProducts]);
+
+
 
   // Get products by category
   const getProductsByCategory = useCallback((categoryName) => {
@@ -170,7 +206,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30" ref={containerRef}>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 relative overflow-x-hidden">
       {/* Hero Section with Integrated Navbar */}
       <section className="relative">
         <HeroSlider />
@@ -179,8 +215,27 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Category Products Preview */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-blue-50/30">
+      {/* Main content area with scroll-based animations */}
+      <div className="relative">
+
+      {/* Category Products Preview - with performance optimizations */}
+      <section 
+        ref={ref}
+        className="py-20 bg-gradient-to-br from-gray-50 to-blue-50/30 will-change-transform"
+        style={{
+          // Force GPU acceleration
+          transform: 'translateZ(0)',
+          // Optimize for scrolling performance
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          // Optimize for animation performance
+          transformStyle: 'preserve-3d',
+          // Prevent content from being repainted on scroll
+          contentVisibility: 'auto',
+          // Optimize for scrolling performance
+          contain: 'content',
+        }}
+      >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent mb-6">
@@ -221,10 +276,23 @@ const HomePage = () => {
                   {categoryProducts.slice(0, 4).map((product, productIndex) => (
                     <motion.div
                       key={product._id}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: (categoryIndex * 0.1) + (productIndex * 0.1) }}
-                      whileHover={{ y: -5, scale: 1.02 }}
+                      variants={fadeInUp}
+                      initial="hidden"
+                      animate={controls}
+                      custom={productIndex}
+                      style={{
+                        // Optimize for animation performance
+                        willChange: 'transform, opacity',
+                        // Force hardware acceleration
+                        transform: 'translateZ(0)',
+                        // Optimize for animation performance
+                        backfaceVisibility: 'hidden',
+                        WebkitBackfaceVisibility: 'hidden',
+                        // Optimize for scrolling performance
+                        contentVisibility: 'auto',
+                        // Optimize for animation performance
+                        transformStyle: 'preserve-3d',
+                      }}
                       className="group cursor-pointer"
                       onClick={() => navigate(`/product/${product._id}`)}
                     >
@@ -339,6 +407,7 @@ const HomePage = () => {
           </motion.div>
         </div>
       </section>
+      </div> {/* Close the scroll container div */}
     </div>
   );
 };

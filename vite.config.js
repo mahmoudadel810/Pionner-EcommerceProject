@@ -25,6 +25,8 @@ export default defineConfig({
     },
   },
   build: {
+    // Ensure _redirects is copied to the build output
+    copyPublicDir: true,
     // Increase chunk size warning limit
     chunkSizeWarningLimit: 1000,
     rollupOptions: {

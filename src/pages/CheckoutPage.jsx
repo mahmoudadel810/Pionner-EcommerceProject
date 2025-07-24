@@ -345,6 +345,11 @@ const CheckoutPage = () => {
                         src={item.image}
                         alt={item.name}
                         className="w-full h-full object-cover"
+                        crossOrigin="anonymous"
+                        onError={(e) => {
+                          // Fallback to a placeholder image if the original fails to load
+                          e.target.src = 'https://via.placeholder.com/80x80?text=Product+Image';
+                        }}
                       />
                     </div>
                     <div className="flex-1">

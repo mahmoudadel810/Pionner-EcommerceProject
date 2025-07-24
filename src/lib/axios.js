@@ -8,8 +8,27 @@ const axiosInstance = axios.create({
   timeout: 10000, // 10 second timeout
   headers: {
     'Content-Type': 'application/json',
-  },
+    'Accept': 'application/json'
+  }
 });
+
+// Add a response interceptor to handle errors
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Handle image loading errors
+    if (error.config && error.config.url && error.config.url.includes('images.unsplash.com')) {
+      return Promise.resolve({ data: null, status: 200 });
+    }
+    
+    // Handle CORS errors
+    if (error.code === 'ERR_NETWORK' || error.message === 'Network Error') {
+      console.error('Network error - please check your connection and try again');
+    }
+    
+    return Promise.reject(error);
+  }
+);
 
 // Request interceptor for production
 axiosInstance.interceptors.request.use(

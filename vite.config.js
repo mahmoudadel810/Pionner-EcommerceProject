@@ -11,6 +11,27 @@ export default defineConfig({
     host: true,
     cors: true,
     open: false,
+    proxy: {
+      // Proxy API requests to the backend
+      '/api': {
+        target: 'https://pionner-v2.vercel.app',
+        changeOrigin: true,
+        secure: false,
+        // Remove the leading /api since the backend already has it in the route
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: (proxy, _options) => {
+          proxy.on('error', (err, _req, _res) => {
+            console.log('proxy error', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req, _res) => {
+            console.log('Sending Request to the Target:', req.method, req.url);
+          });
+          proxy.on('proxyRes', (proxyRes, req, _res) => {
+            console.log('Received Response from the Target:', proxyRes.statusCode, req.url);
+          });
+        }
+      }
+    },
     allowedHosts: ['5174-ihkfje5ha9ofr4jrb6vtx-7f1f3943.manusvm.computer']
   },
   preview: {

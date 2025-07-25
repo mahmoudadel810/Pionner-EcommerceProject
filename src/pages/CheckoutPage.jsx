@@ -143,13 +143,21 @@ const CheckoutPage = () => {
     initializePayment();
   }, [cart, navigate, createPaymentIntent, coupon, isCouponApplied]);
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = async () => {
     toast.success("Payment successful! Redirecting...");
     clearCart();
+    // Always reset payment state and fetch new intent after payment
+    setShowPaymentForm(false);
+    setClientSecret("");
+    await initializePayment();
     // The Stripe confirmPayment will handle the redirect to /purchase-success
   };
 
   const handlePaymentError = async (error) => {
+    // Always reset payment state and fetch new intent after ANY error
+    setShowPaymentForm(false);
+    setClientSecret("");
+    await initializePayment();
     // Enhanced UI: show modal on duplicate/409 error
     if (error && error.duplicate) {
       setNewSessionMsg(
@@ -495,7 +503,7 @@ const CheckoutPage = () => {
             </div>
 
             {/* Payment Section */}
-            {showPaymentForm && (
+            {clientSecret && showPaymentForm && (
               <motion.div
                 id="payment-section"
                 initial={{ opacity: 0, y: 20 }}
@@ -516,6 +524,13 @@ const CheckoutPage = () => {
                   />
                 </Elements>
               </motion.div>
+            )}
+            {/* If payment form is hidden while fetching new intent, show a spinner or info */}
+            {!showPaymentForm && (
+              <div className="flex items-center justify-center py-8">
+                <LoadingSpinner />
+                <span className="ml-3 text-gray-600">Preparing a new secure payment session...</span>
+              </div>
             )}
 
             {/* Security Notice */}

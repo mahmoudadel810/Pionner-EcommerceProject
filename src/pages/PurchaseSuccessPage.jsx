@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/useCartStore";
-import { useAuthStore } from "@/stores/useAuthStore";
+
 import { toast } from "sonner";
 import { Loader, CheckCircle, AlertTriangle, FileDown, ArrowLeft } from "lucide-react";
 
@@ -13,7 +13,7 @@ const PurchaseSuccessPage = () => {
   const paymentIntentId = searchParams.get("payment_intent");
 
   const navigate = useNavigate();
-  const { checkAuth, clearLogoutFlag } = useAuthStore();
+  // Auth store functions removed (store does not exist)
   const { clearCart } = useCartStore();
 
   const [loading, setLoading] = useState(true);

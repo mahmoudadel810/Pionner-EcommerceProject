@@ -107,33 +107,38 @@ const PurchaseSuccessPage = () => {
     
     const processPaymentSuccess = async () => {
       if ((!sessionId && !paymentIntentId) || !isMounted) return;
-      
+      // Check localStorage for idempotency
+      const intentKey = sessionId ? `order_success_${sessionId}` : paymentIntentId ? `order_success_${paymentIntentId}` : null;
+      if (intentKey && localStorage.getItem(intentKey)) {
+        setSuccessProcessed(true);
+        setLoading(false);
+        setError(null);
+        toast.success('Order already confirmed for this payment!');
+        return;
+      }
       try {
         setLoading(true);
         clearLogoutFlag();
-        
         // Only process if we haven't already processed successfully
         if (successProcessed) return;
-        
         // Check authentication if we have a refresh token
         const hasRefreshToken = document.cookie.includes('refreshToken');
         if (hasRefreshToken) {
           await checkAuth(true);
           await new Promise(resolve => setTimeout(resolve, 500));
         }
-        
         let result;
         if (sessionId) {
           result = await handleCheckoutSuccess(sessionId);
         } else if (paymentIntentId) {
           result = await handlePaymentIntentSuccess(paymentIntentId);
         }
-        
         if (!isMounted) return;
-        
         if (result?.success) {
           setOrderDetails(result.data);
           setSuccessProcessed(true);
+          // Mark payment/session as processed in localStorage
+          if (intentKey) localStorage.setItem(intentKey, '1');
           toast.success('🎉 Order confirmed! Your purchase was successful and will be delivered soon!');
           try { 
             await clearCart(); 
@@ -155,7 +160,6 @@ const PurchaseSuccessPage = () => {
         }
       } catch (error) {
         if (!isMounted) return;
-        
         const errorMsg = error.response?.data?.message || error.message || 'Failed to process payment confirmation';
         console.error('Payment processing error:', error);
         setError(errorMsg);

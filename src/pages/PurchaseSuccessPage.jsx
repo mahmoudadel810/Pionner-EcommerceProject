@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/useCartStore";
+import { usePaymentStore } from "@/stores/usePaymentStore";
 
 import { toast } from "sonner";
 import { Loader, CheckCircle, AlertTriangle, FileDown, ArrowLeft } from "lucide-react";
@@ -64,7 +65,7 @@ const PurchaseSuccessPage = () => {
           result = await response.json();
         } else if (paymentIntentId) {
           // Use best practice: POST to /payments/paymentIntentSuccess
-          const { handlePaymentIntentSuccess } = require("@/stores/usePaymentStore").usePaymentStore.getState();
+          const { handlePaymentIntentSuccess } = usePaymentStore.getState();
           result = await handlePaymentIntentSuccess(paymentIntentId);
         }
 

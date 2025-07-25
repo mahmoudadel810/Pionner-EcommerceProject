@@ -34,6 +34,21 @@ const CheckoutPage = () => {
   const [clientSecret, setClientSecret] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Add form state for shipping info
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: user?.data?.user?.email || "",
+    phone: "",
+    address: ""
+  });
+  const [errors, setErrors] = useState({});
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   useEffect(() => {
     if (cart.length === 0) {
       navigate("/cart");

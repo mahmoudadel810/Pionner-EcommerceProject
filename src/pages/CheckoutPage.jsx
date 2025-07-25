@@ -28,6 +28,23 @@ const stripePromise = loadStripe(
 );
 
 const CheckoutPage = () => {
+  const [showNewSessionModal, setShowNewSessionModal] = useState(false);
+  const [newSessionMsg, setNewSessionMsg] = useState("");
+
+  // Modal accessibility: close on Esc, prevent background scroll
+  useEffect(() => {
+    if (showNewSessionModal) {
+      const handleKeyDown = (e) => {
+        if (e.key === "Escape") setShowNewSessionModal(false);
+      };
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+      return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+        document.body.style.overflow = "";
+      };
+    }
+  }, [showNewSessionModal]);
   const navigate = useNavigate();
   const { user } = useUserStore();
   const { cart, total, subtotal, coupon, isCouponApplied, clearCart } =
@@ -132,7 +149,56 @@ const CheckoutPage = () => {
     // The Stripe confirmPayment will handle the redirect to /purchase-success
   };
 
-  const handlePaymentError = (error) => {
+  const handlePaymentError = async (error) => {
+    // Enhanced UI: show modal on duplicate/409 error
+    if (error && error.duplicate) {
+      setNewSessionMsg(
+        "Your previous payment session was already used or expired. We've created a new secure payment session for you. Please try again."
+      );
+      setShowNewSessionModal(true);
+      setShowPaymentForm(false);
+      setClientSecret("");
+      try {
+        const result = await createPaymentIntent(
+          cart,
+          isCouponApplied ? coupon : null
+        );
+        if (result.success) {
+          setClientSecret(result.data.clientSecret);
+        } else {
+          setNewSessionMsg("Failed to generate a new payment session. Please refresh the page or try again later.");
+        }
+      } catch (e) {
+        setNewSessionMsg("Failed to generate a new payment session. Please refresh the page or try again later.");
+      }
+      setIsProcessing(false);
+      return;
+    }
+    if (error && error.duplicate) {
+      toast.error(
+        "This payment session has expired or was already used. Generating a new payment session..."
+      );
+      setShowPaymentForm(false);
+      setClientSecret("");
+      // Regenerate a new payment intent for the user
+      try {
+        const result = await createPaymentIntent(
+          cart,
+          isCouponApplied ? coupon : null
+        );
+        if (result.success) {
+          setClientSecret(result.data.clientSecret);
+          toast.success("A new payment session has been created. Please try again.");
+          setShowPaymentForm(true);
+        } else {
+          toast.error("Failed to generate a new payment session. Please refresh the page or try again later.");
+        }
+      } catch (e) {
+        toast.error("Failed to generate a new payment session. Please refresh the page or try again later.");
+      }
+      setIsProcessing(false);
+      return;
+    }
     console.error("Payment error:", error);
     setIsProcessing(false);
   };
@@ -177,6 +243,47 @@ const CheckoutPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      {/* Modal for new payment session */}
+      {showNewSessionModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 animate-fade-in">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center relative transform animate-scale-in">
+            <div className="flex flex-col items-center">
+              <svg className="w-12 h-12 text-blue-600 mb-4 animate-pulse" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20.5A8.5 8.5 0 103.5 12a8.5 8.5 0 008.5 8.5z" />
+              </svg>
+              <h2 className="text-xl font-bold mb-2 text-gray-900">New Payment Session</h2>
+              <p className="mb-4 text-gray-700">{newSessionMsg}</p>
+              <button
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow transition focus:outline-none focus:ring-2 focus:ring-blue-400"
+                onClick={() => {
+                  setShowNewSessionModal(false);
+                  setShowPaymentForm(true);
+                }}
+                autoFocus
+              >
+                Try Again
+              </button>
+            </div>
+            <button
+              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 focus:outline-none"
+              onClick={() => setShowNewSessionModal(false)}
+              aria-label="Close"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Tailwind animation keyframes (inject into global CSS or Tailwind config if not present) */}
+      <style>{`
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        .animate-fade-in { animation: fade-in 0.25s ease; }
+        @keyframes scale-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .animate-scale-in { animation: scale-in 0.25s cubic-bezier(0.4,0,0.2,1); }
+      `}</style>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div

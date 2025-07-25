@@ -116,6 +116,16 @@ export const usePaymentStore = create((set, get) => ({
       const response = await axios.post(buildApiUrl('/payments/paymentIntentSuccess'), { paymentIntentId });
       return response.data;
     } catch (error) {
+      if (error.response && error.response.status === 409) {
+        // Duplicate payment intent/order
+        return {
+          success: false,
+          duplicate: true,
+          message:
+            error.response.data?.message ||
+            'Order already exists for this payment. Please do not refresh or resubmit.',
+        };
+      }
       return { success: false, message: error.message };
     }
   },

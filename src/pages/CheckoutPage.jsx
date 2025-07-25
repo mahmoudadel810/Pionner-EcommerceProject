@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
+
 import {
   ArrowLeft,
   CreditCard,
@@ -17,15 +16,36 @@ import { usePaymentStore } from "../stores/usePaymentStore";
 import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import LoadingSpinner from "../components/LoadingSpinner";
-import StripePaymentForm from "../components/StripePaymentForm";
 
-// Initialize Stripe with your publishable key
-const stripePromise = loadStripe(
-  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
-    "pk_test_51Oy17F2Lmqh9OD3ZVN8Dn0xnxV4w48IXJnuPVBDLM52yizUAp2z7uKvLU6ksU2NpZRLJFYO2YYM33lCiLPjlm88b00P7RHwiR2"
-);
+
+
+
+import React, { useState, useEffect, Suspense } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
+const StripePaymentForm = React.lazy(() => import("../components/StripePaymentForm"));
 
 const CheckoutPage = () => {
+  const [stripePromise, setStripePromise] = useState(null);
+  const [Elements, setElements] = useState(null);
+  React.useEffect(() => {
+    let isMounted = true;
+    Promise.all([
+      import("@stripe/stripe-js"),
+      import("@stripe/react-stripe-js")
+    ]).then(([stripeJs, stripeReactJs]) => {
+      if (isMounted) {
+        setStripePromise(stripeJs.loadStripe(
+          import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
+            "pk_test_51Oy17F2Lmqh9OD3ZVN8Dn0xnxV4w48IXJnuPVBDLM52yizUAp2z7uKvLU6ksU2NpZRLJFYO2YYM33lCiLPjlm88b00P7RHwiR2"
+        ));
+        setElements(() => stripeReactJs.Elements);
+      }
+    });
+    return () => { isMounted = false; };
+  }, []);
+
   const navigate = useNavigate();
   const { user } = useUserStore();
   const { cart, total, subtotal, coupon, isCouponApplied, clearCart } = useCartStore();

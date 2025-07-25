@@ -1,167 +1,105 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Link, useSearchParams, useNavigate } from "react-router-dom";
-import { CheckCircle, Package, Mail, Home, ShoppingBag, AlertCircle, Loader2 } from "lucide-react";
-import { usePaymentStore } from "../stores/usePaymentStore";
-import { useCartStore } from "../stores/useCartStore";
-import { useUserStore } from "../stores/useUserStore";
-import { toast } from "react-hot-toast";
+
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { useCartStore } from "@/stores/useCartStore";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { toast } from "sonner";
+import { Loader, CheckCircle, AlertTriangle, FileDown, ArrowLeft } from "lucide-react";
 
 const PurchaseSuccessPage = () => {
   const [searchParams] = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+  const paymentIntentId = searchParams.get("payment_intent");
+
   const navigate = useNavigate();
-  const { handleCheckoutSuccess, handlePaymentIntentSuccess } = usePaymentStore();
+  const { checkAuth, clearLogoutFlag } = useAuthStore();
   const { clearCart } = useCartStore();
-  const { user, checkAuth, clearLogoutFlag } = useUserStore();
-  
-  const sessionId = searchParams.get('session_id');
-  const paymentIntentId = searchParams.get('payment_intent');
-  const [orderDetails, setOrderDetails] = useState(null);
+
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [successProcessed, setSuccessProcessed] = useState(false);
+  const [error, setError] = useState(null);
+  const [orderDetails, setOrderDetails] = useState(null);
 
-  // Generate invoice function
-  const generateInvoice = (order) => {
-    const invoiceContent = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Invoice - Order ${order.orderId}</title>
-        <style>
-          body { font-family: Arial, sans-serif; margin: 20px; }
-          .header { text-align: center; margin-bottom: 30px; }
-          .invoice-details { margin-bottom: 20px; }
-          .products { margin-bottom: 20px; }
-          table { width: 100%; border-collapse: collapse; }
-          th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-          th { background-color: #f2f2f2; }
-          .total { font-weight: bold; text-align: right; }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h1>INVOICE</h1>
-          <p>Order ID: ${order.orderId}</p>
-          <p>Date: ${new Date().toLocaleDateString()}</p>
-        </div>
-        
-        <div class="invoice-details">
-          <h3>Order Details</h3>
-          <p><strong>Status:</strong> ${order.order?.status || 'Processing'}</p>
-          <p><strong>Payment Status:</strong> ${order.order?.paymentStatus || 'Paid'}</p>
-          <p><strong>Total Amount:</strong> $${order.order?.totalAmount || '0.00'}</p>
-        </div>
-        
-        <div class="products">
-          <h3>Products</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${order.order?.products?.map(product => `
-                <tr>
-                  <td>${product.productName || 'Product'}</td>
-                  <td>${product.quantity}</td>
-                  <td>$${product.price}</td>
-                  <td>$${(product.price * product.quantity).toFixed(2)}</td>
-                </tr>
-              `).join('') || ''}
-            </tbody>
-          </table>
-        </div>
-        
-        <div class="total">
-          <h3>Total: $${order.order?.totalAmount || '0.00'}</h3>
-        </div>
-        
-        <div style="margin-top: 30px; text-align: center;">
-          <p>Thank you for your purchase!</p>
-          <p>Pioneer E-Commerce</p>
-        </div>
-      </body>
-      </html>
-    `;
-
-    const blob = new Blob([invoiceContent], { type: 'text/html' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `invoice-${order.orderId}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-    
-    toast.success('Invoice downloaded successfully!');
+  // 🧼 Unified cleanup
+  const clearStoredPaymentData = () => {
+    ["clientSecret", "paymentIntentId"].forEach((key) => {
+      localStorage.removeItem(key);
+      sessionStorage.removeItem(key);
+      document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    });
   };
 
   useEffect(() => {
     let isMounted = true;
-    
+
     const processPaymentSuccess = async () => {
       if ((!sessionId && !paymentIntentId) || !isMounted) return;
-      // Check localStorage for idempotency
-      const intentKey = sessionId ? `order_success_${sessionId}` : paymentIntentId ? `order_success_${paymentIntentId}` : null;
-      if (intentKey && localStorage.getItem(intentKey)) {
+
+      const intentKey = sessionId ? `order_success_${sessionId}` : `order_success_${paymentIntentId}`;
+      if (localStorage.getItem(intentKey)) {
         setSuccessProcessed(true);
         setLoading(false);
         setError(null);
-        toast.success('Order already confirmed for this payment!');
+        toast.success("Order already confirmed for this payment!");
         return;
       }
+
       try {
         setLoading(true);
         clearLogoutFlag();
-        // Only process if we haven't already processed successfully
+
         if (successProcessed) return;
-        // Check authentication if we have a refresh token
-        const hasRefreshToken = document.cookie.includes('refreshToken');
+
+        const hasRefreshToken = document.cookie.includes("refreshToken");
         if (hasRefreshToken) {
           await checkAuth(true);
-          await new Promise(resolve => setTimeout(resolve, 500));
+          await new Promise((resolve) => setTimeout(resolve, 500));
         }
+
         let result;
         if (sessionId) {
-          result = await handleCheckoutSuccess(sessionId);
+          const response = await fetch(`/api/orders/checkout-success/${sessionId}`);
+          result = await response.json();
         } else if (paymentIntentId) {
-          result = await handlePaymentIntentSuccess(paymentIntentId);
+          const response = await fetch(`/api/orders/payment-intent-success/${paymentIntentId}`);
+          result = await response.json();
         }
+
         if (!isMounted) return;
+
         if (result?.success) {
           setOrderDetails(result.data);
           setSuccessProcessed(true);
-          // Mark payment/session as processed in localStorage
-          if (intentKey) localStorage.setItem(intentKey, '1');
-          toast.success('🎉 Order confirmed! Your purchase was successful and will be delivered soon!');
-          try { 
-            await clearCart(); 
+          if (intentKey) localStorage.setItem(intentKey, "1");
+
+          toast.success("🎉 Order confirmed! Your purchase was successful and will be delivered soon!");
+
+          try {
+            await clearCart();
           } catch (error) {
-            console.error('Error clearing cart:', error);
+            console.error("Error clearing cart:", error);
           }
-          // Redirect after a delay
+
+          clearStoredPaymentData();
+
           setTimeout(() => {
             if (isMounted) {
-              toast.success('Redirecting to home page...');
-              navigate('/');
+              toast("Redirecting to home page...");
+              navigate("/");
             }
           }, 8000);
         } else {
-          const errorMsg = result?.message || 'Payment confirmation failed. Please contact support.';
+          const errorMsg = result?.message || "Payment confirmation failed. Please contact support.";
           setError(errorMsg);
           toast.error(errorMsg);
           setSuccessProcessed(true);
         }
       } catch (error) {
         if (!isMounted) return;
-        const errorMsg = error.response?.data?.message || error.message || 'Failed to process payment confirmation';
-        console.error('Payment processing error:', error);
+        const errorMsg =
+          error?.response?.data?.message || error?.message || "Failed to process payment confirmation.";
+        console.error("Payment processing error:", error);
         setError(errorMsg);
         toast.error(errorMsg);
         setSuccessProcessed(true);
@@ -172,267 +110,116 @@ const PurchaseSuccessPage = () => {
       }
     };
 
+    clearStoredPaymentData(); // clear before starting
     processPaymentSuccess();
-    
-    // Cleanup function to prevent state updates after unmount
+
     return () => {
       isMounted = false;
+      clearStoredPaymentData();
     };
-  }, [sessionId, paymentIntentId, successProcessed, checkAuth, clearCart, clearLogoutFlag, handleCheckoutSuccess, handlePaymentIntentSuccess, navigate]);
+  }, [sessionId, paymentIntentId, successProcessed, checkAuth, clearCart, clearLogoutFlag, navigate, setError, setOrderDetails]);
 
-  // Show loading state
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center py-8">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-2xl"
-        >
-          <div className="bg-card rounded-2xl shadow-xl border border-border p-8 text-center">
-            <div className="w-24 h-24 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Loader2 size={48} className="text-blue-500 animate-spin" />
-            </div>
-            <h1 className="text-2xl font-bold text-foreground mb-4">
-              Processing Your Order...
-            </h1>
-            <p className="text-muted-foreground">
-              Please wait while we confirm your payment and create your order.
-            </p>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
+  const generateInvoice = () => {
+    const order = orderDetails;
+    const orderId = order?.order?._id || "N/A";
+    const createdAt = order?.order?.createdAt ? new Date(order.order.createdAt).toLocaleString() : "N/A";
+    const user = order?.user || {};
 
-  // Show error state
-  if (error) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center py-8">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-2xl"
-        >
-          <div className="bg-card rounded-2xl shadow-xl border border-border p-8 text-center">
-            <div className="w-24 h-24 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <AlertCircle size={48} className="text-red-500" />
-            </div>
-            <h1 className="text-2xl font-bold text-foreground mb-4">
-              Something Went Wrong
-            </h1>
-            <p className="text-muted-foreground mb-6">
-              {error}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/login"
-                className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300"
-              >
-                Login to View Orders
-              </Link>
-              <Link
-                to="/"
-                className="flex-1 bg-secondary text-foreground py-3 px-6 rounded-lg font-medium hover:bg-secondary/80 transition-colors duration-300"
-              >
-                Go Home
-              </Link>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    );
-  }
+    const invoiceHtml = `
+      <html>
+        <head>
+          <title>Invoice - Pioneer</title>
+        </head>
+        <body>
+          <h1>🧾 Invoice - Pioneer Order</h1>
+          <p><strong>Order ID:</strong> ${orderId}</p>
+          <p><strong>Created At:</strong> ${createdAt}</p>
+          <p><strong>Customer:</strong> ${user?.name || "Guest"}</p>
+          <p><strong>Email:</strong> ${user?.email || "Not provided"}</p>
+          <br />
+          <table border="1" cellpadding="10" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${
+                Array.isArray(order?.order?.products)
+                  ? order.order.products
+                      .map(
+                        (product) => `
+                    <tr>
+                      <td>${product.productName || "Product"}</td>
+                      <td>${product.quantity}</td>
+                      <td>$${product.price}</td>
+                      <td>$${(product.price * product.quantity).toFixed(2)}</td>
+                    </tr>`
+                      )
+                      .join("")
+                  : ""
+              }
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `;
+
+    const blob = new Blob([invoiceHtml], { type: "text/html" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "invoice.html";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center py-8">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-2xl"
-      >
-        <div className="bg-card rounded-2xl shadow-xl border border-border p-8 text-center">
-          {/* Success Icon */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="w-24 h-24 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <CheckCircle size={48} className="text-green-500" />
-          </motion.div>
-
-          {/* Success Message */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <h1 className="text-3xl font-bold text-foreground mb-4">
-              Order Confirmed!
-            </h1>
-
-            <p className="text-lg text-muted-foreground mb-8">
-              Thank you for your purchase! Your order has been successfully
-              placed and is being processed.
-            </p>
-          </motion.div>
-
-          {/* Order Details */}
-          {orderDetails && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="bg-background rounded-xl p-6 mb-8 text-left"
-            >
-              <h2 className="text-xl font-semibold text-foreground mb-4">
-                Order Details
-              </h2>
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Order ID:</span>
-                  <span className="font-medium">{orderDetails.orderId}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Status:</span>
-                  <span className="font-medium text-green-600">Processing</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Payment:</span>
-                  <span className="font-medium text-green-600">Paid</span>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* What's Next Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-background rounded-xl p-6 mb-8"
-          >
-            <h2 className="text-xl font-semibold text-foreground mb-4">
-              What's Next?
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="flex flex-col items-center space-y-3">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                  <Mail size={24} className="text-primary" />
-                </div>
-                <div className="text-center">
-                  <h3 className="font-medium text-foreground mb-1">
-                    Confirmation Email
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    You'll receive an order confirmation email shortly
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center space-y-3">
-                <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                  <Package size={24} className="text-blue-500" />
-                </div>
-                <div className="text-center">
-                  <h3 className="font-medium text-foreground mb-1">
-                    Order Processing
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    We'll start processing your order immediately
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col items-center space-y-3">
-                <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
-                  <CheckCircle size={24} className="text-green-500" />
-                </div>
-                <div className="text-center">
-                  <h3 className="font-medium text-foreground mb-1">
-                    Shipping Updates
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Track your order status in your profile
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Action Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4"
-          >
-            <Link
-              to="/profile"
-              className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300 flex items-center justify-center space-x-2"
-            >
-              <Package size={20} />
-              <span>View Orders</span>
-            </Link>
-
-            <button
-              onClick={() => {
-                // Generate and download invoice
-                if (orderDetails) {
-                  generateInvoice(orderDetails);
-                }
-              }}
-              className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors duration-300 flex items-center justify-center space-x-2"
-            >
-              <Mail size={20} />
-              <span>Download Invoice</span>
-            </button>
-
-            <Link
-              to="/shop"
-              className="flex-1 bg-secondary text-foreground py-3 px-6 rounded-lg font-medium hover:bg-secondary/80 transition-colors duration-300 flex items-center justify-center space-x-2"
-            >
-              <ShoppingBag size={20} />
-              <span>Continue Shopping</span>
-            </Link>
-
-            <button
-              onClick={() => {
-                toast.success('Redirecting to home page...');
-                navigate('/');
-              }}
-              className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300 flex items-center justify-center space-x-2"
-            >
-              <Home size={20} />
-              <span>Go Home Now</span>
-            </button>
-          </motion.div>
-
-          {/* Additional Info */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="mt-8 pt-8 border-t border-border"
-          >
-            <p className="text-sm text-muted-foreground">
-              Need help? Contact our support team at{" "}
-              <a
-                href="mailto:support@electroshop.com"
-                className="text-primary hover:text-primary/80"
-              >
-                support@electroshop.com
-              </a>
-            </p>
-          </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-white to-gray-100 px-4"
+    >
+      {loading ? (
+        <div className="text-center space-y-4" role="status" aria-live="polite">
+          <Loader className="animate-spin text-primary w-10 h-10 mx-auto" />
+          <h1 className="text-xl font-semibold">Processing your payment...</h1>
+          <p className="text-muted-foreground">Please wait while we confirm your order.</p>
         </div>
-      </motion.div>
-    </div>
+      ) : error ? (
+        <div className="text-center space-y-4 text-red-600" role="alert">
+          <AlertTriangle className="w-10 h-10 mx-auto" />
+          <h1 className="text-xl font-semibold">Oops! Something went wrong.</h1>
+          <p>{error}</p>
+          <Button onClick={() => navigate("/")} className="mt-4">
+            <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
+          </Button>
+        </div>
+      ) : (
+        <div className="text-center space-y-4" role="status" aria-live="polite">
+          <CheckCircle className="w-12 h-12 text-green-600 mx-auto" />
+          <h1 className="text-2xl font-bold text-green-600">Payment Successful!</h1>
+          <p className="text-muted-foreground">
+            Thank you for your purchase. Your order has been confirmed and will be delivered soon.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4">
+            <Button variant="secondary" onClick={generateInvoice}>
+              <FileDown className="w-4 h-4 mr-2" />
+              Download Invoice
+            </Button>
+            <Button onClick={() => navigate("/")}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Home
+            </Button>
+          </div>
+        </div>
+      )}
+    </motion.div>
   );
 };
 

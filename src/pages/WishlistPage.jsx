@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+
 import { Heart, Trash2, ShoppingCart, Eye } from "lucide-react";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import { useCartStore } from "../stores/useCartStore";

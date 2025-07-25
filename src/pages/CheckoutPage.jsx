@@ -115,6 +115,26 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
+    return () => {
+      // Wide cleanup: clear payment data from all storages on unmount/navigation away
+      localStorage.removeItem('clientSecret');
+      localStorage.removeItem('paymentIntentId');
+      sessionStorage.removeItem('clientSecret');
+      sessionStorage.removeItem('paymentIntentId');
+      document.cookie = "clientSecret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "paymentIntentId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    };
+  }, []);
+
+  useEffect(() => {
+    // On mount, clear any stale payment data from all storages
+    localStorage.removeItem('clientSecret');
+    localStorage.removeItem('paymentIntentId');
+    sessionStorage.removeItem('clientSecret');
+    sessionStorage.removeItem('paymentIntentId');
+    document.cookie = "clientSecret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "paymentIntentId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
     if (cart.length === 0) {
       navigate("/cart");
       toast.error("Your cart is empty");
@@ -144,6 +164,14 @@ const CheckoutPage = () => {
   }, [cart, navigate, createPaymentIntent, coupon, isCouponApplied]);
 
   const handlePaymentSuccess = async () => {
+    // Wide cleanup: clear payment data from all storages
+    localStorage.removeItem('clientSecret');
+    localStorage.removeItem('paymentIntentId');
+    sessionStorage.removeItem('clientSecret');
+    sessionStorage.removeItem('paymentIntentId');
+    document.cookie = "clientSecret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "paymentIntentId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
     toast.success("Payment successful! Redirecting...");
     clearCart();
     // Always reset payment state and fetch new intent after payment
@@ -154,6 +182,14 @@ const CheckoutPage = () => {
   };
 
   const handlePaymentError = async (error) => {
+    // Wide cleanup: clear payment data from all storages
+    localStorage.removeItem('clientSecret');
+    localStorage.removeItem('paymentIntentId');
+    sessionStorage.removeItem('clientSecret');
+    sessionStorage.removeItem('paymentIntentId');
+    document.cookie = "clientSecret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "paymentIntentId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
     // Always reset payment state and fetch new intent after ANY error
     setShowPaymentForm(false);
     setClientSecret("");

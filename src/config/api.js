@@ -1,9 +1,6 @@
-// Centralized API configuration for all environments
-// Vite exposes environment variables via import.meta.env
-// import.meta.env.DEV is true in development, false in production build
-// import.meta.env.VITE_API_URL is set from .env file
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://pionner-v2.vercel.app/api/v2';
+
+const BASE_URL = 'https://pionner-v2.vercel.app/api/v2';
 
 const ENDPOINTS = {
   AUTH: {

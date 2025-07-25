@@ -14,11 +14,10 @@ export default defineConfig({
     proxy: {
       // Proxy API requests to the backend
       '/api': {
-        target: 'https://pionner-v2.vercel.app',
+        target: 'https://pionner-v21.vercel.app/',
         changeOrigin: true,
-        secure: false,
-        // Remove the leading /api since the backend already has it in the route
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: true,
+        // Keep the /api path since our backend expects it
         configure: (proxy, _options) => {
           proxy.on('error', (err, _req, _res) => {
             console.log('proxy error', err);

@@ -48,7 +48,7 @@ const PurchaseSuccessPage = () => {
 
       try {
         setLoading(true);
-        clearLogoutFlag();
+
 
         if (successProcessed) return;
 

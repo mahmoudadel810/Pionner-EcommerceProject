@@ -16,6 +16,7 @@ import {
 import { useProductStore } from "../stores/useProductStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
+import API_CONFIG, { buildApiUrl } from "../config/api.js";
 
 const AdminDashboard = () => {
   const { products, fetchAllProducts, deleteProduct, loading } =
@@ -49,26 +50,23 @@ const AdminDashboard = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get("/contact");
-      setContacts(response.data);
-    } catch (error) {
-    }
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CONTACT.GET_ALL));
+      setContacts(response.data.data);
+    } catch (error) {}
   };
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("/orders/all");
-      setOrders(response.data);
-    } catch (error) {
-    }
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.GET_ALL));
+      setOrders(response.data.data);
+    } catch (error) {}
   };
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get("/analytics/stats");
-      setStats(response.data);
-    } catch (error) {
-    }
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.ANALYTICS.GET));
+      setStats(response.data.data);
+    } catch (error) {}
   };
 
   const handleDeleteProduct = async productId => {

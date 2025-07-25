@@ -63,8 +63,9 @@ const PurchaseSuccessPage = () => {
           const response = await fetch(`/api/orders/checkout-success/${sessionId}`);
           result = await response.json();
         } else if (paymentIntentId) {
-          const response = await fetch(`/api/orders/payment-intent-success/${paymentIntentId}`);
-          result = await response.json();
+          // Use best practice: POST to /payments/paymentIntentSuccess
+          const { handlePaymentIntentSuccess } = require("@/stores/usePaymentStore").usePaymentStore.getState();
+          result = await handlePaymentIntentSuccess(paymentIntentId);
         }
 
         if (!isMounted) return;

@@ -1,3 +1,5 @@
+/** @format */
+
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +12,7 @@ import {
   Shield,
   Lock,
   CheckCircle,
-  AlertCircle,
+  AlertCircle
 } from "lucide-react";
 import { useCartStore } from "../stores/useCartStore";
 import { usePaymentStore } from "../stores/usePaymentStore";
@@ -28,11 +30,13 @@ const stripePromise = loadStripe(
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const { user } = useUserStore();
-  const { cart, total, subtotal, coupon, isCouponApplied, clearCart } = useCartStore();
+  const { cart, total, subtotal, coupon, isCouponApplied, clearCart } =
+    useCartStore();
   const { createPaymentIntent, loading } = usePaymentStore();
 
   const [clientSecret, setClientSecret] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
   // Add form state for shipping info
   const [formData, setFormData] = useState({
@@ -40,13 +44,57 @@ const CheckoutPage = () => {
     lastName: "",
     email: user?.data?.user?.email || "",
     phone: "",
-    address: ""
+    address: "",
+    city: "",
+    state: "",
+    zipCode: ""
   });
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "email",
+      "phone",
+      "address",
+      "city",
+      "state",
+      "zipCode"
+    ];
+
+    requiredFields.forEach((field) => {
+      if (!formData[field].trim()) {
+        newErrors[field] =
+          `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+      }
+    });
+
+    // Email validation
+    if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    // Phone validation (basic)
+    if (
+      formData.phone &&
+      !/^\d{10,}$/.test(formData.phone.replace(/[^\d]/g, ""))
+    ) {
+      newErrors.phone = "Please enter a valid phone number";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   useEffect(() => {
@@ -59,7 +107,10 @@ const CheckoutPage = () => {
     // Create payment intent when component mounts
     const initializePayment = async () => {
       try {
-        const result = await createPaymentIntent(cart, isCouponApplied ? coupon : null);
+        const result = await createPaymentIntent(
+          cart,
+          isCouponApplied ? coupon : null
+        );
         if (result.success) {
           setClientSecret(result.data.clientSecret);
         } else {
@@ -86,22 +137,34 @@ const CheckoutPage = () => {
     setIsProcessing(false);
   };
 
+  const handleProceedToPayment = () => {
+    if (validateForm()) {
+      setShowPaymentForm(true);
+      setTimeout(() => {
+        const paymentSection = document.getElementById("payment-section");
+        if (paymentSection) {
+          paymentSection.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+  };
+
   const appearance = {
-    theme: 'stripe',
+    theme: "stripe",
     variables: {
-      colorPrimary: '#3b82f6',
-      colorBackground: '#ffffff',
-      colorText: '#1f2937',
-      colorDanger: '#ef4444',
-      fontFamily: 'Inter, system-ui, sans-serif',
-      spacingUnit: '4px',
-      borderRadius: '8px',
-    },
+      colorPrimary: "#3b82f6",
+      colorBackground: "#ffffff",
+      colorText: "#1f2937",
+      colorDanger: "#ef4444",
+      fontFamily: "Inter, system-ui, sans-serif",
+      spacingUnit: "4px",
+      borderRadius: "8px"
+    }
   };
 
   const options = {
     clientSecret,
-    appearance,
+    appearance
   };
 
   if (loading || !clientSecret) {
@@ -119,12 +182,10 @@ const CheckoutPage = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
+          className="mb-8">
           <button
             onClick={() => navigate("/cart")}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4"
-          >
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4">
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Cart</span>
           </button>
@@ -138,12 +199,11 @@ const CheckoutPage = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-            className="space-y-6"
-          >
+            className="space-y-6">
             {/* Shipping Information */}
-            <div className="card-modern p-6">
+            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
               <h2 className="text-xl font-bold mb-6 flex items-center space-x-2">
-                <Truck size={24} className="text-primary" />
+                <Truck size={24} className="text-blue-600" />
                 <span>Shipping Information</span>
               </h2>
 
@@ -158,13 +218,15 @@ const CheckoutPage = () => {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                      errors.firstName ? "border-red-500" : "border-border"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
+                      errors.firstName ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter first name"
                   />
                   {errors.firstName && (
-                    <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.firstName}
+                    </p>
                   )}
                 </div>
                 <div>
@@ -177,13 +239,15 @@ const CheckoutPage = () => {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                      errors.lastName ? "border-red-500" : "border-border"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
+                      errors.lastName ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter last name"
                   />
                   {errors.lastName && (
-                    <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.lastName}
+                    </p>
                   )}
                 </div>
 
@@ -197,8 +261,8 @@ const CheckoutPage = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                      errors.email ? "border-red-500" : "border-border"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
+                      errors.email ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter email"
                   />
@@ -217,8 +281,8 @@ const CheckoutPage = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                      errors.phone ? "border-red-500" : "border-border"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
+                      errors.phone ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter phone number"
                   />
@@ -237,13 +301,15 @@ const CheckoutPage = () => {
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                      errors.address ? "border-red-500" : "border-border"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
+                      errors.address ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter street address"
                   />
                   {errors.address && (
-                    <p className="text-red-500 text-sm mt-1">{errors.address}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.address}
+                    </p>
                   )}
                 </div>
 
@@ -257,8 +323,8 @@ const CheckoutPage = () => {
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                      errors.city ? "border-red-500" : "border-border"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
+                      errors.city ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter city"
                   />
@@ -277,8 +343,8 @@ const CheckoutPage = () => {
                     name="state"
                     value={formData.state}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                      errors.state ? "border-red-500" : "border-border"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
+                      errors.state ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter state"
                   />
@@ -297,35 +363,56 @@ const CheckoutPage = () => {
                     name="zipCode"
                     value={formData.zipCode}
                     onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 ${
-                      errors.zipCode ? "border-red-500" : "border-border"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
+                      errors.zipCode ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Enter ZIP code"
                   />
                   {errors.zipCode && (
-                    <p className="text-red-500 text-sm mt-1">{errors.zipCode}</p>
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.zipCode}
+                    </p>
                   )}
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Country
-                  </label>
-                  <input
-                    id="country"
-                    type="text"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    disabled
-                  />
-                </div>
+              {/* Proceed to Payment Button */}
+              <div className="mt-8">
+                <button
+                  type="button"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleProceedToPayment}>
+                  Proceed to Payment
+                </button>
               </div>
             </div>
 
+            {/* Payment Section */}
+            {showPaymentForm && (
+              <motion.div
+                id="payment-section"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <h2 className="text-xl font-bold mb-6 flex items-center space-x-2">
+                  <CreditCard size={24} className="text-blue-600" />
+                  <span>Payment Information</span>
+                </h2>
+
+                <Elements stripe={stripePromise} options={options}>
+                  <StripePaymentForm
+                    onSuccess={handlePaymentSuccess}
+                    onError={handlePaymentError}
+                    isProcessing={isProcessing}
+                    setIsProcessing={setIsProcessing}
+                    shippingData={formData}
+                  />
+                </Elements>
+              </motion.div>
+            )}
+
             {/* Security Notice */}
-            <div className="card-modern p-6 bg-blue-50 border-blue-200">
+            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
               <div className="flex items-start space-x-3">
                 <Shield size={20} className="text-blue-600 mt-0.5" />
                 <div>
@@ -333,8 +420,9 @@ const CheckoutPage = () => {
                     Secure Checkout
                   </h3>
                   <p className="text-blue-700 text-sm">
-                    Your payment information is encrypted and secure. We use Stripe for 
-                    secure payment processing and never store your credit card details.
+                    Your payment information is encrypted and secure. We use
+                    Stripe for secure payment processing and never store your
+                    credit card details.
                   </p>
                 </div>
               </div>
@@ -346,11 +434,12 @@ const CheckoutPage = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="space-y-6"
-          >
+            className="space-y-6">
             <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 sticky top-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-6">Order Summary</h3>
-              
+              <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                Order Summary
+              </h3>
+
               {/* Cart Items */}
               <div className="space-y-4 mb-6">
                 {cart.map((item) => (
@@ -363,13 +452,18 @@ const CheckoutPage = () => {
                         crossOrigin="anonymous"
                         onError={(e) => {
                           // Fallback to a placeholder image if the original fails to load
-                          e.target.src = 'https://via.placeholder.com/80x80?text=Product+Image';
+                          e.target.src =
+                            "https://via.placeholder.com/80x80?text=Product+Image";
                         }}
                       />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-gray-900 text-sm">{item.name}</h4>
-                      <p className="text-gray-600 text-sm">Qty: {item.quantity}</p>
+                      <h4 className="font-medium text-gray-900 text-sm">
+                        {item.name}
+                      </h4>
+                      <p className="text-gray-600 text-sm">
+                        Qty: {item.quantity}
+                      </p>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold text-gray-900">
@@ -389,7 +483,12 @@ const CheckoutPage = () => {
                 {isCouponApplied && coupon && (
                   <div className="flex justify-between text-green-600">
                     <span>Discount ({coupon.code})</span>
-                    <span>-${(subtotal * (coupon.discountPercentage / 100)).toFixed(2)}</span>
+                    <span>
+                      -$
+                      {(subtotal * (coupon.discountPercentage / 100)).toFixed(
+                        2
+                      )}
+                    </span>
                   </div>
                 )}
                 <div className="flex justify-between text-gray-600">
@@ -412,4 +511,3 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
-

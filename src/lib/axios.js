@@ -26,6 +26,10 @@ axiosInstance.interceptors.response.use(
       console.error('Network error - please check your connection and try again');
     }
     
+    // Log 403 errors for debugging
+    if (error.response?.status === 403) {
+      console.error('[Axios] 403 Forbidden:', error.config?.url, '\nHeaders:', error.config?.headers, '\nCookies:', document.cookie);
+    }
     return Promise.reject(error);
   }
 );

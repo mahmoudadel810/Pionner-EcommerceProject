@@ -1,5 +1,6 @@
 
 
+// All API requests go to the backend directly, no Vite proxy or rewrites.
 const BASE_URL = 'https://pionner-v2.vercel.app/api/v2';
 
 const ENDPOINTS = {

@@ -53,7 +53,7 @@ const PurchaseSuccessPage = () => {
 
         const hasRefreshToken = document.cookie.includes("refreshToken");
         if (hasRefreshToken) {
-          await checkAuth(true);
+
           await new Promise((resolve) => setTimeout(resolve, 500));
         }
 
@@ -117,7 +117,7 @@ const PurchaseSuccessPage = () => {
       isMounted = false;
       clearStoredPaymentData();
     };
-  }, [sessionId, paymentIntentId, successProcessed, checkAuth, clearCart, clearLogoutFlag, navigate, setError, setOrderDetails]);
+  }, [sessionId, paymentIntentId, successProcessed, clearCart, navigate, setError, setOrderDetails]);
 
   const generateInvoice = () => {
     const order = orderDetails;

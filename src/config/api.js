@@ -16,6 +16,10 @@ const ENDPOINTS = {
     UPDATE_PASSWORD: '/auth/update-password',
     FORGOT_PASSWORD: '/auth/forgot-password',
     RESET_PASSWORD: '/auth/reset-password',
+    GET_ALL_USERS: '/auth/getAllUsers',
+    UPDATE_USER_STATUS: (id) => `/auth/updateUserStatus/${id}`,
+    UPDATE_USER_ROLE: (id) => `/auth/updateUserRole/${id}`,
+    DELETE_USER: (id) => `/auth/deleteUser/${id}`,
   },
   PRODUCTS: {
     GET_ALL: '/products/getProducts',
@@ -29,8 +33,11 @@ const ENDPOINTS = {
     CREATE_WITH_IMAGES: '/products/createProductWithImages',
     UPLOAD_IMAGE: (id) => `/products/uploadProductImage/${id}`,
     UPLOAD_IMAGES: (id) => `/products/uploadProductImages/${id}`,
+    UPDATE: (id) => `/products/updateProduct/${id}`,
     DELETE: (id) => `/products/deleteProduct/${id}`,
     TOGGLE_FEATURED: (id) => `/products/toggleFeaturedProduct/${id}`,
+    UPDATE_STOCK: (id) => `/products/updateStock/${id}`,
+    UPDATE_PRICE: (id) => `/products/updatePrice/${id}`,
   },
   CART: {
     GET: '/cart/getCartProducts',
@@ -41,6 +48,11 @@ const ENDPOINTS = {
   COUPON: {
     GET: '/coupons/getCoupon',
     VALIDATE: '/coupons/validateCoupon',
+    GET_ALL: '/coupons/getAllCoupons',
+    CREATE: '/coupons/createCoupon',
+    UPDATE: (id) => `/coupons/updateCoupon/${id}`,
+    DELETE: (id) => `/coupons/deleteCoupon/${id}`,
+    TOGGLE_STATUS: (id) => `/coupons/toggleStatus/${id}`,
   },
   PAYMENT: {
     CREATE_CHECKOUT_SESSION: '/payments/createCheckoutSession',
@@ -92,6 +104,9 @@ const ENDPOINTS = {
   ANALYTICS: {
     GET: '/analytics/getAnalyticsData',
     GET_DAILY_SALES: '/analytics/getDailySalesData',
+    GET_ORDERS_ANALYTICS: '/analytics/getOrdersAnalytics',
+    GET_PRODUCT_ANALYTICS: '/analytics/getProductAnalytics',
+    GET_USER_ANALYTICS: '/analytics/getUserAnalytics',
   },
 };
 

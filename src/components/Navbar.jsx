@@ -42,6 +42,7 @@ import {
   Bell,
   Star,
   TrendingUp,
+  Shield,
 } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
 import { useCartStore } from "../stores/useCartStore";
@@ -475,6 +476,20 @@ const Navbar = memo(() => {
                           <span className="font-medium">Profile</span>
                         </button>
 
+                        {/* Admin Dashboard Link */}
+                        {user.data?.user?.role === "admin" && (
+                          <button
+                            onClick={() => {
+                              navigate("/admin");
+                              setShowUserDropdown(false);
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-3 text-purple-600 hover:text-purple-700 hover:bg-purple-50 transition-colors text-left"
+                          >
+                            <Shield size={18} />
+                            <span className="font-medium">Admin Dashboard</span>
+                          </button>
+                        )}
+
                         <div className="border-t border-gray-100 my-1" />
 
                         <button
@@ -654,6 +669,18 @@ const Navbar = memo(() => {
                         Wishlist ({wishlistItemCount})
                       </span>
                     </Link>
+
+                    {/* Admin Dashboard Link - Mobile */}
+                    {user.data?.user?.role === "admin" && (
+                      <Link
+                        to="/admin"
+                        onClick={closeMobileMenu}
+                        className="flex items-center gap-3 py-3 px-4 rounded-xl text-purple-600 hover:bg-purple-50 transition-colors"
+                      >
+                        <Shield size={20} />
+                        <span className="font-medium">Admin Dashboard</span>
+                      </Link>
+                    )}
 
                     <Button
                       variant="ghost"

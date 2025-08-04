@@ -162,7 +162,7 @@ const AppContent = () => {
             <Route
               path="/admin"
               element={
-                user?.role === "admin" ? (
+                user?.data?.user?.role === "admin" ? (
                   <AdminDashboard />
                 ) : (
                   <Navigate to="/login" />

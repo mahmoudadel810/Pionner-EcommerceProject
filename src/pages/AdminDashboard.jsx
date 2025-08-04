@@ -44,6 +44,7 @@ import API_CONFIG, { buildApiUrl } from "../config/api.js";
 
 const AdminDashboard = () => {
   const { products, fetchAllProducts, deleteProduct, loading } = useProductStore();
+  const [isLoading, setIsLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
@@ -103,6 +104,7 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
+      setIsLoading(true);
       await Promise.all([
         fetchAllProducts(),
         fetchContacts(),
@@ -114,51 +116,58 @@ const AdminDashboard = () => {
       ]);
     } catch (error) {
       toast.error("Failed to fetch dashboard data");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchContacts = async () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CONTACT.GET_ALL));
-      setContacts(response.data.data);
+      setContacts(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
       console.error("Failed to fetch contacts:", error);
+      setContacts([]);
     }
   };
 
   const fetchOrders = async () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.GET_ALL));
-      setOrders(response.data.data);
+      setOrders(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
       console.error("Failed to fetch orders:", error);
+      setOrders([]);
     }
   };
 
   const fetchUsers = async () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.GET_ALL_USERS));
-      setUsers(response.data.data);
+      setUsers(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
       console.error("Failed to fetch users:", error);
+      setUsers([]);
     }
   };
 
   const fetchCategories = async () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_ALL));
-      setCategories(response.data.data);
+      setCategories(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
       console.error("Failed to fetch categories:", error);
+      setCategories([]);
     }
   };
 
   const fetchCoupons = async () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.GET_ALL));
-      setCoupons(response.data.data);
+      setCoupons(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
       console.error("Failed to fetch coupons:", error);
+      setCoupons([]);
     }
   };
 
@@ -344,19 +353,19 @@ const AdminDashboard = () => {
     setShowCouponForm(true);
   };
 
-  const filteredProducts = products.filter(
+  const filteredProducts = (products || []).filter(
     (product) =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const filteredOrders = orders.filter((order) => {
+  const filteredOrders = (orders || []).filter((order) => {
     if (filters.orderStatus && order.status !== filters.orderStatus) return false;
     if (filters.paymentStatus && order.paymentStatus !== filters.paymentStatus) return false;
     return true;
   });
 
-  const filteredUsers = users.filter((user) => {
+  const filteredUsers = (users || []).filter((user) => {
     if (filters.userRole && user.role !== filters.userRole) return false;
     return true;
   });
@@ -386,6 +395,17 @@ const AdminDashboard = () => {
         return "bg-gray-100 text-gray-600";
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background py-8 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading admin dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background py-8">
@@ -537,14 +557,14 @@ const AdminDashboard = () => {
                   </button>
                 </div>
                 <div className="space-y-4">
-                  {orders.slice(0, 5).map((order) => (
+                  {(orders || []).slice(0, 5).map((order) => (
                     <div
                       key={order._id}
                       className="flex items-center justify-between p-4 bg-background rounded-lg"
                     >
                       <div>
                         <p className="font-medium text-foreground">
-                          Order #{order._id.slice(-8)}
+                          Order #{order._id ? order._id.slice(-8) : 'N/A'}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {new Date(order.createdAt).toLocaleDateString()}
@@ -583,7 +603,7 @@ const AdminDashboard = () => {
                   Recent Customer Messages
                 </h2>
                 <div className="space-y-4">
-                  {contacts.slice(0, 5).map((contact) => (
+                  {(contacts || []).slice(0, 5).map((contact) => (
                     <div
                       key={contact._id}
                       className="p-4 bg-background rounded-lg"
@@ -787,7 +807,7 @@ const AdminDashboard = () => {
                     <div className="flex items-center justify-between mb-3">
                       <div>
                         <p className="font-medium text-foreground">
-                          Order #{order._id.slice(-8)}
+                          Order #{order._id ? order._id.slice(-8) : 'N/A'}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {new Date(order.createdAt).toLocaleDateString()}
@@ -996,7 +1016,7 @@ const AdminDashboard = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => openCouponForm()}
+fi                  onClick={() => openCouponForm()}
                   className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
                 >
                   <Plus size={16} />
@@ -1005,7 +1025,7 @@ const AdminDashboard = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {coupons.map((coupon) => (
+                {(coupons || []).map((coupon) => (
                   <div
                     key={coupon._id}
                     className="p-4 bg-background rounded-lg border border-border"
@@ -1180,7 +1200,7 @@ const AdminDashboard = () => {
                     required
                   >
                     <option value="">Select Category</option>
-                    {categories.map((cat) => (
+                    {(categories || []).map((cat) => (
                       <option key={cat._id} value={cat.name}>
                         {cat.name}
                       </option>

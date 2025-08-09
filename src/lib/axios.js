@@ -76,12 +76,12 @@ axiosInstance.interceptors.response.use(
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken);
       sessionStorage.setItem('accessToken', accessToken);
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24 * 7}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`; // 7 days
+      document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24 * 7}; secure=${import.meta.env.PROD}; samesite=Lax`; // 7 days
     }
     if (refreshToken) {
       localStorage.setItem('refreshToken', refreshToken);
       sessionStorage.setItem('refreshToken', refreshToken);
-      document.cookie = `refreshToken=${refreshToken}; path=/; max-age=${60 * 60 * 24 * 30}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`; // 30 days
+      document.cookie = `refreshToken=${refreshToken}; path=/; max-age=${60 * 60 * 24 * 30}; secure=${import.meta.env.PROD}; samesite=Lax`; // 30 days
     }
 
     return response;
@@ -128,13 +128,13 @@ axiosInstance.interceptors.response.use(
             if (newAccessToken) {
               localStorage.setItem('accessToken', newAccessToken);
               sessionStorage.setItem('accessToken', newAccessToken);
-              document.cookie = `accessToken=${newAccessToken}; path=/; max-age=${60 * 60 * 24 * 7}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`;
+              document.cookie = `accessToken=${newAccessToken}; path=/; max-age=${60 * 60 * 24 * 7}; secure=${import.meta.env.PROD}; samesite=Lax`;
             }
             
             if (newRefreshToken) {
               localStorage.setItem('refreshToken', newRefreshToken);
               sessionStorage.setItem('refreshToken', newRefreshToken);
-              document.cookie = `refreshToken=${newRefreshToken}; path=/; max-age=${60 * 60 * 24 * 30}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`;
+              document.cookie = `refreshToken=${newRefreshToken}; path=/; max-age=${60 * 60 * 24 * 30}; secure=${import.meta.env.PROD}; samesite=Lax`;
             }
 
             // Update the original request with the new token

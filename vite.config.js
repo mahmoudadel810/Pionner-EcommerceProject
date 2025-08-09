@@ -22,8 +22,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "use-sync-external-store/shim": path.resolve(__dirname, "node_modules/use-sync-external-store/shim/index.js"),
+      "@": path.resolve(process.cwd(), "./src"),
+      "use-sync-external-store/shim": path.resolve(process.cwd(), "node_modules/use-sync-external-store/shim/index.js"),
     },
   },
   build: {

@@ -1,0 +1,106 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "shop": "المتجر",
+    "categories": "التصنيفات",
+    "deals": "العروض",
+    "about": "من نحن",
+    "contact": "اتصل بنا",
+    "profile": "الملف الشخصي",
+    "admin": "لوحة التحكم",
+    "logout": "تسجيل الخروج",
+    "signin": "تسجيل الدخول",
+    "language": "اللغة",
+    "search_placeholder": "ابحث عن الأجهزة...",
+    "wishlist": "المفضلة",
+    "cart": "السلة"
+  },
+  "home": {
+    "explore_by_category": "استكشف حسب التصنيف",
+    "discover_subtitle": "اكتشف منتجات مذهلة من كل تصنيف، اخترناها لك بعناية",
+    "view_all": "عرض الكل",
+    "featured": "مميز",
+    "start_shopping": "ابدأ التسوق الآن",
+    "join_premium": "انضم إلى البريميوم",
+    "quick_view": "عرض سريع",
+    "add_to_cart": "أضف إلى السلة",
+    "remove_from_cart": "إزالة من السلة"
+  },
+  "checkout": {
+    "billing_address": "عنوان الفاتورة",
+    "payment_method": "طريقة الدفع",
+    "complete_payment": "إتمام الدفع",
+    "processing": "جارٍ المعالجة...",
+    "secure_notice": "معلومات الدفع الخاصة بك آمنة ومشفرة"
+  },
+  "product": {
+    "back": "رجوع",
+    "reviews": "تقييمات",
+    "quantity": "الكمية",
+    "free_shipping": "شحن مجاني",
+    "free_shipping_threshold": "للطلبات فوق ﷼50",
+    "secure_payment": "دفع آمن",
+    "easy_returns": "إرجاع سهل",
+    "buy_now": "اشتري الآن",
+    "processing": "جارٍ المعالجة...",
+    "related_products": "منتجات ذات صلة",
+    "featured": "مميز"
+  },
+  "category": {
+    "back_to_categories": "العودة إلى التصنيفات",
+    "search_products": "ابحث عن المنتجات...",
+    "sort_by": "ترتيب حسب",
+    "name_asc": "الاسم (أ-ي)",
+    "name_desc": "الاسم (ي-أ)",
+    "price_asc": "السعر (من الأقل للأعلى)",
+    "price_desc": "السعر (من الأعلى للأقل)",
+    "newest": "الأحدث",
+    "oldest": "الأقدم",
+    "no_products_found": "لا توجد منتجات",
+    "adjust_search": "حاول تعديل معايير البحث",
+    "no_products_in_category": "لا تتوفر منتجات في هذا التصنيف حالياً",
+    "clear_search": "مسح البحث",
+    "previous": "السابق",
+    "next": "التالي",
+    "showing_count_in": "عرض {{count}} منتج{{suffix}} في {{category}}",
+    "plural_suffix": ""
+  },
+  "search": {
+    "results_title": "نتائج البحث",
+    "searching_for": "يتم البحث عن \"{{query}}\"",
+    "enter_term": "أدخل كلمة للبحث عن المنتجات",
+    "sort_by": "ترتيب حسب",
+    "relevance": "الصلة",
+    "name_asc": "الاسم (أ-ي)",
+    "name_desc": "الاسم (ي-أ)",
+    "price_asc": "السعر: من الأقل للأعلى",
+    "price_desc": "السعر: من الأعلى للأقل",
+    "rating_desc": "الأعلى تقييماً",
+    "newest": "الأحدث",
+    "category": "التصنيف",
+    "all_categories": "كل التصنيفات",
+    "price_range": "نطاق السعر",
+    "all_prices": "كل الأسعار",
+    "items_per_page": "لكل صفحة",
+    "refresh": "تحديث",
+    "no_products_found": "لا توجد منتجات",
+    "none_match_for": "لا توجد منتجات مطابقة لبحثك عن \"{{query}}\". جرّب كلمات مختلفة أو تحقق من الإملاء.",
+    "clear_search": "مسح البحث",
+    "found_count_matching": "تم العثور على {{count}} منتج{{suffix}} مطابق لـ \"{{query}}\"",
+    "plural_suffix": ""
+  },
+  "wishlist": {
+    "title": "قائمة المفضلة",
+    "count_items": "{{count}} منتج{{suffix}} في قائمتك",
+    "plural_suffix": "",
+    "empty_title": "قائمة المفضلة فارغة",
+    "empty_msg": "ابدأ بإضافة المنتجات إلى قائمتك للاحتفاظ بها لاحقاً",
+    "start_shopping": "ابدأ التسوق"
+  },
+  "common": {
+    "back": "رجوع",
+    "try_again": "حاول مجدداً",
+    "clear_search": "مسح البحث"
+  }
+}
+

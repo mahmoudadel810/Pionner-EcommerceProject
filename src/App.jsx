@@ -1,5 +1,6 @@
 import React, { Suspense, lazy, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 import { Toaster } from "react-hot-toast";
 
 // Lazy load pages with better chunk splitting
@@ -44,8 +45,8 @@ import "./App.css";
 // Preload critical pages for better UX
 const preloadCriticalPages = () => {
   // Preload shop and product pages as they're commonly accessed
-  import("./pages/ShopPage");
-  import("./pages/ProductDetailPage");
+  const shopPromise = import("./pages/ShopPage");
+  const productPromise = import("./pages/ProductDetailPage");
   
   // Preload auth pages if user is not logged in
   if (!localStorage.getItem('token')) {
@@ -77,14 +78,14 @@ const AppContent = () => {
 
   useEffect(() => {
     if (user) {
-      getCartItems().catch(() => {
+      getCartItems().catch(error => {
         // Cart fetch error
       });
-      fetchWishlist().catch(() => {
+      fetchWishlist().catch(error => {
         // Wishlist fetch error
       });
     }
-  }, [user, getCartItems, fetchWishlist]);
+  }, [user]); // Removed getCartItems and fetchWishlist from dependencies
 
   if (checkingAuth) {
     return <LoadingSpinner />;
@@ -100,7 +101,10 @@ const AppContent = () => {
       {showGlobalNavbar && <Navbar />}
 
       <Suspense fallback={<LoadingSpinner />}>
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
           className={showGlobalNavbar ? "pt-20" : ""}
         >
           <Routes>
@@ -169,7 +173,7 @@ const AppContent = () => {
             {/* Catch all */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </div>
+        </motion.div>
       </Suspense>
 
       {showFooter && <Footer />}

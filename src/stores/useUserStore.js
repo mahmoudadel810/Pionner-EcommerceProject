@@ -342,7 +342,7 @@ export const useUserStore = create((set, get) => ({
       clearTimeout(timeoutId);
       // Clear user data on any auth check error
       localStorage.removeItem('user');
-      console.log("Auth check failed:", error.response?.data?.message || "No valid session");
+      // console.log("Auth check failed:", error.response?.data?.message || "No valid session");
       set({ checkingAuth: false, user: null });
       return { success: false, error: error.response?.data?.message || "Auth check failed" };
     }

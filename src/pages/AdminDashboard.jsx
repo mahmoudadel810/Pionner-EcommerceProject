@@ -38,17 +38,25 @@ import {
   SortDesc,
 } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
+import { useCategoryStore } from "../stores/useCategoryStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
 
 const AdminDashboard = () => {
   const { products, fetchAllProducts, deleteProduct, loading } = useProductStore();
+  const { 
+    categories: storeCategories, 
+    fetchAllCategories, 
+    createCategory, 
+    updateCategory, 
+    deleteCategory,
+    loading: categoryLoading 
+  } = useCategoryStore();
   const [isLoading, setIsLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [coupons, setCoupons] = useState([]);
   const [stats, setStats] = useState({
     totalProducts: 0,
@@ -67,6 +75,8 @@ const AdminDashboard = () => {
   const [showUserDetails, setShowUserDetails] = useState(null);
   const [showCouponForm, setShowCouponForm] = useState(false);
   const [editingCoupon, setEditingCoupon] = useState(null);
+  const [showCategoryForm, setShowCategoryForm] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
   const [filters, setFilters] = useState({
     orderStatus: "",
     paymentStatus: "",
@@ -85,7 +95,7 @@ const AdminDashboard = () => {
     price: "",
     category: "",
     stockQuantity: "",
-    image: "",
+    images: [], // Changed to array for multiple images
   });
 
   const [couponForm, setCouponForm] = useState({
@@ -98,9 +108,23 @@ const AdminDashboard = () => {
     expiryDate: "",
   });
 
+  const [categoryForm, setCategoryForm] = useState({
+    name: "",
+    description: "",
+    image: null,
+    featured: false,
+    order: "",
+  });
+
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Debug: Log categories when they change
+  useEffect(() => {
+    console.log("📋 Store categories updated:", storeCategories);
+  }, [storeCategories]);
+  //  console.log("Using store categories:", storeCategories);
 
   const fetchData = async () => {
     try {
@@ -153,11 +177,11 @@ const AdminDashboard = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_ALL));
-      setCategories(Array.isArray(response.data.data) ? response.data.data : []);
+      console.log("🔄 Fetching categories...");
+      const result = await fetchAllCategories();
+      console.log("✅ Categories fetched:", result);
     } catch (error) {
-      console.error("Failed to fetch categories:", error);
-      setCategories([]);
+      console.error("❌ Failed to fetch categories:", error);
     }
   };
 
@@ -243,17 +267,34 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
+      
+      // Handle regular form fields
       Object.keys(productForm).forEach(key => {
-        if (productForm[key] !== "") {
+        if (key !== 'images' && productForm[key] !== "") {
           formData.append(key, productForm[key]);
         }
       });
+      
+      // Handle image files separately with correct field name
+      if (productForm.images && productForm.images.length > 0) {
+        productForm.images.forEach(file => {
+          formData.append('images', file); // Use 'images' field name that server expects
+        });
+      }
 
       if (editingProduct) {
-        await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.UPDATE.replace(":id", editingProduct._id)), formData);
+        await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.UPDATE.replace(":id", editingProduct._id)), formData ,{
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
         toast.success("Product updated successfully");
       } else {
-        await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.CREATE), formData);
+        await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.CREATE), formData ,{
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
         toast.success("Product created successfully");
       }
 
@@ -265,7 +306,7 @@ const AdminDashboard = () => {
         price: "",
         category: "",
         stockQuantity: "",
-        image: "",
+        images: [],
       });
       fetchAllProducts();
     } catch (error) {
@@ -302,6 +343,11 @@ const AdminDashboard = () => {
   };
 
   const openProductForm = (product = null) => {
+    // Ensure categories are loaded when opening the product form
+    if (!storeCategories || storeCategories.length === 0) {
+      fetchAllCategories();
+    }
+    
     if (product) {
       setEditingProduct(product);
       setProductForm({
@@ -310,7 +356,7 @@ const AdminDashboard = () => {
         price: product.price || "",
         category: product.category || "",
         stockQuantity: product.stockQuantity || "",
-        image: product.image || "",
+        images: [], // Reset images for editing - user can upload new ones
       });
     } else {
       setEditingProduct(null);
@@ -320,7 +366,7 @@ const AdminDashboard = () => {
         price: "",
         category: "",
         stockQuantity: "",
-        image: "",
+        images: [],
       });
     }
     setShowCreateForm(true);
@@ -353,6 +399,89 @@ const AdminDashboard = () => {
     setShowCouponForm(true);
   };
 
+  const handleCategorySubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      
+      // Handle regular form fields
+      Object.keys(categoryForm).forEach(key => {
+        if (key !== 'image' && categoryForm[key] !== "") {
+          formData.append(key, categoryForm[key]);
+        }
+      });
+      
+      // Handle image file
+      if (categoryForm.image) {
+        formData.append('image', categoryForm.image);
+      }
+
+      let result;
+      if (editingCategory) {
+        result = await updateCategory(editingCategory._id, formData);
+        if (result.success) {
+          toast.success("Category updated successfully");
+        }
+      } else {
+        result = await createCategory(formData);
+        if (result.success) {
+          toast.success("Category created successfully");
+        }
+      }
+
+      if (result.success) {
+        setShowCategoryForm(false);
+        setEditingCategory(null);
+        setCategoryForm({
+          name: "",
+          description: "",
+          image: null,
+          featured: false,
+          order: "",
+        });
+      }
+    } catch (error) {
+      toast.error("Failed to save category");
+    }
+  };
+
+  const openCategoryForm = (category = null) => {
+    if (category) {
+      setEditingCategory(category);
+      setCategoryForm({
+        name: category.name || "",
+        description: category.description || "",
+        image: null, // Reset image for editing - user can upload new one
+        featured: category.featured || false,
+        order: category.order || "",
+      });
+    } else {
+      setEditingCategory(null);
+      setCategoryForm({
+        name: "",
+        description: "",
+        image: null,
+        featured: false,
+        order: "",
+      });
+    }
+    setShowCategoryForm(true);
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    if (window.confirm("Are you sure you want to delete this category?")) {
+      try {
+        const result = await deleteCategory(categoryId);
+        if (result.success) {
+          toast.success("Category deleted successfully");
+        }
+      } catch (error) {
+        toast.error("Failed to delete category");
+        console.error("Failed to delete category:", error);
+      }
+    }
+  };
+
   const filteredProducts = (products || []).filter(
     (product) =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -370,9 +499,16 @@ const AdminDashboard = () => {
     return true;
   });
 
+  const filteredCategories = (storeCategories || []).filter(
+    (category) =>
+      category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      category.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const tabs = [
     { id: "overview", name: "Overview", icon: BarChart3 },
     { id: "products", name: "Products", icon: Package },
+    { id: "categories", name: "Categories", icon: Tag },
     { id: "orders", name: "Orders", icon: ShoppingCart },
     { id: "users", name: "Users", icon: Users },
     { id: "coupons", name: "Coupons", icon: Tag },
@@ -753,6 +889,146 @@ const AdminDashboard = () => {
                               title="View Details"
                             >
                               <Eye size={16} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "categories" && (
+            <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-foreground">
+                  Categories Management
+                </h2>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => openCategoryForm()}
+                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
+                >
+                  <Plus size={16} />
+                  <span>Add Category</span>
+                </motion.button>
+              </div>
+
+              {/* Search and Filters */}
+              <div className="mb-6">
+                <div className="relative">
+                  <Search
+                    size={20}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Search categories..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              {/* Categories Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-border">
+                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                        Category
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                        Description
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                        Products
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                        Featured
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                        Status
+                      </th>
+                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredCategories.map((category) => (
+                      <tr
+                        key={category._id}
+                        className="border-b border-border hover:bg-background/50"
+                      >
+                        <td className="py-3 px-4">
+                          <div className="flex items-center space-x-3">
+                            {category.image && (
+                              <img
+                                src={category.image}
+                                alt={category.name}
+                                className="w-12 h-12 rounded-lg object-cover"
+                              />
+                            )}
+                            <div>
+                              <p className="font-medium text-foreground">
+                                {category.name}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                Slug: {category.slug}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-foreground">
+                          <p className="max-w-xs truncate">
+                            {category.description}
+                          </p>
+                        </td>
+                        <td className="py-3 px-4 text-foreground">
+                          {category.productCount || 0}
+                        </td>
+                        <td className="py-3 px-4">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              category.featured
+                                ? "bg-yellow-100 text-yellow-600"
+                                : "bg-gray-100 text-gray-600"
+                            }`}
+                          >
+                            {category.featured ? "Featured" : "Regular"}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              category.isActive
+                                ? "bg-green-100 text-green-600"
+                                : "bg-red-100 text-red-600"
+                            }`}
+                          >
+                            {category.isActive ? "Active" : "Inactive"}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={() => openCategoryForm(category)}
+                              className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors duration-300"
+                              title="Edit Category"
+                            >
+                              <Edit size={16} />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteCategory(category._id)}
+                              className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors duration-300"
+                              title="Delete Category"
+                            >
+                              <Trash2 size={16} />
                             </button>
                           </div>
                         </td>
@@ -1200,12 +1476,23 @@ fi                  onClick={() => openCouponForm()}
                     required
                   >
                     <option value="">Select Category</option>
-                    {(categories || []).map((cat) => (
-                      <option key={cat._id} value={cat.name}>
-                        {cat.name}
-                      </option>
-                    ))}
+                    
+                    {(storeCategories || [])
+                      .sort((a, b) => (a.order || 0) - (b.order || 0) || a.name.localeCompare(b.name))
+                      .map((cat) => (
+                        <option key={cat._id} value={cat.name}>
+                          {cat.name}
+                        </option>
+                      ))}
                   </select>
+                  {/* Debug info - remove this after testing */}
+                  {process.env.NODE_ENV === 'development' && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      Categories loaded: {storeCategories?.length || 0} (only active categories)
+                      <br />
+                      If you have 37 in DB but see fewer here, some categories might be inactive
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Stock Quantity</label>
@@ -1218,14 +1505,34 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Image URL</label>
+                  <label className="block text-sm font-medium mb-1">
+                    Images (Select multiple images - max 10)
+                  </label>
                   <input
-                    type="url"
-                    value={productForm.image}
-                    onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files);
+                      if (files.length > 10) {
+                        toast.error("Maximum 10 images allowed");
+                        return;
+                      }
+                      setProductForm({ ...productForm, images: files });
+                    }}
                     className="w-full p-2 border rounded"
-                    required
+                    required={!editingProduct} // Only required for new products
                   />
+                  {productForm.images && productForm.images.length > 0 && (
+                    <p className="text-sm text-gray-600 mt-1">
+                      {productForm.images.length} image(s) selected
+                    </p>
+                  )}
+                  {editingProduct && (
+                    <p className="text-sm text-gray-500 mt-1">
+                      Leave empty to keep existing images, or select new images to replace them
+                    </p>
+                  )}
                 </div>
                 <div className="flex space-x-2">
                   <button
@@ -1341,6 +1648,95 @@ fi                  onClick={() => openCouponForm()}
                   <button
                     type="button"
                     onClick={() => setShowCouponForm(false)}
+                    className="flex-1 bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Category Form Modal */}
+        {showCategoryForm && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+              <h2 className="text-xl font-semibold mb-4">
+                {editingCategory ? "Edit Category" : "Add New Category"}
+              </h2>
+              <form onSubmit={handleCategorySubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Name</label>
+                  <input
+                    type="text"
+                    value={categoryForm.name}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Description</label>
+                  <textarea
+                    value={categoryForm.description}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    rows={3}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      setCategoryForm({ ...categoryForm, image: file });
+                    }}
+                    className="w-full p-2 border rounded"
+                    required={!editingCategory} // Only required for new categories
+                  />
+                  {editingCategory && (
+                    <p className="text-sm text-gray-500 mt-1">
+                      Leave empty to keep existing image, or select a new image to replace it
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Order</label>
+                  <input
+                    type="number"
+                    value={categoryForm.order}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, order: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Display order (optional)"
+                  />
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="featured"
+                    checked={categoryForm.featured}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, featured: e.target.checked })}
+                    className="mr-2"
+                  />
+                  <label htmlFor="featured" className="text-sm font-medium">
+                    Featured Category
+                  </label>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-primary text-white py-2 rounded hover:bg-primary/90"
+                    disabled={categoryLoading}
+                  >
+                    {categoryLoading ? "Saving..." : editingCategory ? "Update" : "Create"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowCategoryForm(false)}
                     className="flex-1 bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400"
                   >
                     Cancel

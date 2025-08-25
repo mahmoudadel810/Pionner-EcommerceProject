@@ -1,0 +1,106 @@
+{
+  "nav": {
+    "home": "Home",
+    "shop": "Shop",
+    "categories": "Categories",
+    "deals": "Deals",
+    "about": "About",
+    "contact": "Contact Us",
+    "profile": "Profile",
+    "admin": "Admin Dashboard",
+    "logout": "Logout",
+    "signin": "Sign In",
+    "language": "Language",
+    "search_placeholder": "Search electronics...",
+    "wishlist": "Wishlist",
+    "cart": "Cart"
+  },
+  "home": {
+    "explore_by_category": "Explore by Category",
+    "discover_subtitle": "Discover amazing products from each category, handpicked for you",
+    "view_all": "View All",
+    "featured": "Featured",
+    "start_shopping": "Start Shopping Now",
+    "join_premium": "Join Premium",
+    "quick_view": "Quick View",
+    "add_to_cart": "Add to Cart",
+    "remove_from_cart": "Remove from Cart"
+  },
+  "checkout": {
+    "billing_address": "Billing Address",
+    "payment_method": "Payment Method",
+    "complete_payment": "Complete Payment",
+    "processing": "Processing...",
+    "secure_notice": "Your payment information is secure and encrypted"
+  },
+  "product": {
+    "back": "Back",
+    "reviews": "reviews",
+    "quantity": "Quantity",
+    "free_shipping": "Free Shipping",
+    "free_shipping_threshold": "On orders over ﷼50",
+    "secure_payment": "Secure Payment",
+    "easy_returns": "Easy Returns",
+    "buy_now": "Buy Now",
+    "processing": "Processing...",
+    "related_products": "Related Products",
+    "featured": "Featured"
+  },
+  "category": {
+    "back_to_categories": "Back to Categories",
+    "search_products": "Search products...",
+    "sort_by": "Sort by",
+    "name_asc": "Name (A-Z)",
+    "name_desc": "Name (Z-A)",
+    "price_asc": "Price (Low to High)",
+    "price_desc": "Price (High to Low)",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "no_products_found": "No products found",
+    "adjust_search": "Try adjusting your search criteria",
+    "no_products_in_category": "No products are available in this category at the moment",
+    "clear_search": "Clear Search",
+    "previous": "Previous",
+    "next": "Next",
+    "showing_count_in": "Showing {{count}} product{{suffix}} in {{category}}",
+    "plural_suffix": "s"
+  },
+  "search": {
+    "results_title": "Search Results",
+    "searching_for": "Searching for \"{{query}}\"",
+    "enter_term": "Enter a search term to find products",
+    "sort_by": "Sort by",
+    "relevance": "Relevance",
+    "name_asc": "Name (A-Z)",
+    "name_desc": "Name (Z-A)",
+    "price_asc": "Price: Low to High",
+    "price_desc": "Price: High to Low",
+    "rating_desc": "Highest Rated",
+    "newest": "Newest",
+    "category": "Category",
+    "all_categories": "All Categories",
+    "price_range": "Price Range",
+    "all_prices": "All Prices",
+    "items_per_page": "Per page",
+    "refresh": "Refresh",
+    "no_products_found": "No products found",
+    "none_match_for": "No products match your search for \"{{query}}\". Try different keywords or check your spelling.",
+    "clear_search": "Clear Search",
+    "found_count_matching": "Found {{count}} product{{suffix}} matching \"{{query}}\"",
+    "plural_suffix": "s"
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "count_items": "{{count}} item{{suffix}} in your wishlist",
+    "plural_suffix": "s",
+    "empty_title": "Your wishlist is empty",
+    "empty_msg": "Start adding products to your wishlist to save them for later",
+    "start_shopping": "Start Shopping"
+  },
+  "common": {
+    "back": "Back",
+    "try_again": "Try Again",
+    "clear_search": "Clear Search"
+  }
+}
+

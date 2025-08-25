@@ -11,8 +11,12 @@ export const useProductStore = create(set => ({
   setProducts: products => set({ products }),
 
   createProduct: async productData => {
+    // console.log("user her",productData);
+    
     set({ loading: true, error: null });
     try {
+     
+      
       const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.CREATE), productData);
       if (response.data) {
         set(prevState => ({

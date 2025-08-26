@@ -18,8 +18,10 @@ import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
+import { useTranslation } from "react-i18next";
 
 const CartPage = () => {
+  const { t } = useTranslation();
   const {
     cart,
     removeFromCart,
@@ -81,7 +83,7 @@ const CartPage = () => {
           });
           
           // Show single success toast
-          toast.success("Product moved to wishlist");
+          toast.success(t('cart.productMovedToWishlist'));
         } else {
           throw new Error("Failed to add to wishlist");
         }
@@ -89,13 +91,13 @@ const CartPage = () => {
         throw new Error("Failed to remove from cart");
       }
     } catch (error) {
-      toast.error("Failed to move product to wishlist");
+      toast.error(t('cart.failedToMoveToWishlist'));
     }
   };
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) {
-      toast.error("Please enter a coupon code");
+      toast.error(t('cart.enterCouponCode'));
       return;
     }
 
@@ -112,7 +114,7 @@ const CartPage = () => {
 
   const handleCheckout = () => {
     if (cart.length === 0) {
-      toast.error("Your cart is empty");
+      toast.error(t('cart.cartIsEmpty'));
       return;
     }
     navigate("/checkout");
@@ -127,9 +129,9 @@ const CartPage = () => {
       <div className="w-24 h-24 bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
         <ShoppingCart size={48} className="text-muted-foreground" />
       </div>
-      <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
+      <h2 className="text-2xl font-bold mb-4">{t('cart.yourCartIsEmpty')}</h2>
       <p className="text-muted-foreground mb-8">
-        Looks like you haven't added any products to your cart yet.
+        {t('cart.noProductsInCart')}
       </p>
       <Link to="/shop">
         <motion.button
@@ -137,7 +139,7 @@ const CartPage = () => {
           whileTap={{ scale: 0.95 }}
           className="btn-primary px-8 py-3"
         >
-          Start Shopping
+          {t('cart.startShopping')}
         </motion.button>
       </Link>
     </motion.div>
@@ -170,11 +172,11 @@ const CartPage = () => {
                 className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ArrowLeft size={20} />
-                <span>Continue Shopping</span>
+                <span>{t('cart.continueShopping')}</span>
               </motion.button>
             </Link>
           </div>
-          <h1 className="text-3xl font-bold">Shopping Cart ({cartItemCount})</h1>
+          <h1 className="text-3xl font-bold">{t('cart.shoppingCart')} ({cartItemCount})</h1>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -265,7 +267,7 @@ const CartPage = () => {
                         whileTap={{ scale: 0.9 }}
                         onClick={() => handleMoveToWishlist(item)}
                         className="p-2 text-muted-foreground hover:text-red-500 transition-colors"
-                        title="Move to wishlist"
+                        title={t('cart.moveToWishlist')}
                       >
                         <Heart size={20} />
                       </motion.button>
@@ -275,7 +277,7 @@ const CartPage = () => {
                         whileTap={{ scale: 0.9 }}
                         onClick={() => handleRemoveFromCart(item._id)}
                         className="p-2 text-muted-foreground hover:text-red-500 transition-colors"
-                        title="Remove from cart"
+                        title={t('cart.removeFromCart')}
                       >
                         <Trash2 size={20} />
                       </motion.button>
@@ -293,17 +295,17 @@ const CartPage = () => {
             className="lg:col-span-1"
           >
             <div className="card-modern p-6 sticky top-24">
-              <h2 className="text-xl font-bold mb-6">Order Summary</h2>
+              <h2 className="text-xl font-bold mb-6">{t('cart.orderSummary')}</h2>
 
               {/* Coupon Section */}
               <div className="mb-6">
-                <h3 className="font-semibold mb-3">Have a coupon?</h3>
+                <h3 className="font-semibold mb-3">{t('cart.haveCoupon')}</h3>
                 <div className="flex space-x-2">
                   <input
                     type="text"
                     value={couponCode}
                     onChange={e => setCouponCode(e.target.value)}
-                    placeholder="Enter coupon code"
+                    placeholder={t('cart.enterCouponCode')}
                     className="flex-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
                   />
                   <motion.button
@@ -313,7 +315,7 @@ const CartPage = () => {
                     disabled={isApplyingCoupon || !couponCode.trim()}
                     className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isApplyingCoupon ? "Applying..." : "Apply"}
+                    {isApplyingCoupon ? t('cart.applying') : t('cart.apply')}
                   </motion.button>
                 </div>
 
@@ -325,13 +327,13 @@ const CartPage = () => {
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-green-800 font-medium">
-                        Coupon applied: {coupon.code}
+                        {t('cart.couponApplied')}: {coupon.code}
                       </span>
                       <button
                         onClick={removeCoupon}
                         className="text-green-600 hover:text-green-800"
                       >
-                        Remove
+                        {t('cart.remove')}
                       </button>
                     </div>
                     <p className="text-green-600 text-sm">
@@ -344,12 +346,12 @@ const CartPage = () => {
               {/* Price Breakdown */}
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
-                  <span>Subtotal</span>
+                  <span>{t('cart.subtotal')}</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
                 {coupon && isCouponApplied && (
                   <div className="flex justify-between text-green-600">
-                    <span>Discount</span>
+                    <span>{t('cart.discount')}</span>
                     <span>
                       -$
                       {(subtotal * (coupon.discountPercentage / 100)).toFixed(
@@ -359,12 +361,12 @@ const CartPage = () => {
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span>Shipping</span>
-                  <span className="text-green-600">Free</span>
+                  <span>{t('cart.shipping')}</span>
+                  <span className="text-green-600">{t('cart.free')}</span>
                 </div>
                 <hr className="border-border" />
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Total</span>
+                  <span>{t('cart.total')}</span>
                   <span>${total.toFixed(2)}</span>
                 </div>
               </div>
@@ -378,7 +380,7 @@ const CartPage = () => {
               >
                 <div className="flex items-center justify-center space-x-2">
                   <CreditCard size={20} />
-                  <span>Proceed to Checkout</span>
+                  <span>{t('cart.proceedToCheckout')}</span>
                 </div>
               </motion.button>
 
@@ -386,11 +388,11 @@ const CartPage = () => {
               <div className="space-y-3 text-sm text-muted-foreground">
                 <div className="flex items-center space-x-2">
                   <Truck size={16} />
-                  <span>Free shipping on orders over $99</span>
+                  <span>{t('cart.freeShippingOver99')}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Shield size={16} />
-                  <span>30-day money-back guarantee</span>
+                  <span>{t('cart.moneyBackGuarantee')}</span>
                 </div>
               </div>
             </div>

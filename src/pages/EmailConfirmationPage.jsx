@@ -6,8 +6,10 @@ import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
+import { useTranslation } from "react-i18next";
 
 const EmailConfirmationPage = () => {
+  const { t } = useTranslation();
   const [status, setStatus] = useState("loading"); // loading, success, error
   const [message, setMessage] = useState("");
   const { token } = useParams();
@@ -20,8 +22,8 @@ const EmailConfirmationPage = () => {
         
         if (response.data?.success) {
           setStatus("success");
-          setMessage(response.data.message || "Email confirmed successfully!");
-          toast.success("Email confirmed successfully!");
+          setMessage(response.data.message || t('emailConfirmation.success'));
+          toast.success(t('emailConfirmation.success'));
           
           // Redirect to login after 3 seconds
           setTimeout(() => {
@@ -29,11 +31,11 @@ const EmailConfirmationPage = () => {
           }, 3000);
         } else {
           setStatus("error");
-          setMessage("Email confirmation failed. Please try again.");
+          setMessage(t('emailConfirmation.failed'));
         }
       } catch (error) {
         setStatus("error");
-        const errorMessage = error.response?.data?.message || "Email confirmation failed. Please try again.";
+        const errorMessage = error.response?.data?.message || t('emailConfirmation.failed');
         setMessage(errorMessage);
         toast.error(errorMessage);
       }
@@ -43,7 +45,7 @@ const EmailConfirmationPage = () => {
       confirmEmail();
     } else {
       setStatus("error");
-      setMessage("Invalid confirmation link.");
+      setMessage(t('emailConfirmation.invalidLink'));
     }
   }, [token, navigate]);
 
@@ -54,10 +56,10 @@ const EmailConfirmationPage = () => {
           <div className="text-center">
             <Loader2 className="mx-auto h-12 w-12 text-primary animate-spin mb-4" />
             <h2 className="text-xl font-semibold text-foreground mb-2">
-              Confirming your email...
+              {t('emailConfirmation.confirming')}
             </h2>
             <p className="text-muted-foreground">
-              Please wait while we verify your email address.
+              {t('emailConfirmation.pleaseWait')}
             </p>
           </div>
         );
@@ -67,13 +69,13 @@ const EmailConfirmationPage = () => {
           <div className="text-center">
             <CheckCircle className="mx-auto h-12 w-12 text-green-500 mb-4" />
             <h2 className="text-xl font-semibold text-foreground mb-2">
-              Email Confirmed!
+              {t('emailConfirmation.confirmed')}
             </h2>
             <p className="text-muted-foreground mb-6">
               {message}
             </p>
             <p className="text-sm text-muted-foreground">
-              Redirecting to login page...
+              {t('emailConfirmation.redirecting')}
             </p>
           </div>
         );
@@ -83,7 +85,7 @@ const EmailConfirmationPage = () => {
           <div className="text-center">
             <XCircle className="mx-auto h-12 w-12 text-red-500 mb-4" />
             <h2 className="text-xl font-semibold text-foreground mb-2">
-              Confirmation Failed
+              {t('emailConfirmation.confirmationFailed')}
             </h2>
             <p className="text-muted-foreground mb-6">
               {message}
@@ -93,13 +95,13 @@ const EmailConfirmationPage = () => {
                 to="/login"
                 className="btn-primary w-full"
               >
-                Go to Login
+                {t('emailConfirmation.goToLogin')}
               </Link>
               <Link
                 to="/signup"
                 className="btn-secondary w-full"
               >
-                Create New Account
+                {t('emailConfirmation.createNewAccount')}
               </Link>
             </div>
           </div>
@@ -135,7 +137,7 @@ const EmailConfirmationPage = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-3xl font-bold text-foreground"
           >
-            Email Confirmation
+            {t('emailConfirmation.title')}
           </motion.h1>
 
           <motion.p
@@ -144,7 +146,7 @@ const EmailConfirmationPage = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-2 text-muted-foreground"
           >
-            Verifying your email address
+            {t('emailConfirmation.verifying')}
           </motion.p>
         </div>
 
@@ -162,4 +164,4 @@ const EmailConfirmationPage = () => {
   );
 };
 
-export default EmailConfirmationPage; 
+export default EmailConfirmationPage;

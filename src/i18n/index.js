@@ -13,7 +13,8 @@ i18n
       en: { translation: en },
       ar: { translation: ar },
     },
-    fallbackLng: 'en',
+    fallbackLng: 'ar',
+    lng: 'ar',
     supportedLngs: ['en', 'ar'],
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
@@ -28,7 +29,7 @@ const applyDocumentDirection = (lng) => {
   document.documentElement.lang = lng;
 };
 
-applyDocumentDirection(i18n.resolvedLanguage || 'en');
+applyDocumentDirection(i18n.resolvedLanguage || 'ar');
 i18n.on('languageChanged', applyDocumentDirection);
 
 export default i18n;

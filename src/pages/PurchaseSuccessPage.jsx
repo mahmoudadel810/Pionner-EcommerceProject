@@ -5,11 +5,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/useCartStore";
 import { usePaymentStore } from "@/stores/usePaymentStore";
+import { useTranslation } from "react-i18next";
 
 import { toast } from "sonner";
 import { Loader, CheckCircle, AlertTriangle, FileDown, ArrowLeft } from "lucide-react";
 
 const PurchaseSuccessPage = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const paymentIntentId = searchParams.get("payment_intent");
@@ -43,7 +45,7 @@ const PurchaseSuccessPage = () => {
         setSuccessProcessed(true);
         setLoading(false);
         setError(null);
-        toast.success("Order already confirmed for this payment!");
+        toast.success(t('purchase.orderAlreadyConfirmed'));
         return;
       }
 
@@ -76,7 +78,7 @@ const PurchaseSuccessPage = () => {
           setSuccessProcessed(true);
           if (intentKey) localStorage.setItem(intentKey, "1");
 
-          toast.success("🎉 Order confirmed! Your purchase was successful and will be delivered soon!");
+          toast.success(t('purchase.orderConfirmed'));
 
           try {
             await clearCart();
@@ -88,12 +90,12 @@ const PurchaseSuccessPage = () => {
 
           setTimeout(() => {
             if (isMounted) {
-              toast("Redirecting to home page...");
+              toast(t('purchase.redirectingHome'));
               navigate("/");
             }
           }, 8000);
         } else {
-          const errorMsg = result?.message || "Payment confirmation failed. Please contact support.";
+          const errorMsg = result?.message || t('purchase.paymentConfirmationFailed');
           setError(errorMsg);
           toast.error(errorMsg);
           setSuccessProcessed(true);
@@ -101,7 +103,7 @@ const PurchaseSuccessPage = () => {
       } catch (error) {
         if (!isMounted) return;
         const errorMsg =
-          error?.response?.data?.message || error?.message || "Failed to process payment confirmation.";
+          error?.response?.data?.message || error?.message || t('purchase.failedToProcessPayment');
         console.error("Payment processing error:", error);
         setError(errorMsg);
         toast.error(errorMsg);
@@ -191,33 +193,33 @@ const PurchaseSuccessPage = () => {
       {loading ? (
         <div className="text-center space-y-4" role="status" aria-live="polite">
           <Loader className="animate-spin text-primary w-10 h-10 mx-auto" />
-          <h1 className="text-xl font-semibold">Processing your payment...</h1>
-          <p className="text-muted-foreground">Please wait while we confirm your order.</p>
+          <h1 className="text-xl font-semibold">{t('purchase.processingPayment')}</h1>
+          <p className="text-muted-foreground">{t('purchase.pleaseWait')}</p>
         </div>
       ) : error ? (
         <div className="text-center space-y-4 text-red-600" role="alert">
           <AlertTriangle className="w-10 h-10 mx-auto" />
-          <h1 className="text-xl font-semibold">Oops! Something went wrong.</h1>
+          <h1 className="text-xl font-semibold">{t('purchase.somethingWentWrong')}</h1>
           <p>{error}</p>
           <Button onClick={() => navigate("/")} className="mt-4">
-            <ArrowLeft className="mr-2 h-4 w-4" /> Go Back
+            <ArrowLeft className="mr-2 h-4 w-4" /> {t('purchase.goBack')}
           </Button>
         </div>
       ) : (
         <div className="text-center space-y-4" role="status" aria-live="polite">
           <CheckCircle className="w-12 h-12 text-green-600 mx-auto" />
-          <h1 className="text-2xl font-bold text-green-600">Payment Successful!</h1>
+          <h1 className="text-2xl font-bold text-green-600">{t('purchase.paymentSuccessful')}</h1>
           <p className="text-muted-foreground">
-            Thank you for your purchase. Your order has been confirmed and will be delivered soon.
+            {t('purchase.thankYouMessage')}
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4">
             <Button variant="secondary" onClick={generateInvoice}>
               <FileDown className="w-4 h-4 mr-2" />
-              Download Invoice
+              {t('purchase.downloadInvoice')}
             </Button>
             <Button onClick={() => navigate("/")}>
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
+              {t('purchase.backToHome')}
             </Button>
           </div>
         </div>

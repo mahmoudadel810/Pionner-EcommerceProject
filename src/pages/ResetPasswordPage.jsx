@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { Lock, Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
+import { useTranslation } from "react-i18next";
 
 const ResetPasswordPage = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const { resetPassword, loading } = useUserStore();
   const [formData, setFormData] = useState({
@@ -37,28 +39,27 @@ const ResetPasswordPage = () => {
     const newErrors = {};
 
     if (!formData.code.trim()) {
-      newErrors.code = "code is required";
+      newErrors.code = t('auth.validation.codeRequired');
     } else if (formData.code.trim().length < 6) {
-      newErrors.code = "code must be at least 6 characters";
+      newErrors.code = t('auth.validation.codeMinLength');
     }
 
     if (!formData.newPassword) {
-      newErrors.newPassword = "newPassword is required";
+      newErrors.newPassword = t('auth.validation.passwordRequired');
     } else if (
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
         formData.newPassword
       )
     ) {
-      newErrors.newPassword =
-        "newPassword must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)";
+      newErrors.newPassword = t('auth.validation.passwordComplexity');
     } else if (formData.newPassword.length < 8) {
-      newErrors.newPassword = "newPassword must be at least 8 characters ";
+      newErrors.newPassword = t('auth.validation.passwordMinLength');
     }
 
     if (!formData.confirmNewPassword) {
-      newErrors.confirmNewPassword = "Please confirm your password";
+      newErrors.confirmNewPassword = t('auth.validation.confirmPasswordRequired');
     } else if (formData.newPassword !== formData.confirmNewPassword) {
-      newErrors.confirmNewPassword = "Passwords do not match";
+      newErrors.confirmNewPassword = t('auth.validation.passwordsDoNotMatch');
     }
 
     setErrors(newErrors);
@@ -96,19 +97,18 @@ const ResetPasswordPage = () => {
             </div>
 
             <h1 className="text-2xl font-bold text-foreground mb-4">
-              Password Reset Successfully
+              {t('auth.resetPassword.success')}
             </h1>
 
             <p className="text-muted-foreground mb-6">
-              Your password has been reset successfully. You can now log in with
-              your new password.
+              {t('auth.resetPassword.successMessage')}
             </p>
 
             <Link
               to="/login"
               className="block w-full bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300"
             >
-              Continue to Login
+              {t('auth.resetPassword.continueToLogin')}
             </Link>
           </div>
         </motion.div>
@@ -132,7 +132,7 @@ const ResetPasswordPage = () => {
               className="inline-flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-300 mb-6"
             >
               <ArrowLeft size={20} />
-              <span>Back to Login</span>
+              <span>{t('auth.backToLogin')}</span>
             </Link>
 
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -140,11 +140,11 @@ const ResetPasswordPage = () => {
             </div>
 
             <h1 className="text-2xl font-bold text-foreground mb-2">
-              Reset Password
+              {t('auth.resetPassword.title')}
             </h1>
 
             <p className="text-muted-foreground">
-              Enter your new password below to reset your account password.
+              {t('auth.resetPassword.description')}
             </p>
           </div>
 
@@ -155,7 +155,7 @@ const ResetPasswordPage = () => {
                 htmlFor="code"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Reset Code
+                {t('auth.resetPassword.resetCode')}
               </label>
               <input
                 type="text"
@@ -169,7 +169,7 @@ const ResetPasswordPage = () => {
                     ? "border-red-500 focus:border-red-500"
                     : "border-border focus:border-primary"
                 }`}
-                placeholder=" ******"
+                placeholder={t('auth.resetPassword.codePlaceholder')}
               />
             </div>
 
@@ -188,7 +188,7 @@ const ResetPasswordPage = () => {
                 htmlFor="newPassword"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                New Password
+                {t('auth.newPassword')}
               </label>
               <div className="relative">
                 <input
@@ -204,7 +204,7 @@ const ResetPasswordPage = () => {
                       ? "border-red-500 focus:border-red-500"
                       : "border-border focus:border-primary"
                   }`}
-                  placeholder="M12345m@"
+                  placeholder={t('auth.passwordPlaceholder')}
                 />
                 <button
                   type="button"
@@ -234,7 +234,7 @@ const ResetPasswordPage = () => {
                 htmlFor="confirmNewPassword"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Confirm New Password
+                {t('auth.confirmNewPassword')}
               </label>
               <div className="relative">
                 <input
@@ -246,7 +246,7 @@ const ResetPasswordPage = () => {
                   required
                   minLength={8}
                   className="w-full pr-10 pl-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
-                  placeholder="Confirm new password"
+                  placeholder={t('auth.confirmPasswordPlaceholder')}
                 />
                 <button
                   type="button"
@@ -273,7 +273,7 @@ const ResetPasswordPage = () => {
                 formData.confirmNewPassword &&
                 formData.newPassword !== formData.confirmNewPassword && (
                   <p className="text-red-500 text-sm mt-1">
-                    Passwords do not match
+                    {t('auth.validation.passwordsDoNotMatch')}
                   </p>
                 )}
             </div>
@@ -290,12 +290,12 @@ const ResetPasswordPage = () => {
               {loading ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Resetting...</span>
+                  <span>{t('auth.resetPassword.resetting')}</span>
                 </>
               ) : (
                 <>
                   <Lock size={20} />
-                  <span>Reset Password</span>
+                  <span>{t('auth.resetPassword.resetPassword')}</span>
                 </>
               )}
             </motion.button>
@@ -304,12 +304,12 @@ const ResetPasswordPage = () => {
           {/* Footer */}
           <div className="mt-8 text-center">
             <p className="text-sm text-muted-foreground">
-              Remember your password?{" "}
+              {t('auth.resetPassword.rememberPassword')}{" "}
               <Link
                 to="/login"
                 className="text-primary hover:text-primary/80 font-medium transition-colors duration-300"
               >
-                Sign in
+                {t('auth.signIn')}
               </Link>
             </p>
           </div>

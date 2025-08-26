@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
@@ -17,6 +18,7 @@ import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 
 const CategoryProductsPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [category, setCategory] = useState(null);
   const [products, setProducts] = useState([]);
@@ -63,11 +65,11 @@ const CategoryProductsPage = () => {
         setProducts(productsResponse.data.data.data || productsResponse.data.data);
         setTotalPages(productsResponse.data.pagination?.totalPages || 1);
       } else {
-        setError("Failed to fetch products");
+        setError(t('categoryProducts.errors.fetchFailed'));
       }
     } catch (error) {
-      setError(error.response?.data?.message || "Failed to fetch products");
-      toast.error("Failed to load products");
+      setError(error.response?.data?.message || t('categoryProducts.errors.fetchFailed'));
+      toast.error(t('categoryProducts.toast.loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -87,7 +89,7 @@ const CategoryProductsPage = () => {
 
   const handleToggleCart = async (product) => {
     if (!user) {
-      toast.error("Please login to manage cart");
+      toast.error(t('categoryProducts.toast.loginRequiredCart'));
       return;
     }
 
@@ -96,16 +98,16 @@ const CategoryProductsPage = () => {
       if (result.success) {
         // Success message is handled in the store
       } else {
-        toast.error(result.message || "Failed to update cart");
+        toast.error(result.message || t('common.failedUpdateCart'));
       }
     } catch (error) {
-      toast.error("Failed to update cart");
+      toast.error(t('categoryProducts.toast.cartUpdateFailed'));
     }
   };
 
   const handleWishlistToggle = async (product) => {
     if (!user) {
-      toast.error("Please login to manage wishlist");
+      toast.error(t('categoryProducts.toast.loginRequiredWishlist'));
       return;
     }
 
@@ -117,7 +119,7 @@ const CategoryProductsPage = () => {
         await addToWishlist(product);
       }
     } catch (error) {
-      toast.error("Failed to update wishlist");
+      toast.error(t('categoryProducts.toast.wishlistUpdateFailed'));
     }
   };
 
@@ -178,7 +180,7 @@ const CategoryProductsPage = () => {
               {product.isFeatured && (
                 <div className="absolute top-2 left-2">
                   <Badge variant="destructive" className="text-xs">
-                    Featured
+                    {t('categoryProducts.badges.featured')}
                   </Badge>
                 </div>
               )}
@@ -226,7 +228,7 @@ const CategoryProductsPage = () => {
               size="sm"
             >
               <ShoppingCart className="h-4 w-4 mr-2" />
-              {isInCart(product._id) ? "Remove from Cart" : "Add to Cart"}
+              {isInCart(product._id) ? t('categoryProducts.buttons.removeFromCart') : t('categoryProducts.buttons.addToCart')}
             </Button>
           </CardContent>
         </Card>
@@ -253,7 +255,7 @@ const CategoryProductsPage = () => {
                 />
                 {product.isFeatured && (
                   <Badge variant="destructive" className="absolute top-2 left-2 text-xs">
-                    Featured
+                    {t('categoryProducts.badges.featured')}
                   </Badge>
                 )}
               </Link>
@@ -309,7 +311,7 @@ const CategoryProductsPage = () => {
                     size="sm"
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
-                    {isInCart(product._id) ? "Remove from Cart" : "Add to Cart"}
+                    {isInCart(product._id) ? t('categoryProducts.buttons.removeFromCart') : t('categoryProducts.buttons.addToCart')}
                   </Button>
                 </div>
               </div>
@@ -348,11 +350,11 @@ const CategoryProductsPage = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-destructive mb-4">
-            Error Loading Products
+            {t('categoryProducts.errors.loadingTitle')}
           </h1>
           <p className="text-muted-foreground mb-6">{error}</p>
           <Button onClick={fetchCategoryAndProducts} variant="outline">
-            Try Again
+            {t('categoryProducts.buttons.tryAgain')}
           </Button>
         </div>
       </div>
@@ -367,7 +369,7 @@ const CategoryProductsPage = () => {
           <Link to="/categories">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Categories
+              {t('categoryProducts.navigation.backToCategories')}
             </Button>
           </Link>
         </div>
@@ -399,7 +401,7 @@ const CategoryProductsPage = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search products..."
+              placeholder={t('categoryProducts.search.placeholder')}
               value={searchQuery}
               onChange={handleSearch}
               className="pl-10"
@@ -409,15 +411,15 @@ const CategoryProductsPage = () => {
           {/* Sort */}
           <Select value={`${sortBy}-${sortOrder}`} onValueChange={handleSortChange}>
             <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder={t('categoryProducts.sort.placeholder')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-              <SelectItem value="name-desc">Name (Z-A)</SelectItem>
-              <SelectItem value="price-asc">Price (Low to High)</SelectItem>
-              <SelectItem value="price-desc">Price (High to Low)</SelectItem>
-              <SelectItem value="createdAt-desc">Newest</SelectItem>
-              <SelectItem value="createdAt-asc">Oldest</SelectItem>
+              <SelectItem value="name-asc">{t('categoryProducts.sort.nameAsc')}</SelectItem>
+              <SelectItem value="name-desc">{t('categoryProducts.sort.nameDesc')}</SelectItem>
+              <SelectItem value="price-asc">{t('categoryProducts.sort.priceAsc')}</SelectItem>
+              <SelectItem value="price-desc">{t('categoryProducts.sort.priceDesc')}</SelectItem>
+              <SelectItem value="createdAt-desc">{t('categoryProducts.sort.newest')}</SelectItem>
+              <SelectItem value="createdAt-asc">{t('categoryProducts.sort.oldest')}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -449,18 +451,18 @@ const CategoryProductsPage = () => {
       ) : products.length === 0 ? (
         <div className="text-center py-12">
           <Package className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">No products found</h3>
+          <h3 className="text-lg font-semibold mb-2">{t('categoryProducts.empty.title')}</h3>
           <p className="text-muted-foreground mb-4">
             {searchQuery
-              ? "Try adjusting your search criteria"
-              : "No products are available in this category at the moment"}
+              ? t('categoryProducts.empty.searchMessage')
+              : t('categoryProducts.empty.categoryMessage')}
           </p>
           {searchQuery && (
             <Button
               variant="outline"
               onClick={() => setSearchQuery("")}
             >
-              Clear Search
+              {t('categoryProducts.buttons.clearSearch')}
             </Button>
           )}
         </div>
@@ -495,7 +497,7 @@ const CategoryProductsPage = () => {
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
                 >
-                  Previous
+                  {t('categoryProducts.pagination.previous')}
                 </Button>
                 
                 <div className="flex items-center gap-1">
@@ -518,7 +520,7 @@ const CategoryProductsPage = () => {
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
                 >
-                  Next
+                  {t('categoryProducts.pagination.next')}
                 </Button>
               </div>
             </div>
@@ -529,11 +531,11 @@ const CategoryProductsPage = () => {
       {/* Results Count */}
       {!loading && products.length > 0 && (
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          Showing {products.length} product{products.length !== 1 ? "s" : ""} in {category?.name}
+          {t('categoryProducts.results.showing', { count: products.length, category: category?.name })}
         </div>
       )}
     </div>
   );
 };
 
-export default CategoryProductsPage; 
+export default CategoryProductsPage;

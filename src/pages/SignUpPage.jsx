@@ -13,8 +13,10 @@ import {
 import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import { Phone } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const SignUpPage = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -44,9 +46,9 @@ const SignUpPage = () => {
 
     if (name === "name") {
       if (!value.trim()) {
-        newErrors.name = "Name is required";
+        newErrors.name = t('auth.errors.nameRequired');
       } else if (value.trim().length < 2) {
-        newErrors.name = "Name must be at least 2 characters";
+        newErrors.name = t('auth.errors.nameTooShort');
       } else {
         delete newErrors.name;
       }
@@ -54,11 +56,11 @@ const SignUpPage = () => {
 
     if (name === "email") {
       if (!value.trim()) {
-        newErrors.email = "Email is required";
+        newErrors.email = t('auth.errors.emailRequired');
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        newErrors.email = "Please enter a valid email address";
+        newErrors.email = t('auth.errors.emailInvalid');
       } else if (value.length > 254) {
-        newErrors.email = "Email is too long";
+        newErrors.email = t('auth.errors.emailTooLong');
       } else {
         delete newErrors.email;
       }
@@ -66,9 +68,9 @@ const SignUpPage = () => {
 
     if (name === "phone") {
       if (!value.trim()) {
-        newErrors.phone = "Phone is required";
+        newErrors.phone = t('auth.errors.phoneRequired');
       } else if (!/^[0-9\+\(\)\.\s\-,]+$/.test(value)) {
-        newErrors.phone = "Please enter a valid phone number";
+        newErrors.phone = t('auth.errors.phoneInvalid');
       } else {
         delete newErrors.phone;
       }
@@ -76,22 +78,19 @@ const SignUpPage = () => {
 
     if (name === "password") {
       if (!value) {
-        newErrors.password = "Password is required";
+        newErrors.password = t('auth.errors.passwordRequired');
       } else if (value.length < 8) {
-        newErrors.password = "Password must be at least 8 characters";
+        newErrors.password = t('auth.errors.passwordTooShort');
       } else if (value.length > 128) {
-        newErrors.password = "Password is too long";
+        newErrors.password = t('auth.errors.passwordTooLong');
       } else if (!/[a-z]/.test(value)) {
-        newErrors.password =
-          "Password must contain at least one lowercase letter";
+        newErrors.password = t('auth.errors.passwordLowercase');
       } else if (!/[A-Z]/.test(value)) {
-        newErrors.password =
-          "Password must contain at least one uppercase letter";
+        newErrors.password = t('auth.errors.passwordUppercase');
       } else if (!/\d/.test(value)) {
-        newErrors.password = "Password must contain at least one number";
+        newErrors.password = t('auth.errors.passwordNumber');
       } else if (!/[@$!%*?&#]/.test(value)) {
-        newErrors.password =
-          "Password must contain at least one special character !@#$...";
+        newErrors.password = t('auth.errors.passwordSpecial');
       } else {
         delete newErrors.password;
       }
@@ -99,9 +98,9 @@ const SignUpPage = () => {
 
     if (name === "confirmPassword") {
       if (!value) {
-        newErrors.confirmPassword = "Please confirm your password";
+        newErrors.confirmPassword = t('auth.errors.confirmPasswordRequired');
       } else if (formData.password !== value) {
-        newErrors.confirmPassword = "Passwords do not match";
+        newErrors.confirmPassword = t('auth.errors.passwordMismatch');
       } else {
         delete newErrors.confirmPassword;
       }
@@ -144,48 +143,45 @@ const SignUpPage = () => {
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = t('auth.errors.nameRequired');
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters";
+      newErrors.name = t('auth.errors.nameTooShort');
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t('auth.errors.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t('auth.errors.emailInvalid');
     } else if (formData.email.length > 254) {
-      newErrors.email = "Email is too long";
+      newErrors.email = t('auth.errors.emailTooLong');
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone is required";
+      newErrors.phone = t('auth.errors.phoneRequired');
     } else if (!/^[0-9\+\(\)\.\s\-,]+$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number";
+      newErrors.phone = t('auth.errors.phoneInvalid');
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = t('auth.errors.passwordRequired');
     } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+      newErrors.password = t('auth.errors.passwordTooShort');
     } else if (formData.password.length > 128) {
-      newErrors.password = "Password is too long";
+      newErrors.password = t('auth.errors.passwordTooLong');
     } else if (!/[a-z]/.test(formData.password)) {
-      newErrors.password =
-        "Password must contain at least one lowercase letter";
+      newErrors.password = t('auth.errors.passwordLowercase');
     } else if (!/[A-Z]/.test(formData.password)) {
-      newErrors.password =
-        "Password must contain at least one uppercase letter";
+      newErrors.password = t('auth.errors.passwordUppercase');
     } else if (!/\d/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one number";
+      newErrors.password = t('auth.errors.passwordNumber');
     } else if (!/[@$!%*?&#]/.test(formData.password)) {
-      newErrors.password =
-        "Password must contain at least one special character !@#$...";
+      newErrors.password = t('auth.errors.passwordSpecial');
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password";
+      newErrors.confirmPassword = t('auth.errors.confirmPasswordRequired');
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = t('auth.errors.passwordMismatch');
     }
 
     setErrors(newErrors);
@@ -234,7 +230,7 @@ const SignUpPage = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-3xl font-bold text-foreground"
           >
-            Create account
+            {t('auth.signup.title')}
           </motion.h2>
 
           <motion.p
@@ -243,7 +239,7 @@ const SignUpPage = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-2 text-muted-foreground"
           >
-            Join us and start shopping for amazing electronics
+            {t('auth.signup.subtitle')}
           </motion.p>
         </div>
 
@@ -262,7 +258,7 @@ const SignUpPage = () => {
                 htmlFor="name"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Full Name
+                {t('auth.fields.fullName')}
               </label>
               <div className="relative">
                 <User
@@ -279,7 +275,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("name")}
-                  placeholder="Enter your full name"
+                  placeholder={t('auth.placeholders.fullName')}
                 />
               </div>
               {errors.name && (
@@ -299,7 +295,7 @@ const SignUpPage = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Email address
+                {t('auth.fields.email')}
               </label>
               <div className="relative">
                 <Mail
@@ -316,7 +312,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("email")}
-                  placeholder="Enter your email"
+                  placeholder={t('auth.placeholders.email')}
                 />
               </div>
               {errors.email && (
@@ -336,7 +332,7 @@ const SignUpPage = () => {
                 htmlFor="phone"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Phone
+                {t('auth.fields.phone')}
               </label>
               <div className="relative">
                 <Phone
@@ -353,7 +349,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("phone")}
-                  placeholder="Enter your email"
+                  placeholder={t('auth.placeholders.phone')}
                 />
               </div>
               {errors.phone && (
@@ -373,7 +369,7 @@ const SignUpPage = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Password
+                {t('auth.fields.password')}
               </label>
               <div className="relative">
                 <Lock
@@ -394,7 +390,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("password")}
-                  placeholder="Create a password"
+                  placeholder={t('auth.placeholders.createPassword')}
                   maxLength={128}
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
@@ -422,28 +418,28 @@ const SignUpPage = () => {
               )}
               {/* Password Requirements */}
               <div className="mt-2 text-xs text-muted-foreground">
-                <p>Password must contain:</p>
+                <p>{t('auth.passwordRequirements.title')}</p>
                 <ul className="list-disc list-inside mt-1 space-y-1">
                   <li
                     className={
                       formData.password.length >= 8 ? "text-green-600" : ""
                     }
                   >
-                    At least 8 characters
+                    {t('auth.passwordRequirements.minLength')}
                   </li>
                   <li
                     className={
                       /[a-z]/.test(formData.password) ? "text-green-600" : ""
                     }
                   >
-                    One lowercase letter
+                    {t('auth.passwordRequirements.lowercase')}
                   </li>
                   <li
                     className={
                       /[A-Z]/.test(formData.password) ? "text-green-600" : ""
                     }
                   >
-                    One uppercase letter
+                    {t('auth.passwordRequirements.uppercase')}
                   </li>
                   <li
                     className={
@@ -452,14 +448,14 @@ const SignUpPage = () => {
                         : ""
                     }
                   >
-                    One special character !@#$...
+                    {t('auth.passwordRequirements.special')}
                   </li>
                   <li
                     className={
                       /\d/.test(formData.password) ? "text-green-600" : ""
                     }
                   >
-                    One number
+                    {t('auth.passwordRequirements.number')}
                   </li>
                 </ul>
               </div>
@@ -471,7 +467,7 @@ const SignUpPage = () => {
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Confirm Password
+                {t('auth.fields.confirmPassword')}
               </label>
               <div className="relative">
                 <Lock
@@ -492,7 +488,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("confirmPassword")}
-                  placeholder="Confirm your password"
+                  placeholder={t('auth.placeholders.confirmPassword')}
                   maxLength={128}
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
@@ -534,16 +530,16 @@ const SignUpPage = () => {
               className="mt-1 h-4 w-4 text-primary focus:ring-primary border-border rounded"
             />
             <label htmlFor="terms" className="text-sm text-muted-foreground">
-              I agree to the{" "}
+              {t('auth.agreeToTerms')}{" "}
               <Link to="/terms" className="text-primary hover:text-primary/80">
-                Terms of Service
+                {t('auth.termsOfService')}
               </Link>{" "}
-              and{" "}
+              {t('auth.and')}{" "}
               <Link
                 to="/privacy"
                 className="text-primary hover:text-primary/80"
               >
-                Privacy Policy
+                {t('auth.privacyPolicy')}
               </Link>
             </label>
           </div>
@@ -559,11 +555,11 @@ const SignUpPage = () => {
             {loading ? (
               <div className="flex items-center justify-center">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                Creating account...
+                {t('auth.signup.creatingAccount')}
               </div>
             ) : (
               <div className="flex items-center justify-center">
-                Create account
+                {t('auth.signup.createAccount')}
                 <ArrowRight size={20} className="ml-2" />
               </div>
             )}
@@ -576,7 +572,7 @@ const SignUpPage = () => {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-2 bg-background text-muted-foreground">
-                Or continue with
+                {t('auth.orContinueWith')}
               </span>
             </div>
           </div>
@@ -607,7 +603,7 @@ const SignUpPage = () => {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Google
+              {t('auth.google')}
             </motion.button>
 
             <motion.button
@@ -623,19 +619,19 @@ const SignUpPage = () => {
               >
                 <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
               </svg>
-              Twitter
+              {t('auth.twitter')}
             </motion.button>
           </div>
 
           {/* Sign In Link */}
           <div className="text-center">
             <p className="text-muted-foreground">
-              Already have an account?{" "}
+              {t('auth.alreadyHaveAccount')}{" "}
               <Link
                 to="/login"
                 className="text-primary hover:text-primary/80 font-medium transition-colors duration-300"
               >
-                Sign in
+                {t('auth.signIn')}
               </Link>
             </p>
           </div>

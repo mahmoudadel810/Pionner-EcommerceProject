@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Heart, ShoppingCart, Eye, Star } from "lucide-react";
 import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
@@ -15,6 +16,7 @@ const ProductCard = ({
   isInWishlist: propIsInWishlist,
   viewMode = "grid" 
 }) => {
+  const { t } = useTranslation();
   const { toggleCart, isInCart } = useCartStore();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
   const { user } = useUserStore();
@@ -27,7 +29,7 @@ const ProductCard = ({
     e.stopPropagation();
 
     if (!user) {
-      toast.error("Please login to manage cart");
+      toast.error(t('common.pleaseLoginCart'));
       return;
     }
 
@@ -37,7 +39,7 @@ const ProductCard = ({
       } else {
         const result = await toggleCart(product);
         if (!result.success) {
-          toast.error(result.message || "Failed to update cart");
+          toast.error(result.message || t('common.failedUpdateCart'));
         }
       }
     } catch (error) {
@@ -50,7 +52,7 @@ const ProductCard = ({
     e.stopPropagation();
 
     if (!user) {
-      toast.error("Please login to manage wishlist");
+      toast.error(t('common.pleaseLoginWishlist'));
       return;
     }
 
@@ -94,7 +96,7 @@ const ProductCard = ({
                   ? "bg-red-500 text-white"
                   : "bg-white/90 text-foreground hover:bg-white"
               }`}
-              title={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+              title={isInWishlist ? t('product.remove_from_wishlist') : t('product.add_to_wishlist')}
             >
               <Heart size={20} className={isInWishlist ? "fill-current" : ""} />
             </motion.button>
@@ -107,7 +109,7 @@ const ProductCard = ({
                   ? "bg-green-500 text-white"
                   : "bg-white/90 text-foreground hover:bg-white"
               }`}
-              title={isProductInCart ? "Remove from cart" : "Add to cart"}
+              title={isProductInCart ? t('product.remove_from_cart') : t('product.add_to_cart')}
             >
               <ShoppingCart size={20} className={isProductInCart ? "fill-current" : ""} />
             </motion.button>
@@ -118,10 +120,10 @@ const ProductCard = ({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
+              className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2 rtl:space-x-reverse"
             >
               <Eye size={16} />
-              <span>Quick View</span>
+              <span>{t('product.quick_view')}</span>
             </motion.button>
           </div>
 
@@ -138,7 +140,7 @@ const ProductCard = ({
           {product.isFeatured && (
             <div className="absolute top-4 left-4">
               <span className="bg-primary text-white px-2 py-1 rounded-full text-xs font-medium">
-                Featured
+                {t('featured.featured_badge')}
               </span>
             </div>
           )}
@@ -154,8 +156,8 @@ const ProductCard = ({
           </p>
 
           {/* Rating */}
-          <div className="flex items-center space-x-2 mb-3">
-            <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse mb-3">
+            <div className="flex items-center space-x-1 rtl:space-x-reverse">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
@@ -175,14 +177,14 @@ const ProductCard = ({
 
           {/* Price and Actions */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 rtl:space-x-reverse">
               <span className="text-2xl font-bold text-primary">
-                ${product.price}
+                {product.price} SR
               </span>
               {product.originalPrice &&
                 product.originalPrice > product.price && (
                   <span className="text-muted-foreground line-through">
-                    ${product.originalPrice}
+                    {product.originalPrice} SR
                   </span>
                 )}
             </div>
@@ -198,14 +200,14 @@ const ProductCard = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleToggleCart}
-            className={`w-full mt-3 py-2 px-4 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center space-x-2 ${
+            className={`w-full mt-3 py-2 px-4 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center space-x-2 rtl:space-x-reverse ${
               isProductInCart
                 ? "bg-red-500 text-white hover:bg-red-600"
                 : "bg-primary text-white hover:bg-primary/90"
             }`}
           >
             <ShoppingCart size={16} />
-            <span>{isProductInCart ? "Remove from Cart" : "Add to Cart"}</span>
+            <span>{isProductInCart ? t('product.remove_from_cart') : t('product.add_to_cart')}</span>
           </motion.button>
         </div>
       </Link>

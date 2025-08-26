@@ -15,8 +15,10 @@ import { useWishlistStore } from "../stores/useWishlistStore";
 import { useUserStore } from "../stores/useUserStore";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
+import { useTranslation } from "react-i18next";
 
 const SearchPage = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const query = searchParams.get('q') || '';
@@ -124,11 +126,11 @@ const SearchPage = () => {
           setTotalItems(paginationData.totalItems);
         }
       } else {
-        setError("Failed to fetch products");
+        setError(t('search.errors.fetchFailed'));
       }
     } catch (error) {
-      setError(error.response?.data?.message || "Failed to fetch products");
-      toast.error("Failed to load search results");
+      setError(error.response?.data?.message || t('search.errors.fetchFailed'));
+      toast.error(t('search.errors.loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -209,7 +211,7 @@ const SearchPage = () => {
 
   const handleToggleCart = async (product) => {
     if (!user) {
-      toast.error("Please login to manage cart");
+      toast.error(t('search.errors.loginRequired'));
       return;
     }
 
@@ -218,16 +220,16 @@ const SearchPage = () => {
       if (result.success) {
         // Success message is handled in the store
       } else {
-        toast.error(result.message || "Failed to update cart");
+        toast.error(result.message || t('search.errors.cartUpdateFailed'));
       }
     } catch (error) {
-      toast.error("Failed to update cart");
+      toast.error(t('search.errors.cartUpdateFailed'));
     }
   };
 
   const handleWishlistToggle = async (product) => {
     if (!user) {
-      toast.error("Please login to manage wishlist");
+      toast.error(t('search.errors.loginRequired'));
       return;
     }
 
@@ -239,7 +241,7 @@ const SearchPage = () => {
         await addToWishlist(product);
       }
     } catch (error) {
-      toast.error("Failed to update wishlist");
+      toast.error(t('search.errors.wishlistUpdateFailed'));
     }
   };
 
@@ -401,7 +403,7 @@ const SearchPage = () => {
               onClick={handleRefresh} 
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
             >
-              Try Again
+              {t('search.tryAgain')}
             </Button>
           </div>
         </div>
@@ -442,7 +444,7 @@ const SearchPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-4xl lg:text-6xl font-bold text-gray-900 mb-4"
             >
-              Search <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Results</span>
+              {t('search.title')} <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{t('search.results')}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -450,7 +452,7 @@ const SearchPage = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-lg text-gray-600 mb-6 leading-relaxed max-w-2xl mx-auto"
             >
-              {query ? `Searching for "${query}"` : "Enter a search term to find products"}
+              {query ? t('search.searchingFor', { query }) : t('search.enterSearchTerm')}
             </motion.p>
 
             {/* Search Bar */}
@@ -464,7 +466,7 @@ const SearchPage = () => {
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Search for products..."
+                  placeholder={t('search.placeholder')}
                   value={searchQuery}
                   onChange={handleSearchChange}
                   className="w-full pl-12 pr-12 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-lg"
@@ -504,45 +506,45 @@ const SearchPage = () => {
                     {/* Sort */}
                     <Select value={sortBy} onValueChange={handleSortChange}>
                       <SelectTrigger className="w-full sm:w-40 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300">
-                        <SelectValue placeholder="Sort by" />
+                        <SelectValue placeholder={t('search.filters.sortBy')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="relevance">Relevance</SelectItem>
-                        <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-                        <SelectItem value="name-desc">Name (Z-A)</SelectItem>
-                        <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                        <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                        <SelectItem value="rating-desc">Highest Rated</SelectItem>
-                        <SelectItem value="createdAt-desc">Newest</SelectItem>
+                        <SelectItem value="relevance">{t('search.filters.relevance')}</SelectItem>
+                        <SelectItem value="name-asc">{t('search.filters.nameAZ')}</SelectItem>
+                        <SelectItem value="name-desc">{t('search.filters.nameZA')}</SelectItem>
+                        <SelectItem value="price-asc">{t('search.filters.priceLowHigh')}</SelectItem>
+                        <SelectItem value="price-desc">{t('search.filters.priceHighLow')}</SelectItem>
+                        <SelectItem value="rating-desc">{t('search.filters.highestRated')}</SelectItem>
+                        <SelectItem value="createdAt-desc">{t('search.filters.newest')}</SelectItem>
                       </SelectContent>
                     </Select>
 
                     {/* Category Filter */}
                     <Select value={categoryFilter} onValueChange={handleCategoryFilterChange}>
                       <SelectTrigger className="w-full sm:w-40 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300">
-                        <SelectValue placeholder="Category" />
+                        <SelectValue placeholder={t('search.filters.category')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All Categories</SelectItem>
-                        <SelectItem value="smartphones">Smartphones</SelectItem>
-                        <SelectItem value="laptops">Laptops</SelectItem>
-                        <SelectItem value="gaming">Gaming</SelectItem>
-                        <SelectItem value="audio">Audio</SelectItem>
-                        <SelectItem value="tablets">Tablets</SelectItem>
+                        <SelectItem value="all">{t('search.filters.allCategories')}</SelectItem>
+                        <SelectItem value="smartphones">{t('categories.smartphones')}</SelectItem>
+                        <SelectItem value="laptops">{t('categories.laptops')}</SelectItem>
+                        <SelectItem value="gaming">{t('categories.gaming')}</SelectItem>
+                        <SelectItem value="audio">{t('categories.audio')}</SelectItem>
+                        <SelectItem value="tablets">{t('categories.tablets')}</SelectItem>
                       </SelectContent>
                     </Select>
 
                     {/* Price Range */}
                     <Select value={priceRange} onValueChange={handlePriceRangeChange}>
                       <SelectTrigger className="w-full sm:w-40 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300">
-                        <SelectValue placeholder="Price Range" />
+                        <SelectValue placeholder={t('search.filters.priceRange')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All Prices</SelectItem>
-                        <SelectItem value="0-100">Under $100</SelectItem>
-                        <SelectItem value="100-500">$100 - $500</SelectItem>
-                        <SelectItem value="500-1000">$500 - $1000</SelectItem>
-                        <SelectItem value="1000+">Over $1000</SelectItem>
+                        <SelectItem value="all">{t('search.filters.allPrices')}</SelectItem>
+                        <SelectItem value="0-100">{t('search.filters.under100')}</SelectItem>
+                        <SelectItem value="100-500">{t('search.filters.range100to500')}</SelectItem>
+                        <SelectItem value="500-1000">{t('search.filters.range500to1000')}</SelectItem>
+                        <SelectItem value="1000+">{t('search.filters.over1000')}</SelectItem>
                       </SelectContent>
                     </Select>
 
@@ -569,13 +571,13 @@ const SearchPage = () => {
                     {/* Items per page */}
                     <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
                       <SelectTrigger className="w-28 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300">
-                        <SelectValue placeholder="Per page" />
+                        <SelectValue placeholder={t('search.filters.perPage')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="6">6 per page</SelectItem>
-                        <SelectItem value="12">12 per page</SelectItem>
-                        <SelectItem value="24">24 per page</SelectItem>
-                        <SelectItem value="48">48 per page</SelectItem>
+                        <SelectItem value="6">{t('search.filters.sixPerPage')}</SelectItem>
+                        <SelectItem value="12">{t('search.filters.twelvePerPage')}</SelectItem>
+                        <SelectItem value="24">{t('search.filters.twentyFourPerPage')}</SelectItem>
+                        <SelectItem value="48">{t('search.filters.fortyEightPerPage')}</SelectItem>
                       </SelectContent>
                     </Select>
 
@@ -588,7 +590,7 @@ const SearchPage = () => {
                       className="px-4 py-3 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-300"
                     >
                       <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                      Refresh
+                      {t('search.filters.refresh')}
                     </Button>
                   </div>
                 </div>
@@ -610,10 +612,10 @@ const SearchPage = () => {
                   <Search className="h-12 w-12 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  No products found
+                  {t('search.noProductsFound')}
                 </h3>
                 <p className="text-gray-600 mb-8 text-lg">
-                  No products match your search for "{query}". Try different keywords or check your spelling.
+                  {t('search.noProductsMatch', { query })}
                 </p>
                 <Button
                   onClick={() => {
@@ -622,7 +624,7 @@ const SearchPage = () => {
                   }}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
                 >
-                  Clear Search
+                  {t('search.clearSearch')}
                 </Button>
               </motion.div>
             ) : (
@@ -649,7 +651,7 @@ const SearchPage = () => {
               >
                 <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
                   <p className="text-gray-600 font-medium">
-                    Found {totalItems} product{totalItems !== 1 ? "s" : ""} matching "{query}"
+                    {t('search.foundProducts', { count: totalItems, query })}
                   </p>
                 </div>
               </motion.div>
@@ -669,7 +671,11 @@ const SearchPage = () => {
                     {/* Pagination Info */}
                     <div className="text-center sm:text-left">
                       <p className="text-gray-600 font-medium">
-                        Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} products
+                        {t('search.showingRange', { 
+                          start: ((currentPage - 1) * itemsPerPage) + 1,
+                          end: Math.min(currentPage * itemsPerPage, totalItems),
+                          total: totalItems
+                        })}
                       </p>
                     </div>
 
@@ -763,4 +769,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage; 
+export default SearchPage;

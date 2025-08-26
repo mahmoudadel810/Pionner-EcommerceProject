@@ -1,7 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const LoadingSpinner = () => {
+  const { t } = useTranslation();
+  
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <motion.div
@@ -21,7 +24,7 @@ const LoadingSpinner = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-muted-foreground text-lg font-medium"
         >
-          Loading...
+          {t('common.loading')}
         </motion.p>
       </motion.div>
     </div>

@@ -17,10 +17,12 @@ import {
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import { useUserStore } from "../stores/useUserStore";
+import { useTranslation } from "react-i18next";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 
 const ContactPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useUserStore();
   const [formData, setFormData] = useState({
@@ -104,44 +106,43 @@ const ContactPage = () => {
     switch (name) {
       case "name":
         if (!value.trim()) {
-          error = "Name is required";
+          error = t('contact.validation.nameRequired');
         } else if (value.trim().length < 2) {
-          error = "Name must be at least 2 characters";
+          error = t('contact.validation.nameMinLength');
         } else if (value.trim().length > 50) {
-          error = "Name must be less than 50 characters";
+          error = t('contact.validation.nameMaxLength');
         } else if (!/^[a-zA-Z\s'-]+$/.test(value.trim())) {
-          error =
-            "Name can only contain letters, spaces, hyphens, and apostrophes";
+          error = t('contact.validation.nameInvalid');
         }
         break;
 
       case "email":
         if (!value.trim()) {
-          error = "Email is required";
+          error = t('contact.validation.emailRequired');
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
-          error = "Please enter a valid email address";
+          error = t('contact.validation.emailInvalid');
         } else if (value.length > 100) {
-          error = "Email must be less than 100 characters";
+          error = t('contact.validation.emailMaxLength');
         }
         break;
 
       case "subject":
         if (!value.trim()) {
-          error = "Subject is required";
+          error = t('contact.validation.subjectRequired');
         } else if (value.trim().length < 5) {
-          error = "Subject must be at least 5 characters";
+          error = t('contact.validation.subjectMinLength');
         } else if (value.trim().length > 100) {
-          error = "Subject must be less than 100 characters";
+          error = t('contact.validation.subjectMaxLength');
         }
         break;
 
       case "message":
         if (!value.trim()) {
-          error = "Message is required";
+          error = t('contact.validation.messageRequired');
         } else if (value.trim().length < 10) {
-          error = "Message must be at least 10 characters";
+          error = t('contact.validation.messageMinLength');
         } else if (value.trim().length > 1000) {
-          error = "Message must be less than 1000 characters";
+          error = t('contact.validation.messageMaxLength');
         }
         break;
 
@@ -212,7 +213,7 @@ const ContactPage = () => {
     });
 
     if (!validateForm()) {
-      toast.error("Please fix all validation errors before submitting");
+      toast.error(t('contact.validation.fixErrors'));
       return;
     }
 
@@ -230,7 +231,7 @@ const ContactPage = () => {
       const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CONTACT.SUBMIT), trimmedData);
       
       if (response.data && response.data.success) {
-        toast.success("Message sent successfully! We'll get back to you soon.", {
+        toast.success(t('contact.success.messageSent'), {
           duration: 5000,
           style: {
             background: "rgba(34, 197, 94, 0.95)",
@@ -259,7 +260,7 @@ const ContactPage = () => {
         });
         setTouched({});
       } else {
-        toast.error("Failed to send message. Please try again.", {
+        toast.error(t('contact.error.failedToSend'), {
           style: {
             background: "rgba(239, 68, 68, 0.95)",
             color: "white",
@@ -304,7 +305,7 @@ const ContactPage = () => {
                   ...prev,
                   ...Object.keys(serverErrors).reduce((acc, key) => ({ ...acc, [key]: true }), {})
                 }));
-                toast.error("Please fix the validation errors below", {
+                toast.error(t('contact.validation.fixErrorsBelow'), {
                   style: {
                     background: "rgba(239, 68, 68, 0.95)",
                     color: "white",
@@ -322,7 +323,7 @@ const ContactPage = () => {
                   },
                 });
               } else {
-                toast.error("Invalid form data. Please check your input.", {
+                toast.error(t('contact.error.invalidFormData'), {
                   style: {
                     background: "rgba(239, 68, 68, 0.95)",
                     color: "white",
@@ -341,7 +342,7 @@ const ContactPage = () => {
                 });
               }
             } else {
-              toast.error("Invalid form data. Please check your input.", {
+              toast.error(t('contact.error.invalidFormData'), {
                 style: {
                   background: "rgba(239, 68, 68, 0.95)",
                   color: "white",
@@ -361,28 +362,24 @@ const ContactPage = () => {
             }
             break;
           case 401:
-            toast.error("Please login to send a message");
+            toast.error(t('contact.error.loginRequired'));
             navigate("/login");
             break;
           case 429:
-            toast.error(
-              "Too many requests. Please wait a moment and try again."
-            );
+            toast.error(t('contact.error.tooManyRequests'));
             break;
           case 500:
-            toast.error("Server error. Please try again later.");
+            toast.error(t('contact.error.serverError'));
             break;
           default:
             toast.error(message);
         }
       } else if (error.request) {
         // Network error
-        toast.error(
-          "Network error. Please check your connection and try again."
-        );
+        toast.error(t('contact.error.networkError'));
       } else {
         // Other error
-        toast.error("An unexpected error occurred. Please try again.");
+        toast.error(t('contact.error.unexpectedError'));
       }
     } finally {
       setLoading(false);
@@ -463,7 +460,7 @@ const ContactPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-                  className="flex items-center justify-center space-x-3 p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20"
+                  className="flex items-center justify-center space-x-3 rtl:space-x-reverse p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20"
                 >
                   <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
                     <feature.icon size={20} className="text-white" />
@@ -489,9 +486,9 @@ const ContactPage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Get in Touch</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('contact.getInTouch')}</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Choose your preferred way to reach us. We're here to help!
+              {t('contact.choosePreferredWay')}
             </p>
           </motion.div>
           
@@ -553,10 +550,10 @@ const ContactPage = () => {
                   </motion.div>
                   
                   <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                    Send us a Message
+                    {t('contact.sendMessage')}
                   </h2>
                   <p className="text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
-                    Fill out the form below and we'll get back to you as soon as possible.
+                    {t('contact.fillFormDescription')}
                   </p>
                   
                   {!user ? (
@@ -567,20 +564,20 @@ const ContactPage = () => {
                       viewport={{ once: true }}
                       className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 mb-8 max-w-md mx-auto"
                     >
-                      <div className="flex items-center space-x-3 mb-4">
+                      <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
                         <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                           <span className="text-white text-sm font-bold">💡</span>
                         </div>
-                        <h3 className="font-semibold text-blue-900">Pro Tip</h3>
+                        <h3 className="font-semibold text-blue-900">{t('contact.proTip')}</h3>
                       </div>
                       <p className="text-blue-800 text-sm mb-4">
-                        Logging in will pre-fill your contact information and provide faster support.
+                        {t('contact.loginBenefit')}
                       </p>
                       <button
                         onClick={() => navigate("/login")}
                         className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl text-sm font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                       >
-                        Login to Continue
+                        {t('contact.loginToContinue')}
                       </button>
                     </motion.div>
                   ) : (
@@ -591,12 +588,12 @@ const ContactPage = () => {
                       viewport={{ once: true }}
                       className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-6 mb-8 max-w-md mx-auto"
                     >
-                      <div className="flex items-center space-x-3">
+                      <div className="flex items-center space-x-3 rtl:space-x-reverse">
                         <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
                           <span className="text-white text-sm font-bold">✅</span>
                         </div>
                         <div>
-                          <h3 className="font-semibold text-green-900">Welcome back!</h3>
+                          <h3 className="font-semibold text-green-900">{t('contact.welcomeBack')}</h3>
                           <p className="text-green-800 text-sm">{user.data?.name}</p>
                         </div>
                       </div>
@@ -611,7 +608,7 @@ const ContactPage = () => {
                       htmlFor="name"
                       className="block text-sm font-semibold text-gray-700 mb-3"
                     >
-                      Full Name <span className="text-red-500">*</span>
+                      {t('contact.fullName')} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <input
@@ -622,7 +619,7 @@ const ContactPage = () => {
                         onChange={handleInputChange}
                         onBlur={handleBlur}
                         className={getInputClassName("name")}
-                        placeholder="Enter your full name"
+                        placeholder={t('contact.enterFullName')}
                         maxLength={50}
                       />
                       {touched.name && !errors.name && formData.name && (
@@ -642,7 +639,7 @@ const ContactPage = () => {
                       htmlFor="email"
                       className="block text-sm font-semibold text-gray-700 mb-3"
                     >
-                      Email Address <span className="text-red-500">*</span>
+                      {t('contact.emailAddress')} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <input
@@ -653,7 +650,7 @@ const ContactPage = () => {
                         onChange={handleInputChange}
                         onBlur={handleBlur}
                         className={getInputClassName("email")}
-                        placeholder="Enter your email"
+                        placeholder={t('contact.enterEmail')}
                         maxLength={100}
                       />
                       {touched.email && !errors.email && formData.email && (
@@ -676,7 +673,7 @@ const ContactPage = () => {
                     htmlFor="subject"
                     className="block text-sm font-semibold text-gray-700 mb-3"
                   >
-                    Subject <span className="text-red-500">*</span>
+                    {t('contact.subject')} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -687,7 +684,7 @@ const ContactPage = () => {
                       onChange={handleInputChange}
                       onBlur={handleBlur}
                       className={getInputClassName("subject")}
-                      placeholder="Enter subject"
+                      placeholder={t('contact.enterSubject')}
                       maxLength={100}
                     />
                     {touched.subject && !errors.subject && formData.subject && (
@@ -709,8 +706,8 @@ const ContactPage = () => {
                     htmlFor="message"
                     className="block text-sm font-semibold text-gray-700 mb-3"
                   >
-                    Message <span className="text-red-500">*</span>
-                    <span className="text-xs text-gray-500 ml-2">
+                    {t('contact.message')} <span className="text-red-500">*</span>
+                    <span className="text-xs text-gray-500 ml-2 rtl:mr-2 rtl:ml-0">
                       ({formData.message.length}/1000 characters)
                     </span>
                   </label>
@@ -723,7 +720,7 @@ const ContactPage = () => {
                       onBlur={handleBlur}
                       rows={6}
                       className={`${getInputClassName("message")} resize-none`}
-                      placeholder="Enter your message"
+                      placeholder={t('contact.enterMessage')}
                       maxLength={1000}
                     />
                     {touched.message && !errors.message && formData.message && (
@@ -749,17 +746,17 @@ const ContactPage = () => {
                   }
                   whileHover={{ scale: loading ? 1 : 1.02 }}
                   whileTap={{ scale: loading ? 1 : 0.98 }}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-8 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-8 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 rtl:space-x-reverse shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   {loading ? (
                     <>
                       <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      <span className="text-lg">Sending Message...</span>
+                      <span className="text-lg">{t('contact.sendingMessage')}</span>
                     </>
                   ) : (
                     <>
                       <Send size={24} />
-                      <span className="text-lg">Send Message</span>
+                      <span className="text-lg">{t('contact.sendMessageButton')}</span>
                     </>
                   )}
                 </motion.button>
@@ -780,9 +777,9 @@ const ContactPage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Find Us</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('contact.findUs')}</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Visit our office or get in touch with us anytime
+              {t('contact.visitOffice')}
             </p>
           </motion.div>
 
@@ -797,18 +794,18 @@ const ContactPage = () => {
               <MapPin size={36} className="text-white" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
-              Our Location
+              {t('contact.ourLocation')}
             </h3>
             <p className="text-lg text-gray-600 mb-8">
-              123 Tech Street, Digital City, DC 12345
+              {t('contact.address')}
             </p>
             <div className="w-full h-80 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-300">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center mx-auto mb-4">
                   <MapPin size={24} className="text-gray-600" />
                 </div>
-                <p className="text-gray-600 font-medium">Interactive Map Coming Soon</p>
-                <p className="text-gray-500 text-sm mt-2">We're working on bringing you a better experience</p>
+                <p className="text-gray-600 font-medium">{t('contact.mapComingSoon')}</p>
+                <p className="text-gray-500 text-sm mt-2">{t('contact.workingOnExperience')}</p>
               </div>
             </div>
           </motion.div>

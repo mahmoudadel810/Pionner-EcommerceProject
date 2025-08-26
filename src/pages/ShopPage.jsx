@@ -14,8 +14,10 @@ import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import ProductCard from "../components/ProductCard";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const ShopPage = () => {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState("grid");
   const [showFilters, setShowFilters] = useState(false);
@@ -61,7 +63,7 @@ const ShopPage = () => {
     try {
       const result = await toggleCart(product);
       if (!result.success) {
-        toast.error(result.message || "Failed to update cart");
+        toast.error(result.message || t('shop.errors.cartUpdateFailed'));
       }
     } catch (error) {
       // Error is already handled by the result check above
@@ -142,13 +144,13 @@ const ShopPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Category Filter */}
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-700">Category</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700">{t('shop.filters.category')}</label>
             <select
               value={filters.category}
               onChange={e => handleCategoryChange(e.target.value)}
               className="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-gray-50 focus:bg-white transition-all duration-200"
             >
-              <option value="">All Categories</option>
+              <option value="">{t('shop.filters.allCategories')}</option>
               {categories.map(category => (
                 <option key={category} value={category}>
                   {category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
@@ -160,12 +162,12 @@ const ShopPage = () => {
           {/* Price Range Filter */}
           <div>
             <label className="block text-sm font-medium mb-2 text-gray-700">
-              Price Range
+              {t('shop.filters.priceRange')}
             </label>
             <div className="flex space-x-2">
               <input
                 type="number"
-                placeholder="Min"
+                placeholder={t('shop.filters.min')}
                 value={filters.priceRange[0]}
                 onChange={e =>
                   handleFilterChange("priceRange", [
@@ -178,7 +180,7 @@ const ShopPage = () => {
               <span className="flex items-center text-gray-500">-</span>
               <input
                 type="number"
-                placeholder="Max"
+                placeholder={t('shop.filters.max')}
                 value={filters.priceRange[1]}
                 onChange={e =>
                   handleFilterChange("priceRange", [
@@ -193,16 +195,16 @@ const ShopPage = () => {
 
           {/* Sort Filter */}
           <div>
-            <label className="block text-sm font-medium mb-2 text-gray-700">Sort By</label>
+            <label className="block text-sm font-medium mb-2 text-gray-700">{t('shop.filters.sortBy')}</label>
             <select
               value={filters.sortBy}
               onChange={e => handleFilterChange("sortBy", e.target.value)}
               className="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-gray-50 focus:bg-white transition-all duration-200"
             >
-              <option value="newest">Newest First</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="name">Name: A to Z</option>
+              <option value="newest">{t('shop.sort.newest')}</option>
+              <option value="price-low">{t('shop.sort.priceLowToHigh')}</option>
+              <option value="price-high">{t('shop.sort.priceHighToLow')}</option>
+              <option value="name">{t('shop.sort.nameAtoZ')}</option>
             </select>
           </div>
         </div>
@@ -222,10 +224,10 @@ const ShopPage = () => {
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent">
             {filters.category
               ? filters.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-              : "All Products"}
+              : t('shop.title')}
           </h1>
           <p className="text-gray-600 text-lg">
-            {sortedProducts.length} products found
+            {t('shop.productsFound', { count: sortedProducts.length })}
           </p>
         </motion.div>
 
@@ -242,7 +244,7 @@ const ShopPage = () => {
             className="flex items-center space-x-2 px-4 py-2.5 border border-gray-200 rounded-xl hover:bg-gray-50 transition-all duration-200 bg-white/95 backdrop-blur-sm shadow-sm"
           >
             <Filter size={20} className="text-gray-600" />
-            <span className="font-medium text-gray-700">Filters</span>
+            <span className="font-medium text-gray-700">{t('shop.filters.title')}</span>
             <ChevronDown
               size={16}
               className={`transition-transform duration-200 text-gray-500 ${showFilters ? "rotate-180" : ""}`}
@@ -296,9 +298,9 @@ const ShopPage = () => {
             className="text-center py-12"
           >
             <div className="bg-white/95 backdrop-blur-lg shadow-lg border border-gray-200/50 rounded-xl p-8 max-w-md mx-auto">
-              <h2 className="text-2xl font-bold mb-4 text-gray-900">No products found</h2>
+              <h2 className="text-2xl font-bold mb-4 text-gray-900">{t('shop.empty.title')}</h2>
               <p className="text-gray-600">
-                Try adjusting your filters or search criteria.
+                {t('shop.empty.message')}
               </p>
             </div>
           </motion.div>

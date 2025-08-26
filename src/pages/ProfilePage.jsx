@@ -19,8 +19,10 @@ import axios from "../lib/axios";
 import tokenManager from "../utils/tokenManager";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
+import { useTranslation } from "react-i18next";
 
 const ProfilePage = () => {
+  const { t } = useTranslation();
   const { user, checkAuth, setUser } = useUserStore();
   const [isEditing, setIsEditing] = useState(false);
   const [orders, setOrders] = useState([]);
@@ -44,11 +46,11 @@ const ProfilePage = () => {
         setOrders(response.data.data);
       } else {
         setOrders([]);
-        toast.error("Invalid order data received");
+        toast.error(t('profile.invalidOrderData'));
       }
     } catch (error) {
       setOrders([]); // Reset orders on error
-      toast.error(error.response?.data?.message || "Failed to fetch orders");
+      toast.error(error.response?.data?.message || t('profile.failedToFetchOrders'));
     }
   }, []);
 
@@ -84,7 +86,7 @@ const ProfilePage = () => {
   const handleSave = async () => {
     // Fixed: Add validation before making the request
     if (!formData.name || !formData.email) {
-      toast.error("Please fill in all required fields");
+      toast.error(t('profile.fillRequiredFields'));
       return;
     }
 
@@ -108,7 +110,7 @@ const ProfilePage = () => {
             throw new Error(imageResponse.data?.message || "Failed to upload profile image");
           }
         } catch (imageError) {
-          toast.error("Failed to upload profile image. Please try again.");
+          toast.error(t('profile.failedToUploadImage'));
           setLoading(false);
           return;
         }
@@ -123,7 +125,7 @@ const ProfilePage = () => {
       const response = await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.UPDATE_PROFILE), updateData);
 
       if (response.data && response.data.success) {
-        toast.success(response.data.message || "Profile updated successfully");
+        toast.success(response.data.message || t('profile.profileUpdatedSuccessfully'));
         setIsEditing(false);
         
         // Update the avatar preview if image was uploaded
@@ -155,10 +157,10 @@ const ProfilePage = () => {
           }
         }
       } else {
-        toast.error(response.data?.message || "Failed to update profile");
+        toast.error(response.data?.message || t('profile.failedToUpdateProfile'));
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to update profile");
+      toast.error(error.response?.data?.message || t('profile.failedToUpdateProfile'));
     } finally {
       setLoading(false);
     }
@@ -195,7 +197,7 @@ const ProfilePage = () => {
       <div className="min-h-screen bg-background py-8 flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading profile...</p>
+          <p className="text-muted-foreground">{t('profile.loadingProfile')}</p>
         </div>
       </div>
     );
@@ -211,9 +213,9 @@ const ProfilePage = () => {
           transition={{ duration: 0.6 }}
           className="mb-8"
         >
-          <h1 className="text-3xl font-bold text-foreground mb-2">Profile</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">{t('profile.profile')}</h1>
           <p className="text-muted-foreground">
-            Manage your account and view your orders
+            {t('profile.manageAccountAndOrders')}
           </p>
         </motion.div>
 
@@ -243,30 +245,30 @@ const ProfilePage = () => {
                     )}
                   </div>
                   <div>
-                    <div className="text-lg font-semibold text-gray-900">{user.data?.user?.name || "User"}</div>
-                    <div className="text-xs text-gray-500">{user.data?.user?.email || "No email"}</div>
+                    <div className="text-lg font-semibold text-gray-900">{user.data?.user?.name || t('profile.user')}</div>
+                    <div className="text-xs text-gray-500">{user.data?.user?.email || t('profile.noEmail')}</div>
                   </div>
                 </div>
-                <div className="text-xs text-blue-600 font-bold tracking-wide uppercase">Profile</div>
+                <div className="text-xs text-blue-600 font-bold tracking-wide uppercase">{t('profile.profile')}</div>
               </div>
               <div className="px-6 py-6">
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
                     <Mail size={20} className="text-muted-foreground" />
                     <span className="text-foreground">
-                      {user.data?.user?.email || "No email"}
+                      {user.data?.user?.email || t('profile.noEmail')}
                     </span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Calendar size={20} className="text-muted-foreground" />
                     <span className="text-foreground">
-                      Member since {user.data?.user?.createdAt ? new Date(user.data.user.createdAt).toLocaleDateString() : "Unknown"}
+                      {t('profile.memberSince')} {user.data?.user?.createdAt ? new Date(user.data.user.createdAt).toLocaleDateString() : t('profile.unknown')}
                     </span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Package size={20} className="text-muted-foreground" />
                     <span className="text-foreground">
-                      {orders.length} orders
+                      {orders.length} {t('profile.orders')}
                     </span>
                   </div>
                 </div>
@@ -276,7 +278,7 @@ const ProfilePage = () => {
                     className="w-full bg-primary text-white py-2.5 px-4 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center justify-center gap-2 text-base font-medium"
                   >
                     <Edit size={16} />
-                    Edit Profile
+                    {t('profile.editProfile')}
                   </button>
                 </div>
               </div>
@@ -298,18 +300,18 @@ const ProfilePage = () => {
                 className="bg-white border border-gray-100 rounded-2xl shadow-2xl p-8 mb-8"
               >
                 <h3 className="text-xl font-semibold text-foreground mb-4">
-                  Edit Profile
+                  {t('profile.editProfile')}
                 </h3>
                 <div className="space-y-4">
                   {/* Avatar upload */}
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">Avatar</label>
+                    <label className="block text-sm font-medium text-foreground mb-2">{t('profile.avatar')}</label>
                     <div className="flex items-center gap-4">
                       <div className="relative w-16 h-16">
                         {avatarPreview ? (
                           <img
                             src={avatarPreview}
-                            alt="Avatar Preview"
+                            alt={t('profile.avatarPreview')}
                             className="w-16 h-16 rounded-full object-cover border-2 border-blue-200 shadow"
                           />
                         ) : (
@@ -328,7 +330,7 @@ const ProfilePage = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Full Name
+                      {t('profile.fullName')}
                     </label>
                     <input
                       type="text"
@@ -340,7 +342,7 @@ const ProfilePage = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Email Address
+                      {t('profile.emailAddress')}
                     </label>
                     <input
                       type="email"
@@ -350,7 +352,7 @@ const ProfilePage = () => {
                       className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg text-gray-500 cursor-not-allowed transition-all duration-300"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Email address cannot be changed for security reasons
+                      {t('profile.emailCannotBeChanged')}
                     </p>
                   </div>
                   <div className="flex space-x-3">
@@ -362,12 +364,12 @@ const ProfilePage = () => {
                       {loading ? (
                         <>
                           <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          <span>Saving...</span>
+                          <span>{t('profile.saving')}</span>
                         </>
                       ) : (
                         <>
                           <Save size={16} />
-                          <span>Save Changes</span>
+                          <span>{t('profile.saveChanges')}</span>
                         </>
                       )}
                     </button>
@@ -376,7 +378,7 @@ const ProfilePage = () => {
                       className="flex-1 bg-gray-100 text-gray-700 py-2.5 px-4 rounded-lg hover:bg-gray-200 transition-colors duration-300 flex items-center justify-center gap-2 text-base font-medium"
                     >
                       <X size={16} />
-                      <span>Cancel</span>
+                      <span>{t('profile.cancel')}</span>
                     </button>
                   </div>
                 </div>
@@ -387,7 +389,7 @@ const ProfilePage = () => {
             <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-foreground">
-                  Order History
+                  {t('profile.orderHistory')}
                 </h3>
                 <Package size={24} className="text-primary" />
               </div>
@@ -398,9 +400,9 @@ const ProfilePage = () => {
                     size={48}
                     className="text-muted-foreground mx-auto mb-4"
                   />
-                  <p className="text-muted-foreground">No orders yet</p>
+                  <p className="text-muted-foreground">{t('profile.noOrdersYet')}</p>
                   <p className="text-sm text-muted-foreground">
-                    Start shopping to see your orders here
+                    {t('profile.startShoppingToSeeOrders')}
                   </p>
                 </div>
               ) : (
@@ -421,14 +423,14 @@ const ProfilePage = () => {
                       try {
                         const response = await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.CANCEL(order._id)));
                         if (response.data && response.data.success) {
-                          toast.success("Order cancelled successfully");
+                          toast.success(t('profile.orderCancelledSuccessfully'));
                           // Update order status in UI
                           setOrders(prev => prev.map(o => o._id === order._id ? { ...o, status: "cancelled" } : o));
                         } else {
-                          toast.error(response.data?.message || "Failed to cancel order");
+                          toast.error(response.data?.message || t('profile.failedToCancelOrder'));
                         }
                       } catch (error) {
-                        toast.error(error.response?.data?.message || "Failed to cancel order");
+                        toast.error(error.response?.data?.message || t('profile.failedToCancelOrder'));
                       }
                     };
                     return (
@@ -444,46 +446,46 @@ const ProfilePage = () => {
                               {orderName}
                             </p>
                             <p className="text-xs text-muted-foreground">
-                              Order #{order._id ? order._id.slice(-8) : "N/A"}
+                              {t('profile.orderNumber')} #{order._id ? order._id.slice(-8) : t('profile.na')}
                             </p>
                             <p className="text-sm text-muted-foreground">
-                              {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : "Unknown date"}
+                              {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : t('profile.unknownDate')}
                             </p>
                           </div>
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-medium ${getOrderStatusColor(order.status)}`}
                           >
-                            {order.status || "Unknown"}
+                            {order.status || t('profile.unknown')}
                           </span>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
                           <div>
                             <p className="text-sm text-muted-foreground">
-                              {order.products ? order.products.length : 0} items
+                              {order.products ? order.products.length : 0} {t('profile.items')}
                             </p>
                             <p className="font-medium text-foreground">
                               ${order.totalAmount ? order.totalAmount.toFixed(2) : "0.00"}
                             </p>
                             <p className="text-xs text-muted-foreground">
-                              Payment: {order.paymentStatus || "N/A"}
+                              {t('profile.payment')}: {order.paymentStatus || t('profile.na')}
                             </p>
                           </div>
                           <div>
                             <p className="text-xs text-muted-foreground">
-                              Shipping: {shipping}
+                              {t('profile.shipping')}: {shipping}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center justify-between mt-2">
                           <button className="text-primary hover:text-primary/80 text-sm font-medium">
-                            View Details
+                            {t('profile.viewDetails')}
                           </button>
                           {isCancellable && (
                             <button
                               onClick={handleCancelOrder}
                               className="ml-2 px-3 py-1 rounded bg-red-100 text-red-700 text-xs font-semibold hover:bg-red-200 transition-colors"
                             >
-                              Cancel Order
+                              {t('profile.cancelOrder')}
                             </button>
                           )}
                         </div>

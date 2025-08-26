@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ShoppingCart, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
@@ -10,6 +11,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const FeaturedProducts = ({ featuredProducts }) => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const { toggleCart, isInCart } = useCartStore();
@@ -54,7 +56,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
       if (result.success) {
         // Success message is handled in the store
       } else {
-        toast.error(result.message || "Failed to update cart");
+        toast.error(result.message || t('common.failedUpdateCart'));
       }
     } catch (error) {
       // Error is already handled by the result check above
@@ -63,14 +65,14 @@ const FeaturedProducts = ({ featuredProducts }) => {
 
   const handleToggleWishlist = async product => {
     if (!user) {
-      toast.error("Please log in to manage your wishlist.");
+      toast.error(t('common.pleaseLoginWishlist'));
       
       return;
     }
     try {
       const result = await toggleWishlist(product);
       if (!result.success) {
-        toast.error(result.message || "Failed to update wishlist");
+        toast.error(result.message || t('common.failedUpdateWishlist'));
       }
     } catch (error) {
       // Error is already handled by the result check above
@@ -94,10 +96,10 @@ const FeaturedProducts = ({ featuredProducts }) => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent mb-4">
-            Featured Products
+            {t('featured.title')}
           </h2>
           <p className="text-muted-foreground text-lg">
-            Discover our handpicked selection of premium products
+            {t('featured.description')}
           </p>
         </div>
 
@@ -127,7 +129,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
                         />
                         {product.isFeatured && (
                           <Badge className="absolute top-2 left-2 bg-primary text-primary-foreground">
-                            Featured
+                            {t('featured.featured_badge')}
                           </Badge>
                         )}
                         <Button
@@ -154,11 +156,11 @@ const FeaturedProducts = ({ featuredProducts }) => {
                         </p>
                         <div className="flex items-center justify-between mb-3">
                           <span className="text-2xl font-bold text-primary">
-                            ${product.price.toFixed(2)}
+                            {product.price.toFixed(2)} SR
                           </span>
                           {product.oldPrice && (
                             <span className="text-sm text-muted-foreground line-through">
-                              ${product.oldPrice.toFixed(2)}
+                              {product.oldPrice.toFixed(2)} SR
                             </span>
                           )}
                         </div>
@@ -177,7 +179,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
                         size="sm"
                       >
                         <ShoppingCart className="w-4 h-4 mr-2" />
-                        {isInCart(product._id) ? "Remove from Cart" : "Add to Cart"}
+                        {isInCart(product._id) ? t('home.remove_from_cart') : t('home.add_to_cart')}
                       </Button>
                     </CardFooter>
                   </Card>

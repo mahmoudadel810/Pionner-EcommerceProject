@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from 'react-i18next';
 
 import { Heart, Trash2, ShoppingCart, Eye } from "lucide-react";
 import { useWishlistStore } from "../stores/useWishlistStore";
@@ -8,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 const WishlistPage = () => {
+  const { t } = useTranslation();
   const { wishlist, removeFromWishlist, loading } = useWishlistStore();
   const { toggleCart, isInCart } = useCartStore();
   const navigate = useNavigate();
@@ -18,7 +20,7 @@ const WishlistPage = () => {
       if (result.success) {
         // Success message is handled in the store
       } else {
-        toast.error(result.message || "Failed to update cart");
+        toast.error(result.message || t('common.failedUpdateCart'));
       }
     } catch (error) {
       // Error is already handled by the result check above
@@ -48,11 +50,10 @@ const WishlistPage = () => {
           className="mb-8"
         >
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            My Wishlist
+            {t('wishlist.title')}
           </h1>
           <p className="text-muted-foreground">
-            {wishlist.length} {wishlist.length === 1 ? "item" : "items"} in your
-            wishlist
+            {t('wishlist.itemCount', { count: wishlist.length })}
           </p>
         </motion.div>
 
@@ -67,10 +68,10 @@ const WishlistPage = () => {
               <Heart size={48} className="text-primary" />
             </div>
             <h2 className="text-2xl font-semibold text-foreground mb-4">
-              Your wishlist is empty
+              {t('wishlist.empty.title')}
             </h2>
             <p className="text-muted-foreground mb-8">
-              Start adding products to your wishlist to save them for later
+              {t('wishlist.empty.message')}
             </p>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -78,7 +79,7 @@ const WishlistPage = () => {
               onClick={() => navigate("/shop")}
               className="bg-primary text-white px-8 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300"
             >
-              Start Shopping
+              {t('wishlist.empty.startShopping')}
             </motion.button>
           </motion.div>
         ) : (

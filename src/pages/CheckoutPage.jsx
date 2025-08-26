@@ -20,6 +20,7 @@ import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import LoadingSpinner from "../components/LoadingSpinner";
 import StripePaymentForm from "../components/StripePaymentForm";
+import { useTranslation } from "react-i18next";
 
 // Initialize Stripe with your publishable key
 const stripePromise = loadStripe(
@@ -28,6 +29,7 @@ const stripePromise = loadStripe(
 );
 
 const CheckoutPage = () => {
+  const { t } = useTranslation();
   const [showNewSessionModal, setShowNewSessionModal] = useState(false);
   const [newSessionMsg, setNewSessionMsg] = useState("");
 
@@ -137,7 +139,7 @@ const CheckoutPage = () => {
 
     if (cart.length === 0) {
       navigate("/cart");
-      toast.error("Your cart is empty");
+      toast.error(t('checkout.cartEmpty'));
       return;
     }
 
@@ -151,11 +153,11 @@ const CheckoutPage = () => {
         if (result.success) {
           setClientSecret(result.data.clientSecret);
         } else {
-          toast.error("Failed to initialize payment");
+          toast.error(t('checkout.paymentInitializationFailed'));
           navigate("/cart");
         }
       } catch (error) {
-        toast.error("Failed to initialize payment");
+        toast.error(t('checkout.paymentInitializationFailed'));
         navigate("/cart");
       }
     };
@@ -172,7 +174,7 @@ const CheckoutPage = () => {
     document.cookie = "clientSecret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "paymentIntentId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-    toast.success("Payment successful! Redirecting...");
+    toast.success(t('checkout.paymentSuccess'));
     clearCart();
     // Always reset payment state and fetch new intent after payment
     setShowPaymentForm(false);
@@ -219,9 +221,7 @@ const CheckoutPage = () => {
       return;
     }
     if (error && error.duplicate) {
-      toast.error(
-        "This payment session has expired or was already used. Generating a new payment session..."
-      );
+      toast.error(t('checkout.paymentSessionExpired'));
       setShowPaymentForm(false);
       setClientSecret("");
       // Regenerate a new payment intent for the user
@@ -232,13 +232,13 @@ const CheckoutPage = () => {
         );
         if (result.success) {
           setClientSecret(result.data.clientSecret);
-          toast.success("A new payment session has been created. Please try again.");
+          toast.success(t('checkout.newPaymentSessionCreated'));
           setShowPaymentForm(true);
         } else {
-          toast.error("Failed to generate a new payment session. Please refresh the page or try again later.");
+          toast.error(t('checkout.paymentSessionGenerationFailed'));
         }
       } catch (e) {
-        toast.error("Failed to generate a new payment session. Please refresh the page or try again later.");
+        toast.error(t('checkout.paymentSessionGenerationFailed'));
       }
       setIsProcessing(false);
       return;
@@ -338,10 +338,10 @@ const CheckoutPage = () => {
             onClick={() => navigate("/cart")}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4">
             <ArrowLeft className="w-5 h-5" />
-            <span>Back to Cart</span>
+            <span>{t('checkout.backToCart')}</span>
           </button>
-          <h1 className="text-3xl font-bold text-gray-900">Secure Checkout</h1>
-          <p className="text-gray-600 mt-2">Complete your purchase securely</p>
+          <h1 className="text-3xl font-bold text-gray-900">{t('checkout.secureCheckout')}</h1>
+          <p className="text-gray-600 mt-2">{t('checkout.completePurchaseSecurely')}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -355,13 +355,13 @@ const CheckoutPage = () => {
             <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
               <h2 className="text-xl font-bold mb-6 flex items-center space-x-2">
                 <Truck size={24} className="text-blue-600" />
-                <span>Shipping Information</span>
+                <span>{t('checkout.shippingInformation')}</span>
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    First Name *
+                    {t('checkout.firstName')} *
                   </label>
                   <input
                     id="firstName"
@@ -372,7 +372,7 @@ const CheckoutPage = () => {
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
                       errors.firstName ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Enter first name"
+                    placeholder={t('checkout.enterFirstName')}
                   />
                   {errors.firstName && (
                     <p className="text-red-500 text-sm mt-1">
@@ -382,7 +382,7 @@ const CheckoutPage = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Last Name *
+                    {t('checkout.lastName')} *
                   </label>
                   <input
                     id="lastName"
@@ -393,7 +393,7 @@ const CheckoutPage = () => {
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
                       errors.lastName ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Enter last name"
+                    placeholder={t('checkout.enterLastName')}
                   />
                   {errors.lastName && (
                     <p className="text-red-500 text-sm mt-1">
@@ -404,7 +404,7 @@ const CheckoutPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Email *
+                    {t('checkout.email')} *
                   </label>
                   <input
                     id="email"
@@ -415,7 +415,7 @@ const CheckoutPage = () => {
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
                       errors.email ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Enter email"
+                    placeholder={t('checkout.enterEmail')}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -424,7 +424,7 @@ const CheckoutPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    Phone *
+                    {t('checkout.phone')} *
                   </label>
                   <input
                     id="phone"
@@ -435,7 +435,7 @@ const CheckoutPage = () => {
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
                       errors.phone ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Enter phone number"
+                    placeholder={t('checkout.enterPhoneNumber')}
                   />
                   {errors.phone && (
                     <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
@@ -444,7 +444,7 @@ const CheckoutPage = () => {
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium mb-2">
-                    Address *
+                    {t('checkout.address')} *
                   </label>
                   <input
                     id="address"
@@ -455,7 +455,7 @@ const CheckoutPage = () => {
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
                       errors.address ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Enter street address"
+                    placeholder={t('checkout.enterStreetAddress')}
                   />
                   {errors.address && (
                     <p className="text-red-500 text-sm mt-1">
@@ -466,7 +466,7 @@ const CheckoutPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    City *
+                    {t('checkout.city')} *
                   </label>
                   <input
                     id="city"
@@ -477,7 +477,7 @@ const CheckoutPage = () => {
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
                       errors.city ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Enter city"
+                    placeholder={t('checkout.enterCity')}
                   />
                   {errors.city && (
                     <p className="text-red-500 text-sm mt-1">{errors.city}</p>
@@ -486,7 +486,7 @@ const CheckoutPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    State/Province *
+                    {t('checkout.stateProvince')} *
                   </label>
                   <input
                     id="state"
@@ -497,7 +497,7 @@ const CheckoutPage = () => {
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
                       errors.state ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Enter state"
+                    placeholder={t('checkout.enterState')}
                   />
                   {errors.state && (
                     <p className="text-red-500 text-sm mt-1">{errors.state}</p>
@@ -506,7 +506,7 @@ const CheckoutPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium mb-2">
-                    ZIP Code *
+                    {t('checkout.zipCode')} *
                   </label>
                   <input
                     id="zipCode"
@@ -517,7 +517,7 @@ const CheckoutPage = () => {
                     className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 ${
                       errors.zipCode ? "border-red-500" : "border-gray-300"
                     }`}
-                    placeholder="Enter ZIP code"
+                    placeholder={t('checkout.enterZipCode')}
                   />
                   {errors.zipCode && (
                     <p className="text-red-500 text-sm mt-1">
@@ -533,7 +533,7 @@ const CheckoutPage = () => {
                   type="button"
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleProceedToPayment}>
-                  Proceed to Payment
+                  {t('checkout.proceedToPayment')}
                 </button>
               </div>
             </div>
@@ -547,7 +547,7 @@ const CheckoutPage = () => {
                 className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
                 <h2 className="text-xl font-bold mb-6 flex items-center space-x-2">
                   <CreditCard size={24} className="text-blue-600" />
-                  <span>Payment Information</span>
+                  <span>{t('checkout.paymentInformation')}</span>
                 </h2>
 
                 <Elements stripe={stripePromise} options={options}>
@@ -565,7 +565,7 @@ const CheckoutPage = () => {
             {!showPaymentForm && (
               <div className="flex items-center justify-center py-8">
                 <LoadingSpinner />
-                <span className="ml-3 text-gray-600">Preparing a new secure payment session...</span>
+                <span className="ml-3 text-gray-600">{t('checkout.preparingPaymentSession')}</span>
               </div>
             )}
 
@@ -575,12 +575,10 @@ const CheckoutPage = () => {
                 <Shield size={20} className="text-blue-600 mt-0.5" />
                 <div>
                   <h3 className="font-semibold text-blue-900 mb-2">
-                    Secure Checkout
+                    {t('checkout.secureCheckout')}
                   </h3>
                   <p className="text-blue-700 text-sm">
-                    Your payment information is encrypted and secure. We use
-                    Stripe for secure payment processing and never store your
-                    credit card details.
+                    {t('checkout.securityNotice')}
                   </p>
                 </div>
               </div>
@@ -595,7 +593,7 @@ const CheckoutPage = () => {
             className="space-y-6">
             <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 sticky top-8">
               <h3 className="text-xl font-semibold text-gray-900 mb-6">
-                Order Summary
+                {t('checkout.orderSummary')}
               </h3>
 
               {/* Cart Items */}
@@ -620,7 +618,7 @@ const CheckoutPage = () => {
                         {item.name}
                       </h4>
                       <p className="text-gray-600 text-sm">
-                        Qty: {item.quantity}
+                        {t('checkout.qty')}: {item.quantity}
                       </p>
                     </div>
                     <div className="text-right">
@@ -635,12 +633,12 @@ const CheckoutPage = () => {
               {/* Pricing */}
               <div className="border-t border-gray-200 pt-4 space-y-3">
                 <div className="flex justify-between text-gray-600">
-                  <span>Subtotal</span>
+                  <span>{t('checkout.subtotal')}</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
                 {isCouponApplied && coupon && (
                   <div className="flex justify-between text-green-600">
-                    <span>Discount ({coupon.code})</span>
+                    <span>{t('checkout.discount')} ({coupon.code})</span>
                     <span>
                       -$
                       {(subtotal * (coupon.discountPercentage / 100)).toFixed(
@@ -650,12 +648,12 @@ const CheckoutPage = () => {
                   </div>
                 )}
                 <div className="flex justify-between text-gray-600">
-                  <span>Shipping</span>
-                  <span className="text-green-600">Free</span>
+                  <span>{t('checkout.shipping')}</span>
+                  <span className="text-green-600">{t('checkout.free')}</span>
                 </div>
                 <div className="border-t border-gray-200 pt-3">
                   <div className="flex justify-between text-lg font-semibold text-gray-900">
-                    <span>Total</span>
+                    <span>{t('checkout.total')}</span>
                     <span>${total.toFixed(2)}</span>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Heart,
   ShoppingCart,
@@ -22,6 +23,7 @@ import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 
 const ProductDetailPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useUserStore();
@@ -51,7 +53,7 @@ const ProductDetailPage = () => {
         throw new Error("Product not found");
       }
     } catch (error) {
-      toast.error("Product not found");
+      toast.error(t('productDetail.errors.productNotFound'));
       navigate("/shop");
     } finally {
       setLoading(false);
@@ -74,7 +76,7 @@ const ProductDetailPage = () => {
 
   const handleToggleCart = async () => {
     if (!user) {
-      toast.error("Please login to manage cart");
+      toast.error(t('productDetail.errors.loginRequired'));
       navigate("/login");
       return;
     }
@@ -84,21 +86,21 @@ const ProductDetailPage = () => {
       if (result.success) {
         // Success message is handled in the store
       } else {
-        toast.error(result.message || "Failed to update cart");
+        toast.error(result.message || t('productDetail.errors.cartUpdateFailed'));
       }
     } catch (error) {
       if (error.response?.status === 401) {
-        toast.error("Please login to manage cart");
+        toast.error(t('common.pleaseLoginCart'));
         navigate("/login");
       } else {
-        toast.error("Failed to update cart");
+        toast.error(t('common.failedUpdateCart'));
       }
     }
   };
 
   const handleWishlistToggle = async () => {
     if (!user) {
-      toast.error("Please login to add items to wishlist");
+      toast.error(t('common.pleaseLoginWishlist'));
       navigate("/login");
       return;
     }
@@ -107,7 +109,7 @@ const ProductDetailPage = () => {
       await toggleWishlist(product);
     } catch (error) {
       if (error.response?.status === 401) {
-        toast.error("Please login to add items to wishlist");
+        toast.error(t('common.pleaseLoginWishlist'));
         navigate("/login");
       }
       // Other errors are already handled in the store
@@ -116,7 +118,7 @@ const ProductDetailPage = () => {
 
   const handleBuyNow = async () => {
     if (!user) {
-      toast.error("Please login to purchase items");
+      toast.error(t('common.pleaseLoginCart'));
       navigate("/login");
       return;
     }
@@ -134,7 +136,7 @@ const ProductDetailPage = () => {
       }
     } catch (error) {
       if (error.response?.status === 401) {
-        toast.error("Please login to purchase items");
+        toast.error(t('common.pleaseLoginCart'));
         navigate("/login");
       } else {
         toast.error("An error occurred during checkout");

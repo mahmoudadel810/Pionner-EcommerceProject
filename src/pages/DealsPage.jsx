@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { useProductStore } from "../stores/useProductStore";
 import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
@@ -19,6 +20,7 @@ import {
 } from "lucide-react";
 
 const DealsPage = () => {
+  const { t } = useTranslation();
   const { products, fetchFeaturedProducts, loading } = useProductStore();
   const { toggleCart, isInCart } = useCartStore();
   const { toggleWishlist, wishlist } = useWishlistStore();
@@ -47,7 +49,7 @@ const DealsPage = () => {
 
   const handleToggleCart = async product => {
     if (!user) {
-      toast.error("Please login to manage cart");
+      toast.error(t('deals.errors.loginRequired'));
       return;
     }
 
@@ -56,7 +58,7 @@ const DealsPage = () => {
       if (result.success) {
         // Success message is handled in the store
       } else {
-        toast.error(result.message || "Failed to update cart");
+        toast.error(result.message || t('deals.errors.cartUpdateFailed'));
       }
     } catch (error) {
       // Error is already handled by the result check above
@@ -65,7 +67,7 @@ const DealsPage = () => {
 
   const handleWishlistToggle = async product => {
     if (!user) {
-      toast.error("Please login to manage wishlist");
+      toast.error(t('deals.errors.wishlistLoginRequired'));
       return;
     }
 
@@ -79,10 +81,10 @@ const DealsPage = () => {
       
 
   const dealStats = [
-    { number: "500+", label: "Active Deals", icon: Zap, color: "from-purple-500 to-purple-600" },
-    { number: "24hr", label: "Flash Sales", icon: Flame, color: "from-red-500 to-red-600" },
-    { number: "70%", label: "Max Discount", icon: Percent, color: "from-green-500 to-green-600" },
-    { number: "10K+", label: "Happy Buyers", icon: ShoppingBag, color: "from-blue-500 to-blue-600" },
+    { number: "500+", label: t('deals.stats.activeDeals'), icon: Zap, color: "from-purple-500 to-purple-600" },
+    { number: "24hr", label: t('deals.stats.flashSales'), icon: Flame, color: "from-red-500 to-red-600" },
+    { number: "70%", label: t('deals.stats.maxDiscount'), icon: Percent, color: "from-green-500 to-green-600" },
+    { number: "10K+", label: t('deals.stats.happyBuyers'), icon: ShoppingBag, color: "from-blue-500 to-blue-600" },
   ];
 
   if (loading) {
@@ -128,7 +130,7 @@ const DealsPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-5xl lg:text-7xl font-bold text-gray-900 mb-6"
             >
-              Hot <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">Deals</span>
+              {t('deals.hero.hot')} <span className="bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">{t('deals.hero.deals')}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -136,7 +138,7 @@ const DealsPage = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto"
             >
-              Discover amazing deals on our featured products. Limited time offers with incredible savings!
+              {t('deals.hero.description')}
             </motion.p>
             
             {/* Deal Stats */}
@@ -188,9 +190,9 @@ const DealsPage = () => {
               <Sparkles size={24} className="text-white" />
             </motion.div>
             
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Featured Products</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('deals.products.title')}</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Handpicked deals on our most popular products
+              {t('deals.products.subtitle')}
             </p>
           </motion.div>
 
@@ -224,9 +226,9 @@ const DealsPage = () => {
                 <div className="w-16 h-16 bg-gradient-to-br from-gray-400 to-gray-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                   <TrendingUp size={24} className="text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">No Deals Available</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">{t('deals.empty.title')}</h3>
                 <p className="text-gray-600 mb-6">
-                  Check back soon for amazing deals and offers!
+                  {t('deals.empty.message')}
                 </p>
                 <div className="w-full h-2 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-red-500 to-orange-500 rounded-full animate-pulse"></div>

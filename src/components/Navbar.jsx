@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, memo, useCallback, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -47,12 +48,14 @@ import {
 import { useUserStore } from "../stores/useUserStore";
 import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
+import LanguageSwitcher from "./LanguageSwitcher";
 import axios from "../lib/axios";
 import "../App.css";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 
 const Navbar = memo(() => {
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -118,37 +121,37 @@ const Navbar = memo(() => {
 
   const categories = [
     {
-      name: "Smartphones",
+      name: t('categories.smartphones'),
       icon: Smartphone,
       href: "/shop?category=smartphones",
       color: "from-blue-500 to-blue-600",
     },
     {
-      name: "Laptops",
+      name: t('categories.laptops'),
       icon: Laptop,
       href: "/shop?category=laptops",
       color: "from-purple-500 to-purple-600",
     },
     {
-      name: "Gaming",
+      name: t('categories.gaming'),
       icon: Gamepad2,
       href: "/shop?category=gaming",
       color: "from-green-500 to-green-600",
     },
     {
-      name: "Smart Home",
+      name: t('categories.smart_home'),
       icon: Home,
       href: "/shop?category=smart-home",
       color: "from-orange-500 to-orange-600",
     },
     {
-      name: "Audio",
+      name: t('categories.audio'),
       icon: Headphones,
       href: "/shop?category=audio",
       color: "from-pink-500 to-pink-600",
     },
     {
-      name: "Tablets",
+      name: t('categories.tablets'),
       icon: Tablet,
       href: "/shop?category=tablets",
       color: "from-indigo-500 to-indigo-600",
@@ -156,12 +159,12 @@ const Navbar = memo(() => {
   ];
 
   const navLinks = [
-    { name: "Home", href: "/", icon: Home },
-    { name: "Shop", href: "/shop", icon: Package },
-    { name: "Categories", href: "/categories", icon: Package },
-    { name: "Deals", href: "/deals", badge: "Hot", icon: TrendingUp },
-    { name: "About", href: "/about" },
-    { name: "Contact Us", href: "/contact" },
+    { name: t('nav.home'), href: "/", icon: Home },
+    { name: t('nav.shop'), href: "/shop", icon: Package },
+    { name: t('nav.categories'), href: "/categories", icon: Package },
+    { name: t('nav.deals'), href: "/deals", badge: "Hot", icon: TrendingUp },
+    { name: t('nav.about'), href: "/about" },
+    { name: t('nav.contact'), href: "/contact" },
   ];
 
   const handleLogout = useCallback(async () => {
@@ -251,7 +254,7 @@ const Navbar = memo(() => {
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <div
-              className="flex items-center space-x-3 cursor-pointer select-none group"
+              className="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer select-none group"
               onClick={() => navigate("/")}
             >
               <div className="relative">
@@ -263,12 +266,12 @@ const Navbar = memo(() => {
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-orange-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent tracking-tight drop-shadow-lg">
-                Pioneer
+                {t('company.name')}
               </span>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-1">
+            <div className="hidden lg:flex items-center space-x-1 rtl:space-x-reverse">
               <NavigationMenu>
                 <NavigationMenuList>
                   {navLinks.map(link => (
@@ -285,7 +288,7 @@ const Navbar = memo(() => {
                           {link.icon && (
                             <link.icon
                               size={18}
-                              className={`mr-2 transition-colors ${
+                              className={`mr-2 rtl:ml-2 rtl:mr-0 transition-colors ${
                                 isActive(link.href)
                                   ? "text-blue-600"
                                   : "text-gray-500 group-hover:text-blue-600"
@@ -294,7 +297,7 @@ const Navbar = memo(() => {
                           )}
                           {link.name}
                           {link.badge && (
-                            <Badge className="ml-2 bg-red-500 text-white text-xs animate-pulse">
+                            <Badge className="ml-2 rtl:mr-2 rtl:ml-0 bg-red-500 text-white text-xs animate-pulse">
                               {link.badge}
                             </Badge>
                           )}
@@ -312,24 +315,24 @@ const Navbar = memo(() => {
                 <div className="relative">
                   <Search
                     size={20}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 transition-colors"
+                    className="absolute left-3 rtl:right-3 rtl:left-auto top-1/2 -translate-y-1/2 text-gray-400 transition-colors"
                   />
                   <Input
                     type="text"
-                    placeholder="Search electronics..."
+                    placeholder={t('nav.search_placeholder')}
                     value={searchQuery}
                     onChange={handleSearchChange}
                     onFocus={() => setIsSearchFocused(true)}
                     onBlur={() =>
                       setTimeout(() => setIsSearchFocused(false), 200)
                     }
-                    className="w-full pl-10 pr-4 py-2.5 border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-sm transition-all duration-200 bg-gray-50 focus:bg-white text-gray-900 placeholder:text-gray-500"
+                    className="w-full pl-10 rtl:pr-10 rtl:pl-4 pr-4 py-2.5 border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-sm transition-all duration-200 bg-gray-50 focus:bg-white text-gray-900 placeholder:text-gray-500"
                   />
                 </div>
 
                 {/* Search Suggestions */}
                 {isSearchFocused && searchSuggestions.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50 min-w-[300px]">
+                  <div className="absolute top-full left-0 rtl:right-0 rtl:left-auto right-0 rtl:left-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50 min-w-[300px]">
                     {searchSuggestions.map((suggestion, index) => (
                       <button
                         key={index}
@@ -357,14 +360,14 @@ const Navbar = memo(() => {
                         <div className="flex items-center min-w-0 flex-1">
                           <Search
                             size={16}
-                            className="mr-3 text-gray-400 flex-shrink-0"
+                            className="mr-3 rtl:ml-3 rtl:mr-0 text-gray-400 flex-shrink-0"
                           />
                           <span className="truncate text-sm font-medium">
                             {suggestion.name}
                           </span>
                         </div>
                         {suggestion.category && (
-                          <Badge className="ml-3 text-xs bg-gray-100 text-gray-600 flex-shrink-0">
+                          <Badge className="ml-3 rtl:mr-3 rtl:ml-0 text-xs bg-gray-100 text-gray-600 flex-shrink-0">
                             {suggestion.category}
                           </Badge>
                         )}
@@ -376,7 +379,10 @@ const Navbar = memo(() => {
             </div>
 
             {/* Right Side Icons */}
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-1 rtl:space-x-reverse">
+              {/* Language Switcher */}
+              <LanguageSwitcher />
+              
               {/* Wishlist */}
               <Button
                 variant="ghost"
@@ -387,7 +393,7 @@ const Navbar = memo(() => {
               >
                 <Heart size={20} className="text-gray-600" />
                 {wishlistItemCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs min-w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+                  <Badge className="absolute -top-1 -right-1 rtl:-left-1 rtl:-right-auto bg-pink-500 text-white text-xs min-w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
                     {wishlistItemCount}
                   </Badge>
                 )}
@@ -401,7 +407,7 @@ const Navbar = memo(() => {
               >
                 <ShoppingCart size={20} className="text-gray-600" />
                 {cartItemCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs min-w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+                  <Badge className="absolute -top-1 -right-1 rtl:-left-1 rtl:-right-auto bg-blue-600 text-white text-xs min-w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
                     {cartItemCount}
                   </Badge>
                 )}
@@ -415,7 +421,7 @@ const Navbar = memo(() => {
                 >
                   <button
                     onClick={() => setShowUserDropdown(prev => !prev)}
-                    className="flex items-center gap-2 p-2 rounded-xl transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex items-center gap-2 rtl:gap-x-reverse p-2 rounded-xl transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <Avatar className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold">
                       {user.data?.user?.profileImage ? (
@@ -429,7 +435,7 @@ const Navbar = memo(() => {
                       )}
                     </Avatar>
                     <span className="text-sm font-medium text-gray-700">
-                      {user.data?.user?.name || "User"}
+                      {user.data?.user?.name || t('nav.user')}
                     </span>
                     <ChevronDown
                       size={16}
@@ -437,10 +443,10 @@ const Navbar = memo(() => {
                     />
                   </button>
                   {showUserDropdown && (
-                    <div className="absolute top-full right-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-xl z-50 overflow-hidden">
+                    <div className="absolute top-full right-0 rtl:left-0 rtl:right-auto mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-xl z-50 overflow-hidden">
                       {/* Profile Header */}
                       <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-purple-50">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3 rtl:gap-x-reverse">
                           <Avatar className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold">
                             {user.data?.user?.profileImage ? (
                               <img 
@@ -454,10 +460,10 @@ const Navbar = memo(() => {
                           </Avatar>
                           <div>
                             <div className="text-sm font-semibold text-gray-900">
-                              {user.data?.user?.name || "User"}
+                              {user.data?.user?.name || t('nav.user')}
                             </div>
                             <div className="text-xs text-gray-500">
-                              {user.data?.user?.email || "No email"}
+                              {user.data?.user?.email || t('nav.noEmail')}
                             </div>
                           </div>
                         </div>
@@ -470,10 +476,10 @@ const Navbar = memo(() => {
                             navigate("/profile");
                             setShowUserDropdown(false);
                           }}
-                          className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors text-left"
+                          className="w-full flex items-center gap-3 rtl:gap-x-reverse px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors text-left rtl:text-right"
                         >
                           <User size={18} />
-                          <span className="font-medium">Profile</span>
+                          <span className="font-medium">{t('profile')}</span>
                         </button>
 
                         {/* Admin Dashboard Link */}
@@ -483,10 +489,10 @@ const Navbar = memo(() => {
                               navigate("/admin");
                               setShowUserDropdown(false);
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-purple-600 hover:text-purple-700 hover:bg-purple-50 transition-colors text-left"
+                            className="w-full flex items-center gap-3 rtl:gap-x-reverse px-4 py-3 text-purple-600 hover:text-purple-700 hover:bg-purple-50 transition-colors text-left rtl:text-right"
                           >
                             <Shield size={18} />
-                            <span className="font-medium">Admin Dashboard</span>
+                            <span className="font-medium">{t('admin')}</span>
                           </button>
                         )}
 
@@ -497,10 +503,10 @@ const Navbar = memo(() => {
                             handleLogout();
                             setShowUserDropdown(false);
                           }}
-                          className="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:text-white hover:bg-red-500 transition-colors text-left"
+                          className="w-full flex items-center gap-3 rtl:gap-x-reverse px-4 py-3 text-red-600 hover:text-white hover:bg-red-500 transition-colors text-left rtl:text-right"
                         >
                           <LogOut size={18} />
-                          <span className="font-medium">Logout</span>
+                          <span className="font-medium">{t('nav.logout')}</span>
                         </button>
                       </div>
                     </div>
@@ -508,15 +514,15 @@ const Navbar = memo(() => {
                 </div>
               ) : (
                 <Button
-                  variant="ghost"
-                  className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl transition-colors hover:bg-gray-100"
-                  onClick={() => navigate("/login")}
-                >
-                  <User size={20} className="text-gray-600" />
-                  <span className="text-sm font-medium text-gray-700">
-                    Sign In
-                  </span>
-                </Button>
+                variant="ghost"
+                className="hidden md:flex items-center gap-2 rtl:gap-x-reverse px-4 py-2 rounded-xl transition-colors hover:bg-gray-100"
+                onClick={() => navigate("/login")}
+              >
+                <User size={20} className="text-gray-600" />
+                <span className="text-sm font-medium text-gray-700">
+                  Sign In
+                </span>
+              </Button>
               )}
 
               {/* Mobile Menu Button */}
@@ -547,14 +553,14 @@ const Navbar = memo(() => {
                 <form onSubmit={handleSearch} className="relative">
                   <Search
                     size={20}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    className="absolute left-3 rtl:right-3 rtl:left-auto top-1/2 -translate-y-1/2 text-gray-400"
                   />
                   <Input
                     type="text"
-                    placeholder="Search electronics..."
+                    placeholder={t('nav.search_placeholder')}
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white text-gray-900 placeholder:text-gray-500"
+                    className="w-full pl-10 rtl:pr-10 rtl:pl-4 pr-4 py-3 bg-gray-50 border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white text-gray-900 placeholder:text-gray-500"
                   />
                 </form>
               </div>
@@ -566,7 +572,7 @@ const Navbar = memo(() => {
                     key={link.name}
                     to={link.href}
                     onClick={closeMobileMenu}
-                    className={`flex items-center gap-3 py-3 px-4 rounded-xl transition-all duration-200 ${
+                    className={`flex items-center gap-3 rtl:gap-x-reverse py-3 px-4 rounded-xl transition-all duration-200 ${
                       isActive(link.href)
                         ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
                         : "hover:bg-gray-50 text-gray-700 hover:text-gray-900"
@@ -582,7 +588,7 @@ const Navbar = memo(() => {
                     )}
                     <span className="text-lg font-medium">{link.name}</span>
                     {link.badge && (
-                      <Badge className="ml-auto bg-red-500 text-white text-xs">
+                      <Badge className="ml-auto rtl:mr-auto rtl:ml-0 bg-red-500 text-white text-xs">
                         {link.badge}
                       </Badge>
                     )}
@@ -603,7 +609,7 @@ const Navbar = memo(() => {
                       key={category.name}
                       to={category.href}
                       onClick={closeMobileMenu}
-                      className="flex items-center gap-3 py-3 px-4 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-3 rtl:gap-x-reverse py-3 px-4 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <div
                         className={`p-2 rounded-lg bg-gradient-to-br ${category.color} text-white`}
@@ -621,7 +627,7 @@ const Navbar = memo(() => {
                 <>
                   <Separator className="my-6" />
                   <div className="space-y-2">
-                    <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center gap-3 rtl:gap-x-reverse px-4 py-3 bg-gray-50 rounded-xl">
                       <Avatar className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white font-semibold">
                         {user.data?.user?.profileImage ? (
                           <img 
@@ -633,40 +639,40 @@ const Navbar = memo(() => {
                           user.data?.user?.name?.charAt(0).toUpperCase() || <User size={18} />
                         )}
                       </Avatar>
-                      <div>
-                        <p className="font-medium text-gray-900">{user.data?.user?.name || "User"}</p>
-                        <p className="text-sm text-gray-500">{user.data?.user?.email || "No email"}</p>
+                      <div className="rtl:text-right">
+                        <p className="font-medium text-gray-900">{user.data?.user?.name || t('nav.user')}</p>
+                        <p className="text-sm text-gray-500">{user.data?.user?.email || t('nav.noEmail')}</p>
                       </div>
                     </div>
 
                     <Link
                       to="/profile"
                       onClick={closeMobileMenu}
-                      className="flex items-center gap-3 py-3 px-4 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-3 rtl:gap-x-reverse py-3 px-4 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <User size={20} />
-                      <span className="font-medium">Profile</span>
+                      <span className="font-medium">{t('profile')}</span>
                     </Link>
 
                     <Link
                       to="/cart"
                       onClick={closeMobileMenu}
-                      className="flex items-center gap-3 py-3 px-4 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-3 rtl:gap-x-reverse py-3 px-4 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <ShoppingCart size={20} />
                       <span className="font-medium">
-                        Cart ({cartItemCount})
+                        {t('nav.cart')} ({cartItemCount})
                       </span>
                     </Link>
 
                     <Link
                       to="/wishlist"
                       onClick={closeMobileMenu}
-                      className="flex items-center gap-3 py-3 px-4 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-3 rtl:gap-x-reverse py-3 px-4 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <Heart size={20} />
                       <span className="font-medium">
-                        Wishlist ({wishlistItemCount})
+                        {t('nav.wishlist')} ({wishlistItemCount})
                       </span>
                     </Link>
 
@@ -675,20 +681,20 @@ const Navbar = memo(() => {
                       <Link
                         to="/admin"
                         onClick={closeMobileMenu}
-                        className="flex items-center gap-3 py-3 px-4 rounded-xl text-purple-600 hover:bg-purple-50 transition-colors"
+                        className="flex items-center gap-3 rtl:gap-x-reverse py-3 px-4 rounded-xl text-purple-600 hover:bg-purple-50 transition-colors"
                       >
                         <Shield size={20} />
-                        <span className="font-medium">Admin Dashboard</span>
+                        <span className="font-medium">{t('admin')}</span>
                       </Link>
                     )}
 
                     <Button
                       variant="ghost"
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-3 py-3 px-4 rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors justify-start"
+                      className="w-full flex items-center gap-3 rtl:gap-x-reverse py-3 px-4 rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors justify-start rtl:justify-end"
                     >
                       <LogOut size={20} />
-                      <span className="font-medium">Logout</span>
+                      <span className="font-medium">{t('nav.logout')}</span>
                     </Button>
                   </div>
                 </>
@@ -703,7 +709,7 @@ const Navbar = memo(() => {
                     }}
                     className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg"
                   >
-                    <User size={20} className="mr-2" />
+                    <User size={20} className="mr-2 rtl:ml-2 rtl:mr-0" />
                     Sign In
                   </Button>
                 </>

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from 'react-i18next';
 import {
   Shield,
   Truck,
@@ -17,64 +18,65 @@ import {
 } from "lucide-react";
 
 const AboutPage = () => {
+  const { t } = useTranslation();
   const features = [
     {
       icon: Shield,
-      title: "Secure Shopping",
-      description: "Your data is protected with industry-leading security measures",
+      title: t('about.features.secureShoppingTitle'),
+      description: t('about.features.secureShoppingDesc'),
       color: "from-blue-500 to-blue-600",
       bgColor: "bg-blue-50",
     },
     {
       icon: Truck,
-      title: "Fast Delivery",
-      description: "Get your products delivered within 24-48 hours",
+      title: t('about.features.fastDeliveryTitle'),
+      description: t('about.features.fastDeliveryDesc'),
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50",
     },
     {
       icon: Clock,
-      title: "24/7 Support",
-      description: "Our customer support team is available round the clock",
+      title: t('about.features.supportTitle'),
+      description: t('about.features.supportDesc'),
       color: "from-purple-500 to-purple-600",
       bgColor: "bg-purple-50",
     },
     {
       icon: Users,
-      title: "Expert Team",
-      description: "Our team of experts ensures quality service",
+      title: t('about.features.expertTeamTitle'),
+      description: t('about.features.expertTeamDesc'),
       color: "from-orange-500 to-orange-600",
       bgColor: "bg-orange-50",
     },
   ];
 
   const stats = [
-    { number: "10K+", label: "Happy Customers", icon: Heart, color: "from-pink-500 to-pink-600" },
-    { number: "50K+", label: "Products Sold", icon: Award, color: "from-yellow-500 to-yellow-600" },
-    { number: "99%", label: "Satisfaction Rate", icon: Star, color: "from-indigo-500 to-indigo-600" },
-    { number: "24/7", label: "Customer Support", icon: CheckCircle, color: "from-emerald-500 to-emerald-600" },
+    { number: "10K+", label: t('about.stats.happyCustomers'), icon: Heart, color: "from-pink-500 to-pink-600" },
+    { number: "50K+", label: t('about.stats.productsSold'), icon: Award, color: "from-yellow-500 to-yellow-600" },
+    { number: "99%", label: t('about.stats.satisfactionRate'), icon: Star, color: "from-indigo-500 to-indigo-600" },
+    { number: "24/7", label: t('about.stats.customerSupport'), icon: CheckCircle, color: "from-emerald-500 to-emerald-600" },
   ];
 
   const values = [
     {
       icon: Target,
-      title: "Our Mission",
-      description: "To make cutting-edge technology accessible to everyone while providing exceptional customer service.",
+      title: t('about.values.missionTitle'),
+      description: t('about.values.missionDesc'),
     },
     {
       icon: Zap,
-      title: "Innovation",
-      description: "We stay ahead of the curve, offering the latest and greatest in electronics and technology.",
+      title: t('about.values.innovationTitle'),
+      description: t('about.values.innovationDesc'),
     },
     {
       icon: Globe,
-      title: "Global Reach",
-      description: "Serving customers across the country with reliable shipping and local support.",
+      title: t('about.values.globalReachTitle'),
+      description: t('about.values.globalReachDesc'),
     },
     {
       icon: TrendingUp,
-      title: "Growth",
-      description: "Continuously expanding our product range and improving our services based on customer feedback.",
+      title: t('about.values.growthTitle'),
+      description: t('about.values.growthDesc'),
     },
   ];
 
@@ -111,7 +113,7 @@ const AboutPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-5xl lg:text-7xl font-bold text-gray-900 mb-6"
             >
-              About <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Pioneer</span>
+              {t('about.hero.title')} <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{t('about.hero.brand')}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -119,8 +121,7 @@ const AboutPage = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto"
             >
-              We are passionate about bringing you the latest and greatest in electronics. 
-              Our mission is to provide high-quality products with exceptional customer service.
+              {t('about.hero.description')}
             </motion.p>
             
             {/* Quick Stats */}
@@ -160,9 +161,9 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Choose Us</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('about.features.title')}</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We provide the best shopping experience with our comprehensive features
+              {t('about.features.subtitle')}
             </p>
           </motion.div>
 
@@ -209,9 +210,9 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Values</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('about.values.title')}</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              The principles that guide everything we do
+              {t('about.values.subtitle')}
             </p>
           </motion.div>
 
@@ -267,7 +268,7 @@ const AboutPage = () => {
                   <BookOpen size={24} className="text-white" />
                 </motion.div>
                 
-                <h2 className="text-4xl font-bold text-gray-900 mb-8">Our Story</h2>
+                <h2 className="text-4xl font-bold text-gray-900 mb-8">{t('about.story.title')}</h2>
                 <div className="space-y-6 text-lg text-gray-600 leading-relaxed max-w-4xl mx-auto">
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
@@ -275,9 +276,7 @@ const AboutPage = () => {
                     transition={{ duration: 0.6, delay: 0.3 }}
                     viewport={{ once: true }}
                   >
-                    Founded in 2020, Pioneer started as a small local electronics store with a big dream: 
-                    to make cutting-edge technology accessible to everyone. What began as a passion project 
-                    has grown into one of the most trusted names in online electronics retail.
+                    {t('about.story.paragraph1')}
                   </motion.p>
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
@@ -285,9 +284,7 @@ const AboutPage = () => {
                     transition={{ duration: 0.6, delay: 0.4 }}
                     viewport={{ once: true }}
                   >
-                    Today, we serve customers across the country, offering a carefully curated selection 
-                    of the latest gadgets, computers, and electronic accessories. Our commitment to quality, 
-                    customer service, and competitive pricing remains at the heart of everything we do.
+                    {t('about.story.paragraph2')}
                   </motion.p>
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
@@ -295,9 +292,7 @@ const AboutPage = () => {
                     transition={{ duration: 0.6, delay: 0.5 }}
                     viewport={{ once: true }}
                   >
-                    We believe that technology should enhance your life, not complicate it. That's why we 
-                    go beyond just selling products – we provide expert advice, comprehensive support, and 
-                    a shopping experience that puts you first.
+                    {t('about.story.paragraph3')}
                   </motion.p>
                 </div>
               </div>

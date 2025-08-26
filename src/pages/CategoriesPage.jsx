@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
@@ -14,6 +15,7 @@ import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 
 const CategoriesPage = () => {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -123,7 +125,7 @@ const CategoriesPage = () => {
       }
     } catch (error) {
       setError(error.message || "Failed to fetch categories");
-      toast.error("Failed to load categories");
+      toast.error(t('categories.errors.failedToLoad'));
     } finally {
       setLoading(false);
     }
@@ -235,7 +237,7 @@ const CategoriesPage = () => {
                   {category.name}
                 </h3>
                 <Badge variant="secondary" className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
-                  {category.productCount || 0} products
+                  {category.productCount || 0} {t('categories.card.products')}
                 </Badge>
               </div>
             </div>
@@ -249,11 +251,11 @@ const CategoriesPage = () => {
                 {category.featured && (
                   <Badge variant="destructive" className="text-xs bg-gradient-to-r from-red-500 to-pink-500">
                     <Sparkles className="w-3 h-3 mr-1" />
-                    Featured
+                    {t('categories.card.featured')}
                   </Badge>
                 )}
                 <Badge variant="outline" className="text-xs">
-                  {category.isActive ? "Active" : "Inactive"}
+                  {category.isActive ? t('categories.card.active') : t('categories.card.inactive')}
                 </Badge>
               </div>
               <Package className="h-5 w-5 text-blue-600" />
@@ -289,7 +291,7 @@ const CategoriesPage = () => {
                   {category.featured && (
                     <Badge variant="destructive" className="text-xs bg-gradient-to-r from-red-500 to-pink-500">
                       <Sparkles className="w-3 h-3 mr-1" />
-                      Featured
+                      {t('categories.card.featured')}
                     </Badge>
                   )}
                 </div>
@@ -299,11 +301,11 @@ const CategoriesPage = () => {
                 <div className="flex items-center gap-4 text-sm text-gray-500">
                   <span className="flex items-center gap-1">
                     <Package className="w-4 h-4" />
-                    {category.productCount || 0} products
+                    {category.productCount || 0} {t('categories.card.products')}
                   </span>
                   <span>•</span>
                   <span className={category.isActive ? "text-green-600" : "text-red-600"}>
-                    {category.isActive ? "Active" : "Inactive"}
+                    {category.isActive ? t('categories.card.active') : t('categories.card.inactive')}
                   </span>
                 </div>
               </div>
@@ -347,14 +349,14 @@ const CategoriesPage = () => {
               <Package size={32} className="text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Error Loading Categories
+              {t('categories.errors.loadingTitle')}
             </h1>
             <p className="text-gray-600 mb-8">{error}</p>
             <Button 
               onClick={fetchCategories} 
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
             >
-              Try Again
+              {t('categories.errors.tryAgain')}
             </Button>
           </div>
         </div>
@@ -395,7 +397,7 @@ const CategoriesPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-4xl lg:text-6xl font-bold text-gray-900 mb-4"
             >
-              Explore <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Categories</span>
+              {t('categories.hero.title')} <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{t('categories.hero.titleHighlight')}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -403,7 +405,7 @@ const CategoriesPage = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-lg text-gray-600 mb-6 leading-relaxed max-w-2xl mx-auto"
             >
-              Discover our curated collection of product categories. Find exactly what you're looking for with our organized selection.
+              {t('categories.hero.description')}
             </motion.p>
           </div>
         </div>
@@ -427,7 +429,7 @@ const CategoriesPage = () => {
                   <div className="relative flex-1">
                     <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 transition-colors duration-300 ${searchQuery ? 'text-blue-500' : 'text-gray-400'}`} />
                     <Input
-                      placeholder="Search categories by name or description..."
+                      placeholder={t('categories.search.placeholder')}
                       value={searchQuery}
                       onChange={handleSearch}
                       className={`pl-12 pr-12 py-3 bg-gray-50 border-2 rounded-xl focus:ring-4 transition-all duration-300 ${
@@ -451,26 +453,26 @@ const CategoriesPage = () => {
                   {/* Sort */}
                   <Select value={`${sortBy}-${sortOrder}`} onValueChange={handleSortChange}>
                     <SelectTrigger className="w-full sm:w-40 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300">
-                      <SelectValue placeholder="Sort by" />
+                      <SelectValue placeholder={t('categories.sort.placeholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-                      <SelectItem value="name-desc">Name (Z-A)</SelectItem>
-                      <SelectItem value="productCount-desc">Most Products</SelectItem>
-                      <SelectItem value="productCount-asc">Least Products</SelectItem>
-                      <SelectItem value="createdAt-desc">Newest</SelectItem>
-                      <SelectItem value="createdAt-asc">Oldest</SelectItem>
+                      <SelectItem value="name-asc">{t('categories.sort.nameAsc')}</SelectItem>
+                      <SelectItem value="name-desc">{t('categories.sort.nameDesc')}</SelectItem>
+                      <SelectItem value="productCount-desc">{t('categories.sort.mostProducts')}</SelectItem>
+                      <SelectItem value="productCount-asc">{t('categories.sort.leastProducts')}</SelectItem>
+                      <SelectItem value="createdAt-desc">{t('categories.sort.newest')}</SelectItem>
+                      <SelectItem value="createdAt-asc">{t('categories.sort.oldest')}</SelectItem>
                     </SelectContent>
                   </Select>
 
                   {/* Filter */}
                   <Select value={filterFeatured} onValueChange={handleFilterChange}>
                     <SelectTrigger className="w-full sm:w-40 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300">
-                      <SelectValue placeholder="Filter by" />
+                      <SelectValue placeholder={t('categories.filter.placeholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Categories</SelectItem>
-                      <SelectItem value="true">Featured Only</SelectItem>
+                      <SelectItem value="all">{t('categories.filter.all')}</SelectItem>
+                      <SelectItem value="true">{t('categories.filter.featuredOnly')}</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -497,13 +499,13 @@ const CategoriesPage = () => {
                   {/* Items per page */}
                   <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
                     <SelectTrigger className="w-28 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300">
-                      <SelectValue placeholder="Per page" />
+                      <SelectValue placeholder={t('categories.pagination.perPage')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="6">6 per page</SelectItem>
-                      <SelectItem value="12">12 per page</SelectItem>
-                      <SelectItem value="24">24 per page</SelectItem>
-                      <SelectItem value="48">48 per page</SelectItem>
+                      <SelectItem value="6">{t('categories.pagination.perPageOption', { count: 6 })}</SelectItem>
+                      <SelectItem value="12">{t('categories.pagination.perPageOption', { count: 12 })}</SelectItem>
+                      <SelectItem value="24">{t('categories.pagination.perPageOption', { count: 24 })}</SelectItem>
+                      <SelectItem value="48">{t('categories.pagination.perPageOption', { count: 48 })}</SelectItem>
                     </SelectContent>
                   </Select>
 
@@ -516,7 +518,7 @@ const CategoriesPage = () => {
                     className="px-4 py-3 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-300"
                   >
                     <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                    Refresh
+                    {t('categories.actions.refresh')}
                   </Button>
                 </div>
               </div>
@@ -536,17 +538,17 @@ const CategoriesPage = () => {
                   <div className="flex items-center gap-3">
                     <Search className="h-5 w-5 text-blue-600" />
                     <span className="text-blue-900 font-medium">
-                      Search results for "{searchQuery}"
+                      {t('categories.search.resultsFor', { query: searchQuery })}
                     </span>
                   </div>
                   <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={clearSearch}
-                    className="text-blue-600 hover:text-blue-800 hover:bg-blue-100"
-                  >
-                    Clear search
-                  </Button>
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearSearch}
+                      className="text-blue-600 hover:text-blue-800 hover:bg-blue-100"
+                    >
+                      {t('categories.search.clear')}
+                    </Button>
                 </div>
               </div>
             </motion.div>
@@ -567,14 +569,14 @@ const CategoriesPage = () => {
                 <Package className="h-12 w-12 text-white" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                {searchQuery ? "No categories found" : "No categories available"}
+                {searchQuery ? t('categories.empty.noResults') : t('categories.empty.noCategories')}
               </h3>
               <p className="text-gray-600 mb-8 text-lg">
                 {searchQuery 
-                  ? `No categories match your search for "${searchQuery}". Try different keywords or check your spelling.`
+                  ? t('categories.empty.noResultsDescription', { query: searchQuery })
                   : filterFeatured !== "all"
-                  ? "No featured categories are available at the moment."
-                  : "No categories are available at the moment."
+                  ? t('categories.empty.noFeatured')
+                  : t('categories.empty.noCategoriesDescription')
                 }
               </p>
               {(searchQuery || filterFeatured !== "all") && (
@@ -585,7 +587,7 @@ const CategoriesPage = () => {
                   }}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
                 >
-                  Clear All Filters
+                  {t('categories.empty.clearFilters')}
                 </Button>
               )}
             </motion.div>
@@ -623,13 +625,13 @@ const CategoriesPage = () => {
                 <div className="flex items-center justify-center gap-3">
                   <p className="text-gray-600 font-medium">
                     {searchQuery 
-                      ? `Found ${totalItems} category${totalItems !== 1 ? "ies" : "y"} matching "${searchQuery}"`
-                      : `Showing ${totalItems} category${totalItems !== 1 ? "ies" : "y"}`
+                      ? t('categories.results.found', { count: totalItems, query: searchQuery })
+                      : t('categories.results.showing', { count: totalItems })
                     }
                   </p>
                   {hasLoaded && !searchQuery && (
                     <span className="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">
-                      Cached
+                      {t('categories.results.cached')}
                     </span>
                   )}
                 </div>
@@ -651,7 +653,11 @@ const CategoriesPage = () => {
                   {/* Pagination Info */}
                   <div className="text-center sm:text-left">
                     <p className="text-gray-600 font-medium">
-                      Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} categories
+                      {t('categories.pagination.showing', { 
+                        start: ((currentPage - 1) * itemsPerPage) + 1, 
+                        end: Math.min(currentPage * itemsPerPage, totalItems), 
+                        total: totalItems 
+                      })}
                     </p>
                   </div>
 
@@ -747,10 +753,10 @@ const CategoriesPage = () => {
             viewport={{ once: true }}
             className="mt-12 flex justify-center items-center gap-4"
           >
-            <span className="text-gray-700 font-medium">Items per page:</span>
+            <span className="text-gray-700 font-medium">{t('categories.pagination.itemsPerPage')}:</span>
             <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select items per page" />
+                <SelectValue placeholder={t('categories.pagination.selectItemsPerPage')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="6">6</SelectItem>
@@ -766,4 +772,4 @@ const CategoriesPage = () => {
   );
 };
 
-export default CategoriesPage; 
+export default CategoriesPage;

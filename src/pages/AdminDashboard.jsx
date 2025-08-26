@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import {
   Plus,
   Edit,
@@ -44,6 +45,7 @@ import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
 
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const { products, fetchAllProducts, deleteProduct, loading } = useProductStore();
   const { 
     categories: storeCategories, 
@@ -139,7 +141,7 @@ const AdminDashboard = () => {
         fetchStats(),
       ]);
     } catch (error) {
-      toast.error("Failed to fetch dashboard data");
+      toast.error(t('admin.errors.failedToFetchData'));
     } finally {
       setIsLoading(false);
     }
@@ -205,12 +207,12 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteProduct = async (productId) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
+    if (window.confirm(t('admin.confirmations.deleteProduct'))) {
       try {
         await deleteProduct(productId);
-        toast.success("Product deleted successfully");
+        toast.success(t('admin.success.productDeleted'));
       } catch (error) {
-        toast.error("Failed to delete product");
+        toast.error(t('admin.errors.failedToDeleteProduct'));
       }
     }
   };
@@ -220,10 +222,10 @@ const AdminDashboard = () => {
       await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.UPDATE_STATUS.replace(":id", orderId)), {
         status: newStatus,
       });
-      toast.success(`Order status updated to ${newStatus}`);
+      toast.success(t('admin.success.orderStatusUpdated', { status: newStatus }));
       fetchOrders(); // Refresh orders
     } catch (error) {
-      toast.error("Failed to update order status");
+      toast.error(t('admin.errors.failedToUpdateOrderStatus'));
     }
   };
 
@@ -232,10 +234,10 @@ const AdminDashboard = () => {
       await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.UPDATE_PAYMENT_STATUS.replace(":id", orderId)), {
         paymentStatus: newPaymentStatus,
       });
-      toast.success(`Payment status updated to ${newPaymentStatus}`);
+      toast.success(t('admin.success.paymentStatusUpdated', { status: newPaymentStatus }));
       fetchOrders(); // Refresh orders
     } catch (error) {
-      toast.error("Failed to update payment status");
+      toast.error(t('admin.errors.failedToUpdatePaymentStatus'));
     }
   };
 
@@ -244,21 +246,21 @@ const AdminDashboard = () => {
       await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.UPDATE_USER_STATUS.replace(":id", userId)), {
         status: newStatus,
       });
-      toast.success(`User status updated to ${newStatus}`);
+      toast.success(t('admin.success.userStatusUpdated', { status: newStatus }));
       fetchUsers(); // Refresh users
     } catch (error) {
-      toast.error("Failed to update user status");
+      toast.error(t('admin.errors.failedToUpdateUserStatus'));
     }
   };
 
   const handleDeleteCoupon = async (couponId) => {
-    if (window.confirm("Are you sure you want to delete this coupon?")) {
+    if (window.confirm(t('admin.confirmations.deleteCoupon'))) {
       try {
         await axios.delete(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.DELETE.replace(":id", couponId)));
-        toast.success("Coupon deleted successfully");
+        toast.success(t('admin.success.couponDeleted'));
         fetchCoupons(); // Refresh coupons
       } catch (error) {
-        toast.error("Failed to delete coupon");
+        toast.error(t('admin.errors.failedToDeleteCoupon'));
       }
     }
   };
@@ -288,14 +290,14 @@ const AdminDashboard = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-        toast.success("Product updated successfully");
+        toast.success(t('admin.success.productUpdated'));
       } else {
         await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.CREATE), formData ,{
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-        toast.success("Product created successfully");
+        toast.success(t('admin.success.productCreated'));
       }
 
       setShowCreateForm(false);
@@ -310,7 +312,7 @@ const AdminDashboard = () => {
       });
       fetchAllProducts();
     } catch (error) {
-      toast.error("Failed to save product");
+      toast.error(t('admin.errors.failedToSaveProduct'));
     }
   };
 
@@ -506,13 +508,13 @@ const AdminDashboard = () => {
   );
 
   const tabs = [
-    { id: "overview", name: "Overview", icon: BarChart3 },
-    { id: "products", name: "Products", icon: Package },
-    { id: "categories", name: "Categories", icon: Tag },
-    { id: "orders", name: "Orders", icon: ShoppingCart },
-    { id: "users", name: "Users", icon: Users },
-    { id: "coupons", name: "Coupons", icon: Tag },
-    { id: "analytics", name: "Analytics", icon: TrendingUp },
+    { id: "overview", name: t("admin.tabs.overview"), icon: BarChart3 },
+    { id: "products", name: t("admin.tabs.products"), icon: Package },
+    { id: "categories", name: t("admin.tabs.categories"), icon: Tag },
+    { id: "orders", name: t("admin.tabs.orders"), icon: ShoppingCart },
+    { id: "users", name: t("admin.tabs.users"), icon: Users },
+    { id: "coupons", name: t("admin.tabs.coupons"), icon: Tag },
+    { id: "analytics", name: t("admin.tabs.analytics"), icon: TrendingUp },
   ];
 
   const getStatusColor = (status) => {
@@ -537,7 +539,7 @@ const AdminDashboard = () => {
       <div className="min-h-screen bg-background py-8 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading admin dashboard...</p>
+          <p className="text-muted-foreground">{t("admin.loading")}</p>
         </div>
       </div>
     );
@@ -557,10 +559,10 @@ const AdminDashboard = () => {
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
                 <Shield className="text-primary" size={32} />
-                Admin Dashboard
+                {t("admin.dashboard")}
               </h1>
               <p className="text-muted-foreground">
-                Manage your store and monitor performance
+                {t("admin.manage_store")}
               </p>
             </div>
             <button
@@ -568,7 +570,7 @@ const AdminDashboard = () => {
               className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
             >
               <RefreshCw size={16} />
-              Refresh Data
+              {t("admin.refresh_data")}
             </button>
           </div>
         </motion.div>
@@ -583,7 +585,7 @@ const AdminDashboard = () => {
           <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-muted-foreground text-sm">Total Products</p>
+                <p className="text-muted-foreground text-sm">{t("admin.stats.total_products")}</p>
                 <p className="text-3xl font-bold text-foreground">
                   {stats.totalProducts}
                 </p>
@@ -597,12 +599,12 @@ const AdminDashboard = () => {
           <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-muted-foreground text-sm">Total Orders</p>
+                <p className="text-muted-foreground text-sm">{t("admin.stats.total_orders")}</p>
                 <p className="text-3xl font-bold text-foreground">
                   {stats.totalOrders}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {stats.pendingOrders} pending
+                  {stats.pendingOrders} {t("admin.stats.pending_orders")}
                 </p>
               </div>
               <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
@@ -614,12 +616,12 @@ const AdminDashboard = () => {
           <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-muted-foreground text-sm">Total Revenue</p>
+                <p className="text-muted-foreground text-sm">{t("admin.stats.total_revenue")}</p>
                 <p className="text-3xl font-bold text-foreground">
-                  ${stats.totalRevenue?.toFixed(2) || "0.00"}
+                  {stats.totalRevenue?.toFixed(2) || "0.00"} SR
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {stats.paidOrders} paid orders
+                  {stats.paidOrders} {t("admin.stats.paid_orders")}
                 </p>
               </div>
               <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
@@ -631,12 +633,12 @@ const AdminDashboard = () => {
           <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-muted-foreground text-sm">Total Customers</p>
+                <p className="text-muted-foreground text-sm">{t("admin.stats.total_customers")}</p>
                 <p className="text-3xl font-bold text-foreground">
                   {stats.totalCustomers}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Active users
+                  {t("admin.stats.active_users")}
                 </p>
               </div>
               <div className="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center">
@@ -653,12 +655,12 @@ const AdminDashboard = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-8"
         >
-          <div className="flex space-x-1 bg-card rounded-lg p-1 border border-border overflow-x-auto">
+          <div className="flex space-x-1 rtl:space-x-reverse bg-card rounded-lg p-1 border border-border overflow-x-auto">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-300 whitespace-nowrap ${
+                className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-md transition-all duration-300 whitespace-nowrap ${
                   activeTab === tab.id
                     ? "bg-primary text-white"
                     : "text-muted-foreground hover:text-foreground"
@@ -683,13 +685,13 @@ const AdminDashboard = () => {
               <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-semibold text-foreground">
-                    Recent Orders
+                    {t("admin.overview.recent_orders")}
                   </h2>
                   <button
                     onClick={() => setActiveTab("orders")}
                     className="text-primary hover:text-primary/80 text-sm font-medium"
                   >
-                    View All
+                    {t("admin.overview.view_all")}
                   </button>
                 </div>
                 <div className="space-y-4">
@@ -700,13 +702,13 @@ const AdminDashboard = () => {
                     >
                       <div>
                         <p className="font-medium text-foreground">
-                          Order #{order._id ? order._id.slice(-8) : 'N/A'}
+                          {t("admin.overview.order_number")}{order._id ? order._id.slice(-8) : 'N/A'}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {new Date(order.createdAt).toLocaleDateString()}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {order.user?.name || "Unknown User"}
+                          {order.user?.name || t("admin.overview.unknown_user")}
                         </p>
                       </div>
                       <div className="text-right">
@@ -736,7 +738,7 @@ const AdminDashboard = () => {
               {/* Recent Customer Messages */}
               <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
                 <h2 className="text-xl font-semibold text-foreground mb-4">
-                  Recent Customer Messages
+                  {t("admin.overview.recent_messages")}
                 </h2>
                 <div className="space-y-4">
                   {(contacts || []).slice(0, 5).map((contact) => (
@@ -769,16 +771,16 @@ const AdminDashboard = () => {
             <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
-                  Products Management
+                  {t("admin.products.management")}
                 </h2>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => openProductForm()}
-                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
+                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2 rtl:space-x-reverse"
                 >
                   <Plus size={16} />
-                  <span>Add Product</span>
+                  <span>{t("admin.products.add_product")}</span>
                 </motion.button>
               </div>
 
@@ -791,7 +793,7 @@ const AdminDashboard = () => {
                   />
                   <input
                     type="text"
-                    placeholder="Search products..."
+                    placeholder={t("admin.products.search_placeholder")}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
@@ -805,22 +807,22 @@ const AdminDashboard = () => {
                   <thead>
                     <tr className="border-b border-border">
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Product
+                        {t("admin.products.table.product")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Category
+                        {t("admin.products.table.category")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Price
+                        {t("admin.products.table.price")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Stock
+                        {t("admin.products.table.stock")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Status
+                        {t("admin.products.table.status")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Actions
+                        {t("admin.products.table.actions")}
                       </th>
                     </tr>
                   </thead>
@@ -831,7 +833,7 @@ const AdminDashboard = () => {
                         className="border-b border-border hover:bg-background/50"
                       >
                         <td className="py-3 px-4">
-                          <div className="flex items-center space-x-3">
+                          <div className="flex items-center space-x-3 rtl:space-x-reverse">
                             <img
                               src={product.image}
                               alt={product.name}
@@ -864,29 +866,29 @@ const AdminDashboard = () => {
                                 : "bg-gray-100 text-gray-600"
                             }`}
                           >
-                            {product.isFeatured ? "Featured" : "Regular"}
+                            {product.isFeatured ? t("admin.products.featured") : t("admin.products.regular")}
                           </span>
                         </td>
                         <td className="py-3 px-4">
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center space-x-2 rtl:space-x-reverse">
                             <button
                               onClick={() => openProductForm(product)}
                               className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors duration-300"
-                              title="Edit Product"
+                              title={t("admin.products.edit_product")}
                             >
                               <Edit size={16} />
                             </button>
                             <button
                               onClick={() => handleDeleteProduct(product._id)}
                               className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors duration-300"
-                              title="Delete Product"
+                              title={t("admin.products.delete_product")}
                             >
                               <Trash2 size={16} />
                             </button>
                             <button
                               onClick={() => setShowOrderDetails(product)}
                               className="p-2 text-green-500 hover:bg-green-500/10 rounded-lg transition-colors duration-300"
-                              title="View Details"
+                              title={t("admin.products.view_details")}
                             >
                               <Eye size={16} />
                             </button>
@@ -904,7 +906,7 @@ const AdminDashboard = () => {
             <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
-                  Categories Management
+                  {t("admin.categories.management")}
                 </h2>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -913,7 +915,7 @@ const AdminDashboard = () => {
                   className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
                 >
                   <Plus size={16} />
-                  <span>Add Category</span>
+                  <span>{t("admin.categories.add_category")}</span>
                 </motion.button>
               </div>
 
@@ -926,7 +928,7 @@ const AdminDashboard = () => {
                   />
                   <input
                     type="text"
-                    placeholder="Search categories..."
+                    placeholder={t("admin.categories.search_placeholder")}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
@@ -940,22 +942,22 @@ const AdminDashboard = () => {
                   <thead>
                     <tr className="border-b border-border">
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Category
+                        {t("admin.categories.table.category")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Description
+                        {t("admin.categories.table.description")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Products
+                        {t("admin.categories.table.products")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Featured
+                        {t("admin.categories.table.featured")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Status
+                        {t("admin.categories.table.status")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Actions
+                        {t("admin.categories.table.actions")}
                       </th>
                     </tr>
                   </thead>
@@ -979,7 +981,7 @@ const AdminDashboard = () => {
                                 {category.name}
                               </p>
                               <p className="text-sm text-muted-foreground">
-                                Slug: {category.slug}
+                                {t("admin.categories.slug")}: {category.slug}
                               </p>
                             </div>
                           </div>
@@ -1000,7 +1002,7 @@ const AdminDashboard = () => {
                                 : "bg-gray-100 text-gray-600"
                             }`}
                           >
-                            {category.featured ? "Featured" : "Regular"}
+                            {category.featured ? t("admin.categories.featured") : t("admin.categories.regular")}
                           </span>
                         </td>
                         <td className="py-3 px-4">
@@ -1011,7 +1013,7 @@ const AdminDashboard = () => {
                                 : "bg-red-100 text-red-600"
                             }`}
                           >
-                            {category.isActive ? "Active" : "Inactive"}
+                            {category.isActive ? t("admin.categories.active") : t("admin.categories.inactive")}
                           </span>
                         </td>
                         <td className="py-3 px-4">
@@ -1019,14 +1021,14 @@ const AdminDashboard = () => {
                             <button
                               onClick={() => openCategoryForm(category)}
                               className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors duration-300"
-                              title="Edit Category"
+                              title={t("admin.categories.edit_category")}
                             >
                               <Edit size={16} />
                             </button>
                             <button
                               onClick={() => handleDeleteCategory(category._id)}
                               className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors duration-300"
-                              title="Delete Category"
+                              title={t("admin.categories.delete_category")}
                             >
                               <Trash2 size={16} />
                             </button>
@@ -1044,7 +1046,7 @@ const AdminDashboard = () => {
             <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
-                  Orders Management
+                  {t("admin.orders.management")}
                 </h2>
                 <div className="flex space-x-2">
                   <select
@@ -1054,12 +1056,12 @@ const AdminDashboard = () => {
                     }
                     className="px-3 py-2 border border-border rounded-lg bg-background"
                   >
-                    <option value="">All Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="shipped">Shipped</option>
-                    <option value="delivered">Delivered</option>
-                    <option value="cancelled">Cancelled</option>
+                    <option value="">{t("admin.orders.all_status")}</option>
+                    <option value="pending">{t("admin.orders.status.pending")}</option>
+                    <option value="processing">{t("admin.orders.status.processing")}</option>
+                    <option value="shipped">{t("admin.orders.status.shipped")}</option>
+                    <option value="delivered">{t("admin.orders.status.delivered")}</option>
+                    <option value="cancelled">{t("admin.orders.status.cancelled")}</option>
                   </select>
                   <select
                     value={filters.paymentStatus}
@@ -1068,11 +1070,11 @@ const AdminDashboard = () => {
                     }
                     className="px-3 py-2 border border-border rounded-lg bg-background"
                   >
-                    <option value="">All Payment Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="paid">Paid</option>
-                    <option value="failed">Failed</option>
-                    <option value="refunded">Refunded</option>
+                    <option value="">{t("admin.orders.all_payment_status")}</option>
+                    <option value="pending">{t("admin.orders.payment.pending")}</option>
+                    <option value="paid">{t("admin.orders.payment.paid")}</option>
+                    <option value="failed">{t("admin.orders.payment.failed")}</option>
+                    <option value="refunded">{t("admin.orders.payment.refunded")}</option>
                   </select>
                 </div>
               </div>
@@ -1083,18 +1085,18 @@ const AdminDashboard = () => {
                     <div className="flex items-center justify-between mb-3">
                       <div>
                         <p className="font-medium text-foreground">
-                          Order #{order._id ? order._id.slice(-8) : 'N/A'}
+                          {t("admin.orders.order_number")} #{order._id ? order._id.slice(-8) : 'N/A'}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {new Date(order.createdAt).toLocaleDateString()}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          Customer: {order.user?.name || "Unknown"}
+                          {t("admin.orders.customer")}: {order.user?.name || t("admin.orders.unknown")}
                         </p>
                       </div>
                       <div className="text-right">
                         <p className="text-xl font-bold text-primary">
-                          ${order.totalAmount?.toFixed(2) || "0.00"}
+                          {order.totalAmount?.toFixed(2) || "0.00"} SR
                         </p>
                         <div className="flex space-x-2 mt-2">
                           <span
@@ -1118,7 +1120,7 @@ const AdminDashboard = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground">
-                          {order.products?.length || 0} items
+                          {order.products?.length || 0} {t("admin.orders.items")}
                         </p>
                       </div>
                       <div className="flex space-x-2">
@@ -1129,11 +1131,11 @@ const AdminDashboard = () => {
                           }
                           className="px-2 py-1 border border-border rounded text-xs bg-background"
                         >
-                          <option value="pending">Pending</option>
-                          <option value="processing">Processing</option>
-                          <option value="shipped">Shipped</option>
-                          <option value="delivered">Delivered</option>
-                          <option value="cancelled">Cancelled</option>
+                          <option value="pending">{t("admin.orders.status.pending")}</option>
+                          <option value="processing">{t("admin.orders.status.processing")}</option>
+                          <option value="shipped">{t("admin.orders.status.shipped")}</option>
+                          <option value="delivered">{t("admin.orders.status.delivered")}</option>
+                          <option value="cancelled">{t("admin.orders.status.cancelled")}</option>
                         </select>
                         <select
                           value={order.paymentStatus}
@@ -1142,15 +1144,15 @@ const AdminDashboard = () => {
                           }
                           className="px-2 py-1 border border-border rounded text-xs bg-background"
                         >
-                          <option value="pending">Pending</option>
-                          <option value="paid">Paid</option>
-                          <option value="failed">Failed</option>
-                          <option value="refunded">Refunded</option>
+                          <option value="pending">{t("admin.orders.payment.pending")}</option>
+                          <option value="paid">{t("admin.orders.payment.paid")}</option>
+                          <option value="failed">{t("admin.orders.payment.failed")}</option>
+                          <option value="refunded">{t("admin.orders.payment.refunded")}</option>
                         </select>
                         <button
                           onClick={() => setShowOrderDetails(order)}
                           className="p-1 text-blue-500 hover:bg-blue-500/10 rounded"
-                          title="View Details"
+                          title={t("admin.orders.view_details")}
                         >
                           <Eye size={14} />
                         </button>
@@ -1166,7 +1168,7 @@ const AdminDashboard = () => {
             <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
-                  Users Management
+                  {t("admin.users.management")}
                 </h2>
                 <select
                   value={filters.userRole}
@@ -1175,9 +1177,9 @@ const AdminDashboard = () => {
                   }
                   className="px-3 py-2 border border-border rounded-lg bg-background"
                 >
-                  <option value="">All Roles</option>
-                  <option value="customer">Customer</option>
-                  <option value="admin">Admin</option>
+                  <option value="">{t("admin.users.all_roles")}</option>
+                  <option value="customer">{t("admin.users.customer")}</option>
+                  <option value="admin">{t("admin.users.admin")}</option>
                 </select>
               </div>
 
@@ -1186,22 +1188,22 @@ const AdminDashboard = () => {
                   <thead>
                     <tr className="border-b border-border">
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        User
+                        {t("admin.users.table.user")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Email
+                        {t("admin.users.table.email")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Role
+                        {t("admin.users.table.role")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Status
+                        {t("admin.users.table.status")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Joined
+                        {t("admin.users.table.joined")}
                       </th>
                       <th className="text-left py-3 px-4 font-medium text-foreground">
-                        Actions
+                        {t("admin.users.table.actions")}
                       </th>
                     </tr>
                   </thead>
@@ -1263,13 +1265,13 @@ const AdminDashboard = () => {
                               }
                               className="px-2 py-1 border border-border rounded text-xs bg-background"
                             >
-                              <option value="active">Active</option>
-                              <option value="inactive">Inactive</option>
+                              <option value="active">{t("admin.users.active")}</option>
+                              <option value="inactive">{t("admin.users.inactive")}</option>
                             </select>
                             <button
                               onClick={() => setShowUserDetails(user)}
                               className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors duration-300"
-                              title="View Details"
+                              title={t("admin.users.view_details")}
                             >
                               <Eye size={16} />
                             </button>
@@ -1287,16 +1289,16 @@ const AdminDashboard = () => {
             <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
-                  Coupons Management
+                  {t("admin.coupons.management")}
                 </h2>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-fi                  onClick={() => openCouponForm()}
+                  onClick={() => openCouponForm()}
                   className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
                 >
                   <Plus size={16} />
-                  <span>Add Coupon</span>
+                  <span>{t("admin.coupons.add_coupon")}</span>
                 </motion.button>
               </div>
 
@@ -1315,7 +1317,7 @@ fi                  onClick={() => openCouponForm()}
                           coupon.isActive ? "active" : "inactive"
                         )}`}
                       >
-                        {coupon.isActive ? "Active" : "Inactive"}
+                        {coupon.isActive ? t("admin.coupons.active") : t("admin.coupons.inactive")}
                       </span>
                     </div>
                     <p className="text-sm text-muted-foreground mb-2">
@@ -1323,21 +1325,21 @@ fi                  onClick={() => openCouponForm()}
                     </p>
                     <div className="space-y-1 text-sm">
                       <p>
-                        <span className="text-muted-foreground">Discount:</span>{" "}
+                        <span className="text-muted-foreground">{t("admin.coupons.discount")}:</span>{" "}
                         {coupon.discountType === "percentage"
                           ? `${coupon.discountValue}%`
                           : `$${coupon.discountValue}`}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">Min Amount:</span>{" "}
+                        <span className="text-muted-foreground">{t("admin.coupons.min_amount")}:</span>{" "}
                         ${coupon.minimumAmount}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">Usage:</span>{" "}
+                        <span className="text-muted-foreground">{t("admin.coupons.usage")}:</span>{" "}
                         {coupon.usageCount || 0} / {coupon.maxUsage || "∞"}
                       </p>
                       <p>
-                        <span className="text-muted-foreground">Expires:</span>{" "}
+                        <span className="text-muted-foreground">{t("admin.coupons.expires")}:</span>{" "}
                         {new Date(coupon.expiryDate).toLocaleDateString()}
                       </p>
                     </div>
@@ -1345,14 +1347,14 @@ fi                  onClick={() => openCouponForm()}
                                              <button
                          onClick={() => openCouponForm(coupon)}
                          className="p-1 text-blue-500 hover:bg-blue-500/10 rounded"
-                         title="Edit Coupon"
+                         title={t("admin.coupons.edit_coupon")}
                        >
                          <Edit size={14} />
                        </button>
                       <button
                         onClick={() => handleDeleteCoupon(coupon._id)}
                         className="p-1 text-red-500 hover:bg-red-500/10 rounded"
-                        title="Delete Coupon"
+                        title={t("admin.coupons.delete_coupon")}
                       >
                         <Trash2 size={14} />
                       </button>
@@ -1368,23 +1370,23 @@ fi                  onClick={() => openCouponForm()}
               {/* Sales Analytics */}
               <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
                 <h2 className="text-xl font-semibold text-foreground mb-4">
-                  Sales Analytics
+                  {t("admin.analytics.sales_analytics")}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-4 bg-background rounded-lg">
-                    <p className="text-sm text-muted-foreground">Total Revenue</p>
+                    <p className="text-sm text-muted-foreground">{t("admin.analytics.total_revenue")}</p>
                     <p className="text-2xl font-bold text-foreground">
                       ${stats.totalRevenue?.toFixed(2) || "0.00"}
                     </p>
                   </div>
                   <div className="p-4 bg-background rounded-lg">
-                    <p className="text-sm text-muted-foreground">Total Orders</p>
+                    <p className="text-sm text-muted-foreground">{t("admin.analytics.total_orders")}</p>
                     <p className="text-2xl font-bold text-foreground">
                       {stats.totalOrders}
                     </p>
                   </div>
                   <div className="p-4 bg-background rounded-lg">
-                    <p className="text-sm text-muted-foreground">Average Order Value</p>
+                    <p className="text-sm text-muted-foreground">{t("admin.analytics.average_order_value")}</p>
                     <p className="text-2xl font-bold text-foreground">
                       ${stats.totalOrders > 0 ? (stats.totalRevenue / stats.totalOrders).toFixed(2) : "0.00"}
                     </p>
@@ -1395,29 +1397,29 @@ fi                  onClick={() => openCouponForm()}
               {/* Order Status Distribution */}
               <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
                 <h2 className="text-xl font-semibold text-foreground mb-4">
-                  Order Status Distribution
+                  {t("admin.analytics.order_status_distribution")}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="p-4 bg-background rounded-lg text-center">
-                    <p className="text-sm text-muted-foreground">Pending</p>
+                    <p className="text-sm text-muted-foreground">{t("admin.analytics.pending")}</p>
                     <p className="text-2xl font-bold text-yellow-600">
                       {stats.pendingOrders}
                     </p>
                   </div>
                   <div className="p-4 bg-background rounded-lg text-center">
-                    <p className="text-sm text-muted-foreground">Paid</p>
+                    <p className="text-sm text-muted-foreground">{t("admin.analytics.paid")}</p>
                     <p className="text-2xl font-bold text-green-600">
                       {stats.paidOrders}
                     </p>
                   </div>
                   <div className="p-4 bg-background rounded-lg text-center">
-                    <p className="text-sm text-muted-foreground">Cancelled</p>
+                    <p className="text-sm text-muted-foreground">{t("admin.analytics.cancelled")}</p>
                     <p className="text-2xl font-bold text-red-600">
                       {stats.cancelledOrders}
                     </p>
                   </div>
                   <div className="p-4 bg-background rounded-lg text-center">
-                    <p className="text-sm text-muted-foreground">Total</p>
+                    <p className="text-sm text-muted-foreground">{t("admin.analytics.total")}</p>
                     <p className="text-2xl font-bold text-foreground">
                       {stats.totalOrders}
                     </p>
@@ -1433,11 +1435,11 @@ fi                  onClick={() => openCouponForm()}
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl font-semibold mb-4">
-                {editingProduct ? "Edit Product" : "Add New Product"}
+                {editingProduct ? t("admin.products.edit_product") : t("admin.products.add_new_product")}
               </h2>
               <form onSubmit={handleProductSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">Name</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.products.form.name")}</label>
                   <input
                     type="text"
                     value={productForm.name}
@@ -1447,7 +1449,7 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Description</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.products.form.description")}</label>
                   <textarea
                     value={productForm.description}
                     onChange={(e) => setProductForm({ ...productForm, description: e.target.value })}
@@ -1457,7 +1459,7 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Price</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.products.form.price")}</label>
                   <input
                     type="number"
                     step="0.01"
@@ -1468,14 +1470,14 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Category</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.products.form.category")}</label>
                   <select
                     value={productForm.category}
                     onChange={(e) => setProductForm({ ...productForm, category: e.target.value })}
                     className="w-full p-2 border rounded"
                     required
                   >
-                    <option value="">Select Category</option>
+                    <option value="">{t("admin.products.form.select_category")}</option>
                     
                     {(storeCategories || [])
                       .sort((a, b) => (a.order || 0) - (b.order || 0) || a.name.localeCompare(b.name))
@@ -1495,7 +1497,7 @@ fi                  onClick={() => openCouponForm()}
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Stock Quantity</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.products.form.stock_quantity")}</label>
                   <input
                     type="number"
                     value={productForm.stockQuantity}
@@ -1506,7 +1508,7 @@ fi                  onClick={() => openCouponForm()}
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">
-                    Images (Select multiple images - max 10)
+                    {t("admin.products.form.images")}
                   </label>
                   <input
                     type="file"
@@ -1525,12 +1527,12 @@ fi                  onClick={() => openCouponForm()}
                   />
                   {productForm.images && productForm.images.length > 0 && (
                     <p className="text-sm text-gray-600 mt-1">
-                      {productForm.images.length} image(s) selected
+                      {t("admin.products.form.images_selected", { count: productForm.images.length })}
                     </p>
                   )}
                   {editingProduct && (
                     <p className="text-sm text-gray-500 mt-1">
-                      Leave empty to keep existing images, or select new images to replace them
+                      {t("admin.products.form.image_update_hint")}
                     </p>
                   )}
                 </div>
@@ -1539,14 +1541,14 @@ fi                  onClick={() => openCouponForm()}
                     type="submit"
                     className="flex-1 bg-primary text-white py-2 rounded hover:bg-primary/90"
                   >
-                    {editingProduct ? "Update" : "Create"}
+                    {editingProduct ? t("admin.products.form.update") : t("admin.products.form.create")}
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowCreateForm(false)}
                     className="flex-1 bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400"
                   >
-                    Cancel
+                    {t("admin.products.form.cancel")}
                   </button>
                 </div>
               </form>
@@ -1559,11 +1561,11 @@ fi                  onClick={() => openCouponForm()}
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl font-semibold mb-4">
-                {editingCoupon ? "Edit Coupon" : "Add New Coupon"}
+                {editingCoupon ? t("admin.coupons.edit_coupon") : t("admin.coupons.add_new_coupon")}
               </h2>
               <form onSubmit={handleCouponSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">Code</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.code")}</label>
                   <input
                     type="text"
                     value={couponForm.code}
@@ -1573,7 +1575,7 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Description</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.description")}</label>
                   <textarea
                     value={couponForm.description}
                     onChange={(e) => setCouponForm({ ...couponForm, description: e.target.value })}
@@ -1583,20 +1585,20 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Discount Type</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.discount_type")}</label>
                   <select
                     value={couponForm.discountType}
                     onChange={(e) => setCouponForm({ ...couponForm, discountType: e.target.value })}
                     className="w-full p-2 border rounded"
                     required
                   >
-                    <option value="percentage">Percentage</option>
-                    <option value="fixed">Fixed Amount</option>
+                    <option value="percentage">{t("admin.coupons.form.percentage")}</option>
+                    <option value="fixed">{t("admin.coupons.form.fixed_amount")}</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">
-                    Discount Value {couponForm.discountType === "percentage" ? "(%)" : "($)"}
+                    {t("admin.coupons.form.discount_value")} {couponForm.discountType === "percentage" ? "(%)" : "(SR)"}
                   </label>
                   <input
                     type="number"
@@ -1608,7 +1610,7 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Minimum Amount</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.minimum_amount")}</label>
                   <input
                     type="number"
                     step="0.01"
@@ -1619,7 +1621,7 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Maximum Usage</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.maximum_usage")}</label>
                   <input
                     type="number"
                     value={couponForm.maximumUsage}
@@ -1629,7 +1631,7 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Expiry Date</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.expiry_date")}</label>
                   <input
                     type="date"
                     value={couponForm.expiryDate}
@@ -1643,14 +1645,14 @@ fi                  onClick={() => openCouponForm()}
                     type="submit"
                     className="flex-1 bg-primary text-white py-2 rounded hover:bg-primary/90"
                   >
-                    {editingCoupon ? "Update" : "Create"}
+                    {editingCoupon ? t("admin.coupons.form.update") : t("admin.coupons.form.create")}
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowCouponForm(false)}
                     className="flex-1 bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400"
                   >
-                    Cancel
+                    {t("admin.coupons.form.cancel")}
                   </button>
                 </div>
               </form>
@@ -1663,11 +1665,11 @@ fi                  onClick={() => openCouponForm()}
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl font-semibold mb-4">
-                {editingCategory ? "Edit Category" : "Add New Category"}
+                {editingCategory ? t("admin.categories.edit_category") : t("admin.categories.add_new_category")}
               </h2>
               <form onSubmit={handleCategorySubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">Name</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.categories.form.name")}</label>
                   <input
                     type="text"
                     value={categoryForm.name}
@@ -1677,7 +1679,7 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Description</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.categories.form.description")}</label>
                   <textarea
                     value={categoryForm.description}
                     onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
@@ -1687,7 +1689,7 @@ fi                  onClick={() => openCouponForm()}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Image</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.categories.form.image")}</label>
                   <input
                     type="file"
                     accept="image/*"
@@ -1700,18 +1702,18 @@ fi                  onClick={() => openCouponForm()}
                   />
                   {editingCategory && (
                     <p className="text-sm text-gray-500 mt-1">
-                      Leave empty to keep existing image, or select a new image to replace it
+                      {t("admin.categories.form.image_update_hint")}
                     </p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Order</label>
+                  <label className="block text-sm font-medium mb-1">{t("admin.categories.form.order")}</label>
                   <input
                     type="number"
                     value={categoryForm.order}
                     onChange={(e) => setCategoryForm({ ...categoryForm, order: e.target.value })}
                     className="w-full p-2 border rounded"
-                    placeholder="Display order (optional)"
+                    placeholder={t("admin.categories.form.order_placeholder")}
                   />
                 </div>
                 <div className="flex items-center">
@@ -1723,7 +1725,7 @@ fi                  onClick={() => openCouponForm()}
                     className="mr-2"
                   />
                   <label htmlFor="featured" className="text-sm font-medium">
-                    Featured Category
+                    {t("admin.categories.form.featured_category")}
                   </label>
                 </div>
                 <div className="flex space-x-2">
@@ -1732,14 +1734,14 @@ fi                  onClick={() => openCouponForm()}
                     className="flex-1 bg-primary text-white py-2 rounded hover:bg-primary/90"
                     disabled={categoryLoading}
                   >
-                    {categoryLoading ? "Saving..." : editingCategory ? "Update" : "Create"}
+                    {categoryLoading ? t("admin.categories.form.saving") : editingCategory ? t("admin.categories.form.update") : t("admin.categories.form.create")}
                   </button>
                   <button
                     type="button"
                     onClick={() => setShowCategoryForm(false)}
                     className="flex-1 bg-gray-300 text-gray-700 py-2 rounded hover:bg-gray-400"
                   >
-                    Cancel
+                    {t("admin.categories.form.cancel")}
                   </button>
                 </div>
               </form>

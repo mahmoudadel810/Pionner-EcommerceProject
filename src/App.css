@@ -1,6 +1,55 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Font families for multilingual support */
+:root {
+  --font-arabic: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-english: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Apply appropriate font based on language direction */
+[dir="rtl"] {
+  font-family: var(--font-arabic);
+}
+
+[dir="ltr"] {
+  font-family: var(--font-english);
+}
+
+/* Ensure proper Arabic text rendering */
+[dir="rtl"] * {
+  font-family: var(--font-arabic);
+  text-align: right;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+[dir="ltr"] * {
+  font-family: var(--font-english);
+  text-align: left;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+/* Improve Arabic text readability */
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6 {
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+[dir="rtl"] p, [dir="rtl"] span, [dir="rtl"] div {
+  line-height: 1.7;
+}
+
+/* Fix button and input text alignment */
+[dir="rtl"] button, [dir="rtl"] input, [dir="rtl"] textarea, [dir="rtl"] select {
+  text-align: right;
+}
+
+[dir="ltr"] button, [dir="ltr"] input, [dir="ltr"] textarea, [dir="ltr"] select {
+  text-align: left;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

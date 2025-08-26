@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "./ui/card";
 import { cn } from "../lib/utils";
+import { useTranslation } from "react-i18next";
 
 const CategoryItem = ({ category }) => {
+  const { t } = useTranslation();
 
   return (
     <Card className="group relative overflow-hidden h-80 w-full cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
@@ -26,7 +28,7 @@ const CategoryItem = ({ category }) => {
                 {category.name}
               </h3>
               <p className="text-gray-200 text-sm opacity-90 group-hover:opacity-100 transition-opacity">
-                Explore {category.name}
+                {t('category.explore', { name: category.name })}
               </p>
             </div>
           </div>

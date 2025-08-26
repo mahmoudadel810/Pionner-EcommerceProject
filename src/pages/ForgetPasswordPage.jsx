@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
+import { useTranslation } from "react-i18next";
 
 const ForgetPasswordPage = () => {
+  const { t } = useTranslation();
   const { forgetPassword, loading } = useUserStore();
   const [email, setEmail] = useState("");
   const [emailSent, setEmailSent] = useState(false);
@@ -37,12 +39,11 @@ const ForgetPasswordPage = () => {
             </div>
 
             <h1 className="text-2xl font-bold text-foreground mb-4">
-              Check Your Email
+              {t('auth.forgotPassword.checkEmail')}
             </h1>
 
             <p className="text-muted-foreground mb-6">
-              We've sent a password reset link to <strong>{email}</strong>.
-              Please check your email and click the link to reset your password.
+              {t('auth.forgotPassword.emailSent', { email })}
             </p>
 
             <div className="space-y-4">
@@ -50,20 +51,20 @@ const ForgetPasswordPage = () => {
                 to="/reset-password"
                 className="block w-full bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300"
               >
-                Reset Password
+                {t('auth.forgotPassword.resetPassword')}
               </Link>
               <Link
                 to="/login"
                 className="block w-full bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300"
               >
-                Back to Login
+                {t('auth.backToLogin')}
               </Link>
 
               <button
                 onClick={() => setEmailSent(false)}
                 className="block w-full bg-secondary text-foreground py-3 px-6 rounded-lg font-medium hover:bg-secondary/80 transition-colors duration-300"
               >
-                Try Another Email
+                {t('auth.forgotPassword.tryAnotherEmail')}
               </button>
             </div>
           </div>
@@ -88,7 +89,7 @@ const ForgetPasswordPage = () => {
               className="inline-flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-300 mb-6"
             >
               <ArrowLeft size={20} />
-              <span>Back to Login</span>
+              <span>{t('auth.backToLogin')}</span>
             </Link>
 
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -96,12 +97,11 @@ const ForgetPasswordPage = () => {
             </div>
 
             <h1 className="text-2xl font-bold text-foreground mb-2">
-              Forgot Password?
+              {t('auth.forgotPassword.title')}
             </h1>
 
             <p className="text-muted-foreground">
-              Enter your email address and we'll send you a link to reset your
-              password.
+              {t('auth.forgotPassword.description')}
             </p>
           </div>
 
@@ -112,7 +112,7 @@ const ForgetPasswordPage = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                Email Address
+                {t('auth.emailAddress')}
               </label>
               <div className="relative">
                 <Mail
@@ -126,7 +126,7 @@ const ForgetPasswordPage = () => {
                   onChange={e => setEmail(e.target.value)}
                   required
                   className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
-                  placeholder="Enter your email address"
+                  placeholder={t('auth.forgotPassword.emailPlaceholder')}
                 />
               </div>
             </div>
@@ -141,12 +141,12 @@ const ForgetPasswordPage = () => {
               {loading ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Sending...</span>
+                  <span>{t('auth.forgotPassword.sending')}</span>
                 </>
               ) : (
                 <>
                   <Mail size={20} />
-                  <span>Send Reset Link</span>
+                  <span>{t('auth.forgotPassword.sendResetLink')}</span>
                 </>
               )}
             </motion.button>
@@ -155,12 +155,12 @@ const ForgetPasswordPage = () => {
           {/* Footer */}
           <div className="mt-8 text-center">
             <p className="text-sm text-muted-foreground">
-              Remember your password?{" "}
+              {t('auth.forgotPassword.rememberPassword')}{" "}
               <Link
                 to="/login"
                 className="text-primary hover:text-primary/80 font-medium transition-colors duration-300"
               >
-                Sign in
+                {t('auth.signIn')}
               </Link>
             </p>
           </div>

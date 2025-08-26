@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useReducedMotion, useAnimation } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useProductStore } from "../stores/useProductStore";
 import { useUserStore } from "../stores/useUserStore";
 import { useCartStore } from "../stores/useCartStore";
@@ -59,52 +60,10 @@ import {
 import { toast } from "react-hot-toast";
 
 // Categories data
-const categories = [
-  {
-    name: "Smartphones",
-    icon: Smartphone,
-    href: "/shop?category=smartphones",
-    gradient: "from-blue-500 to-purple-600",
-    description: "Latest smartphones and mobile devices"
-  },
-  {
-    name: "Laptops",
-    icon: Laptop,
-    href: "/shop?category=laptops",
-    gradient: "from-purple-500 to-pink-600",
-    description: "High-performance laptops and notebooks"
-  },
-  {
-    name: "Gaming",
-    icon: Gamepad2,
-    href: "/shop?category=gaming",
-    gradient: "from-green-500 to-emerald-600",
-    description: "Gaming accessories and peripherals"
-  },
-  {
-    name: "Smart Home",
-    icon: Home,
-    href: "/shop?category=smart-home",
-    gradient: "from-orange-500 to-red-600",
-    description: "Smart home devices and automation"
-  },
-  {
-    name: "Audio",
-    icon: Headphones,
-    href: "/shop?category=audio",
-    gradient: "from-pink-500 to-rose-600",
-    description: "Headphones, speakers, and audio equipment"
-  },
-  {
-    name: "Tablets",
-    icon: Tablet,
-    href: "/shop?category=tablets",
-    gradient: "from-indigo-500 to-blue-600",
-    description: "Tablets and e-readers"
-  }
-];
+
 
 const HomePage = () => {
+  const { t } = useTranslation();
   const { products, fetchAllProducts, loading } = useProductStore();
   const { user } = useUserStore();
   const { cart, toggleCart, isInCart } = useCartStore();
@@ -114,6 +73,52 @@ const HomePage = () => {
   // State
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const hasFetchedRef = useRef(false);
+
+  // Categories data with translations
+  const categories = [
+    {
+      name: t('categories.smartphones'),
+      icon: Smartphone,
+      href: "/shop?category=smartphones",
+      gradient: "from-blue-500 to-purple-600",
+      description: t('home.category_descriptions.smartphones')
+    },
+    {
+      name: t('categories.laptops'),
+      icon: Laptop,
+      href: "/shop?category=laptops",
+      gradient: "from-purple-500 to-pink-600",
+      description: t('home.category_descriptions.laptops')
+    },
+    {
+      name: t('categories.gaming'),
+      icon: Gamepad2,
+      href: "/shop?category=gaming",
+      gradient: "from-green-500 to-emerald-600",
+      description: t('home.category_descriptions.gaming')
+    },
+    {
+      name: t('categories.smart_home'),
+      icon: Home,
+      href: "/shop?category=smart-home",
+      gradient: "from-orange-500 to-red-600",
+      description: t('home.category_descriptions.smart_home')
+    },
+    {
+      name: t('categories.audio'),
+      icon: Headphones,
+      href: "/shop?category=audio",
+      gradient: "from-pink-500 to-rose-600",
+      description: t('home.category_descriptions.audio')
+    },
+    {
+      name: t('categories.tablets'),
+      icon: Tablet,
+      href: "/shop?category=tablets",
+      gradient: "from-indigo-500 to-blue-600",
+      description: t('home.category_descriptions.tablets')
+    }
+  ];
 
   // Performance optimizations
   const prefersReducedMotion = useReducedMotion();
@@ -189,7 +194,7 @@ const HomePage = () => {
 
   const handleToggleCart = async (product) => {
     if (!user) {
-      toast.error("Please login to manage cart");
+      toast.error(t('home.errors.loginRequired'));
       return;
     }
 
@@ -198,10 +203,10 @@ const HomePage = () => {
       if (result.success) {
         // Success message is handled in the store
       } else {
-        toast.error(result.message || "Failed to update cart");
+        toast.error(result.message || t('home.errors.cartUpdateFailed'));
       }
     } catch (error) {
-      toast.error("Failed to update cart");
+      toast.error(t('home.errors.cartUpdateFailed'));
     }
   };
 
@@ -239,10 +244,10 @@ const HomePage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent mb-6">
-              Explore by Category
+              {t('home.exploreByCategory')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover amazing products from each category, handpicked for you
+              {t('home.discover_products')}
             </p>
           </div>
 
@@ -267,7 +272,7 @@ const HomePage = () => {
                     variant="outline"
                     className="hidden md:flex items-center gap-2"
                   >
-                    View All
+                    {t('home.view_all')}
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>
@@ -305,7 +310,7 @@ const HomePage = () => {
                           />
                           {product.isFeatured && (
                             <Badge className="absolute top-2 left-2 bg-gradient-to-r from-yellow-500 to-orange-600 text-white">
-                              Featured
+                              {t('home.featured')}
                             </Badge>
                           )}
                         </div>
@@ -318,7 +323,7 @@ const HomePage = () => {
                           </p>
                           <div className="flex items-center justify-between mb-3">
                             <span className="text-2xl font-bold text-blue-600">
-                              ${product.price.toFixed(2)}
+                              {product.price.toFixed(2)} SR
                             </span>
                             <div className="flex items-center gap-1 text-sm text-gray-500">
                               <Star className="w-4 h-4 text-yellow-500 fill-current" />
@@ -336,8 +341,8 @@ const HomePage = () => {
                                 : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                             }`}
                           >
-                            <ShoppingCart className="w-4 h-4 mr-2" />
-                            {isInCart(product._id) ? "Remove from Cart" : "Add to Cart"}
+                            <ShoppingCart className="w-4 h-4 mr-2 rtl:ml-2 rtl:mr-0" />
+                            {isInCart(product._id) ? t('home.remove_from_cart') : t('home.add_to_cart')}
                           </Button>
                         </CardContent>
                       </Card>
@@ -352,8 +357,8 @@ const HomePage = () => {
                       variant="outline"
                       className="md:hidden"
                     >
-                      View All {categoryProducts.length} Products
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                      {t('home.view_all_products', { count: categoryProducts.length })}
+                      <ArrowRight className="w-4 h-4 ml-2 rtl:mr-2 rtl:ml-0" />
                     </Button>
                   </div>
                 )}
@@ -378,11 +383,10 @@ const HomePage = () => {
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
-              Experience the Future of Shopping
+              {t('home.experience_future')}
           </h2>
             <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
-              Join millions of users who trust our platform for their shopping needs. 
-              Get personalized recommendations, smart search, and seamless shopping experience.
+              {t('home.join_millions')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
@@ -390,8 +394,8 @@ const HomePage = () => {
                 size="lg" 
                 className="px-8 py-4 text-lg bg-white text-blue-600 hover:bg-gray-100 rounded-2xl shadow-lg"
               >
-                <Sparkles className="w-5 h-5 mr-2" />
-                Start Shopping Now
+                <Sparkles className="w-5 h-5 mr-2 rtl:ml-2 rtl:mr-0" />
+                {t('home.start_shopping')}
             </Button>
             {!user && (
               <Button
@@ -399,8 +403,8 @@ const HomePage = () => {
                 size="lg"
                   className="px-8 py-4 text-lg bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-2xl"
               >
-                  <Crown className="w-5 h-5 mr-2" />
-                  Join Premium
+                  <Crown className="w-5 h-5 mr-2 rtl:ml-2 rtl:mr-0" />
+                  {t('home.join_premium')}
               </Button>
             )}
           </div>

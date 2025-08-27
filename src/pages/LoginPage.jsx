@@ -51,16 +51,13 @@ const LoginPage = () => {
       } else if (value.length > 128) {
         newErrors.password = t('auth.errors.passwordTooLong');
       } else if (!/[a-z]/.test(value)) {
-        newErrors.password =
-          "Password must contain at least one lowercase letter";
+        newErrors.password = t('auth.errors.passwordLowercase');
       } else if (!/[A-Z]/.test(value)) {
-        newErrors.password =
-          "Password must contain at least one uppercase letter";
+        newErrors.password = t('auth.errors.passwordUppercase');
       } else if (!/\d/.test(value)) {
-        newErrors.password = "Password must contain at least one number";
+        newErrors.password = t('auth.errors.passwordNumber');
       } else if (!/[@$!%*?&#]/.test(value)) {
-        newErrors.password =
-          "Password must contain at least one special character !@#$...";
+        newErrors.password = t('auth.errors.passwordSpecial');
       } else {
         delete newErrors.password;
       }
@@ -88,38 +85,35 @@ const LoginPage = () => {
 
     // Email validation
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t('auth.errors.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t('auth.errors.emailInvalid');
     } else if (formData.email.length > 254) {
-      newErrors.email = "Email is too long";
+      newErrors.email = t('auth.errors.emailTooLong');
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = t('auth.errors.passwordRequired');
     } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+      newErrors.password = t('auth.errors.passwordTooShort');
     } else if (formData.password.length > 128) {
-      newErrors.password = "Password is too long";
+      newErrors.password = t('auth.errors.passwordTooLong');
     } else if (!/[a-z]/.test(formData.password)) {
-      newErrors.password =
-        "Password must contain at least one lowercase letter";
+      newErrors.password = t('auth.errors.passwordLowercase');
     } else if (!/[A-Z]/.test(formData.password)) {
-      newErrors.password =
-        "Password must contain at least one uppercase letter";
+      newErrors.password = t('auth.errors.passwordUppercase');
     } else if (!/\d/.test(formData.password)) {
-      newErrors.password = "Password must contain at least one number";
+      newErrors.password = t('auth.errors.passwordNumber');
     } else if (!/[@$!%*?&#]/.test(formData.password)) {
-      newErrors.password =
-        "Password must contain at least one special character !@#$...";
+      newErrors.password = t('auth.errors.passwordSpecial');
     }
 
     setErrors(newErrors);
 
     // If there are validation errors, don't submit
     if (Object.keys(newErrors).length > 0) {
-      toast.error("Please fix the errors before submitting");
+      toast.error(t('contact.toast.validationErrors'));
       return;
     }
 
@@ -135,8 +129,8 @@ const LoginPage = () => {
           switch (loginData.error) {
             case "invalid_credentials":
               setErrors({
-                email: "Invalid email or password",
-                password: "Invalid email or password",
+                email: t('auth.errors.emailInvalid'),
+                password: t('auth.errors.passwordRequired'),
               });
               break;
             case "account_locked":

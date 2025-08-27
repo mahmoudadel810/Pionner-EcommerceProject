@@ -15,9 +15,11 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "../App.css";
 
 const HeroSlider = memo(() => {
+  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -29,75 +31,70 @@ const HeroSlider = memo(() => {
   const heroSlides = [
     {
       id: 1,
-      title: "iPhone 15 Pro Max",
-      subtitle: "Latest Technology",
-      description:
-        "Experience the future with titanium design, advanced cameras, and the powerful A17 Pro chip.",
+      title: t('hero.slides.iphone.title'),
+      subtitle: t('hero.slides.iphone.subtitle'),
+      description: t('hero.slides.iphone.description'),
       image: "/src/assets/hero/iphone-15-pro.jpg",
-      cta: "Shop iPhones",
+      cta: t('hero.slides.iphone.cta'),
       link: "/shop?category=smartphones",
       accent: "from-blue-500 to-purple-600",
-      badge: "New",
+      badge: t('hero.badges.new'),
       icon: Sparkles,
       stats: { rating: "4.9", reviews: "12.5K" },
     },
     {
       id: 2,
-      title: "Gaming Powerhouse",
-      subtitle: "Ultimate Performance",
-      description:
-        "Dominate every game with RTX 4080, 32GB RAM, and lightning-fast SSD storage.",
+      title: t('hero.slides.gaming.title'),
+      subtitle: t('hero.slides.gaming.subtitle'),
+      description: t('hero.slides.gaming.description'),
       image:
         "/src/assets/hero/gaming-pc.jpg",
-      cta: "Game On",
+      cta: t('hero.slides.gaming.cta'),
       link: "/shop?category=gaming",
       accent: "from-green-500 to-emerald-600",
-      badge: "Hot",
+      badge: t('hero.badges.hot'),
       icon: Zap,
       stats: { rating: "4.8", reviews: "8.2K" },
     },
     {
       id: 3,
-      title: "Smart Home Revolution",
-      subtitle: "Connected Living",
-      description:
-        "Transform your home into a smart ecosystem with voice control, automation, and security.",
+      title: t('hero.slides.smartHome.title'),
+      subtitle: t('hero.slides.smartHome.subtitle'),
+      description: t('hero.slides.smartHome.description'),
       image:
         "/src/assets/hero/smart-home.jpg",
-      cta: "Smart Home",
+      cta: t('hero.slides.smartHome.cta'),
       link: "/shop?category=smart-home",
       accent: "from-orange-500 to-red-600",
-      badge: "Trending",
+      badge: t('hero.badges.trending'),
       icon: TrendingUp,
       stats: { rating: "4.7", reviews: "6.8K" },
     },
     {
       id: 4,
-      title: "Audio Excellence",
-      subtitle: "Premium Sound",
-      description:
-        "Immerse yourself in studio-quality sound with noise cancellation and spatial audio.",
+      title: t('hero.slides.audio.title'),
+      subtitle: t('hero.slides.audio.subtitle'),
+      description: t('hero.slides.audio.description'),
       image:
         "/src/assets/hero/headphones.jpg",
-      cta: "Listen Now",
+      cta: t('hero.slides.audio.cta'),
       link: "/shop?category=audio",
       accent: "from-purple-500 to-pink-600",
-      badge: "Premium",
+      badge: t('hero.badges.premium'),
       icon: Volume2,
       stats: { rating: "4.9", reviews: "15.3K" },
     },
     {
       id: 5,
-      title: "Professional Workspace",
-      subtitle: "Work Redefined",
-      description:
-        "Boost productivity with professional-grade monitors, keyboards, and ergonomic accessories.",
+      title: t('hero.slides.workspace.title'),
+      subtitle: t('hero.slides.workspace.subtitle'),
+      description: t('hero.slides.workspace.description'),
       image:
         "/src/assets/hero/workspace.jpg",
-      cta: "Shop Tools",
+      cta: t('hero.slides.workspace.cta'),
       link: "/shop",
       accent: "from-indigo-500 to-blue-600",
-      badge: "Pro",
+      badge: t('hero.badges.pro'),
       icon: Award,
       stats: { rating: "4.8", reviews: "9.1K" },
     },
@@ -280,7 +277,7 @@ const HeroSlider = memo(() => {
                       {currentSlideData.stats.rating}
                     </span>
                     <span className="text-gray-300">
-                      ({currentSlideData.stats.reviews} reviews)
+                      ({currentSlideData.stats.reviews} {t('hero.reviews')})
                     </span>
                   </div>
                 </motion.div>
@@ -345,7 +342,7 @@ const HeroSlider = memo(() => {
                       whileTap={{ scale: 0.95 }}
                       className="group relative overflow-hidden bg-white/10 backdrop-blur-md border-2 border-white/30 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-white/20 transition-all duration-300"
                     >
-                      <span className="relative z-10">Browse All</span>
+                      <span className="relative z-10">{t('hero.browseAll')}</span>
                       <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                     </motion.button>
                   </Link>
@@ -360,15 +357,15 @@ const HeroSlider = memo(() => {
                 >
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span className="text-sm font-medium">Free Shipping</span>
+                    <span className="text-sm font-medium">{t('hero.features.freeShipping')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                    <span className="text-sm font-medium">2-Year Warranty</span>
+                    <span className="text-sm font-medium">{t('hero.features.warranty')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                    <span className="text-sm font-medium">24/7 Support</span>
+                    <span className="text-sm font-medium">{t('hero.features.support')}</span>
                   </div>
                 </motion.div>
               </motion.div>

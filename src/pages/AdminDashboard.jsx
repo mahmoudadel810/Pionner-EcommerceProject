@@ -321,10 +321,10 @@ const AdminDashboard = () => {
     try {
       if (editingCoupon) {
         await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.UPDATE.replace(":id", editingCoupon._id)), couponForm);
-        toast.success("Coupon updated successfully");
+        toast.success(t('admin.success.couponUpdated'));
       } else {
         await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.CREATE), couponForm);
-        toast.success("Coupon created successfully");
+        toast.success(t('admin.success.couponCreated'));
       }
 
       setShowCouponForm(false);
@@ -340,7 +340,7 @@ const AdminDashboard = () => {
       });
       fetchCoupons();
     } catch (error) {
-      toast.error("Failed to save coupon");
+      toast.error(t('admin.errors.failedToSaveCoupon'));
     }
   };
 
@@ -422,12 +422,12 @@ const AdminDashboard = () => {
       if (editingCategory) {
         result = await updateCategory(editingCategory._id, formData);
         if (result.success) {
-          toast.success("Category updated successfully");
+          toast.success(t('admin.success.categoryUpdated'));
         }
       } else {
         result = await createCategory(formData);
         if (result.success) {
-          toast.success("Category created successfully");
+          toast.success(t('admin.success.categoryCreated'));
         }
       }
 
@@ -443,7 +443,7 @@ const AdminDashboard = () => {
         });
       }
     } catch (error) {
-      toast.error("Failed to save category");
+      toast.error(t('admin.errors.failedToSaveCategory'));
     }
   };
 
@@ -471,14 +471,14 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteCategory = async (categoryId) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
+    if (window.confirm(t('admin.confirmations.deleteCategory'))) {
       try {
         const result = await deleteCategory(categoryId);
         if (result.success) {
-          toast.success("Category deleted successfully");
+          toast.success(t('admin.success.categoryDeleted'));
         }
       } catch (error) {
-        toast.error("Failed to delete category");
+        toast.error(t('admin.errors.failedToDeleteCategory'));
         console.error("Failed to delete category:", error);
       }
     }
@@ -1517,7 +1517,7 @@ const AdminDashboard = () => {
                     onChange={(e) => {
                       const files = Array.from(e.target.files);
                       if (files.length > 10) {
-                        toast.error("Maximum 10 images allowed");
+                        toast.error(t('admin.errors.maxImagesExceeded'));
                         return;
                       }
                       setProductForm({ ...productForm, images: files });

@@ -176,8 +176,8 @@ const ProductDetailPage = () => {
             onClick={() => navigate(-1)}
             className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
           >
-            <ChevronLeft size={20} />
-            <span>Back</span>
+         <ChevronLeft size={20} />
+            <span>{t('productDetail.back')}</span>
           </button>
         </motion.div>
 
@@ -279,14 +279,14 @@ const ProductDetailPage = () => {
                 ))}
               </div>
               <span className="text-muted-foreground">
-                ({product.reviews?.length || 0} reviews)
+                ({product.reviews?.length || 0} {t('productDetail.reviews')})
               </span>
             </div>
 
             {/* Quantity */}
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">
-                Quantity
+                {t('productDetail.quantity')}
               </label>
               <div className="flex items-center space-x-3">
                 <button
@@ -318,7 +318,7 @@ const ProductDetailPage = () => {
                 }`}
               >
                 <ShoppingCart size={20} />
-                <span>{isProductInCart ? "Remove from Cart" : "Add to Cart"}</span>
+                <span>{isProductInCart ? t('productDetail.removeFromCart') : t('productDetail.addToCart')}</span>
               </motion.button>
               
               <motion.button
@@ -333,7 +333,7 @@ const ProductDetailPage = () => {
                 ) : (
                   <CreditCard size={20} />
                 )}
-                <span>{isBuyingNow ? "Processing..." : "Buy Now"}</span>
+                <span>{isBuyingNow ? t('productDetail.processing') : t('productDetail.buyNow')}</span>
               </motion.button>
               
               <motion.button
@@ -358,27 +358,27 @@ const ProductDetailPage = () => {
               <div className="flex items-center space-x-3">
                 <Truck size={20} className="text-primary" />
                 <div>
-                  <p className="font-medium text-foreground">Free Shipping</p>
+                  <p className="font-medium text-foreground">{t('productDetail.freeShipping')}</p>
                   <p className="text-sm text-muted-foreground">
-                    On orders over $50
+                    {t('productDetail.onOrdersOver')}
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <Shield size={20} className="text-primary" />
                 <div>
-                  <p className="font-medium text-foreground">Secure Payment</p>
+                  <p className="font-medium text-foreground">{t('productDetail.securePayment')}</p>
                   <p className="text-sm text-muted-foreground">
-                    100% secure checkout
+                    {t('productDetail.secureCheckout')}
                   </p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <RotateCcw size={20} className="text-primary" />
                 <div>
-                  <p className="font-medium text-foreground">Easy Returns</p>
+                  <p className="font-medium text-foreground">{t('productDetail.easyReturns')}</p>
                   <p className="text-sm text-muted-foreground">
-                    30 day return policy
+                    {t('productDetail.returnPolicy')}
                   </p>
                 </div>
               </div>
@@ -395,7 +395,7 @@ const ProductDetailPage = () => {
             className="mt-20"
           >
             <h2 className="text-2xl font-bold text-foreground mb-8">
-              Related Products
+              {t('productDetail.relatedProducts')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.map(relatedProduct => (

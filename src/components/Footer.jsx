@@ -173,7 +173,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
             <div className="flex items-center space-x-2 text-muted-foreground">
-              <span>{t('footer.copyright', { year: currentYear })}</span>
+              <span>© {currentYear} {t('footer.rights_reserved')}</span>
               <span>•</span>
               <span>{t('footer.madeWith')}</span>
               <Heart size={16} className="text-red-500 fill-current" />

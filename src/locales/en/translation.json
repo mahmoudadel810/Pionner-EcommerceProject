@@ -30,51 +30,7 @@
     "address": "123 Pioneer Street, Tech City, TC 12345",
     "phone": "+1 (555) 123-4567"
   },
-  "auth": {
-    "login": {
-      "title": "Sign In",
-      "signIn": "Sign In"
-    },
-    "signup": {
-      "title": "Create Account",
-      "subtitle": "Join our community and start shopping",
-      "createAccount": "Create Account"
-    },
-    "fields": {
-      "email": "Email",
-      "password": "Password",
-      "fullName": "Full Name",
-      "phone": "Phone Number",
-      "confirmPassword": "Confirm Password"
-    },
-    "placeholders": {
-      "email": "Enter your email",
-      "password": "Enter your password",
-      "fullName": "Enter your full name",
-      "phone": "Enter your phone number",
-      "createPassword": "Create a password",
-      "confirmPassword": "Confirm your password"
-    },
-    "passwordRequirements": {
-      "title": "Password must contain:",
-      "minLength": "At least 8 characters",
-      "lowercase": "One lowercase letter",
-      "uppercase": "One uppercase letter",
-      "special": "One special character (!@#$...)",
-      "number": "One number"
-    },
-    "agreeToTerms": "I agree to the",
-    "termsOfService": "Terms of Service",
-    "and": "and",
-    "privacyPolicy": "Privacy Policy",
-    "orContinueWith": "Or continue with",
-    "google": "Google",
-    "twitter": "Twitter",
-    "alreadyHaveAccount": "Already have an account?",
-    "noAccount": "Don't have an account?",
-    "signUp": "Sign Up",
-    "signIn": "Sign In"
-  },
+  
   "footer": {
     "newsletter": {
       "title": "Newsletter",
@@ -111,6 +67,22 @@
     "forYou": "for you"
   },
   "auth": {
+    "fields": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "placeholders": {
+      "email": "Enter your email",
+      "password": "Enter your password"
+    },
+    "passwordRequirements": {
+      "title": "Password must contain:",
+      "minLength": "At least 8 characters",
+      "lowercase": "One lowercase letter",
+      "uppercase": "One uppercase letter",
+      "special": "One special character (!@#$...)",
+      "number": "One number"
+    },
     "emailAddress": "Email Address",
     "newPassword": "New Password",
     "confirmNewPassword": "Confirm New Password",
@@ -146,13 +118,15 @@
       "passwordsDoNotMatch": "Passwords do not match"
     },
     "login": {
+      "title": "Sign In",
       "subtitle": "Welcome back! Sign in to continue",
+      "signIn": "Sign In",
       "signingIn": "Signing in..."
     },
     "signup": {
       "creatingAccount": "Creating account..."
     },
-    "forgotPassword": {
+    "forgotPasswordFlow": {
       "title": "Forgot Password",
       "description": "Enter your email and we'll send you a password reset link",
       "emailPlaceholder": "Enter your email",
@@ -175,7 +149,12 @@
       "success": "Success!",
       "successMessage": "Password reset successfully",
       "continueToLogin": "Continue to Login"
-    }
+    },
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "apple": "Apple",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign Up"
   },
   "home": {
     "explore_by_category": "Explore by Category",
@@ -355,7 +334,98 @@
     "passwords_no_match": "Passwords do not match",
     "back_to_login": "Back to Login",
     "continue_with_google": "Continue with Google",
-    "continue_with_apple": "Continue with Apple"
+    "continue_with_apple": "Continue with Apple",
+    "fields": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "placeholders": {
+      "email": "Enter your email",
+      "password": "Enter your password"
+    },
+    "passwordRequirements": {
+      "title": "Password must contain:",
+      "minLength": "At least 8 characters",
+      "lowercase": "One lowercase letter",
+      "uppercase": "One uppercase letter",
+      "special": "One special character (!@#$...)",
+      "number": "One number"
+    },
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "apple": "Apple",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign Up",
+    "signIn": "Sign In",
+    "emailAddress": "Email Address",
+    "backToLogin": "Back to Login",
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Welcome back! Sign in to continue",
+      "signIn": "Sign In",
+      "signingIn": "Signing in..."
+    },
+    "forgotPassword": "Forgot Password?",
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "description": "Enter your email and we'll send you a password reset link",
+      "emailPlaceholder": "Enter your email",
+      "sending": "Sending...",
+      "sendResetLink": "Send Reset Link",
+      "rememberPassword": "Remember your password?",
+      "checkEmail": "Check Your Email",
+      "emailSent": "Password reset link sent to {{email}}",
+      "resetPassword": "Reset Password",
+      "tryAnotherEmail": "Try Another Email"
+    }
+  },
+  "hero": {
+    "slides": {
+      "iphone": {
+        "title": "iPhone 15 Pro Max",
+        "subtitle": "Latest Technology",
+        "description": "Experience the future with titanium design, advanced cameras, and the powerful A17 Pro chip.",
+        "cta": "Shop iPhones"
+      },
+      "gaming": {
+        "title": "Gaming Powerhouse",
+        "subtitle": "Ultimate Performance",
+        "description": "Dominate every game with RTX 4080, 32GB RAM, and lightning-fast SSD storage.",
+        "cta": "Game On"
+      },
+      "smartHome": {
+        "title": "Smart Home Revolution",
+        "subtitle": "Connected Living",
+        "description": "Transform your home into a smart ecosystem with voice control, automation, and security.",
+        "cta": "Smart Home"
+      },
+      "audio": {
+        "title": "Audio Excellence",
+        "subtitle": "Premium Sound",
+        "description": "Immerse yourself in studio-quality sound with noise cancellation and spatial audio.",
+        "cta": "Listen Now"
+      },
+      "workspace": {
+        "title": "Professional Workspace",
+        "subtitle": "Work Redefined",
+        "description": "Boost productivity with professional-grade monitors, keyboards, and ergonomic accessories.",
+        "cta": "Shop Tools"
+      }
+    },
+    "badges": {
+      "new": "New",
+      "hot": "Hot",
+      "trending": "Trending",
+      "premium": "Premium",
+      "pro": "Pro"
+    },
+    "features": {
+      "freeShipping": "Free Shipping",
+      "warranty": "2-Year Warranty",
+      "support": "24/7 Support"
+    },
+    "browseAll": "Browse All",
+    "reviews": "reviews"
   },
   "admin": {
     "dashboard": "Admin Dashboard",
@@ -461,7 +531,19 @@
       "coupon_deleted": "Coupon deleted successfully",
       "order_status_updated": "Order status updated to {{status}}",
       "payment_status_updated": "Payment status updated to {{status}}",
-      "user_status_updated": "User status updated to {{status}}"
+      "user_status_updated": "User status updated to {{status}}",
+      "productCreated": "Product created successfully",
+      "productUpdated": "Product updated successfully",
+      "productDeleted": "Product deleted successfully",
+      "categoryCreated": "Category created successfully",
+      "categoryUpdated": "Category updated successfully",
+      "categoryDeleted": "Category deleted successfully",
+      "couponCreated": "Coupon created successfully",
+      "couponUpdated": "Coupon updated successfully",
+      "couponDeleted": "Coupon deleted successfully",
+      "orderStatusUpdated": "Order status updated to {{status}}",
+      "paymentStatusUpdated": "Payment status updated to {{status}}",
+      "userStatusUpdated": "User status updated to {{status}}"
     },
     "errors": {
       "failed_to_fetch_data": "Failed to fetch data",
@@ -471,12 +553,25 @@
       "failed_to_update_user_status": "Failed to update user status",
       "failed_to_delete_coupon": "Failed to delete coupon",
       "failed_to_save_category": "Failed to save category",
-      "failed_to_delete_category": "Failed to delete category"
+      "failed_to_delete_category": "Failed to delete category",
+      "failedToFetchData": "Failed to fetch data",
+      "failedToDeleteProduct": "Failed to delete product",
+      "failedToUpdateOrderStatus": "Failed to update order status",
+      "failedToUpdatePaymentStatus": "Failed to update payment status",
+      "failedToUpdateUserStatus": "Failed to update user status",
+      "failedToDeleteCoupon": "Failed to delete coupon",
+      "failedToSaveCategory": "Failed to save category",
+      "failedToDeleteCategory": "Failed to delete category",
+      "failedToSaveCoupon": "Failed to save coupon",
+      "maxImagesExceeded": "Maximum 10 images allowed"
     },
     "confirmations": {
       "delete_product": "Are you sure you want to delete this product?",
       "delete_category": "Are you sure you want to delete this category?",
-      "delete_coupon": "Are you sure you want to delete this coupon?"
+      "delete_coupon": "Are you sure you want to delete this coupon?",
+      "deleteProduct": "Are you sure you want to delete this product?",
+      "deleteCategory": "Are you sure you want to delete this category?",
+      "deleteCoupon": "Are you sure you want to delete this coupon?"
     }
   },
   "footer": {
@@ -739,16 +834,18 @@
      }
    },
    "search": {
-     "title": "Search",
-     "results": "Results",
-     "searchingFor": "Searching for \"{{query}}\"",
-     "enterSearchTerm": "Enter a search term to find products",
-     "placeholder": "Search for products...",
-     "tryAgain": "Try Again",
-     "noProductsFound": "No products found",
-     "noProductsMatch": "No products match your search for '{{query}}'. Try different keywords or check your spelling.",
-     "startSearching": "Start searching to find amazing products!",
-     "clearSearch": "Clear Search",
+          "title": "Search",
+          "results": "Results",
+          "searchingFor": "Searching for \"{{query}}\"",
+          "enterSearchTerm": "Enter a search term to find products",
+          "placeholder": "Search for products...",
+          "tryAgain": "Try Again",
+          "noProductsFound": "No products found",
+          "noProductsMatch": "No products match your search for '{{query}}'. Try different keywords or check your spelling.",
+          "startSearching": "Start searching to find amazing products!",
+          "clearSearch": "Clear Search",
+          "addToCart": "Add to Cart",
+          "removeFromCart": "Remove from Cart",
      "foundProducts": "Found {{count}} product{{count, plural, one {} other {s}}} matching '{{query}}'",
      "showingProducts": "Showing {{count}} product{{count, plural, one {} other {s}}}",
      "showingRange": "Showing {{start}} to {{end}} of {{total}} products",
@@ -876,6 +973,8 @@
         "title": "My Wishlist",
         "itemCount": "{{count}} item",
         "itemCount_plural": "{{count}} items",
+        "addToCart": "Add to Cart",
+        "removeFromCart": "Remove from Cart",
         "empty": {
           "title": "Your wishlist is empty",
           "message": "Start adding products to your wishlist to save them for later",
@@ -883,6 +982,20 @@
         }
        },
        "productDetail": {
+          "addToCart": "Add to Cart",
+          "removeFromCart": "Remove from Cart",
+          "buyNow": "Buy Now",
+          "processing": "Processing...",
+          "quantity": "Quantity",
+          "back": "Back",
+          "relatedProducts": "Related Products",
+          "freeShipping": "Free Shipping",
+          "onOrdersOver": "On orders over $50",
+          "securePayment": "Secure Payment",
+          "secureCheckout": "100% secure checkout",
+          "easyReturns": "Easy Returns",
+          "returnPolicy": "30 day return policy",
+          "reviews": "reviews",
           "errors": {
             "productNotFound": "Product not found",
             "loginRequired": "Please login to manage cart",

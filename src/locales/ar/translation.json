@@ -31,29 +31,13 @@
     "failedUpdateWishlist": "فشل في تحديث المفضلة"
   },
   "auth": {
-    "login": {
-      "title": "تسجيل الدخول",
-      "signIn": "تسجيل الدخول"
-    },
-    "signup": {
-      "title": "إنشاء حساب جديد",
-      "subtitle": "انضم إلى مجتمعنا وابدأ التسوق",
-      "createAccount": "إنشاء حساب"
-    },
     "fields": {
       "email": "البريد الإلكتروني",
-      "password": "كلمة المرور",
-      "fullName": "الاسم الكامل",
-      "phone": "رقم الهاتف",
-      "confirmPassword": "تأكيد كلمة المرور"
+      "password": "كلمة المرور"
     },
     "placeholders": {
       "email": "أدخل بريدك الإلكتروني",
-      "password": "أدخل كلمة المرور",
-      "fullName": "أدخل اسمك الكامل",
-      "phone": "أدخل رقم هاتفك",
-      "createPassword": "إنشاء كلمة مرور",
-      "confirmPassword": "أكد كلمة المرور"
+      "password": "أدخل كلمة المرور"
     },
     "passwordRequirements": {
       "title": "متطلبات كلمة المرور:",
@@ -63,17 +47,90 @@
       "special": "رمز خاص واحد (!@#$...)",
       "number": "رقم واحد"
     },
+    "orContinueWith": "أو تابع باستخدام",
+    "google": "جوجل",
+    "apple": "آبل",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "إنشاء حساب",
+    "signIn": "تسجيل الدخول",
+    "emailAddress": "عنوان البريد الإلكتروني",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "login": {
+      "title": "تسجيل الدخول",
+      "subtitle": "مرحباً بعودتك! سجل دخولك للمتابعة",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جاري تسجيل الدخول..."
+    },
+    "signup": {
+      "creatingAccount": "جاري إنشاء الحساب..."
+    },
     "agreeToTerms": "أوافق على",
     "termsOfService": "شروط الخدمة",
     "and": "و",
     "privacyPolicy": "سياسة الخصوصية",
-    "orContinueWith": "أو تابع باستخدام",
-    "google": "جوجل",
     "twitter": "تويتر",
     "alreadyHaveAccount": "لديك حساب بالفعل؟",
-    "noAccount": "ليس لديك حساب؟",
-    "signUp": "إنشاء حساب",
-    "signIn": "تسجيل الدخول"
+    "signIn": "تسجيل الدخول",
+    "forgotPassword": {
+      "title": "نسيت كلمة المرور",
+      "description": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "sending": "جاري الإرسال...",
+      "sendResetLink": "إرسال رابط إعادة التعيين",
+      "rememberPassword": "تذكرت كلمة المرور؟",
+      "checkEmail": "تحقق من بريدك الإلكتروني",
+      "emailSent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى {{email}}",
+      "resetPassword": "إعادة تعيين كلمة المرور",
+      "tryAnotherEmail": "جرب بريد إلكتروني آخر"
+    }
+  },
+  "hero": {
+    "slides": {
+      "iphone": {
+        "title": "آيفون 15 برو ماكس",
+        "subtitle": "أحدث التقنيات",
+        "description": "اختبر المستقبل مع التصميم التيتانيوم والكاميرات المتطورة ومعالج A17 Pro القوي.",
+        "cta": "تسوق الآيفون"
+      },
+      "gaming": {
+        "title": "قوة الألعاب",
+        "subtitle": "الأداء المطلق",
+        "description": "سيطر على كل لعبة مع RTX 4080 و 32GB RAM وتخزين SSD فائق السرعة.",
+        "cta": "ابدأ اللعب"
+      },
+      "smartHome": {
+        "title": "ثورة المنزل الذكي",
+        "subtitle": "العيش المتصل",
+        "description": "حول منزلك إلى نظام بيئي ذكي مع التحكم الصوتي والأتمتة والأمان.",
+        "cta": "المنزل الذكي"
+      },
+      "audio": {
+        "title": "التميز الصوتي",
+        "subtitle": "الصوت المميز",
+        "description": "انغمس في الصوت بجودة الاستوديو مع إلغاء الضوضاء والصوت المكاني.",
+        "cta": "استمع الآن"
+      },
+      "workspace": {
+        "title": "مساحة العمل المهنية",
+        "subtitle": "إعادة تعريف العمل",
+        "description": "عزز الإنتاجية مع شاشات وأجهزة لوحة مفاتيح وإكسسوارات مريحة بجودة احترافية.",
+        "cta": "تسوق الأدوات"
+      }
+    },
+    "badges": {
+      "new": "جديد",
+      "hot": "ساخن",
+      "trending": "رائج",
+      "premium": "مميز",
+      "pro": "احترافي"
+    },
+    "features": {
+      "freeShipping": "شحن مجاني",
+      "warranty": "ضمان سنتان",
+      "support": "دعم 24/7"
+    },
+    "browseAll": "تصفح الكل",
+    "reviews": "تقييمات"
   },
   "footer": {
     "newsletter": {
@@ -149,6 +206,27 @@
       "subtitle": "مرحباً بعودتك! سجل دخولك للمتابعة",
       "signingIn": "جاري تسجيل الدخول..."
     },
+    "fields": {
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور"
+    },
+    "placeholders": {
+      "email": "أدخل بريدك الإلكتروني",
+      "password": "أدخل كلمة المرور"
+    },
+    "passwordRequirements": {
+      "title": "يجب أن تحتوي كلمة المرور على:",
+      "minLength": "8 أحرف على الأقل",
+      "lowercase": "حرف صغير واحد",
+      "uppercase": "حرف كبير واحد",
+      "special": "رمز خاص واحد (!@#$...)",
+      "number": "رقم واحد"
+    },
+    "orContinueWith": "أو تابع باستخدام",
+    "google": "جوجل",
+    "apple": "آبل",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "إنشاء حساب",
     "signup": {
       "creatingAccount": "جاري إنشاء الحساب..."
     },
@@ -355,7 +433,35 @@
     "passwords_no_match": "كلمات المرور غير متطابقة",
     "back_to_login": "العودة لتسجيل الدخول",
     "continue_with_google": "المتابعة مع جوجل",
-    "continue_with_apple": "المتابعة مع آبل"
+    "continue_with_apple": "المتابعة مع آبل",
+    "login": {
+      "title": "تسجيل الدخول",
+      "subtitle": "مرحباً بعودتك! سجل دخولك للمتابعة",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جاري تسجيل الدخول..."
+    },
+    "fields": {
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور"
+    },
+    "placeholders": {
+      "email": "أدخل بريدك الإلكتروني",
+      "password": "أدخل كلمة المرور"
+    },
+    "passwordRequirements": {
+      "title": "يجب أن تحتوي كلمة المرور على:",
+      "minLength": "8 أحرف على الأقل",
+      "lowercase": "حرف صغير واحد",
+      "uppercase": "حرف كبير واحد",
+      "special": "رمز خاص واحد (!@#$...)",
+      "number": "رقم واحد"
+    },
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "orContinueWith": "أو تابع باستخدام",
+    "google": "جوجل",
+    "apple": "آبل",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "إنشاء حساب"
   },
   "admin": {
     "dashboard": "لوحة التحكم الإدارية",
@@ -461,7 +567,19 @@
       "coupon_deleted": "تم حذف الكوبون بنجاح",
       "order_status_updated": "تم تحديث حالة الطلب إلى {{status}}",
       "payment_status_updated": "تم تحديث حالة الدفع إلى {{status}}",
-      "user_status_updated": "تم تحديث حالة المستخدم إلى {{status}}"
+      "user_status_updated": "تم تحديث حالة المستخدم إلى {{status}}",
+      "productCreated": "تم إنشاء المنتج بنجاح",
+      "productUpdated": "تم تحديث المنتج بنجاح",
+      "productDeleted": "تم حذف المنتج بنجاح",
+      "categoryCreated": "تم إنشاء التصنيف بنجاح",
+      "categoryUpdated": "تم تحديث التصنيف بنجاح",
+      "categoryDeleted": "تم حذف التصنيف بنجاح",
+      "couponCreated": "تم إنشاء الكوبون بنجاح",
+      "couponUpdated": "تم تحديث الكوبون بنجاح",
+      "couponDeleted": "تم حذف الكوبون بنجاح",
+      "orderStatusUpdated": "تم تحديث حالة الطلب إلى {{status}}",
+      "paymentStatusUpdated": "تم تحديث حالة الدفع إلى {{status}}",
+      "userStatusUpdated": "تم تحديث حالة المستخدم إلى {{status}}"
     },
     "errors": {
       "failed_to_fetch_data": "فشل في جلب البيانات",
@@ -471,12 +589,25 @@
       "failed_to_update_user_status": "فشل في تحديث حالة المستخدم",
       "failed_to_delete_coupon": "فشل في حذف الكوبون",
       "failed_to_save_category": "فشل في حفظ التصنيف",
-      "failed_to_delete_category": "فشل في حذف التصنيف"
+      "failed_to_delete_category": "فشل في حذف التصنيف",
+      "failedToFetchData": "فشل في جلب البيانات",
+      "failedToDeleteProduct": "فشل في حذف المنتج",
+      "failedToUpdateOrderStatus": "فشل في تحديث حالة الطلب",
+      "failedToUpdatePaymentStatus": "فشل في تحديث حالة الدفع",
+      "failedToUpdateUserStatus": "فشل في تحديث حالة المستخدم",
+      "failedToDeleteCoupon": "فشل في حذف الكوبون",
+      "failedToSaveCategory": "فشل في حفظ التصنيف",
+      "failedToDeleteCategory": "فشل في حذف التصنيف",
+      "failedToSaveCoupon": "فشل في حفظ الكوبون",
+      "maxImagesExceeded": "الحد الأقصى 10 صور مسموح"
     },
     "confirmations": {
       "delete_product": "هل أنت متأكد من حذف هذا المنتج؟",
       "delete_category": "هل أنت متأكد من حذف هذا التصنيف؟",
-      "delete_coupon": "هل أنت متأكد من حذف هذا الكوبون؟"
+      "delete_coupon": "هل أنت متأكد من حذف هذا الكوبون؟",
+      "deleteProduct": "هل أنت متأكد من حذف هذا المنتج؟",
+      "deleteCategory": "هل أنت متأكد من حذف هذا التصنيف؟",
+      "deleteCoupon": "هل أنت متأكد من حذف هذا الكوبون؟"
     }
   },
   "footer": {
@@ -744,16 +875,18 @@
       }
     },
     "search": {
-      "title": "البحث",
-      "results": "النتائج",
-      "searchingFor": "البحث عن \"{{query}}\"",
-      "enterSearchTerm": "أدخل مصطلح البحث للعثور على المنتجات",
-      "placeholder": "البحث عن المنتجات...",
-      "tryAgain": "حاول مرة أخرى",
-      "noProductsFound": "لم يتم العثور على منتجات",
-      "noProductsMatch": "لا توجد منتجات تطابق بحثك عن '{{query}}'. جرب كلمات مفتاحية مختلفة أو تحقق من الإملاء.",
-      "startSearching": "ابدأ البحث للعثور على منتجات رائعة!",
-      "clearSearch": "مسح البحث",
+        "title": "البحث",
+        "results": "النتائج",
+        "searchingFor": "البحث عن \"{{query}}\"",
+        "enterSearchTerm": "أدخل مصطلح البحث للعثور على المنتجات",
+        "placeholder": "البحث عن المنتجات...",
+        "tryAgain": "حاول مرة أخرى",
+        "noProductsFound": "لم يتم العثور على منتجات",
+        "noProductsMatch": "لا توجد منتجات تطابق بحثك عن '{{query}}'. جرب كلمات مفتاحية مختلفة أو تحقق من الإملاء.",
+        "startSearching": "ابدأ البحث للعثور على منتجات رائعة!",
+        "clearSearch": "مسح البحث",
+        "addToCart": "أضف إلى السلة",
+        "removeFromCart": "إزالة من السلة",
       "foundProducts": "تم العثور على {{count}} منتج يطابق '{{query}}'",
       "showingProducts": "عرض {{count}} منتج",
       "showingRange": "عرض {{start}} إلى {{end}} من {{total}} منتج",
@@ -880,6 +1013,8 @@
         "wishlist": {
           "title": "قائمة الأمنيات",
           "itemCount": "{{count}} عنصر في قائمة الأمنيات",
+          "addToCart": "أضف إلى السلة",
+          "removeFromCart": "إزالة من السلة",
           "empty": {
             "title": "قائمة الأمنيات فارغة",
             "message": "ابدأ بإضافة المنتجات إلى قائمة الأمنيات لحفظها لاحقاً",
@@ -887,6 +1022,20 @@
           }
         },
         "productDetail": {
+           "addToCart": "أضف إلى السلة",
+           "removeFromCart": "إزالة من السلة",
+           "buyNow": "اشتري الآن",
+           "processing": "جاري المعالجة...",
+           "quantity": "الكمية",
+           "back": "رجوع",
+           "relatedProducts": "منتجات ذات صلة",
+           "freeShipping": "شحن مجاني",
+           "onOrdersOver": "على الطلبات أكثر من 50 دولار",
+           "securePayment": "دفع آمن",
+           "secureCheckout": "دفع آمن 100%",
+           "easyReturns": "إرجاع سهل",
+           "returnPolicy": "سياسة إرجاع 30 يوم",
+           "reviews": "تقييمات",
            "errors": {
              "productNotFound": "المنتج غير موجود",
              "loginRequired": "يرجى تسجيل الدخول لإدارة السلة",

@@ -479,7 +479,7 @@ const Navbar = memo(() => {
                           className="w-full flex items-center gap-3 rtl:gap-x-reverse px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors text-left rtl:text-right"
                         >
                           <User size={18} />
-                          <span className="font-medium">{t('profile')}</span>
+                          <span className="font-medium">{t('nav.profile')}</span>
                         </button>
 
                         {/* Admin Dashboard Link */}
@@ -492,7 +492,7 @@ const Navbar = memo(() => {
                             className="w-full flex items-center gap-3 rtl:gap-x-reverse px-4 py-3 text-purple-600 hover:text-purple-700 hover:bg-purple-50 transition-colors text-left rtl:text-right"
                           >
                             <Shield size={18} />
-                            <span className="font-medium">{t('admin')}</span>
+                            <span className="font-medium">{t('nav.admin')}</span>
                           </button>
                         )}
 
@@ -520,7 +520,7 @@ const Navbar = memo(() => {
               >
                 <User size={20} className="text-gray-600" />
                 <span className="text-sm font-medium text-gray-700">
-                  Sign In
+                  {t('auth.signIn')}
                 </span>
               </Button>
               )}
@@ -710,7 +710,7 @@ const Navbar = memo(() => {
                     className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg"
                   >
                     <User size={20} className="mr-2 rtl:ml-2 rtl:mr-0" />
-                    Sign In
+                    {t('auth.signIn')}
                   </Button>
                 </>
               )}

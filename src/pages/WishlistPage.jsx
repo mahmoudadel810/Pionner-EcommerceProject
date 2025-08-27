@@ -163,7 +163,7 @@ const WishlistPage = () => {
                     }`}
                   >
                     <ShoppingCart size={16} />
-                    <span>{isInCart(product._id) ? "Remove from Cart" : "Add to Cart"}</span>
+                    <span>{isInCart(product._id) ? t('wishlist.removeFromCart') : t('wishlist.addToCart')}</span>
                   </motion.button>
                 </div>
               </motion.div>

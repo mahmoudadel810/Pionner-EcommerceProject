@@ -663,6 +663,17 @@
       "coupons": "Coupons",
       "analytics": "Analytics"
     },
+    "analytics":{
+      "sales_analytics":" Sales Analytic",
+      "total_revenue":" Total Revenue",
+      "total_orders":" Total Orders",
+      "average_order_value":"  Average order value ",
+      "order_status_distribution":"  Order status Distribution",
+      "pending":"Pending",
+      "paid":"Paid",
+      "cancelled":"Cancelled",
+      "total":"Total"
+    },
     "overview": {
       "recent_orders": "Recent Orders",
       "view_all": "View All",

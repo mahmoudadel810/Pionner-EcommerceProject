@@ -613,6 +613,17 @@
       "coupons": "الكوبونات",
       "analytics": "التحليلات"
     },
+    "analytics":{
+      "sales_analytics":"تحليل المبيعات",
+      "total_revenue":"إجمالي العائدات",
+      "total_orders":"اجمال الطلبات",
+      "average_order_value":"متوسط قيمة الطلب ",
+      "order_status_distribution":"توزيع حالة الطلب",
+      "pending":"معلق",
+      "paid":"مدفوع",
+      "cancelled":"ملغي",
+      "total":"المجموع"
+    },
     "overview": {
       "recent_orders": "الطلبات الأخيرة",
       "view_all": "عرض الكل",
@@ -676,7 +687,8 @@
         "products":"المنتجات",
         "featured":"مميز",
         "status":"الحالة",
-        "actions":"الافعال"
+        "actions":"الافعال",
+        "description":"الوصف"
       },
       "form":{
         "name":"الاسم",

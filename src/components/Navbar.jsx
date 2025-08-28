@@ -651,7 +651,7 @@ const Navbar = memo(() => {
                       className="flex items-center gap-3 rtl:gap-x-reverse py-3 px-4 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <User size={20} />
-                      <span className="font-medium">{t('profile')}</span>
+                      <span className="font-medium">{t('nav.profile')}</span>
                     </Link>
 
                     <Link
@@ -684,7 +684,7 @@ const Navbar = memo(() => {
                         className="flex items-center gap-3 rtl:gap-x-reverse py-3 px-4 rounded-xl text-purple-600 hover:bg-purple-50 transition-colors"
                       >
                         <Shield size={20} />
-                        <span className="font-medium">{t('admin')}</span>
+                        <span className="font-medium">{t('nav.admin')}</span>
                       </Link>
                     )}
 

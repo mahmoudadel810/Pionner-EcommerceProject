@@ -22,7 +22,10 @@
     "pleaseLoginCart": "Please login to manage cart",
     "pleaseLoginWishlist": "Please login to manage wishlist",
     "failedUpdateCart": "Failed to update cart",
-    "failedUpdateWishlist": "Failed to update wishlist"
+    "failedUpdateWishlist": "Failed to update wishlist",
+     "back": "Back",
+    "try_again": "Try Again",
+    "clear_search": "Clear Search"
   },
   "company": {
     "name": "Pioneer",
@@ -64,16 +67,36 @@
     },
     "copyright": "© 2024 All rights reserved",
     "madeWith": "Made with",
-    "forYou": "for you"
+    "forYou": "for you",
+    "newsletter_title": "Stay Updated with Our Newsletter",
+    "newsletter_desc": "Get the latest updates on new products, exclusive offers, and fashion trends delivered to your inbox.",
+    "enter_email": "Enter your email",
+    "subscribe": "Subscribe",
+    "company_desc": "Your premier destination for quality products and exceptional shopping experiences.",
+   
+    
+   
+   
+    "rights_reserved": "All rights reserved.",
+    "made_with_love": "Made with",
+    "for_you": "for you",
+    "scroll_to_top": "Scroll to top"
   },
   "auth": {
     "fields": {
       "email": "Email",
-      "password": "Password"
+      "password": "Password",
+      "fullName":"Full Name",
+      "phone":"Phone Number",
+      "confirmPassword":"confirm Password"
+
     },
     "placeholders": {
       "email": "Enter your email",
-      "password": "Enter your password"
+      "password": "Enter your password",
+      "fullName":"Full Name",
+      "confirmPassword":"confirm Password",
+      "createPassword":"Create Password"
     },
     "passwordRequirements": {
       "title": "Password must contain:",
@@ -154,139 +177,7 @@
     "google": "Google",
     "apple": "Apple",
     "noAccount": "Don't have an account?",
-    "signUp": "Sign Up"
-  },
-  "home": {
-    "explore_by_category": "Explore by Category",
-    "discover_subtitle": "Discover amazing products from each category, handpicked for you",
-    "view_all": "View All",
-    "featured": "Featured",
-    "start_shopping": "Start Shopping Now",
-    "join_premium": "Join Premium",
-    "quick_view": "Quick View",
-    "add_to_cart": "Add to Cart",
-    "remove_from_cart": "Remove from Cart"
-  },
-  "checkout": {
-    "billing_address": "Billing Address",
-    "payment_method": "Payment Method",
-    "complete_payment": "Complete Payment",
-    "processing": "Processing...",
-    "secure_notice": "Your payment information is secure and encrypted"
-  },
-  "product": {
-    "back": "Back",
-    "reviews": "reviews",
-    "quantity": "Quantity",
-    "free_shipping": "Free Shipping",
-    "free_shipping_threshold": "On orders over ﷼50",
-    "secure_payment": "Secure Payment",
-    "easy_returns": "Easy Returns",
-    "buy_now": "Buy Now",
-    "processing": "Processing...",
-    "related_products": "Related Products",
-    "featured": "Featured"
-  },
-  "category": {
-    "back_to_categories": "Back to Categories",
-    "search_products": "Search products...",
-    "sort_by": "Sort by",
-    "name_asc": "Name (A-Z)",
-    "name_desc": "Name (Z-A)",
-    "price_asc": "Price (Low to High)",
-    "price_desc": "Price (High to Low)",
-    "newest": "Newest",
-    "oldest": "Oldest",
-    "no_products_found": "No products found",
-    "adjust_search": "Try adjusting your search criteria",
-    "no_products_in_category": "No products are available in this category at the moment",
-    "clear_search": "Clear Search",
-    "previous": "Previous",
-    "next": "Next",
-    "showing_count_in": "Showing {{count}} product{{suffix}} in {{category}}",
-    "plural_suffix": "s"
-  },
-  "search": {
-    "results_title": "Search Results",
-    "searching_for": "Searching for \"{{query}}\"",
-    "enter_term": "Enter a search term to find products",
-    "sort_by": "Sort by",
-    "relevance": "Relevance",
-    "name_asc": "Name (A-Z)",
-    "name_desc": "Name (Z-A)",
-    "price_asc": "Price: Low to High",
-    "price_desc": "Price: High to Low",
-    "rating_desc": "Highest Rated",
-    "newest": "Newest",
-    "category": "Category",
-    "all_categories": "All Categories",
-    "price_range": "Price Range",
-    "all_prices": "All Prices",
-    "items_per_page": "Per page",
-    "refresh": "Refresh",
-    "no_products_found": "No products found",
-    "none_match_for": "No products match your search for \"{{query}}\". Try different keywords or check your spelling.",
-    "clear_search": "Clear Search",
-    "found_count_matching": "Found {{count}} product{{suffix}} matching \"{{query}}\"",
-    "plural_suffix": "s"
-  },
-  "wishlist": {
-    "title": "My Wishlist",
-    "count_items": "{{count}} item{{suffix}} in your wishlist",
-    "plural_suffix": "s",
-    "empty_title": "Your wishlist is empty",
-    "empty_msg": "Start adding products to your wishlist to save them for later",
-    "start_shopping": "Start Shopping"
-  },
-  "common": {
-    "back": "Back",
-    "try_again": "Try Again",
-    "clear_search": "Clear Search"
-  },
-  "categories": {
-    "smartphones": "Smartphones",
-    "laptops": "Laptops",
-    "gaming": "Gaming",
-    "smart_home": "Smart Home",
-    "audio": "Audio",
-    "tablets": "Tablets"
-  },
-  "home": {
-    "category_descriptions": {
-      "smartphones": "Latest smartphones and mobile devices",
-      "laptops": "High-performance laptops and notebooks",
-      "gaming": "Gaming accessories and peripherals",
-      "smart_home": "Smart home devices and automation",
-      "audio": "Headphones, speakers, and audio equipment",
-      "tablets": "Tablets and e-readers"
-    },
-    "discover_products": "Discover amazing products from each category, handpicked for you",
-    "view_all": "View All",
-    "featured": "Featured",
-    "add_to_cart": "Add to Cart",
-    "experience_future": "Experience the Future of Shopping",
-    "join_millions": "Join millions of users who trust our platform for their shopping needs. Get personalized recommendations, smart search, and seamless shopping experience.",
-    "start_shopping": "Start Shopping Now",
-    "join_premium": "Join Premium",
-    "remove_from_cart": "Remove from Cart",
-    "view_all_products": "View All {{count}} Products"
-  },
-  "featured": {
-    "title": "Featured Products",
-    "description": "Discover our handpicked selection of premium products",
-    "featured_badge": "Featured"
-  },
-  "product": {
-    "quick_view": "Quick View",
-    "add_to_wishlist": "Add to wishlist",
-    "remove_from_wishlist": "Remove from wishlist",
-    "add_to_cart": "Add to Cart",
-    "remove_from_cart": "Remove from Cart"
-  },
-  "category": {
-    "explore": "Explore {{name}}"
-  },
-  "auth": {
+    "signUp": "Sign Up",
     "welcome_back": "Welcome back",
     "sign_in_account": "Sign in to your account to continue",
     "email": "Email",
@@ -335,13 +226,115 @@
     "back_to_login": "Back to Login",
     "continue_with_google": "Continue with Google",
     "continue_with_apple": "Continue with Apple",
+    
+    
+    
+    
+    "signIn": "Sign In",
+    
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "description": "Enter your email and we'll send you a password reset link",
+      "emailPlaceholder": "Enter your email",
+      "sending": "Sending...",
+      "sendResetLink": "Send Reset Link",
+      "rememberPassword": "Remember your password?",
+      "checkEmail": "Check Your Email",
+      "emailSent": "Password reset link sent to {{email}}",
+      "resetPassword": "Reset Password",
+      "tryAnotherEmail": "Try Another Email"
+    }
+  },
+  "home": {
+    "explore_by_category": "Explore by Category",
+    "discover_subtitle": "Discover amazing products from each category, handpicked for you",
+    
+    
+   
+    
+    "quick_view": "Quick View",
+    
+    
+    
+    "featured": "Featured",
+    "add_to_cart": "Add to Cart",
+    "experience_future": "Experience the Future of Shopping",
+    "join_millions": "Join millions of users who trust our platform for their shopping needs. Get personalized recommendations, smart search, and seamless shopping experience.",
+    "start_shopping": "Start Shopping Now",
+    "join_premium": "Join Premium",
+    "remove_from_cart": "Remove from Cart",
+    "view_all_products": "View All {{count}} Products",
+    "exploreByCategory": "Explore by Category",
+     "discover_products": "Discover amazing products across different categories",
+     "view_all": "View All",
+     "category_descriptions": {
+       "smartphones": "Latest smartphones with cutting-edge technology",
+       "laptops": "High-performance laptops for work and gaming",
+       "gaming": "Gaming gear for the ultimate experience",
+       "smart_home": "Smart home devices for modern living",
+       "audio": "Premium audio equipment for music lovers",
+       "tablets": "Versatile tablets for productivity and entertainment"
+     },
+     "errors": {
+         "loginRequired": "Please login to manage cart",
+         "cartUpdateFailed": "Failed to update cart"
+       }
+  },
+  "signUpPage": {
+    "emailAddress": "Email Address",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "backToLogin": "Back to Login",
+    "forgotPassword": "Forgot Password?",
+    "errors": {
+      "nameRequired": "Name is required",
+      "nameTooShort": "Name is too short",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email is invalid",
+      "emailTooLong": "Email is too long",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Phone number is invalid",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password is too short",
+      "passwordTooLong": "Password is too long",
+      "passwordLowercase": "Password must contain a lowercase letter",
+      "passwordUppercase": "Password must contain an uppercase letter",
+      "passwordNumber": "Password must contain a number",
+      "passwordSpecial": "Password must contain a special character",
+      "confirmPasswordRequired": "Confirm password is required",
+      "passwordMismatch": "Passwords do not match"
+    },
+        "validation": {
+      "codeRequired": "Code is required",
+      "codeMinLength": "Code is too short",
+      "passwordRequired": "Password is required",
+      "passwordComplexity": "Password is too complex",
+      "passwordMinLength": "Password is too short",
+      "confirmPasswordRequired": "Confirm password is required",
+      "passwordsDoNotMatch": "Passwords do not match"
+    },
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Welcome back! Sign in to continue",
+      "signIn": "Sign In",
+      "signingIn": "Signing in..."
+    },
     "fields": {
       "email": "Email",
-      "password": "Password"
+      "password": "Password",
+      "fullName":"Full Name",
+      "phone":"Phone Number",
+      "confirmPassword":"confirm Password"
+
     },
     "placeholders": {
       "email": "Enter your email",
-      "password": "Enter your password"
+      "password": "Enter your password",
+      "fullName":"Full Name",
+      "confirmPassword":"confirm Password",
+      "createPassword":"Create Password"
     },
     "passwordRequirements": {
       "title": "Password must contain:",
@@ -356,18 +349,18 @@
     "apple": "Apple",
     "noAccount": "Don't have an account?",
     "signUp": "Sign Up",
-    "signIn": "Sign In",
-    "emailAddress": "Email Address",
-    "backToLogin": "Back to Login",
-    "login": {
-      "title": "Sign In",
-      "subtitle": "Welcome back! Sign in to continue",
-      "signIn": "Sign In",
-      "signingIn": "Signing in..."
+"sign_in": "Sign In",
+    "alreadyHaveAccount":"Already Have Account",
+    "createAccount":" Create Account",
+
+    
+    "signup": {
+      "creatingMyAccount": "Craeting Account...",
+      "title":"Rigister Your Account ",
+      "subtitle":"user Info"
     },
-    "forgotPassword": "Forgot Password?",
     "forgotPassword": {
-      "title": "Forgot Password",
+       "title": "Forgot Password",
       "description": "Enter your email and we'll send you a password reset link",
       "emailPlaceholder": "Enter your email",
       "sending": "Sending...",
@@ -377,8 +370,228 @@
       "emailSent": "Password reset link sent to {{email}}",
       "resetPassword": "Reset Password",
       "tryAnotherEmail": "Try Another Email"
+        },
+    "resetPassword": {
+      "title": "Reset Password",
+      "description": "Enter the code sent to your email and your new password",
+      "resetCode": "Reset Code",
+      "codePlaceholder": "Enter code",
+      "resetting": "Resetting...",
+      "resetPassword": "Reset Password",
+      "rememberPassword": "Remember your password?",
+      "success": "Success!",
+      "successMessage": "Password reset successfully",
+      "continueToLogin": "Continue to Login"
     }
   },
+  
+  "product": {
+    "back": "Back",
+    "reviews": "reviews",
+    "quantity": "Quantity",
+    "free_shipping": "Free Shipping",
+    "free_shipping_threshold": "On orders over ﷼50",
+    "secure_payment": "Secure Payment",
+    "easy_returns": "Easy Returns",
+    "buy_now": "Buy Now",
+    "processing": "Processing...",
+    "related_products": "Related Products",
+    "featured": "Featured",
+    "quick_view": "Quick View",
+    "add_to_wishlist": "Add to wishlist",
+    "remove_from_wishlist": "Remove from wishlist",
+    "add_to_cart": "Add to Cart",
+    "remove_from_cart": "Remove from Cart"
+  },
+  "category": {
+    "back_to_categories": "Back to Categories",
+    "search_products": "Search products...",
+    "sort_by": "Sort by",
+    "name_asc": "Name (A-Z)",
+    "name_desc": "Name (Z-A)",
+    "price_asc": "Price (Low to High)",
+    "price_desc": "Price (High to Low)",
+    "newest": "Newest",
+    "oldest": "Oldest",
+    "no_products_found": "No products found",
+    "adjust_search": "Try adjusting your search criteria",
+    "no_products_in_category": "No products are available in this category at the moment",
+    "clear_search": "Clear Search",
+    "previous": "Previous",
+    "next": "Next",
+    "showing_count_in": "Showing {{count}} product{{suffix}} in {{category}}",
+    "plural_suffix": "s",
+    "explore": "Explore {{name}}"
+  },
+  "search": {
+    "results_title": "Search Results",
+    "searching_for": "Searching for \"{{query}}\"",
+    "enter_term": "Enter a search term to find products",
+    "sort_by": "Sort by",
+    "relevance": "Relevance",
+    "name_asc": "Name (A-Z)",
+    "name_desc": "Name (Z-A)",
+    "price_asc": "Price: Low to High",
+    "price_desc": "Price: High to Low",
+    "rating_desc": "Highest Rated",
+    "newest": "Newest",
+    "category": "Category",
+    "all_categories": "All Categories",
+    "price_range": "Price Range",
+    "all_prices": "All Prices",
+    "items_per_page": "Per page",
+    "refresh": "Refresh",
+    "no_products_found": "No products found",
+    "none_match_for": "No products match your search for \"{{query}}\". Try different keywords or check your spelling.",
+    "clear_search": "Clear Search",
+    "found_count_matching": "Found {{count}} product{{suffix}} matching \"{{query}}\"",
+    "plural_suffix": "s",
+    "title": "Search",
+          "results": "Results",
+          "searchingFor": "Searching for \"{{query}}\"",
+          "enterSearchTerm": "Enter a search term to find products",
+          "placeholder": "Search for products...",
+          "tryAgain": "Try Again",
+          "noProductsFound": "No products found",
+          "noProductsMatch": "No products match your search for '{{query}}'. Try different keywords or check your spelling.",
+          "startSearching": "Start searching to find amazing products!",
+          "clearSearch": "Clear Search",
+          "addToCart": "Add to Cart",
+          "removeFromCart": "Remove from Cart",
+     "foundProducts": "Found {{count}} product{{count, plural, one {} other {s}}} matching '{{query}}'",
+     "showingProducts": "Showing {{count}} product{{count, plural, one {} other {s}}}",
+     "showingRange": "Showing {{start}} to {{end}} of {{total}} products",
+     "filters": {
+       "sortBy": "Sort by",
+       "relevance": "Relevance",
+       "nameAZ": "Name (A-Z)",
+       "nameZA": "Name (Z-A)",
+       "priceLowHigh": "Price: Low to High",
+       "priceHighLow": "Price: High to Low",
+       "highestRated": "Highest Rated",
+       "newest": "Newest",
+       "category": "Category",
+       "allCategories": "All Categories",
+       "priceRange": "Price Range",
+       "allPrices": "All Prices",
+       "under100": "Under 100 SR",
+       "range100to500": "100 - 500 SR",
+       "range500to1000": "500 - 1000 SR",
+       "over1000": "Over 1000 SR",
+       "gridView": "Grid View",
+       "listView": "List View",
+       "perPage": "Per page",
+       "sixPerPage": "6 per page",
+       "twelvePerPage": "12 per page",
+       "twentyFourPerPage": "24 per page",
+       "fortyEightPerPage": "48 per page",
+       "refresh": "Refresh"
+     },
+     "errors": {
+       "fetchFailed": "Failed to fetch products",
+       "loadFailed": "Failed to load search results",
+       "loginRequired": "Please login to manage cart",
+       "cartUpdateFailed": "Failed to update cart",
+       "wishlistUpdateFailed": "Failed to update wishlist"
+     }
+  },
+  "wishlist": {
+    "title": "My Wishlist",
+    "count_items": "{{count}} item{{suffix}} in your wishlist",
+    "plural_suffix": "s",
+    "empty_title": "Your wishlist is empty",
+    "empty_msg": "Start adding products to your wishlist to save them for later",
+    "start_shopping": "Start Shopping",
+        "itemCount": "{{count}} item",
+        "itemCount_plural": "{{count}} items",
+        "addToCart": "Add to Cart",
+        "removeFromCart": "Remove from Cart",
+        "empty": {
+          "title": "Your wishlist is empty",
+          "message": "Start adding products to your wishlist to save them for later",
+          "startShopping": "Start Shopping"
+        }
+  },
+  
+  "categories": {
+    "smartphones": "Smartphones",
+    "laptops": "Laptops",
+    "gaming": "Gaming",
+    "smart_home": "Smart Home",
+    "audio": "Audio",
+    "tablets": "Tablets",
+    "hero": {
+            "title": "Explore",
+            "titleHighlight": "Categories",
+            "description": "Discover our curated collection of product categories. Find exactly what you're looking for with our organized selection."
+          },
+          "search": {
+            "placeholder": "Search categories by name or description...",
+            "resultsFor": "Search results for \"{{query}}\"",
+            "clear": "Clear search"
+          },
+          "sort": {
+            "placeholder": "Sort by",
+            "nameAsc": "Name (A-Z)",
+            "nameDesc": "Name (Z-A)",
+            "mostProducts": "Most Products",
+            "leastProducts": "Least Products",
+            "newest": "Newest",
+            "oldest": "Oldest"
+          },
+          "filter": {
+            "placeholder": "Filter by",
+            "all": "All Categories",
+            "featuredOnly": "Featured Only"
+          },
+          "card": {
+            "products": "products",
+            "featured": "Featured",
+            "active": "Active",
+            "inactive": "Inactive"
+          },
+          "actions": {
+            "refresh": "Refresh"
+          },
+          "empty": {
+            "noResults": "No categories found",
+            "noCategories": "No categories available",
+            "noResultsDescription": "No categories match your search for \"{{query}}\". Try different keywords or check your spelling.",
+            "noFeatured": "No featured categories are available at the moment.",
+            "noCategoriesDescription": "No categories are available at the moment.",
+            "clearFilters": "Clear All Filters"
+          },
+          "results": {
+            "found": "Found {{count}} categor{{count, plural, one{y} other{ies}}} matching \"{{query}}\"",
+            "showing": "Showing {{count}} categor{{count, plural, one{y} other{ies}}}",
+            "cached": "Cached"
+          },
+          "pagination": {
+            "showing": "Showing {{start}} to {{end}} of {{total}} categories",
+            "itemsPerPage": "Items per page",
+            "perPage": "Per page",
+            "perPageOption": "{{count}} per page",
+            "selectItemsPerPage": "Select items per page"
+          },
+          "errors": {
+            "failedToLoad": "Failed to load categories",
+            "loadingTitle": "Error Loading Categories",
+            "tryAgain": "Try Again",
+            "page_not_found": "Page Not Found",
+         "page_not_exist": "Sorry, the page you are looking for does not exist or has been moved.",
+            "go_home": "Go Home"
+
+          }
+  },
+  
+  "featured": {
+    "title": "Featured Products",
+    "description": "Discover our handpicked selection of premium products",
+    "featured_badge": "Featured"
+  },
+  
+  
+  
   "hero": {
     "slides": {
       "iphone": {
@@ -574,40 +787,7 @@
       "deleteCoupon": "Are you sure you want to delete this coupon?"
     }
   },
-  "footer": {
-    "newsletter_title": "Stay Updated with Our Newsletter",
-    "newsletter_desc": "Get the latest updates on new products, exclusive offers, and fashion trends delivered to your inbox.",
-    "enter_email": "Enter your email",
-    "subscribe": "Subscribe",
-    "company_desc": "Your premier destination for quality products and exceptional shopping experiences.",
-    "company": {
-      "title": "Company",
-      "aboutUs": "About Us",
-      "contact": "Contact",
-      "careers": "Careers",
-      "press": "Press"
-    },
-    "support": {
-      "title": "Support",
-      "helpCenter": "Help Center",
-      "returns": "Returns",
-      "shippingInfo": "Shipping Info",
-      "sizeGuide": "Size Guide"
-    },
-    "contact": {
-      "title": "Contact Us"
-    },
-    "legal": {
-      "privacyPolicy": "Privacy Policy",
-      "termsOfService": "Terms of Service",
-      "cookiePolicy": "Cookie Policy",
-      "gdpr": "GDPR"
-    },
-    "rights_reserved": "All rights reserved.",
-    "made_with_love": "Made with",
-    "for_you": "for you",
-    "scroll_to_top": "Scroll to top"
-  },
+  
   "cart": {
     "productMovedToWishlist": "Product moved to wishlist",
     "failedToMoveToWishlist": "Failed to move product to wishlist",
@@ -677,7 +857,12 @@
     "free": "Free",
     "total": "Total",
     "newPaymentSessionCreated": "New payment session created. Please try again.",
-    "paymentSessionGenerationFailed": "Failed to generate new payment session. Please refresh the page or try again later."
+    "paymentSessionGenerationFailed": "Failed to generate new payment session. Please refresh the page or try again later.",
+    "billing_address": "Billing Address",
+    "payment_method": "Payment Method",
+    "complete_payment": "Complete Payment",
+    "processing": "Processing...",
+    "secure_notice": "Your payment information is secure and encrypted"
   },
   "profile": {
     "invalidOrderData": "Invalid order data",
@@ -833,73 +1018,8 @@
        "showing": "Showing {{count}} product{{count, plural, one {} other {s}}} in {{category}}"
      }
    },
-   "search": {
-          "title": "Search",
-          "results": "Results",
-          "searchingFor": "Searching for \"{{query}}\"",
-          "enterSearchTerm": "Enter a search term to find products",
-          "placeholder": "Search for products...",
-          "tryAgain": "Try Again",
-          "noProductsFound": "No products found",
-          "noProductsMatch": "No products match your search for '{{query}}'. Try different keywords or check your spelling.",
-          "startSearching": "Start searching to find amazing products!",
-          "clearSearch": "Clear Search",
-          "addToCart": "Add to Cart",
-          "removeFromCart": "Remove from Cart",
-     "foundProducts": "Found {{count}} product{{count, plural, one {} other {s}}} matching '{{query}}'",
-     "showingProducts": "Showing {{count}} product{{count, plural, one {} other {s}}}",
-     "showingRange": "Showing {{start}} to {{end}} of {{total}} products",
-     "filters": {
-       "sortBy": "Sort by",
-       "relevance": "Relevance",
-       "nameAZ": "Name (A-Z)",
-       "nameZA": "Name (Z-A)",
-       "priceLowHigh": "Price: Low to High",
-       "priceHighLow": "Price: High to Low",
-       "highestRated": "Highest Rated",
-       "newest": "Newest",
-       "category": "Category",
-       "allCategories": "All Categories",
-       "priceRange": "Price Range",
-       "allPrices": "All Prices",
-       "under100": "Under 100 SR",
-       "range100to500": "100 - 500 SR",
-       "range500to1000": "500 - 1000 SR",
-       "over1000": "Over 1000 SR",
-       "gridView": "Grid View",
-       "listView": "List View",
-       "perPage": "Per page",
-       "sixPerPage": "6 per page",
-       "twelvePerPage": "12 per page",
-       "twentyFourPerPage": "24 per page",
-       "fortyEightPerPage": "48 per page",
-       "refresh": "Refresh"
-     },
-     "errors": {
-       "fetchFailed": "Failed to fetch products",
-       "loadFailed": "Failed to load search results",
-       "loginRequired": "Please login to manage cart",
-       "cartUpdateFailed": "Failed to update cart",
-       "wishlistUpdateFailed": "Failed to update wishlist"
-     }
-   },
-   "home": {
-     "exploreByCategory": "Explore by Category",
-     "discover_products": "Discover amazing products across different categories",
-     "view_all": "View All",
-     "category_descriptions": {
-       "smartphones": "Latest smartphones with cutting-edge technology",
-       "laptops": "High-performance laptops for work and gaming",
-       "gaming": "Gaming gear for the ultimate experience",
-       "smart_home": "Smart home devices for modern living",
-       "audio": "Premium audio equipment for music lovers",
-       "tablets": "Versatile tablets for productivity and entertainment"
-     },
-     "errors": {
-         "loginRequired": "Please login to manage cart",
-         "cartUpdateFailed": "Failed to update cart"
-       }
-     },
+  
+   
      "shop": {
        "title": "All Products",
        "productsFound": "{{count}} products found",
@@ -969,18 +1089,7 @@
          "paragraph3": "We believe that technology should enhance your life, not complicate it. That's why we go beyond just selling products – we provide expert advice, comprehensive support, and a shopping experience that puts you first."
        }
       },
-      "wishlist": {
-        "title": "My Wishlist",
-        "itemCount": "{{count}} item",
-        "itemCount_plural": "{{count}} items",
-        "addToCart": "Add to Cart",
-        "removeFromCart": "Remove from Cart",
-        "empty": {
-          "title": "Your wishlist is empty",
-          "message": "Start adding products to your wishlist to save them for later",
-          "startShopping": "Start Shopping"
-        }
-       },
+     
        "productDetail": {
           "addToCart": "Add to Cart",
           "removeFromCart": "Remove from Cart",
@@ -1026,70 +1135,6 @@
             "loginRequired": "Please login to manage cart",
             "cartUpdateFailed": "Failed to update cart",
             "wishlistLoginRequired": "Please login to manage wishlist"
-          }
-        },
-        "categories": {
-          "hero": {
-            "title": "Explore",
-            "titleHighlight": "Categories",
-            "description": "Discover our curated collection of product categories. Find exactly what you're looking for with our organized selection."
-          },
-          "search": {
-            "placeholder": "Search categories by name or description...",
-            "resultsFor": "Search results for \"{{query}}\"",
-            "clear": "Clear search"
-          },
-          "sort": {
-            "placeholder": "Sort by",
-            "nameAsc": "Name (A-Z)",
-            "nameDesc": "Name (Z-A)",
-            "mostProducts": "Most Products",
-            "leastProducts": "Least Products",
-            "newest": "Newest",
-            "oldest": "Oldest"
-          },
-          "filter": {
-            "placeholder": "Filter by",
-            "all": "All Categories",
-            "featuredOnly": "Featured Only"
-          },
-          "card": {
-            "products": "products",
-            "featured": "Featured",
-            "active": "Active",
-            "inactive": "Inactive"
-          },
-          "actions": {
-            "refresh": "Refresh"
-          },
-          "empty": {
-            "noResults": "No categories found",
-            "noCategories": "No categories available",
-            "noResultsDescription": "No categories match your search for \"{{query}}\". Try different keywords or check your spelling.",
-            "noFeatured": "No featured categories are available at the moment.",
-            "noCategoriesDescription": "No categories are available at the moment.",
-            "clearFilters": "Clear All Filters"
-          },
-          "results": {
-            "found": "Found {{count}} categor{{count, plural, one{y} other{ies}}} matching \"{{query}}\"",
-            "showing": "Showing {{count}} categor{{count, plural, one{y} other{ies}}}",
-            "cached": "Cached"
-          },
-          "pagination": {
-            "showing": "Showing {{start}} to {{end}} of {{total}} categories",
-            "itemsPerPage": "Items per page",
-            "perPage": "Per page",
-            "perPageOption": "{{count}} per page",
-            "selectItemsPerPage": "Select items per page"
-          },
-          "errors": {
-            "failedToLoad": "Failed to load categories",
-            "loadingTitle": "Error Loading Categories",
-            "tryAgain": "Try Again",
-            "page_not_found": "Page Not Found",
-         "page_not_exist": "Sorry, the page you are looking for does not exist or has been moved.",
-            "go_home": "Go Home"
-
           }
         }
       }

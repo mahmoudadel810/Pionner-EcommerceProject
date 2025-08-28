@@ -46,31 +46,31 @@ const SignUpPage = () => {
 
     if (name === "name") {
       if (!value.trim()) {
-        newErrors.name = t('auth.errors.nameRequired');
       } else if (value.trim().length < 2) {
-        newErrors.name = t('auth.errors.nameTooShort');
       } else {
         delete newErrors.name;
       }
+      newErrors.name = t('signUpPage.errors.nameRequired');
     }
+    newErrors.name = t('signUpPage.errors.nameTooShort');
 
     if (name === "email") {
       if (!value.trim()) {
-        newErrors.email = t('auth.errors.emailRequired');
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        newErrors.email = t('auth.errors.emailInvalid');
       } else if (value.length > 254) {
-        newErrors.email = t('auth.errors.emailTooLong');
       } else {
         delete newErrors.email;
+        newErrors.email = t('signUpPage.errors.emailRequired');
       }
+      newErrors.email = t('signUpPage.errors.emailInvalid');
     }
+    newErrors.email = t('signUpPage.errors.emailTooLong');
 
     if (name === "phone") {
       if (!value.trim()) {
-        newErrors.phone = t('auth.errors.phoneRequired');
+        newErrors.phone = t('signUpPage.errors.phoneRequired');
       } else if (!/^[0-9\+\(\)\.\s\-,]+$/.test(value)) {
-        newErrors.phone = t('auth.errors.phoneInvalid');
+        newErrors.phone = t('signUpPage.errors.phoneInvalid');
       } else {
         delete newErrors.phone;
       }
@@ -78,19 +78,19 @@ const SignUpPage = () => {
 
     if (name === "password") {
       if (!value) {
-        newErrors.password = t('auth.errors.passwordRequired');
+        newErrors.password = t('signUpPage.errors.passwordRequired');
       } else if (value.length < 8) {
-        newErrors.password = t('auth.errors.passwordTooShort');
+        newErrors.password = t('signUpPage.errors.passwordTooShort');
       } else if (value.length > 128) {
-        newErrors.password = t('auth.errors.passwordTooLong');
+        newErrors.password = t('signUpPage.errors.passwordTooLong');
       } else if (!/[a-z]/.test(value)) {
-        newErrors.password = t('auth.errors.passwordLowercase');
+        newErrors.password = t('signUpPage.errors.passwordLowercase');
       } else if (!/[A-Z]/.test(value)) {
-        newErrors.password = t('auth.errors.passwordUppercase');
+        newErrors.password = t('signUpPage.errors.passwordUppercase');
       } else if (!/\d/.test(value)) {
-        newErrors.password = t('auth.errors.passwordNumber');
+        newErrors.password = t('signUpPage.errors.passwordNumber');
       } else if (!/[@$!%*?&#]/.test(value)) {
-        newErrors.password = t('auth.errors.passwordSpecial');
+        newErrors.password = t('signUpPage.errors.passwordSpecial');
       } else {
         delete newErrors.password;
       }
@@ -98,9 +98,9 @@ const SignUpPage = () => {
 
     if (name === "confirmPassword") {
       if (!value) {
-        newErrors.confirmPassword = t('auth.errors.confirmPasswordRequired');
+        newErrors.confirmPassword = t('signUpPage.errors.confirmPasswordRequired');
       } else if (formData.password !== value) {
-        newErrors.confirmPassword = t('auth.errors.passwordMismatch');
+        newErrors.confirmPassword = t('signUpPage.errors.passwordMismatch');
       } else {
         delete newErrors.confirmPassword;
       }
@@ -143,45 +143,45 @@ const SignUpPage = () => {
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = t('auth.errors.nameRequired');
+      newErrors.name = t('signUpPage.errors.nameRequired');
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = t('auth.errors.nameTooShort');
+      newErrors.name = t('signUpPage.errors.nameTooShort');
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = t('auth.errors.emailRequired');
+      newErrors.email = t('signUpPage.errors.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = t('auth.errors.emailInvalid');
+      newErrors.email = t('signUpPage.errors.emailInvalid');
     } else if (formData.email.length > 254) {
-      newErrors.email = t('auth.errors.emailTooLong');
+      newErrors.email = t('signUpPage.errors.emailTooLong');
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = t('auth.errors.phoneRequired');
+      newErrors.phone = t('signUpPage.errors.phoneRequired');
     } else if (!/^[0-9\+\(\)\.\s\-,]+$/.test(formData.phone)) {
-      newErrors.phone = t('auth.errors.phoneInvalid');
+      newErrors.phone = t('signUpPage.errors.phoneInvalid');
     }
 
     if (!formData.password) {
-      newErrors.password = t('auth.errors.passwordRequired');
+      newErrors.password = t('signUpPage.errors.passwordRequired');
     } else if (formData.password.length < 8) {
-      newErrors.password = t('auth.errors.passwordTooShort');
+      newErrors.password = t('signUpPage.errors.passwordTooShort');
     } else if (formData.password.length > 128) {
-      newErrors.password = t('auth.errors.passwordTooLong');
+      newErrors.password = t('signUpPage.errors.passwordTooLong');
     } else if (!/[a-z]/.test(formData.password)) {
-      newErrors.password = t('auth.errors.passwordLowercase');
+      newErrors.password = t('signUpPage.errors.passwordLowercase');
     } else if (!/[A-Z]/.test(formData.password)) {
-      newErrors.password = t('auth.errors.passwordUppercase');
+      newErrors.password = t('signUpPage.errors.passwordUppercase');
     } else if (!/\d/.test(formData.password)) {
-      newErrors.password = t('auth.errors.passwordNumber');
+      newErrors.password = t('signUpPage.errors.passwordNumber');
     } else if (!/[@$!%*?&#]/.test(formData.password)) {
-      newErrors.password = t('auth.errors.passwordSpecial');
+      newErrors.password = t('signUpPage.errors.passwordSpecial');
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = t('auth.errors.confirmPasswordRequired');
+      newErrors.confirmPassword = t('signUpPage.errors.confirmPasswordRequired');
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = t('auth.errors.passwordMismatch');
+      newErrors.confirmPassword = t('signUpPage.errors.passwordMismatch');
     }
 
     setErrors(newErrors);
@@ -230,7 +230,7 @@ const SignUpPage = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="text-3xl font-bold text-foreground"
           >
-            {t('auth.signup.title')}
+            {t('signUpPage.signup.title')}
           </motion.h2>
 
           <motion.p
@@ -239,7 +239,7 @@ const SignUpPage = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="mt-2 text-muted-foreground"
           >
-            {t('auth.signup.subtitle')}
+            {t('signUpPage.signup.subtitle')}
           </motion.p>
         </div>
 
@@ -258,7 +258,7 @@ const SignUpPage = () => {
                 htmlFor="name"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                {t('auth.fields.fullName')}
+                {t('signUpPage.fields.fullName')}
               </label>
               <div className="relative">
                 <User
@@ -275,7 +275,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("name")}
-                  placeholder={t('auth.placeholders.fullName')}
+                  placeholder={t('signUpPage.placeholders.fullName')}
                 />
               </div>
               {errors.name && (
@@ -295,7 +295,7 @@ const SignUpPage = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                {t('auth.fields.email')}
+                {t('signUpPage.fields.email')}
               </label>
               <div className="relative">
                 <Mail
@@ -312,7 +312,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("email")}
-                  placeholder={t('auth.placeholders.email')}
+                  placeholder={t('signUpPage.placeholders.email')}
                 />
               </div>
               {errors.email && (
@@ -332,7 +332,7 @@ const SignUpPage = () => {
                 htmlFor="phone"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                {t('auth.fields.phone')}
+                {t('signUpPage.fields.phone')}
               </label>
               <div className="relative">
                 <Phone
@@ -349,7 +349,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("phone")}
-                  placeholder={t('auth.placeholders.phone')}
+                  placeholder={t('signUpPage.placeholders.phone')}
                 />
               </div>
               {errors.phone && (
@@ -369,7 +369,7 @@ const SignUpPage = () => {
                 htmlFor="password"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                {t('auth.fields.password')}
+                {t('signUpPage.fields.password')}
               </label>
               <div className="relative">
                 <Lock
@@ -390,7 +390,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("password")}
-                  placeholder={t('auth.placeholders.createPassword')}
+                  placeholder={t('signUpPage.placeholders.createPassword')}
                   maxLength={128}
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
@@ -418,28 +418,28 @@ const SignUpPage = () => {
               )}
               {/* Password Requirements */}
               <div className="mt-2 text-xs text-muted-foreground">
-                <p>{t('auth.passwordRequirements.title')}</p>
+                <p>{t('signUpPage.passwordRequirements.title')}</p>
                 <ul className="list-disc list-inside mt-1 space-y-1">
                   <li
                     className={
                       formData.password.length >= 8 ? "text-green-600" : ""
                     }
                   >
-                    {t('auth.passwordRequirements.minLength')}
+                    {t('signUpPage.passwordRequirements.minLength')}
                   </li>
                   <li
                     className={
                       /[a-z]/.test(formData.password) ? "text-green-600" : ""
                     }
                   >
-                    {t('auth.passwordRequirements.lowercase')}
+                    {t('signUpPage.passwordRequirements.lowercase')}
                   </li>
                   <li
                     className={
                       /[A-Z]/.test(formData.password) ? "text-green-600" : ""
                     }
                   >
-                    {t('auth.passwordRequirements.uppercase')}
+                    {t('signUpPage.passwordRequirements.uppercase')}
                   </li>
                   <li
                     className={
@@ -448,14 +448,14 @@ const SignUpPage = () => {
                         : ""
                     }
                   >
-                    {t('auth.passwordRequirements.special')}
+                    {t('signUpPage.passwordRequirements.special')}
                   </li>
                   <li
                     className={
                       /\d/.test(formData.password) ? "text-green-600" : ""
                     }
                   >
-                    {t('auth.passwordRequirements.number')}
+                    {t('signUpPage.passwordRequirements.number')}
                   </li>
                 </ul>
               </div>
@@ -467,7 +467,7 @@ const SignUpPage = () => {
                 htmlFor="confirmPassword"
                 className="block text-sm font-medium text-foreground mb-2"
               >
-                {t('auth.fields.confirmPassword')}
+                {t('signUpPage.fields.confirmPassword')}
               </label>
               <div className="relative">
                 <Lock
@@ -488,7 +488,7 @@ const SignUpPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={getInputClassName("confirmPassword")}
-                  placeholder={t('auth.placeholders.confirmPassword')}
+                  placeholder={t('signUpPage.placeholders.confirmPassword')}
                   maxLength={128}
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
@@ -530,16 +530,16 @@ const SignUpPage = () => {
               className="mt-1 h-4 w-4 text-primary focus:ring-primary border-border rounded"
             />
             <label htmlFor="terms" className="text-sm text-muted-foreground">
-              {t('auth.agreeToTerms')}{" "}
+              {t('signUpPage.agreeTo')}{" "}
               <Link to="/terms" className="text-primary hover:text-primary/80">
-                {t('auth.termsOfService')}
+                {t('signUpPage.termsOfService')}
               </Link>{" "}
-              {t('auth.and')}{" "}
+              {t('signUpPage.and')}{" "}
               <Link
                 to="/privacy"
                 className="text-primary hover:text-primary/80"
               >
-                {t('auth.privacyPolicy')}
+                {t('signUpPage.privacyPolicy')}
               </Link>
             </label>
           </div>
@@ -555,11 +555,11 @@ const SignUpPage = () => {
             {loading ? (
               <div className="flex items-center justify-center">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                {t('auth.signup.creatingAccount')}
+                {t('signUpPage.signup.creatingMyAccount')}
               </div>
             ) : (
               <div className="flex items-center justify-center">
-                {t('auth.signup.createAccount')}
+                {t('signUpPage.createAccount')}
                 <ArrowRight size={20} className="ml-2" />
               </div>
             )}
@@ -572,7 +572,7 @@ const SignUpPage = () => {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="px-2 bg-background text-muted-foreground">
-                {t('auth.orContinueWith')}
+                {t('signUpPage.orContinueWith')}
               </span>
             </div>
           </div>
@@ -603,7 +603,7 @@ const SignUpPage = () => {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              {t('auth.google')}
+              {t('signUpPage.google')}
             </motion.button>
 
             <motion.button
@@ -619,23 +619,27 @@ const SignUpPage = () => {
               >
                 <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
               </svg>
-              {t('auth.twitter')}
+              {t('signUpPage.twitter')}
             </motion.button>
           </div>
 
           {/* Sign In Link */}
           <div className="text-center">
             <p className="text-muted-foreground">
-              {t('auth.alreadyHaveAccount')}{" "}
+              {t('signUpPage.alreadyHaveAccount')}{" "}
               <Link
                 to="/login"
                 className="text-primary hover:text-primary/80 font-medium transition-colors duration-300"
               >
-                {t('auth.signIn')}
+                {t('signUpPage.signIn')}
               </Link>
             </p>
           </div>
         </motion.form>
+
+
+
+
       </motion.div>
     </div>
   );

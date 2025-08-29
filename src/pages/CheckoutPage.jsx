@@ -49,7 +49,9 @@ const CheckoutPage = () => {
   }, [showNewSessionModal]);
   const navigate = useNavigate();
   const { user } = useUserStore();
-  const { cart, total, subtotal, coupon, isCouponApplied, clearCart } =
+   //===================coupon code==>
+    // coupon, isCouponApplied,
+  const { cart, total, subtotal, clearCart } =
     useCartStore();
   const { createPaymentIntent, loading } = usePaymentStore();
 
@@ -148,7 +150,7 @@ const CheckoutPage = () => {
       try {
         const result = await createPaymentIntent(
           cart,
-          isCouponApplied ? coupon : null
+          // isCouponApplied ? coupon : null
         );
         if (result.success) {
           setClientSecret(result.data.clientSecret);
@@ -163,7 +165,9 @@ const CheckoutPage = () => {
     };
 
     initializePayment();
-  }, [cart, navigate, createPaymentIntent, coupon, isCouponApplied]);
+  }, [cart, navigate, createPaymentIntent,]);
+   //===================coupon code==>
+    // coupon, isCouponApplied
 
   const handlePaymentSuccess = async () => {
     // Wide cleanup: clear payment data from all storages
@@ -207,7 +211,7 @@ const CheckoutPage = () => {
       try {
         const result = await createPaymentIntent(
           cart,
-          isCouponApplied ? coupon : null
+          // isCouponApplied ? coupon : null
         );
         if (result.success) {
           setClientSecret(result.data.clientSecret);
@@ -228,7 +232,7 @@ const CheckoutPage = () => {
       try {
         const result = await createPaymentIntent(
           cart,
-          isCouponApplied ? coupon : null
+          // isCouponApplied ? coupon : null
         );
         if (result.success) {
           setClientSecret(result.data.clientSecret);
@@ -636,7 +640,7 @@ const CheckoutPage = () => {
                   <span>{t('checkout.subtotal')}</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
-                {isCouponApplied && coupon && (
+                {/* {isCouponApplied && coupon && (
                   <div className="flex justify-between text-green-600">
                     <span>{t('checkout.discount')} ({coupon.code})</span>
                     <span>
@@ -646,7 +650,7 @@ const CheckoutPage = () => {
                       )}
                     </span>
                   </div>
-                )}
+                )} */}
                 <div className="flex justify-between text-gray-600">
                   <span>{t('checkout.shipping')}</span>
                   <span className="text-green-600">{t('checkout.free')}</span>

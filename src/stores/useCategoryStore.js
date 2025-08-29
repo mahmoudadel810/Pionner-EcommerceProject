@@ -13,6 +13,8 @@ export const useCategoryStore = create((set, get) => ({
 
   // Create a new category
   createCategory: async (categoryData) => {
+    console.log(categoryData);
+    
     set({ loading: true, error: null });
     try {
       const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.CREATE), categoryData, {
@@ -20,6 +22,8 @@ export const useCategoryStore = create((set, get) => ({
           'Content-Type': 'multipart/form-data',
         },
       });
+      // console.log(response);
+      
       
       if (response.data && response.data.success) {
         set(prevState => ({
@@ -37,6 +41,8 @@ export const useCategoryStore = create((set, get) => ({
         error.message ||
         getTranslation('category.errors.createFailed');
       toast.error(errorMessage);
+      console.log(error);
+      
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
     }

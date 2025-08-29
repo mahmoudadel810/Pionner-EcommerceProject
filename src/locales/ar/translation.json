@@ -82,6 +82,16 @@
     "privacyPolicy": "سياسة الخصوصية",
     "twitter": "تويتر",
     "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "errors": {
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "البريد الإلكتروني غير صحيح",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordUppercase": "كلمة المرور يجب أن تحتوي على حرف كبير",
+      "passwordLowercase": "كلمة المرور يجب أن تحتوي على حرف صغير",
+      "passwordNumber": "كلمة المرور يجب أن تحتوي على رقم",
+      "passwordSpecial": "كلمة المرور يجب أن تحتوي على رمز خاص",
+      "passwordTooShort": "كلمة المرور قصيرة جداً"
+    },
     "forgotPassword": {
       "title": "نسيت كلمة المرور",
       "description": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور",

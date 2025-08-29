@@ -8,6 +8,7 @@ import {
 import { motion } from "framer-motion";
 import { CreditCard, Lock, AlertCircle, CheckCircle } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { getTranslation } from "../utils/i18nUtils.js";
 
 const StripePaymentForm = ({ onSuccess, onError, returnUrl }) => {
   const stripe = useStripe();
@@ -38,8 +39,8 @@ const StripePaymentForm = ({ onSuccess, onError, returnUrl }) => {
         toast.error(error.message);
         onError && onError(error);
       } else {
-        setMessage("An unexpected error occurred.");
-        toast.error("An unexpected error occurred.");
+        setMessage(getTranslation('payment.errors.unexpected', 'An unexpected error occurred.'));
+        toast.error(getTranslation('payment.errors.unexpected', 'An unexpected error occurred.'));
         onError && onError(error);
       }
     } else {

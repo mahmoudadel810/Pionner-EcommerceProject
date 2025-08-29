@@ -125,7 +125,7 @@ const ProfilePage = () => {
       const response = await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.UPDATE_PROFILE), updateData);
 
       if (response.data && response.data.success) {
-        toast.success(response.data.message || t('profile.profileUpdatedSuccessfully'));
+        toast.success(t('profile.profileUpdatedSuccessfully'));
         setIsEditing(false);
         
         // Update the avatar preview if image was uploaded
@@ -157,10 +157,10 @@ const ProfilePage = () => {
           }
         }
       } else {
-        toast.error(response.data?.message || t('profile.failedToUpdateProfile'));
+        toast.error(t('profile.failedToUpdateProfile'));
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || t('profile.failedToUpdateProfile'));
+      toast.error(t('profile.failedToUpdateProfile'));
     } finally {
       setLoading(false);
     }
@@ -427,10 +427,10 @@ const ProfilePage = () => {
                           // Update order status in UI
                           setOrders(prev => prev.map(o => o._id === order._id ? { ...o, status: "cancelled" } : o));
                         } else {
-                          toast.error(response.data?.message || t('profile.failedToCancelOrder'));
+                          toast.error(t('profile.failedToCancelOrder'));
                         }
                       } catch (error) {
-                        toast.error(error.response?.data?.message || t('profile.failedToCancelOrder'));
+                        toast.error(t('profile.failedToCancelOrder'));
                       }
                     };
                     return (

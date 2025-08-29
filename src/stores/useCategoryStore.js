@@ -2,6 +2,7 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
+import { getTranslation } from "../utils/i18nUtils.js";
 
 export const useCategoryStore = create((set, get) => ({
   categories: [],
@@ -34,7 +35,7 @@ export const useCategoryStore = create((set, get) => ({
         error.response?.data?.message ||
         error.response?.data?.error ||
         error.message ||
-        "Failed to create category";
+        getTranslation('category.errors.createFailed');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
@@ -74,7 +75,7 @@ export const useCategoryStore = create((set, get) => ({
       const errorMessage =
         error.response?.data?.message || 
         error.response?.data?.error || 
-        "Failed to fetch categories";
+        getTranslation('category.errors.fetchFailed');
       set({ error: errorMessage, loading: false, categories: [] });
       return { success: false, message: errorMessage };
     }
@@ -94,7 +95,7 @@ export const useCategoryStore = create((set, get) => ({
       const errorMessage =
         error.response?.data?.message || 
         error.response?.data?.error || 
-        "Failed to fetch featured categories";
+        getTranslation('category.errors.fetchFeaturedFailed');
       set({ error: errorMessage, loading: false });
       return { success: false, message: errorMessage };
     }
@@ -130,7 +131,7 @@ export const useCategoryStore = create((set, get) => ({
         error.response?.data?.message ||
         error.response?.data?.error ||
         error.message ||
-        "Failed to update category";
+        getTranslation('category.errors.updateFailed');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
@@ -157,7 +158,7 @@ export const useCategoryStore = create((set, get) => ({
         error.response?.data?.message ||
         error.response?.data?.error ||
         error.message ||
-        "Failed to delete category";
+        getTranslation('category.errors.deleteFailed');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
@@ -186,7 +187,7 @@ export const useCategoryStore = create((set, get) => ({
         error.response?.data?.message ||
         error.response?.data?.error ||
         error.message ||
-        "Failed to update category status";
+        getTranslation('category.errors.toggleStatusFailed');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
@@ -210,7 +211,7 @@ export const useCategoryStore = create((set, get) => ({
         error.response?.data?.message ||
         error.response?.data?.error ||
         error.message ||
-        "Failed to fetch category";
+        getTranslation('category.errors.fetchByIdFailed');
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
     }

@@ -24,6 +24,56 @@
     "phone": "+1 (555) 123-4567"
     
   },
+  "payment": {
+    "success": "تم الدفع بنجاح! تم تقديم طلبك.",
+    "errors": {
+      "noCheckoutUrl": "رابط الدفع غير متوفر",
+      "unexpected": "حدث خطأ غير متوقع.",
+      "createPaymentIntentFailed": "فشل في إنشاء نية الدفع",
+      "createCheckoutSessionFailed": "فشل في إنشاء جلسة الدفع",
+      "processPaymentSuccessFailed": "فشل في معالجة نجاح الدفع"
+    }
+  },
+  "cart": {
+    "couponApplied": "تم تطبيق الكوبون بنجاح",
+    "couponRemoved": "تم إزالة الكوبون",
+    "cleared": "تم مسح السلة بنجاح",
+    "productAdded": "تم إضافة المنتج إلى السلة",
+    "productRemoved": "تم إزالة المنتج من السلة",
+    "errors": {
+      "fetchCouponFailed": "فشل في جلب الكوبون",
+      "applyCouponFailed": "فشل في تطبيق الكوبون",
+      "fetchCartFailed": "فشل في جلب عناصر السلة",
+      "clearCartFailed": "فشل في مسح السلة",
+      "updateCartFailed": "فشل في تحديث السلة"
+    }
+  },
+  "wishlist": {
+    "productAdded": "تم إضافة المنتج إلى قائمة الأمنيات",
+    "productRemoved": "تم إزالة المنتج من قائمة الأمنيات",
+    "cleared": "تم مسح قائمة الأمنيات بنجاح",
+    "errors": {
+      "fetchFailed": "فشل في جلب قائمة الأمنيات",
+      "addFailed": "فشل في إضافة المنتج إلى قائمة الأمنيات",
+      "removeFailed": "فشل في إزالة المنتج من قائمة الأمنيات",
+      "clearFailed": "فشل في مسح قائمة الأمنيات"
+    }
+  },
+  "product": {
+    "created": "تم إنشاء المنتج بنجاح",
+    "deleted": "تم حذف المنتج بنجاح",
+    "updated": "تم تحديث المنتج بنجاح",
+    "errors": {
+      "createFailed": "فشل في إنشاء المنتج",
+      "fetchFailed": "فشل في جلب المنتجات",
+      "deleteFailed": "فشل في حذف المنتج",
+      "updateFailed": "فشل في تحديث المنتج",
+      "fetchFeaturedFailed": "فشل في جلب المنتجات المميزة"
+    }
+  },
+  "checkout": {
+    "error": "حدث خطأ أثناء عملية الدفع"
+  },
   "common": {
     "loading": "جاري التحميل...",
     "pleaseLoginCart": "يرجى تسجيل الدخول لإدارة السلة",
@@ -58,6 +108,7 @@
       "number": "رقم واحد"
     },
     "orContinueWith": "أو تابع باستخدام",
+    "loginSuccess": "تم تسجيل الدخول بنجاح!",
     "google": "جوجل",
     "apple": "آبل",
     "noAccount": "ليس لديك حساب؟",
@@ -90,7 +141,18 @@
       "passwordLowercase": "كلمة المرور يجب أن تحتوي على حرف صغير",
       "passwordNumber": "كلمة المرور يجب أن تحتوي على رقم",
       "passwordSpecial": "كلمة المرور يجب أن تحتوي على رمز خاص",
-      "passwordTooShort": "كلمة المرور قصيرة جداً"
+      "passwordTooShort": "كلمة المرور قصيرة جداً",
+      "fixFormErrors": "يرجى إصلاح الأخطاء في النموذج",
+      "accountNotFound": "الحساب غير موجود. يرجى التحقق من بريدك الإلكتروني أو إنشاء حساب جديد",
+      "incorrectPassword": "كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى",
+      "emailNotVerified": "يرجى تأكيد عنوان بريدك الإلكتروني أولاً",
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التحقق من بياناتك",
+      "tooManyAttempts": "محاولات تسجيل دخول كثيرة جداً. يرجى المحاولة لاحقاً",
+      "serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً",
+      "loginFailed": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى",
+      "signupFailed": "حدث خطأ أثناء إنشاء الحساب",
+      "resetEmailFailed": "حدث خطأ أثناء إرسال بريد إعادة التعيين",
+      "resetPasswordFailed": "حدث خطأ أثناء إعادة تعيين كلمة المرور"
     },
     "forgotPassword": {
       "title": "نسيت كلمة المرور",
@@ -100,9 +162,15 @@
       "sendResetLink": "إرسال رابط إعادة التعيين",
       "rememberPassword": "تذكرت كلمة المرور؟",
       "checkEmail": "تحقق من بريدك الإلكتروني",
-      "emailSent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى {{email}}",
+      "emailSent": "تم إرسال بريد إعادة تعيين كلمة المرور بنجاح!",
       "resetPassword": "إعادة تعيين كلمة المرور",
       "tryAnotherEmail": "جرب بريد إلكتروني آخر"
+    },
+    "resetPassword": {
+      "success": "تم إعادة تعيين كلمة المرور بنجاح!"
+    },
+    "logout": {
+      "success": "تم تسجيل الخروج بنجاح"
     },
     "welcome_back": "مرحباً بعودتك",
     "sign_in_account": "سجل دخولك إلى حسابك للمتابعة",
@@ -295,7 +363,11 @@
     },
     "login": {
       "subtitle": "مرحباً بعودتك! سجل دخولك للمتابعة",
-      "signingIn": "جاري تسجيل الدخول..."
+      "signingIn": "جاري تسجيل الدخول...",
+      "success": "تم تسجيل الدخول بنجاح!"
+    },
+    "signup": {
+      "success": "تم إنشاء الحساب بنجاح! يرجى التحقق من بريدك الإلكتروني لتأكيد حسابك."
     },
     "fields": {
       "email": "البريد الإلكتروني",
@@ -336,7 +408,7 @@
       "title":"سجل حسابك",
       "subtitle":"معلومات المستخدم"
     },
-    "forgotPassword": {
+    "forgotPasswordSection": {
       "title": "نسيت كلمة المرور",
       "description": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور",
       "emailPlaceholder": "أدخل بريدك الإلكتروني",
@@ -431,7 +503,16 @@
     "next": "التالي",
     "showing_count_in": "عرض {{count}} منتج{{suffix}} في {{category}}",
     "plural_suffix":"",
-    "explore": "استكشف {{name}}"
+    "explore": "استكشف {{name}}",
+    "errors": {
+      "createFailed": "فشل في إنشاء التصنيف",
+      "fetchFailed": "فشل في جلب التصنيفات",
+      "fetchFeaturedFailed": "فشل في جلب التصنيفات المميزة",
+      "updateFailed": "فشل في تحديث التصنيف",
+      "deleteFailed": "فشل في حذف التصنيف",
+      "toggleStatusFailed": "فشل في تحديث حالة التصنيف",
+      "fetchByIdFailed": "فشل في جلب التصنيف"
+    }
   },
   "search": {
     "results_title": "نتائج البحث",
@@ -682,6 +763,8 @@
     "categories": {
       "management": "إدارة التصنيفات",
       "add_category": "إضافة تصنيف",
+      "add_new_category": "إضافة تصنيف جديد",
+      "edit_category": "تعديل التصنيف",
       "search_placeholder": "البحث في التصنيفات...",
       "featured": "مميز",
       "regular": "عادي",
@@ -690,8 +773,7 @@
       "edit": "تعديل التصنيف",
       "delete": "حذف التصنيف",
       "slug": " حلزونة",
-      "edit_category": " تعديل المنتجات",
-      "delete_category": "حزف المنتجات",
+      "delete_category": "حذف التصنيف",
       "table":{
         "category":"التصنيف",
         "products":"المنتجات",
@@ -704,15 +786,14 @@
         "name":"الاسم",
         "description":"الوصف",
         "image":"الصورة",
-        "image_update_hint":"تحميل وصف للصورة",
-        "order":"الطلب  ",
-        "order_placeholder":"الطلب  ",
-        "featured_category":"الانواع المميزة  ",
-        "saving":" الحفظ  ",
-        "update":" تحميل  ",
-        "create":" تكوين  ",
-        "cancel":" إلغاء  "
-
+        "image_update_hint":"تحميل صورة جديدة لتحديث الحالية",
+        "order":"الترتيب",
+        "order_placeholder":"ترتيب العرض (اختياري)",
+        "featured_category":"تصنيف مميز",
+        "saving":"جاري الحفظ...",
+        "update":"تحديث",
+        "create":"إنشاء",
+        "cancel":"إلغاء"
       }
     },
     "orders": {

@@ -2,6 +2,7 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
+import { getTranslation } from "../utils/i18nUtils.js";
 
 export const useProductStore = create(set => ({
   products: [],
@@ -23,16 +24,13 @@ export const useProductStore = create(set => ({
           products: [...prevState.products, response.data],
           loading: false,
         }));
-        toast.success("Product created successfully");
+        toast.success(getTranslation('product.created', 'Product created successfully'));
         return { success: true, data: response.data };
       } else {
         throw new Error("Failed to create product");
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error ||
-        error.message ||
-        "Failed to create product";
+      const errorMessage = getTranslation('product.errors.createFailed', 'Failed to create product');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
@@ -59,8 +57,7 @@ export const useProductStore = create(set => ({
         return { success: true, data: [] };
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Failed to fetch products";
+      const errorMessage = getTranslation('product.errors.fetchFailed', 'Failed to fetch products');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false, products: [] });
       return { success: false, message: errorMessage };
@@ -79,8 +76,7 @@ export const useProductStore = create(set => ({
         return { success: true, data: [] };
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Failed to fetch products";
+      const errorMessage = getTranslation('product.errors.fetchFailed', 'Failed to fetch products');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false, products: [] });
       return { success: false, message: errorMessage };
@@ -98,14 +94,13 @@ export const useProductStore = create(set => ({
           ),
           loading: false,
         }));
-        toast.success("Product deleted successfully");
+        toast.success(getTranslation('product.deleted', 'Product deleted successfully'));
         return { success: true };
       } else {
         throw new Error("Failed to delete product");
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Failed to delete product";
+      const errorMessage = getTranslation('product.errors.deleteFailed', 'Failed to delete product');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
@@ -125,14 +120,13 @@ export const useProductStore = create(set => ({
           ),
           loading: false,
         }));
-        toast.success("Product updated successfully");
+        toast.success(getTranslation('product.updated', 'Product updated successfully'));
         return { success: true, data: response.data };
       } else {
         throw new Error("Failed to update product");
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Failed to update product";
+      const errorMessage = getTranslation('product.errors.updateFailed', 'Failed to update product');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
@@ -157,8 +151,7 @@ export const useProductStore = create(set => ({
         return { success: true, data: [] };
       }
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Failed to fetch featured products";
+      const errorMessage = getTranslation('product.errors.fetchFeaturedFailed', 'Failed to fetch featured products');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false, products: [] });
       return { success: false, message: errorMessage };

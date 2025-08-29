@@ -43,6 +43,7 @@ import { useCategoryStore } from "../stores/useCategoryStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
+import { categories } from "@/data/mockData";
 
 const AdminDashboard = () => {
   const { t } = useTranslation();
@@ -56,12 +57,14 @@ const AdminDashboard = () => {
     loading: categoryLoading 
   } = useCategoryStore();
   
+// console.log(categories,storeCategories );
 
   const [isLoading, setIsLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
-  const [coupons, setCoupons] = useState([]);
+   //===================coupon code==>
+  // const [coupons, setCoupons] = useState([]);
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalOrders: 0,
@@ -77,8 +80,9 @@ const AdminDashboard = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [showOrderDetails, setShowOrderDetails] = useState(null);
   const [showUserDetails, setShowUserDetails] = useState(null);
-  const [showCouponForm, setShowCouponForm] = useState(false);
-  const [editingCoupon, setEditingCoupon] = useState(null);
+   //===================coupon code==>
+  // const [showCouponForm, setShowCouponForm] = useState(false);
+  // const [editingCoupon, setEditingCoupon] = useState(null);
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [filters, setFilters] = useState({
@@ -102,15 +106,16 @@ const AdminDashboard = () => {
     images: [], // Changed to array for multiple images
   });
 
-  const [couponForm, setCouponForm] = useState({
-    code: "",
-    description: "",
-    discountType: "percentage",
-    discountValue: "",
-    minimumAmount: "",
-    maximumUsage: "",
-    expiryDate: "",
-  });
+  //===================coupon code==>
+  // const [couponForm, setCouponForm] = useState({
+  //   code: "",
+  //   description: "",
+  //   discountType: "percentage",
+  //   discountValue: "",
+  //   minimumAmount: "",
+  //   maximumUsage: "",
+  //   expiryDate: "",
+  // });
 
   const [categoryForm, setCategoryForm] = useState({
     name: "",
@@ -122,13 +127,17 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchData();
+    
+
+    console.log(fetchAllCategories());
+    
   }, []);
 
   // Debug: Log categories when they change
   useEffect(() => {
     console.log("📋 Store categories updated:", storeCategories);
   }, [storeCategories]);
-  //  console.log("Using store categories:", storeCategories);
+  //  console.log("Using store categories:", storeCategories,categories);
 
   const fetchData = async () => {
     try {
@@ -139,7 +148,7 @@ const AdminDashboard = () => {
         fetchOrders(),
         fetchUsers(),
         fetchCategories(),
-        fetchCoupons(),
+        // fetchCoupons(),
         fetchStats(),
       ]);
     } catch (error) {
@@ -183,21 +192,26 @@ const AdminDashboard = () => {
     try {
       console.log("🔄 Fetching categories...");
       const result = await fetchAllCategories();
+      // storeCategories= result
+      // console.log(result);
+      
       console.log("✅ Categories fetched:", result);
     } catch (error) {
       console.error("❌ Failed to fetch categories:", error);
     }
   };
-
-  const fetchCoupons = async () => {
-    try {
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.GET_ALL));
-      setCoupons(Array.isArray(response.data.data) ? response.data.data : []);
-    } catch (error) {
-      console.error("Failed to fetch coupons:", error);
-      setCoupons([]);
-    }
-  };
+ //===================coupon code==>
+  // const fetchCoupons = async () => {
+  //   try {
+  //     const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.GET_ALL));
+  //     setCoupons(Array.isArray(response.data.data) ? response.data.data : []);
+  //     console.log(response);
+      
+  //   } catch (error) {
+  //     console.error("Failed to fetch coupons:", error);
+  //     setCoupons([]);
+  //   }
+  // };
 
   const fetchStats = async () => {
     try {
@@ -254,18 +268,18 @@ const AdminDashboard = () => {
       toast.error(t('admin.errors.failedToUpdateUserStatus'));
     }
   };
-
-  const handleDeleteCoupon = async (couponId) => {
-    if (window.confirm(t('admin.confirmations.deleteCoupon'))) {
-      try {
-        await axios.delete(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.DELETE.replace(":id", couponId)));
-        toast.success(t('admin.success.couponDeleted'));
-        fetchCoupons(); // Refresh coupons
-      } catch (error) {
-        toast.error(t('admin.errors.failedToDeleteCoupon'));
-      }
-    }
-  };
+ //===================coupon code==>
+  // const handleDeleteCoupon = async (couponId) => {
+  //   if (window.confirm(t('admin.confirmations.deleteCoupon'))) {
+  //     try {
+  //       await axios.delete(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.DELETE.replace(":id", couponId)));
+  //       toast.success(t('admin.success.couponDeleted'));
+  //       fetchCoupons(); // Refresh coupons
+  //     } catch (error) {
+  //       toast.error(t('admin.errors.failedToDeleteCoupon'));
+  //     }
+  //   }
+  // };
 
   const handleProductSubmit = async (e) => {
     e.preventDefault();
@@ -317,38 +331,48 @@ const AdminDashboard = () => {
       toast.error(t('admin.errors.failedToSaveProduct'));
     }
   };
+ //===================coupon code==>
+  // const handleCouponSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     if (editingCoupon) {
+  //       await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.UPDATE.replace(":id", editingCoupon._id)), couponForm);
+  //       toast.success(t('admin.success.couponUpdated'));
+  //     } else {
+  //       console.log(couponForm);
+  //       console.log(await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.CREATE), couponForm));
+  //       await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.CREATE), couponForm);
+        
+        
+  //       toast.success(t('admin.success.couponCreated'));
+  //     }
 
-  const handleCouponSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (editingCoupon) {
-        await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.UPDATE.replace(":id", editingCoupon._id)), couponForm);
-        toast.success(t('admin.success.couponUpdated'));
-      } else {
-        await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.CREATE), couponForm);
-        toast.success(t('admin.success.couponCreated'));
-      }
-
-      setShowCouponForm(false);
-      setEditingCoupon(null);
-      setCouponForm({
-        code: "",
-        description: "",
-        discountType: "percentage",
-        discountValue: "",
-        minimumAmount: "",
-        maximumUsage: "",
-        expiryDate: "",
-      });
-      fetchCoupons();
-    } catch (error) {
-      toast.error(t('admin.errors.failedToSaveCoupon'));
-    }
-  };
+  //     setShowCouponForm(false);
+  //     setEditingCoupon(null);
+  //     setCouponForm({
+  //       code: "",
+  //       description: "",
+  //       discountType: "percentage",
+  //       discountValue: "",
+  //       minimumAmount: "",
+  //       maximumUsage: "",
+  //       expiryDate: "",
+  //       valiedEmail: "",
+  //     });
+  //     fetchCoupons();
+  //   } catch (error) {
+  //     toast.error(t('admin.errors.failedToSaveCoupon'));
+  //     toast.error(error.response.data.error);
+  //     console.log(error);
+      
+  //   }
+  // };
 
   const openProductForm = (product = null) => {
     // Ensure categories are loaded when opening the product form
     if (!Array.isArray(storeCategories) || storeCategories.length === 0) {
+      console.log(storeCategories);
+      
       fetchAllCategories();
     }
     
@@ -375,33 +399,35 @@ const AdminDashboard = () => {
     }
     setShowCreateForm(true);
   };
-
-  const openCouponForm = (coupon = null) => {
-    if (coupon) {
-      setEditingCoupon(coupon);
-      setCouponForm({
-        code: coupon.code || "",
-        description: coupon.description || "",
-        discountType: coupon.discountType || "percentage",
-        discountValue: coupon.discountValue || "",
-        minimumAmount: coupon.minimumAmount || "",
-        maximumUsage: coupon.maxUsage || "",
-        expiryDate: coupon.expiryDate ? new Date(coupon.expiryDate).toISOString().split('T')[0] : "",
-      });
-    } else {
-      setEditingCoupon(null);
-      setCouponForm({
-        code: "",
-        description: "",
-        discountType: "percentage",
-        discountValue: "",
-        minimumAmount: "",
-        maximumUsage: "",
-        expiryDate: "",
-      });
-    }
-    setShowCouponForm(true);
-  };
+ //===================coupon code==>
+  // const openCouponForm = (coupon = null) => {
+  //   if (coupon) {
+  //     setEditingCoupon(coupon);
+  //     setCouponForm({
+  //       code: coupon.code || "",
+  //       description: coupon.description || "",
+  //       discountType: coupon.discountType || "percentage",
+  //       discountValue: coupon.discountValue || "",
+  //       minimumAmount: coupon.minimumAmount || "",
+  //       maximumUsage: coupon.maxUsage || "",
+  //       expiryDate: coupon.expiryDate ? new Date(coupon.expiryDate).toISOString().split('T')[0] : "",
+  //       valiedEmail: coupon.valiedEmail || "",
+  //     });
+  //   } else {
+  //     setEditingCoupon(null);
+  //     setCouponForm({
+  //       code: "",
+  //       description: "",
+  //       discountType: "percentage",
+  //       discountValue: "",
+  //       minimumAmount: "",
+  //       maximumUsage: "",
+  //       expiryDate: "",
+  //       valiedEmail:""
+  //     });
+  //   }
+  //   setShowCouponForm(true);
+  // };
 
   const handleCategorySubmit = async (e) => {
     e.preventDefault();
@@ -469,6 +495,8 @@ const AdminDashboard = () => {
         order: "",
       });
     }
+    console.log(categoryForm);
+    
     setShowCategoryForm(true);
   };
 
@@ -505,6 +533,12 @@ const AdminDashboard = () => {
 
   // Ensure storeCategories is always an array
   const categoriesArray = Array.isArray(storeCategories) ? storeCategories : [];
+  // 
+  console.log(storeCategories,"categories");
+  // categoriesArray.map(cat=>{
+  //   console.log(cat.name);
+    
+  // })
   
   const filteredCategories = categoriesArray.filter(
     (category) =>
@@ -518,7 +552,7 @@ const AdminDashboard = () => {
     { id: "categories", name: t("admin.tabs.categories"), icon: Tag },
     { id: "orders", name: t("admin.tabs.orders"), icon: ShoppingCart },
     { id: "users", name: t("admin.tabs.users"), icon: Users },
-    { id: "coupons", name: t("admin.tabs.coupons"), icon: Tag },
+    // { id: "coupons", name: t("admin.tabs.coupons"), icon: Tag },
     { id: "analytics", name: t("admin.tabs.analytics"), icon: TrendingUp },
   ];
 
@@ -982,14 +1016,14 @@ const AdminDashboard = () => {
                                 className="w-12 h-12 rounded-lg object-cover"
                               />
                             )}
-                            <div>
+                            {/* <div>
                               <p className="font-medium text-foreground">
                                 {category.name}
                               </p>
                               <p className="text-sm text-muted-foreground">
                                 {t("admin.categories.slug")}: {category.slug}
                               </p>
-                            </div>
+                            </div> */}
                           </div>
                         </td>
                         <td className="py-3 px-4 text-foreground">
@@ -1291,7 +1325,7 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {activeTab === "coupons" && (
+          {/* {activeTab === "coupons" && (
             <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
@@ -1369,7 +1403,7 @@ const AdminDashboard = () => {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
 
           {activeTab === "analytics" && (
             <div className="space-y-8">
@@ -1488,6 +1522,8 @@ const AdminDashboard = () => {
                     {categoriesArray
                       .sort((a, b) => (a.order || 0) - (b.order || 0) || a.name.localeCompare(b.name))
                       .map((cat) => (
+                        
+                        
                         <option key={cat._id} value={cat.name}>
                           {cat.name}
                         </option>
@@ -1563,7 +1599,7 @@ const AdminDashboard = () => {
         )}
 
         {/* Coupon Form Modal */}
-        {showCouponForm && (
+        {/* {showCouponForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl font-semibold mb-4">
@@ -1576,6 +1612,16 @@ const AdminDashboard = () => {
                     type="text"
                     value={couponForm.code}
                     onChange={(e) => setCouponForm({ ...couponForm, code: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.valiedEmail")}</label>
+                  <input
+                    type="text"
+                    value={couponForm.valiedEmail}
+                    onChange={(e) => setCouponForm({ ...couponForm, valiedEmail: e.target.value })}
                     className="w-full p-2 border rounded"
                     required
                   />
@@ -1664,7 +1710,7 @@ const AdminDashboard = () => {
               </form>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Category Form Modal */}
         {showCategoryForm && (

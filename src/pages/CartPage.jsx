@@ -26,18 +26,19 @@ const CartPage = () => {
     cart,
     removeFromCart,
     updateQuantity,
-    applyCoupon,
-    removeCoupon,
-    coupon,
+    // applyCoupon,
+    // removeCoupon,
+    // coupon,
     total,
     subtotal,
-    isCouponApplied,
+    // isCouponApplied,
     clearCart,
   } = useCartStore();
 
   const { addToWishlist, wishlist } = useWishlistStore();
-  const [couponCode, setCouponCode] = useState("");
-  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+   //===================coupon code==>
+  // const [couponCode, setCouponCode] = useState("");
+  // const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const navigate = useNavigate();
 
   // Calculate total quantity in cart for display
@@ -94,23 +95,23 @@ const CartPage = () => {
       toast.error(t('cart.failedToMoveToWishlist'));
     }
   };
+ //===================coupon code==>
+  // const handleApplyCoupon = async () => {
+  //   if (!couponCode.trim()) {
+  //     toast.error(t('cart.enterCouponCode'));
+  //     return;
+  //   }
 
-  const handleApplyCoupon = async () => {
-    if (!couponCode.trim()) {
-      toast.error(t('cart.enterCouponCode'));
-      return;
-    }
-
-    setIsApplyingCoupon(true);
-    try {
-      await applyCoupon(couponCode);
-      setCouponCode("");
-    } catch (error) {
-      // Error is handled in the store
-    } finally {
-      setIsApplyingCoupon(false);
-    }
-  };
+  //   setIsApplyingCoupon(true);
+  //   try {
+  //     await applyCoupon(couponCode);
+  //     setCouponCode("");
+  //   } catch (error) {
+  //     // Error is handled in the store
+  //   } finally {
+  //     setIsApplyingCoupon(false);
+  //   }
+  // };
 
   const handleCheckout = () => {
     if (cart.length === 0) {
@@ -298,7 +299,7 @@ const CartPage = () => {
               <h2 className="text-xl font-bold mb-6">{t('cart.orderSummary')}</h2>
 
               {/* Coupon Section */}
-              <div className="mb-6">
+              {/* <div className="mb-6">
                 <h3 className="font-semibold mb-3">{t('cart.haveCoupon')}</h3>
                 <div className="flex space-x-2">
                   <input
@@ -341,7 +342,7 @@ const CartPage = () => {
                     </p>
                   </motion.div>
                 )}
-              </div>
+              </div> */}
 
               {/* Price Breakdown */}
               <div className="space-y-3 mb-6">
@@ -349,7 +350,7 @@ const CartPage = () => {
                   <span>{t('cart.subtotal')}</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
-                {coupon && isCouponApplied && (
+                {/* {coupon && isCouponApplied && (
                   <div className="flex justify-between text-green-600">
                     <span>{t('cart.discount')}</span>
                     <span>
@@ -359,7 +360,7 @@ const CartPage = () => {
                       )}
                     </span>
                   </div>
-                )}
+                )} */}
                 <div className="flex justify-between">
                   <span>{t('cart.shipping')}</span>
                   <span className="text-green-600">{t('cart.free')}</span>

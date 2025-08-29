@@ -168,6 +168,8 @@ const HomePage = () => {
         setFeaturedProducts(data.data);
       }
     } catch (error) {
+      console.log(error ,"error fetch products");
+      
     }
   }, []);
 

@@ -1,8 +1,8 @@
 
 
 // All API requests go to the backend directly, no Vite proxy or rewrites.
-const BASE_URL = 'https://pionner-v2.vercel.app/api/v2';
-// const BASE_URL = 'http://localhost:8000/api/v2';
+// const BASE_URL = 'https://pionner-v2.vercel.app/api/v2';
+const BASE_URL = 'http://localhost:8000/api/v2';
 
 const ENDPOINTS = {
   AUTH: {

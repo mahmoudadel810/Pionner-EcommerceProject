@@ -352,7 +352,7 @@ const ProfilePage = () => {
                       className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-lg text-gray-500 cursor-not-allowed transition-all duration-300"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      {t('profile.emailCannotBeChanged')}
+                      {t('profile.emailNotChangeable')}
                     </p>
                   </div>
                   <div className="flex space-x-3">

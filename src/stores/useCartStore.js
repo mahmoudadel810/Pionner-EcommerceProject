@@ -26,8 +26,8 @@ export const useCartStore = create((set, get) => ({
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || "Failed to fetch coupon";
-      toast.error(getTranslation('cart.errors.fetchCouponFailed', 'Failed to fetch coupon'));
+        error.response?.data?.message ;
+      toast.error(getTranslation('cart.errors.fetchCouponFailed'));
       return { success: false, message: errorMessage };
     }
   },
@@ -114,7 +114,7 @@ export const useCartStore = create((set, get) => ({
             cart: prevState.cart.filter(item => item._id !== product._id),
           }));
           get().calculateTotals();
-          toast.success(getTranslation('cart.productRemoved', 'Product removed from cart'));
+          toast.success(getTranslation('cart.productRemoved'));
           return { success: true, action: "removed", data: response.data };
         } else {
           throw new Error("Failed to remove product from cart");
@@ -135,7 +135,7 @@ export const useCartStore = create((set, get) => ({
             get().calculateTotals();
           }, 0);
           
-          toast.success(getTranslation('cart.productAdded', 'Product added to cart'));
+          toast.success(getTranslation('cart.productAdded'));
           return { success: true, action: "added", data: response.data };
         } else {
           throw new Error("Failed to add product to cart");
@@ -147,7 +147,7 @@ export const useCartStore = create((set, get) => ({
         return { success: false, message: "Please login to manage cart" };
       }
       
-      toast.error(getTranslation('cart.errors.updateCartFailed', 'Failed to update cart'));
+      toast.error(getTranslation('cart.errors.updateCartFailed'));
       return { success: false, message: getTranslation('cart.errors.updateCartFailed', 'Failed to update cart') };
     }
   },

@@ -45,8 +45,36 @@
       "applyCouponFailed": "فشل في تطبيق الكوبون",
       "fetchCartFailed": "فشل في جلب عناصر السلة",
       "clearCartFailed": "فشل في مسح السلة",
-      "updateCartFailed": "فشل في تحديث السلة"
-    }
+      "updateCartFailed": "فشل في تحديث السلة",
+      "productRemoved":"تم إزالة المنتج من السلة",
+      "productMovedToWishlist": "تم نقل المنتج إلى قائمة المفضلة"
+    
+      
+    },
+    "failedToMoveToWishlist": "فشل في نقل المنتج إلى قائمة المفضلة",
+    "enterCouponCode": "يرجى إدخال رمز الكوبون",
+    "cartIsEmpty": "سلة التسوق فارغة",
+    "yourCartIsEmpty": "سلة التسوق فارغة",
+    "noProductsInCart": "يبدو أنك لم تضف أي منتجات إلى سلة التسوق بعد.",
+    "startShopping": "ابدأ التسوق",
+    "continueShopping": "متابعة التسوق",
+    "shoppingCart": "سلة التسوق",
+    "moveToWishlist": "نقل إلى المفضلة",
+    "removeFromCart": "إزالة من السلة",
+    "orderSummary": "ملخص الطلب",
+    "haveCoupon": "لديك كوبون؟",
+    "applying": "جارٍ التطبيق...",
+    "apply": "تطبيق",
+    "remove": "إزالة",
+    "subtotal": "المجموع الفرعي",
+    "discount": "الخصم",
+    "shipping": "الشحن",
+    "free": "مجاني",
+    "total": "المجموع",
+    "proceedToCheckout": "المتابعة للدفع",
+    "freeShippingOver99": "شحن مجاني للطلبات فوق 99 ريال ",
+    "moneyBackGuarantee": "ضمان استرداد الأموال لمدة 30 يومًا"
+
   },
   "wishlist": {
     "productAdded": "تم إضافة المنتج إلى قائمة الأمنيات",
@@ -57,22 +85,103 @@
       "addFailed": "فشل في إضافة المنتج إلى قائمة الأمنيات",
       "removeFailed": "فشل في إزالة المنتج من قائمة الأمنيات",
       "clearFailed": "فشل في مسح قائمة الأمنيات"
-    }
+    },
+    "title": "قائمة المفضلة",
+    "count_items": "{{count}} منتج{{suffix}} في قائمتك",
+    "plural_suffix": "",
+    "empty_title": "قائمة المفضلة فارغة",
+    "empty_msg": "ابدأ بإضافة المنتجات إلى قائمتك للاحتفاظ بها لاحقاً",
+    "start_shopping": "ابدأ التسوق",
+    
+          "itemCount": "{{count}} عنصر في قائمة الأمنيات",
+          "addToCart": "أضف إلى السلة",
+          "removeFromCart": "إزالة من السلة",
+          "empty": {
+            "title": "قائمة الأمنيات فارغة",
+            "message": "ابدأ بإضافة المنتجات إلى قائمة الأمنيات لحفظها لاحقاً",
+            "startShopping": "ابدأ التسوق"
+          }
   },
   "product": {
     "created": "تم إنشاء المنتج بنجاح",
     "deleted": "تم حذف المنتج بنجاح",
     "updated": "تم تحديث المنتج بنجاح",
+        "quick_view": "عرض سريع",
+
     "errors": {
       "createFailed": "فشل في إنشاء المنتج",
       "fetchFailed": "فشل في جلب المنتجات",
       "deleteFailed": "فشل في حذف المنتج",
       "updateFailed": "فشل في تحديث المنتج",
-      "fetchFeaturedFailed": "فشل في جلب المنتجات المميزة"
-    }
+      "fetchFeaturedFailed": "فشل في جلب المنتجات المميزة",
+      "back": "رجوع"
+    
+    },
+    "reviews": "تقييمات",
+    "quantity": "الكمية",
+    "free_shipping": "شحن مجاني",
+    "free_shipping_threshold": "للطلبات فوق ﷼50",
+    "secure_payment": "دفع آمن",
+    "easy_returns": "إرجاع سهل",
+    "buy_now": "اشتري الآن",
+    "processing": "جارٍ المعالجة...",
+    "related_products": "منتجات ذات صلة",
+    "featured": "مميز", 
+    "add_to_wishlist": "إضافة إلى المفضلة",
+    "remove_from_wishlist": "إزالة من المفضلة",
+    "add_to_cart": "إضافة إلى السلة",
+    "remove_from_cart": "إزالة من السلة"
+
   },
   "checkout": {
-    "error": "حدث خطأ أثناء عملية الدفع"
+    "error": "حدث خطأ أثناء عملية الدفع",
+    "paymentInitialized": "تم تهيئة الدفع بنجاح!",
+    "paymentInitializationFailed": "فشل في تهيئة الدفع. يرجى المحاولة مرة أخرى.",
+    "cartEmpty": "عربة التسوق فارغة",
+    "paymentSuccess": "تم الدفع بنجاح! جاري التحويل...",
+    "paymentSessionExpired": "انتهت صلاحية جلسة الدفع أو تم استخدامها بالفعل. يرجى المحاولة مرة أخرى.",
+    "paymentSessionExists": "توجد جلسة دفع بالفعل. يرجى إكمالها أو بدء جلسة جديدة.",
+    "newPaymentSession": "جلسة دفع جديدة",
+    "tryAgain": "حاول مرة أخرى",
+    "close": "إغلاق",
+    "backToCart": "العودة إلى العربة",
+    "secureCheckout": "دفع آمن",
+    "completePurchaseSecurely": "أكمل عملية الشراء بأمان",
+    "shippingInformation": "معلومات الشحن",
+    "firstName": "الاسم الأول",
+    "enterFirstName": "أدخل الاسم الأول",
+    "lastName": "اسم العائلة",
+    "enterLastName": "أدخل اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "enterEmail": "أدخل البريد الإلكتروني",
+    "phone": "الهاتف",
+    "enterPhoneNumber": "أدخل رقم الهاتف",
+    "address": "العنوان",
+    "enterStreetAddress": "أدخل عنوان الشارع",
+    "city": "المدينة",
+    "enterCity": "أدخل المدينة",
+    "stateProvince": "الولاية/المحافظة",
+    "enterState": "أدخل الولاية",
+    "zipCode": "الرمز البريدي",
+    "enterZipCode": "أدخل الرمز البريدي",
+    "proceedToPayment": "المتابعة للدفع",
+    "paymentInformation": "معلومات الدفع",
+    "preparingPaymentSession": "جاري تحضير جلسة دفع آمنة جديدة...",
+    "securityNotice": "معلومات الدفع الخاصة بك مشفرة وآمنة. نحن نستخدم Stripe لمعالجة الدفع الآمن ولا نحتفظ أبداً بتفاصيل بطاقتك الائتمانية.",
+    "orderSummary": "ملخص الطلب",
+    "qty": "الكمية",
+    "subtotal": "المجموع الفرعي",
+    "discount": "الخصم",
+    "shipping": "الشحن",
+    "free": "مجاني",
+    "total": "المجموع",
+    "newPaymentSessionCreated": "تم إنشاء جلسة دفع جديدة. يرجى المحاولة مرة أخرى.",
+    "paymentSessionGenerationFailed": "فشل في إنشاء جلسة دفع جديدة. يرجى تحديث الصفحة أو المحاولة مرة أخرى لاحقاً.", "billing_address": "عنوان الفاتورة",
+    "payment_method": "طريقة الدفع",
+    "complete_payment": "إتمام الدفع",
+    "processing": "جارٍ المعالجة...",
+    "secure_notice": "معلومات الدفع الخاصة بك آمنة ومشفرة"
+
   },
   "common": {
     "loading": "جاري التحميل...",
@@ -467,24 +576,7 @@
   },
 
    
-  "product": {
-    "back": "رجوع",
-    "reviews": "تقييمات",
-    "quantity": "الكمية",
-    "free_shipping": "شحن مجاني",
-    "free_shipping_threshold": "للطلبات فوق ﷼50",
-    "secure_payment": "دفع آمن",
-    "easy_returns": "إرجاع سهل",
-    "buy_now": "اشتري الآن",
-    "processing": "جارٍ المعالجة...",
-    "related_products": "منتجات ذات صلة",
-    "featured": "مميز", "quick_view": "عرض سريع",
-    "add_to_wishlist": "إضافة إلى المفضلة",
-    "remove_from_wishlist": "إزالة من المفضلة",
-    "add_to_cart": "إضافة إلى السلة",
-    "remove_from_cart": "إزالة من السلة"
-
-  },
+ 
   "category": {
     "back_to_categories": "العودة إلى التصنيفات",
     "search_products": "ابحث عن المنتجات...",
@@ -586,23 +678,7 @@
         "wishlistUpdateFailed": "فشل في تحديث قائمة الأمنيات"
        }
   },
-  "wishlist": {
-    "title": "قائمة المفضلة",
-    "count_items": "{{count}} منتج{{suffix}} في قائمتك",
-    "plural_suffix": "",
-    "empty_title": "قائمة المفضلة فارغة",
-    "empty_msg": "ابدأ بإضافة المنتجات إلى قائمتك للاحتفاظ بها لاحقاً",
-    "start_shopping": "ابدأ التسوق",
-    
-          "itemCount": "{{count}} عنصر في قائمة الأمنيات",
-          "addToCart": "أضف إلى السلة",
-          "removeFromCart": "إزالة من السلة",
-          "empty": {
-            "title": "قائمة الأمنيات فارغة",
-            "message": "ابدأ بإضافة المنتجات إلى قائمة الأمنيات لحفظها لاحقاً",
-            "startShopping": "ابدأ التسوق"
-          }
-  },
+
   
   "categories": {
     "smartphones": "الهواتف الذكية",
@@ -953,81 +1029,8 @@
   },
   
    
-  "cart": {
-    "productMovedToWishlist": "تم نقل المنتج إلى قائمة المفضلة",
-    "failedToMoveToWishlist": "فشل في نقل المنتج إلى قائمة المفضلة",
-    "enterCouponCode": "يرجى إدخال رمز الكوبون",
-    "cartIsEmpty": "سلة التسوق فارغة",
-    "yourCartIsEmpty": "سلة التسوق فارغة",
-    "noProductsInCart": "يبدو أنك لم تضف أي منتجات إلى سلة التسوق بعد.",
-    "startShopping": "ابدأ التسوق",
-    "continueShopping": "متابعة التسوق",
-    "shoppingCart": "سلة التسوق",
-    "moveToWishlist": "نقل إلى المفضلة",
-    "removeFromCart": "إزالة من السلة",
-    "orderSummary": "ملخص الطلب",
-    "haveCoupon": "لديك كوبون؟",
-    "applying": "جارٍ التطبيق...",
-    "apply": "تطبيق",
-    "couponApplied": "تم تطبيق الكوبون",
-    "remove": "إزالة",
-    "subtotal": "المجموع الفرعي",
-    "discount": "الخصم",
-    "shipping": "الشحن",
-    "free": "مجاني",
-    "total": "المجموع",
-    "proceedToCheckout": "المتابعة للدفع",
-    "freeShippingOver99": "شحن مجاني للطلبات فوق 99 ريال ",
-    "moneyBackGuarantee": "ضمان استرداد الأموال لمدة 30 يومًا"
-  },
-  "checkout": {
-    "paymentInitialized": "تم تهيئة الدفع بنجاح!",
-    "paymentInitializationFailed": "فشل في تهيئة الدفع. يرجى المحاولة مرة أخرى.",
-    "cartEmpty": "عربة التسوق فارغة",
-    "paymentSuccess": "تم الدفع بنجاح! جاري التحويل...",
-    "paymentSessionExpired": "انتهت صلاحية جلسة الدفع أو تم استخدامها بالفعل. يرجى المحاولة مرة أخرى.",
-    "paymentSessionExists": "توجد جلسة دفع بالفعل. يرجى إكمالها أو بدء جلسة جديدة.",
-    "newPaymentSession": "جلسة دفع جديدة",
-    "tryAgain": "حاول مرة أخرى",
-    "close": "إغلاق",
-    "backToCart": "العودة إلى العربة",
-    "secureCheckout": "دفع آمن",
-    "completePurchaseSecurely": "أكمل عملية الشراء بأمان",
-    "shippingInformation": "معلومات الشحن",
-    "firstName": "الاسم الأول",
-    "enterFirstName": "أدخل الاسم الأول",
-    "lastName": "اسم العائلة",
-    "enterLastName": "أدخل اسم العائلة",
-    "email": "البريد الإلكتروني",
-    "enterEmail": "أدخل البريد الإلكتروني",
-    "phone": "الهاتف",
-    "enterPhoneNumber": "أدخل رقم الهاتف",
-    "address": "العنوان",
-    "enterStreetAddress": "أدخل عنوان الشارع",
-    "city": "المدينة",
-    "enterCity": "أدخل المدينة",
-    "stateProvince": "الولاية/المحافظة",
-    "enterState": "أدخل الولاية",
-    "zipCode": "الرمز البريدي",
-    "enterZipCode": "أدخل الرمز البريدي",
-    "proceedToPayment": "المتابعة للدفع",
-    "paymentInformation": "معلومات الدفع",
-    "preparingPaymentSession": "جاري تحضير جلسة دفع آمنة جديدة...",
-    "securityNotice": "معلومات الدفع الخاصة بك مشفرة وآمنة. نحن نستخدم Stripe لمعالجة الدفع الآمن ولا نحتفظ أبداً بتفاصيل بطاقتك الائتمانية.",
-    "orderSummary": "ملخص الطلب",
-    "qty": "الكمية",
-    "subtotal": "المجموع الفرعي",
-    "discount": "الخصم",
-    "shipping": "الشحن",
-    "free": "مجاني",
-    "total": "المجموع",
-    "newPaymentSessionCreated": "تم إنشاء جلسة دفع جديدة. يرجى المحاولة مرة أخرى.",
-    "paymentSessionGenerationFailed": "فشل في إنشاء جلسة دفع جديدة. يرجى تحديث الصفحة أو المحاولة مرة أخرى لاحقاً.", "billing_address": "عنوان الفاتورة",
-    "payment_method": "طريقة الدفع",
-    "complete_payment": "إتمام الدفع",
-    "processing": "جارٍ المعالجة...",
-    "secure_notice": "معلومات الدفع الخاصة بك آمنة ومشفرة"
-  },
+
+
   "errors": {
     "page_not_found": "الصفحة غير موجودة",
     "page_not_exist": "عذراً، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",

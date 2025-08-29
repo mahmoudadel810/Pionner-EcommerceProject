@@ -613,6 +613,17 @@
       "coupons": "الكوبونات",
       "analytics": "التحليلات"
     },
+    "analytics":{
+      "sales_analytics":"تحليل المبيعات",
+      "total_revenue":"إجمالي العائدات",
+      "total_orders":"اجمال الطلبات",
+      "average_order_value":"متوسط قيمة الطلب ",
+      "order_status_distribution":"توزيع حالة الطلب",
+      "pending":"معلق",
+      "paid":"مدفوع",
+      "cancelled":"ملغي",
+      "total":"المجموع"
+    },
     "overview": {
       "recent_orders": "الطلبات الأخيرة",
       "view_all": "عرض الكل",
@@ -622,7 +633,11 @@
     },
     "products": {
       "management": "إدارة المنتجات",
+      "edit_product":"تعديل المنتج",
+      "delete_product":"حزف المنتج",
+      
       "add_product": "إضافة منتج",
+      "add_new_product": " إضافة منتج جديد ",
       "search_placeholder": "البحث في المنتجات...",
       "featured": "مميز",
       "regular": "عادي",
@@ -630,8 +645,28 @@
       "delete": "حذف المنتج",
       "view_details": "عرض التفاصيل",
       "form":{
-              "add_product": "إضافة منتج"
+              "add_product": "إضافة منتج",
+              "name": "اسم المنتج ",
+              "description": "وصف المنتج ",
+              "price": "سعر المنتج ",
+              "category": "نوع المنتج ",
+              "select_category": "تحديد نوع  المنتج ",
+              "stock_quantity": "عدد قطع المنتج ",
+              "images": "صور المنتج  ",
+              "images_selected": "تحديد صورة للمنتج  ",
+              "image_update_hint": "تحميل معلومة عن صورة المنتج ",
+              "update": "تحميل ",
+              "create": " انشاء ",
+              "cancel": " الغاء "
 
+      },
+      "table":{
+        "product":"المنتج",
+        "category":"التصنيف",
+        "price":"السعر",
+        "stock":"القطعة",
+        "status":"الحالة",
+        "actions":"الافعال"
       }
     },
     "categories": {
@@ -643,7 +678,32 @@
       "active": "نشط",
       "inactive": "غير نشط",
       "edit": "تعديل التصنيف",
-      "delete": "حذف التصنيف"
+      "delete": "حذف التصنيف",
+      "slug": " حلزونة",
+      "edit_category": " تعديل المنتجات",
+      "delete_category": "حزف المنتجات",
+      "table":{
+        "category":"التصنيف",
+        "products":"المنتجات",
+        "featured":"مميز",
+        "status":"الحالة",
+        "actions":"الافعال",
+        "description":"الوصف"
+      },
+      "form":{
+        "name":"الاسم",
+        "description":"الوصف",
+        "image":"الصورة",
+        "image_update_hint":"تحميل وصف للصورة",
+        "order":"الطلب  ",
+        "order_placeholder":"الطلب  ",
+        "featured_category":"الانواع المميزة  ",
+        "saving":" الحفظ  ",
+        "update":" تحميل  ",
+        "create":" تكوين  ",
+        "cancel":" إلغاء  "
+
+      }
     },
     "orders": {
       "management": "إدارة الطلبات",
@@ -655,7 +715,26 @@
       "shipped": "تم الشحن",
       "delivered": "تم التسليم",
       "cancelled": "ملغي",
-      "paid": "مدفوع"
+      "paid": "مدفوع",
+      "all_payment_status":"حالات الدفع",
+      "order_number": "رقم الطلب",
+      "customer": "الزبون",
+      "unknown": "غير معروف",
+      "items": " العناصر",
+      "view_details": "عرض التفاصيل",
+      "status":{
+        "pending":"معلق",
+        "processing":"جاري المعالجة...",
+        "delivered":"تم التسليم",
+        "cancelled":"ملغي",
+        "shipped":"تم الشحن"
+      },
+      "payment":{
+        "pending":"معلق",
+        "paid":"مدفوع",
+        "failed":"فشل",
+        "refunded":"مرتجع"
+      }
     },
     "users": {
       "management": "إدارة المستخدمين",
@@ -664,14 +743,52 @@
       "admin": "مدير",
       "user": "مستخدم",
       "active": "نشط",
-      "inactive": "غير نشط"
+      "inactive": "غير نشط",
+      "customer":"الزبون",
+      "view_details":"عرض التفاصيل",
+      "table":{
+        "user":"المستخدم",
+        "email":"البريد الإلكتروني",
+        "role":"القواعد",
+        "status":"الحالة",
+        "joined":"مضاف",
+        "actions":"الافعال"
+      }
+
     },
     "coupons": {
       "management": "إدارة الكوبونات",
       "add_coupon": "إضافة كوبون",
       "search_placeholder": "البحث في الكوبونات...",
       "edit": "تعديل الكوبون",
-      "delete": "حذف الكوبون"
+      "delete": "حذف الكوبون",
+      "active":"نشط",
+      "inactive":"غير نشط",
+      "discount":"الخصم",
+      "min_amount":"اقل قيمة",
+      "usage":"مستخدم",
+      "expires":"منتهي",
+      "edit_coupon":"تعديل الكوبون",
+      "delete_coupon":"حزف الكوبون",
+      "add_new_coupon":"إضافة كوبون جديد",
+      "form":{
+        "code":"كود",
+        "description":"الوصف",
+        "discount_type":"نوع الخصم",
+        "percentage":"النسبة المؤوية",
+        "fixed_amount":"القيمة الثابتة ",
+        "discount_value":"قيمة الخصم",
+        "minimum_amount":"الحد الادني",
+        "maximum_usage":"اقصي أستخدام",
+        "update":"تحميل ",
+        "expiry_date":"تاريخ الانتهاء",
+        "create":"إنشاء",
+        "cancel":"ألغاء"
+
+      }
+
+
+
     },
     "forms": {
       "name": "الاسم",

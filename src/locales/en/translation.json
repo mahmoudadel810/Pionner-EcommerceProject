@@ -663,6 +663,17 @@
       "coupons": "Coupons",
       "analytics": "Analytics"
     },
+    "analytics":{
+      "sales_analytics":" Sales Analytic",
+      "total_revenue":" Total Revenue",
+      "total_orders":" Total Orders",
+      "average_order_value":"  Average order value ",
+      "order_status_distribution":"  Order status Distribution",
+      "pending":"Pending",
+      "paid":"Paid",
+      "cancelled":"Cancelled",
+      "total":"Total"
+    },
     "overview": {
       "recent_orders": "Recent Orders",
       "view_all": "View All",
@@ -678,7 +689,35 @@
       "regular": "Regular",
       "edit": "Edit Product",
       "delete": "Delete Product",
-      "view_details": "View Details"
+      "view_details": "View Details",
+      "edit_product":"Edit product ",
+      "delete_product":"delete product ",
+      "add_new_product":"Add new product ",
+       "form":{
+              "add_product": " Add Product",
+              "name": " Product Name ",
+              "description": "product description  ",
+              "price": "Price  ",
+              "category": "Category",
+              "select_category": " Select Category   ",
+              "stock_quantity": "  Stock ",
+              "images": "Images",
+              "images_selected": "  Select Images",
+              "image_update_hint": "   image update Hint ",
+              "update": "Update",
+              "create": " Crete ",
+              "cancel": " cancel "
+
+      },
+      "table":{
+        "product":"Prodact",
+        "category":"Category",
+        "price":"Price  ",
+        "stock":"stock",
+        "status":"status",
+        "actions":"action"
+      }
+
     },
     "categories": {
       "management": "Categories Management",
@@ -692,6 +731,8 @@
       "delete": "Delete Category"
     },
     "orders": {
+            "all_payment_status":"Payment Status ",
+
       "management": "Orders Management",
       "filter_by_status": "Filter by Status",
       "filter_by_payment": "Filter by Payment",
@@ -701,7 +742,25 @@
       "shipped": "Shipped",
       "delivered": "Delivered",
       "cancelled": "Cancelled",
-      "paid": "Paid"
+      "paid": "Paid",
+      "order_number": "Order number",
+      "customer": "customer",
+      "unknown": " unknown",
+      "items": " items",
+      "view_details": "View Details",
+      "status":{
+        "pending":"Pending",
+        "processing":" processing...",
+        "delivered":" delivered",
+        "cancelled":"Cancelled",
+        "shipped":" shippede"
+      },
+      "payment":{
+        "pending":"Pending",
+        "paid":"Paid",
+        "failed":"failed",
+        "refunded":"refunded"
+      }
     },
     "users": {
       "management": "Users Management",
@@ -710,14 +769,48 @@
       "admin": "Admin",
       "user": "User",
       "active": "Active",
-      "inactive": "Inactive"
+      "inactive": "Inactive",
+      "customer":"customer",
+      "view_details":"View Details",
+      "table":{
+        "user":"User",
+        "email":"Enter your email",
+        "role":"role",
+        "status":"status",
+        "joined":"joined",
+        "actions":"action"
+      }
     },
     "coupons": {
       "management": "Coupons Management",
       "add_coupon": "Add Coupon",
       "search_placeholder": "Search coupons...",
       "edit": "Edit Coupon",
-      "delete": "Delete Coupon"
+      "delete": "Delete Coupon",
+       "active":"Active",
+      "inactive":" InActive",
+      "discount":"Discount",
+      "min_amount":"Min Amount",
+      "usage":"Usage",
+      "expires":"expires",
+      "edit_coupon":" Edit Coupon",
+      "delete_coupon":"Delete Coupon ",
+      "add_new_coupon":"  Add New Coupon",
+      "form":{
+        "code":"Code",
+        "description":"Description",
+        "discount_type":" Discount Type",
+        "percentage":" percentage",
+        "fixed_amount":" Fixed Amoumt ",
+        "discount_value":" Discount Value",
+        "minimum_amount":" Minimum Amoumt",
+        "maximum_usage":" Maximum Usage",
+        "update":"Update",
+        "expiry_date":" Expiry Date",
+        "create":" Crete ",
+        "cancel":"Cancel"
+
+      }
     },
     "forms": {
       "name": "Name",

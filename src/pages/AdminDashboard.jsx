@@ -546,8 +546,9 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background py-8">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-background py-6">
+  <div className="max-w-7xl mx-auto px-6">
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -806,22 +807,22 @@ const AdminDashboard = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border">
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-left py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.product")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-left py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.category")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-left py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.price")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-left py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.stock")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-left py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.status")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-left py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.actions")}
                       </th>
                     </tr>

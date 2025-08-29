@@ -2,17 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
-  Mail,
-  Phone,
   MapPin,
-  Clock,
   Send,
   CheckCircle,
   AlertCircle,
-  MessageSquare,
-  Globe,
-  Users,
-  Zap,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
@@ -47,58 +40,9 @@ const ContactPage = () => {
     }
   }, [user]);
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email Support",
-      details: "support@pioneer.com",
-      description: "Get help via email anytime",
-      color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50",
-    },
-    {
-      icon: Phone,
-      title: "Phone Support",
-      details: "+1 (555) 123-4567",
-      description: "Mon-Fri from 8am to 6pm",
-      color: "from-green-500 to-green-600",
-      bgColor: "bg-green-50",
-    },
-    {
-      icon: MessageSquare,
-      title: "Live Chat",
-      details: "Available 24/7",
-      description: "Chat with our support team",
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-50",
-    },
-    {
-      icon: Clock,
-      title: "Response Time",
-      details: "Within 2 hours",
-      description: "We respond quickly",
-      color: "from-orange-500 to-orange-600",
-      bgColor: "bg-orange-50",
-    },
-  ];
 
-  const features = [
-    {
-      icon: Zap,
-      title: "Fast Response",
-      description: "Get answers within 2 hours",
-    },
-    {
-      icon: Users,
-      title: "Expert Support",
-      description: "Our team is here to help",
-    },
-    {
-      icon: Globe,
-      title: "24/7 Available",
-      description: "Support whenever you need",
-    },
-  ];
+
+
 
   const validateField = (name, value) => {
     let error = "";
@@ -405,126 +349,9 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30">
-      {/* Hero Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="relative py-24 lg:py-32 overflow-hidden"
-      >
-        {/* Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-400/10 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl mb-8 shadow-lg"
-            >
-              <MessageSquare size={32} className="text-white" />
-            </motion.div>
-            
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-5xl lg:text-7xl font-bold text-gray-900 mb-6"
-            >
-              Let's <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Connect</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto"
-            >
-              Have a question or need help? We'd love to hear from you. Our team is here to provide the support you need.
-            </motion.p>
-            
-            {/* Features */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12"
-            >
-              {features.map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-                  className="flex items-center justify-center space-x-3 rtl:space-x-reverse p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20"
-                >
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-                    <feature.icon size={20} className="text-white" />
-                  </div>
-                  <div className="text-left">
-                    <h3 className="font-semibold text-gray-900">{feature.title}</h3>
-                    <p className="text-sm text-gray-600">{feature.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Contact Info Section */}
+      {/* Contact Form Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">{t('contact.getInTouch')}</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              {t('contact.choosePreferredWay')}
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-            {contactInfo.map((info, index) => (
-              <motion.div
-                key={info.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group relative bg-white rounded-2xl shadow-lg border border-gray-100 p-8 text-center overflow-hidden"
-              >
-                {/* Background gradient */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${info.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`}></div>
-                
-                <div className={`w-16 h-16 ${info.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <info.icon size={28} className={`text-gradient-to-br ${info.color} bg-clip-text text-transparent`} />
-                </div>
-                
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
-                  {info.title}
-                </h3>
-                <p className="text-lg font-semibold text-blue-600 mb-2">{info.details}</p>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {info.description}
-                </p>
-                
-                {/* Hover effect border */}
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${info.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}></div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Contact Form Section */}
           <div className="max-w-5xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -760,7 +587,7 @@ const ContactPage = () => {
                     </>
                   )}
                 </motion.button>
-              </form>
+                </form>
               </div>
             </motion.div>
           </div>

@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import { useCartStore } from "./useCartStore.js";
 import { useWishlistStore } from "./useWishlistStore.js";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
+import { getTranslation } from "../utils/i18nUtils.js";
 
 export const useUserStore = create((set, get) => ({
   user: null,
@@ -38,8 +39,8 @@ export const useUserStore = create((set, get) => ({
     if (password !== confirmPassword)
     {
       set({ loading: false });
-      toast.error("Passwords do not match");
-      return { success: false, message: "Passwords do not match" };
+      toast.error(getTranslation('auth.errors.passwordMismatch', 'Passwords do not match'));
+      return { success: false, message: getTranslation('auth.errors.passwordMismatch', 'Passwords do not match') };
     }
 
     try
@@ -56,7 +57,7 @@ export const useUserStore = create((set, get) => ({
 
       if (response.data && response.data.success)
       {
-        toast.success("Account created successfully! Please check your email to confirm your account.");
+        toast.success(getTranslation('auth.signup.success', 'Account created successfully! Please check your email to confirm your account.'));
         // Don't set user here since they need to confirm email first
         return response.data;
       } else
@@ -70,7 +71,7 @@ export const useUserStore = create((set, get) => ({
         error.response?.data?.message ||
         error.message ||
         "An error occurred during signup.";
-      toast.error(errorMessage);
+      toast.error(getTranslation('auth.errors.signupFailed', 'An error occurred during signup.'));
       return { success: false, message: errorMessage };
     }
   },
@@ -102,7 +103,7 @@ export const useUserStore = create((set, get) => ({
         }
 
         set({ user: response.data, loading: false, justLoggedOut: false });
-        toast.success("Login successful!");
+        toast.success(getTranslation('auth.loginSuccess'));
         return response.data;
       } else
       {
@@ -122,32 +123,32 @@ export const useUserStore = create((set, get) => ({
         // Check for specific error messages
         if (errorMessage.toLowerCase().includes('email') && errorMessage.toLowerCase().includes('not found'))
         {
-          toast.error('Account not found. Please check your email or sign up.');
+          toast.error(getTranslation('auth.errors.accountNotFound', 'Account not found. Please check your email or sign up.'));
         }
         else if (errorMessage.toLowerCase().includes('password') && errorMessage.toLowerCase().includes('incorrect'))
         {
-          toast.error('Incorrect password. Please try again.');
+          toast.error(getTranslation('auth.errors.incorrectPassword', 'Incorrect password. Please try again.'));
         }
         else if (errorMessage.toLowerCase().includes('email') && errorMessage.toLowerCase().includes('not verified'))
         {
-          toast.error('Please verify your email address first.');
+          toast.error(getTranslation('auth.errors.emailNotVerified', 'Please verify your email address first.'));
         }
         else
         {
-          toast.error('Invalid email or password. Please check your credentials.');
+          toast.error(getTranslation('auth.errors.invalidCredentials', 'Invalid email or password. Please check your credentials.'));
         }
       }
       else if (statusCode === 429)
       {
-        toast.error('Too many login attempts. Please try again later.');
+        toast.error(getTranslation('auth.errors.tooManyAttempts', 'Too many login attempts. Please try again later.'));
       }
       else if (statusCode >= 500)
       {
-        toast.error('Server error. Please try again later.');
+        toast.error(getTranslation('auth.errors.serverError', 'Server error. Please try again later.'));
       }
       else
       {
-        toast.error(errorMessage || 'Login failed. Please try again.');
+        toast.error(getTranslation('auth.errors.loginFailed', 'Login failed. Please try again.'));
       }
 
       return {
@@ -168,7 +169,7 @@ export const useUserStore = create((set, get) => ({
 
       if (response.data && response.data.success)
       {
-        toast.success("Password reset email sent successfully!");
+        toast.success(getTranslation('auth.forgotPassword.emailSent', 'Password reset email sent successfully!'));
         return response.data;
       } else
       {
@@ -181,7 +182,7 @@ export const useUserStore = create((set, get) => ({
         error.response?.data?.message ||
         error.message ||
         "An error occurred while sending reset email.";
-      toast.error(errorMessage);
+      toast.error(getTranslation('auth.errors.resetEmailFailed', 'An error occurred while sending reset email.'));
       return { success: false, message: errorMessage };
     }
   },
@@ -193,7 +194,7 @@ export const useUserStore = create((set, get) => ({
     if (newPassword !== confirmNewPassword)
     {
       set({ loading: false });
-      toast.error("New passwords do not match");
+      toast.error(getTranslation('auth.errors.passwordMismatch', 'New passwords do not match'));
       return { success: false, message: "New passwords do not match" };
     }
 
@@ -208,7 +209,7 @@ export const useUserStore = create((set, get) => ({
 
       if (response.data && response.data.success)
       {
-        toast.success("Password reset successfully!");
+        toast.success(getTranslation('auth.resetPassword.success', 'Password reset successfully!'));
         return response.data;
       } else
       {
@@ -221,7 +222,7 @@ export const useUserStore = create((set, get) => ({
         error.response?.data?.message ||
         error.message ||
         "An error occurred while resetting password.";
-      toast.error(errorMessage);
+      toast.error(getTranslation('auth.errors.resetPasswordFailed', 'An error occurred while resetting password.'));
       return { success: false, message: errorMessage };
     }
   },
@@ -253,7 +254,7 @@ export const useUserStore = create((set, get) => ({
         set({ justLoggedOut: false });
       }, 2000);
 
-      toast.success("Logged out successfully");
+      toast.success(getTranslation('auth.logout.success', 'Logged out successfully'));
       return { success: true };
     } catch (error)
     {
@@ -278,7 +279,7 @@ export const useUserStore = create((set, get) => ({
         set({ justLoggedOut: false });
       }, 2000);
 
-      toast.success("Logged out successfully");
+      toast.success(getTranslation('auth.logout.success', 'Logged out successfully'));
       return { success: true };
     }
   },

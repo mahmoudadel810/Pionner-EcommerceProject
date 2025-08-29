@@ -17,6 +17,56 @@
     "user": "User",
     "noEmail": "No email"
   },
+  "payment": {
+    "success": "Payment successful! Your order has been placed.",
+    "errors": {
+      "noCheckoutUrl": "No checkout URL available",
+      "unexpected": "An unexpected error occurred.",
+      "createPaymentIntentFailed": "Failed to create payment intent",
+      "createCheckoutSessionFailed": "Failed to create checkout session",
+      "processPaymentSuccessFailed": "Failed to process payment success"
+    }
+  },
+  "cart": {
+    "couponApplied": "Coupon applied successfully",
+    "couponRemoved": "Coupon removed",
+    "cleared": "Cart cleared successfully",
+    "productAdded": "Product added to cart",
+    "productRemoved": "Product removed from cart",
+    "errors": {
+      "fetchCouponFailed": "Failed to fetch coupon",
+      "applyCouponFailed": "Failed to apply coupon",
+      "fetchCartFailed": "Failed to fetch cart items",
+      "clearCartFailed": "Failed to clear cart",
+      "updateCartFailed": "Failed to update cart"
+    }
+  },
+  "wishlist": {
+    "productAdded": "Product added to wishlist",
+    "productRemoved": "Product removed from wishlist",
+    "cleared": "Wishlist cleared successfully",
+    "errors": {
+      "fetchFailed": "Failed to fetch wishlist",
+      "addFailed": "Failed to add product to wishlist",
+      "removeFailed": "Failed to remove product from wishlist",
+      "clearFailed": "Failed to clear wishlist"
+    }
+  },
+  "product": {
+    "created": "Product created successfully",
+    "deleted": "Product deleted successfully",
+    "updated": "Product updated successfully",
+    "errors": {
+      "createFailed": "Failed to create product",
+      "fetchFailed": "Failed to fetch products",
+      "deleteFailed": "Failed to delete product",
+      "updateFailed": "Failed to update product",
+      "fetchFeaturedFailed": "Failed to fetch featured products"
+    }
+  },
+  "checkout": {
+    "error": "An error occurred during checkout"
+  },
   "common": {
     "loading": "Loading...",
     "pleaseLoginCart": "Please login to manage cart",
@@ -118,6 +168,7 @@
       "nameTooShort": "Name is too short",
       "emailRequired": "Email is required",
       "emailInvalid": "Email is invalid",
+      "fixFormErrors": "Please fix the errors in the form",
       "emailTooLong": "Email is too long",
       "phoneRequired": "Phone number is required",
       "phoneInvalid": "Phone number is invalid",
@@ -129,7 +180,17 @@
       "passwordNumber": "Password must contain a number",
       "passwordSpecial": "Password must contain a special character",
       "confirmPasswordRequired": "Confirm password is required",
-      "passwordMismatch": "Passwords do not match"
+      "passwordMismatch": "Passwords do not match",
+      "accountNotFound": "Account not found. Please check your email or sign up.",
+      "incorrectPassword": "Incorrect password. Please try again.",
+      "emailNotVerified": "Please verify your email address first.",
+      "invalidCredentials": "Invalid email or password. Please check your credentials.",
+      "tooManyAttempts": "Too many login attempts. Please try again later.",
+      "serverError": "Server error. Please try again later.",
+      "loginFailed": "Login failed. Please try again.",
+      "signupFailed": "An error occurred during signup.",
+      "resetEmailFailed": "An error occurred while sending reset email.",
+      "resetPasswordFailed": "An error occurred while resetting password."
     },
     "validation": {
       "codeRequired": "Code is required",
@@ -140,11 +201,16 @@
       "confirmPasswordRequired": "Confirm password is required",
       "passwordsDoNotMatch": "Passwords do not match"
     },
+    "loginSuccess": "Login successful!",
     "login": {
       "title": "Sign In",
-      "subtitle": "Welcome back! Sign in to continue",
+      "subtitle": "Welcome back! Sign in to your account to continue",
       "signIn": "Sign In",
-      "signingIn": "Signing in..."
+      "signingIn": "Signing in...",
+      "success": "Login successful!"
+    },
+    "signup": {
+      "success": "Account created successfully! Please check your email to confirm your account."
     },
     "signup": {
       "creatingAccount": "Creating account..."
@@ -157,7 +223,7 @@
       "sendResetLink": "Send Reset Link",
       "rememberPassword": "Remember your password?",
       "checkEmail": "Check Your Email",
-      "emailSent": "Password reset link sent to {{email}}",
+      "emailSent": "Password reset email sent successfully!",
       "resetPassword": "Reset Password",
       "tryAnotherEmail": "Try Another Email"
     },
@@ -172,6 +238,9 @@
       "success": "Success!",
       "successMessage": "Password reset successfully",
       "continueToLogin": "Continue to Login"
+    },
+    "logout": {
+      "success": "Logged out successfully"
     },
     "orContinueWith": "Or continue with",
     "google": "Google",
@@ -421,7 +490,16 @@
     "next": "Next",
     "showing_count_in": "Showing {{count}} product{{suffix}} in {{category}}",
     "plural_suffix": "s",
-    "explore": "Explore {{name}}"
+    "explore": "Explore {{name}}",
+    "errors": {
+      "createFailed": "Failed to create category",
+      "fetchFailed": "Failed to fetch categories",
+      "fetchFeaturedFailed": "Failed to fetch featured categories",
+      "updateFailed": "Failed to update category",
+      "deleteFailed": "Failed to delete category",
+      "toggleStatusFailed": "Failed to update category status",
+      "fetchByIdFailed": "Failed to fetch category"
+    }
   },
   "search": {
     "results_title": "Search Results",
@@ -722,13 +800,36 @@
     "categories": {
       "management": "Categories Management",
       "add_category": "Add Category",
+      "add_new_category": "Add New Category",
+      "edit_category": "Edit Category",
       "search_placeholder": "Search categories...",
       "featured": "Featured",
       "regular": "Regular",
       "active": "Active",
       "inactive": "Inactive",
       "edit": "Edit Category",
-      "delete": "Delete Category"
+      "delete": "Delete Category",
+      "table": {
+        "category": "Category",
+        "description": "Description",
+        "products": "Products",
+        "featured": "Featured",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "form": {
+        "name": "Name",
+        "description": "Description",
+        "image": "Image",
+        "image_update_hint": "Upload a new image to update the current one",
+        "order": "Order",
+        "order_placeholder": "Display order (optional)",
+        "featured_category": "Featured Category",
+        "saving": "Saving...",
+        "update": "Update",
+        "create": "Create",
+        "cancel": "Cancel"
+      }
     },
     "orders": {
             "all_payment_status":"Payment Status ",

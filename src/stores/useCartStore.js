@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
+import { getTranslation } from "../utils/i18nUtils.js";
 
 export const useCartStore = create((set, get) => ({
   cart: [],
@@ -26,7 +27,7 @@ export const useCartStore = create((set, get) => ({
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Failed to fetch coupon";
-      toast.error(errorMessage);
+      toast.error(getTranslation('cart.errors.fetchCouponFailed', 'Failed to fetch coupon'));
       return { success: false, message: errorMessage };
     }
   },
@@ -37,7 +38,7 @@ export const useCartStore = create((set, get) => ({
       if (response.data) {
         set({ coupon: response.data, isCouponApplied: true });
         get().calculateTotals();
-        toast.success("Coupon applied successfully");
+        toast.success(getTranslation('cart.couponApplied', 'Coupon applied successfully'));
         return { success: true, data: response.data };
       } else {
         throw new Error("Invalid coupon response");
@@ -45,7 +46,7 @@ export const useCartStore = create((set, get) => ({
     } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Failed to apply coupon";
-      toast.error(errorMessage);
+      toast.error(getTranslation('cart.errors.applyCouponFailed', 'Failed to apply coupon'));
       return { success: false, message: errorMessage };
     }
   },
@@ -53,7 +54,7 @@ export const useCartStore = create((set, get) => ({
   removeCoupon: () => {
     set({ coupon: null, isCouponApplied: false });
     get().calculateTotals();
-    toast.success("Coupon removed");
+    toast.success(getTranslation('cart.couponRemoved', 'Coupon removed'));
     return { success: true };
   },
 
@@ -80,10 +81,8 @@ export const useCartStore = create((set, get) => ({
       }
       
       set({ cart: [] });
-      const errorMessage =
-        error.response?.data?.message || "Failed to fetch cart items";
-      toast.error(errorMessage);
-      return { success: false, message: errorMessage };
+      toast.error(getTranslation('cart.errors.fetchCartFailed', 'Failed to fetch cart items'));
+      return { success: false, message: getTranslation('cart.errors.fetchCartFailed', 'Failed to fetch cart items') };
     }
   },
 
@@ -91,13 +90,11 @@ export const useCartStore = create((set, get) => ({
     try {
       await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.REMOVE), {});
       set({ cart: [], coupon: null, total: 0, subtotal: 0 });
-      toast.success("Cart cleared successfully");
+      toast.success(getTranslation('cart.cleared', 'Cart cleared successfully'));
       return { success: true };
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.message || "Failed to clear cart";
-      toast.error(errorMessage);
-      return { success: false, message: errorMessage };
+      toast.error(getTranslation('cart.errors.clearCartFailed', 'Failed to clear cart'));
+      return { success: false, message: getTranslation('cart.errors.clearCartFailed', 'Failed to clear cart') };
     }
   },
 
@@ -117,7 +114,7 @@ export const useCartStore = create((set, get) => ({
             cart: prevState.cart.filter(item => item._id !== product._id),
           }));
           get().calculateTotals();
-          toast.success("Product removed from cart");
+          toast.success(getTranslation('cart.productRemoved', 'Product removed from cart'));
           return { success: true, action: "removed", data: response.data };
         } else {
           throw new Error("Failed to remove product from cart");
@@ -138,7 +135,7 @@ export const useCartStore = create((set, get) => ({
             get().calculateTotals();
           }, 0);
           
-          toast.success("Product added to cart");
+          toast.success(getTranslation('cart.productAdded', 'Product added to cart'));
           return { success: true, action: "added", data: response.data };
         } else {
           throw new Error("Failed to add product to cart");
@@ -150,10 +147,8 @@ export const useCartStore = create((set, get) => ({
         return { success: false, message: "Please login to manage cart" };
       }
       
-      const errorMessage =
-        error.response?.data?.message || "Failed to update cart";
-      toast.error(errorMessage);
-      return { success: false, message: errorMessage };
+      toast.error(getTranslation('cart.errors.updateCartFailed', 'Failed to update cart'));
+      return { success: false, message: getTranslation('cart.errors.updateCartFailed', 'Failed to update cart') };
     }
   },
 
@@ -185,7 +180,7 @@ export const useCartStore = create((set, get) => ({
           get().calculateTotals();
         }, 0);
         
-        toast.success("Product added to cart");
+        toast.success(getTranslation('cart.productAdded', 'Product added to cart'));
         return { success: true, data: response.data };
       } else {
         throw new Error("Failed to add product to cart");
@@ -211,7 +206,7 @@ export const useCartStore = create((set, get) => ({
         cart: prevState.cart.filter(item => item._id !== productId),
       }));
       get().calculateTotals();
-      toast.success("Product removed from cart");
+      toast.success(getTranslation('cart.productRemoved', 'Product removed from cart'));
       return { success: true };
     } catch (error) {
       const errorMessage =

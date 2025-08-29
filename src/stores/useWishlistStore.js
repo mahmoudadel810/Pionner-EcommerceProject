@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
+import { getTranslation } from "../utils/i18nUtils.js";
 
 export const useWishlistStore = create((set, get) => ({
   wishlist: [],
@@ -21,7 +22,7 @@ export const useWishlistStore = create((set, get) => ({
         return { success: true, data: [] };
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Failed to fetch wishlist";
+      const errorMessage = getTranslation('wishlist.errors.fetchFailed', 'Failed to fetch wishlist');
       set({ error: errorMessage, loading: false, wishlist: [] });
       return { success: false, message: errorMessage };
     }
@@ -40,13 +41,13 @@ export const useWishlistStore = create((set, get) => ({
           wishlist: [...prevState.wishlist, response.data.data],
           loading: false,
         }));
-        toast.success("Product added to wishlist");
+        toast.success(getTranslation('wishlist.productAdded', 'Product added to wishlist'));
         return { success: true, data: response.data.data };
       } else {
         throw new Error("Failed to add product to wishlist");
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Failed to add product to wishlist";
+      const errorMessage = getTranslation('wishlist.errors.addFailed', 'Failed to add product to wishlist');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
       return { success: false, message: errorMessage };
@@ -64,13 +65,13 @@ export const useWishlistStore = create((set, get) => ({
           wishlist: prevState.wishlist.filter(item => item._id !== productId),
           loading: false,
         }));
-        toast.success("Product removed from wishlist");
+        toast.success(getTranslation('wishlist.productRemoved', 'Product removed from wishlist'));
         return { success: true };
       } else {
         throw new Error("Failed to remove product from wishlist");
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Failed to remove product from wishlist";
+      const errorMessage = getTranslation('wishlist.errors.removeFailed', 'Failed to remove product from wishlist');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
       return { success: false, message: errorMessage };
@@ -85,13 +86,13 @@ export const useWishlistStore = create((set, get) => ({
       
       if (response.data && response.data.success) {
         set({ wishlist: [], loading: false });
-        toast.success("Wishlist cleared successfully");
+        toast.success(getTranslation('wishlist.cleared', 'Wishlist cleared successfully'));
         return { success: true };
       } else {
         throw new Error("Failed to clear wishlist");
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Failed to clear wishlist";
+      const errorMessage = getTranslation('wishlist.errors.clearFailed', 'Failed to clear wishlist');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
       return { success: false, message: errorMessage };

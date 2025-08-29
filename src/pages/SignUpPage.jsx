@@ -46,9 +46,7 @@ const SignUpPage = () => {
 
     if (name === "name") {
       if (!value.trim()) {
-        console.log(value);
-        
-        t('signUpPage.errors.nameRequired')
+        newErrors.name = t('signUpPage.errors.nameRequired');
       } else if (value.trim().length < 2) {
         newErrors.name = t('signUpPage.errors.nameTooShort');
       } else {
@@ -59,14 +57,13 @@ const SignUpPage = () => {
 
     if (name === "email") {
       if (!value.trim()) {
-        t('signUpPage.errors.emailRequired')
+        newErrors.email = t('signUpPage.errors.emailRequired');
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-        t('signUpPage.errors.emailInvalid')
+        newErrors.email = t('signUpPage.errors.emailInvalid');
       } else if (value.length > 254) {
-         newErrors.email = t('signUpPage.errors.emailTooLong');
+        newErrors.email = t('signUpPage.errors.emailTooLong');
       } else {
         delete newErrors.email;
-        
       }
     }
     // 

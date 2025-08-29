@@ -55,6 +55,8 @@ const AdminDashboard = () => {
     deleteCategory,
     loading: categoryLoading 
   } = useCategoryStore();
+  
+
   const [isLoading, setIsLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -346,7 +348,7 @@ const AdminDashboard = () => {
 
   const openProductForm = (product = null) => {
     // Ensure categories are loaded when opening the product form
-    if (!storeCategories || storeCategories.length === 0) {
+    if (!Array.isArray(storeCategories) || storeCategories.length === 0) {
       fetchAllCategories();
     }
     
@@ -501,10 +503,13 @@ const AdminDashboard = () => {
     return true;
   });
 
-  const filteredCategories = (storeCategories || []).filter(
+  // Ensure storeCategories is always an array
+  const categoriesArray = Array.isArray(storeCategories) ? storeCategories : [];
+  
+  const filteredCategories = categoriesArray.filter(
     (category) =>
-      category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      category.description.toLowerCase().includes(searchQuery.toLowerCase())
+      category.name && category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      category.description && category.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const tabs = [
@@ -1480,7 +1485,7 @@ const AdminDashboard = () => {
                   >
                     <option value="">{t("admin.products.form.select_category")}</option>
                     
-                    {(storeCategories || [])
+                    {categoriesArray
                       .sort((a, b) => (a.order || 0) - (b.order || 0) || a.name.localeCompare(b.name))
                       .map((cat) => (
                         <option key={cat._id} value={cat.name}>
@@ -1491,7 +1496,7 @@ const AdminDashboard = () => {
                   {/* Debug info - remove this after testing */}
                   {process.env.NODE_ENV === 'development' && (
                     <p className="text-xs text-gray-500 mt-1">
-                      Categories loaded: {storeCategories?.length || 0} (only active categories)
+                      Categories loaded: {categoriesArray?.length || 0} (only active categories)
                       <br />
                       If you have 37 in DB but see fewer here, some categories might be inactive
                     </p>

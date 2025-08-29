@@ -21,6 +21,7 @@ import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
+import { getTranslation } from "../utils/i18nUtils.js";
 
 const ProductDetailPage = () => {
   const { t } = useTranslation();
@@ -132,14 +133,14 @@ const ProductDetailPage = () => {
       if (result.success && result.data && result.data.url) {
         redirectToCheckout(result.data.url);
       } else {
-        toast.error(result.message || "Failed to create checkout session");
+        toast.error(result.message || getTranslation('payment.errors.createCheckoutSessionFailed'));
       }
     } catch (error) {
       if (error.response?.status === 401) {
         toast.error(t('common.pleaseLoginCart'));
         navigate("/login");
       } else {
-        toast.error("An error occurred during checkout");
+        toast.error(getTranslation('checkout.error', 'An error occurred during checkout'));
       }
     } finally {
       setIsBuyingNow(false);

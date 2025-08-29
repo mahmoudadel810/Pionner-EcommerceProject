@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useUserStore } from "../stores/useUserStore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 export const useAuthForm = (isLogin = true) => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export const useAuthForm = (isLogin = true) => {
   const [errors, setErrors] = useState({});
   const { login, signup, loading } = useUserStore();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const validateForm = useCallback(() => {
     const newErrors = {};
@@ -83,7 +85,7 @@ export const useAuthForm = (isLogin = true) => {
       e.preventDefault();
 
       if (!validateForm()) {
-        toast.error("Please fix the errors in the form");
+        toast.error(t('auth.errors.fixFormErrors') || "Please fix the errors in the form");
         return;
       }
 
@@ -97,11 +99,11 @@ export const useAuthForm = (isLogin = true) => {
 
         if (result && result.success) {
           if (isLogin) {
-            toast.success("Login successful!");
+            toast.success(t('auth.login.success') || "Login successful!");
             navigate("/");
           } else {
             // For signup, show success message and redirect to login
-            toast.success("Account created successfully! Please check your email to confirm your account.");
+            toast.success(t('auth.signup.success') || "Account created successfully! Please check your email to confirm your account.");
             navigate("/login");
           }
         } else if (result && !result.success) {

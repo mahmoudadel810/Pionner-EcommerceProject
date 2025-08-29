@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axios from "../lib/axios";
 import { toast } from "react-hot-toast";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
+import { getTranslation } from "../utils/i18nUtils.js";
 
 export const usePaymentStore = create((set, get) => ({
   loading: false,
@@ -34,10 +35,7 @@ export const usePaymentStore = create((set, get) => ({
         throw new Error(response.data?.message || "Failed to create payment intent");
       }
     } catch (error) {
-      const errorMessage = 
-        error.response?.data?.message || 
-        error.message || 
-        "Failed to create payment intent";
+      const errorMessage = getTranslation('payment.errors.createPaymentIntentFailed', 'Failed to create payment intent');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
       return { success: false, message: errorMessage };
@@ -73,10 +71,7 @@ export const usePaymentStore = create((set, get) => ({
         throw new Error("Failed to create checkout session");
       }
     } catch (error) {
-      const errorMessage = 
-        error.response?.data?.message || 
-        error.message || 
-        "Failed to create checkout session";
+      const errorMessage = getTranslation('payment.errors.createCheckoutSessionFailed', 'Failed to create checkout session');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
       return { success: false, message: errorMessage };
@@ -94,17 +89,14 @@ export const usePaymentStore = create((set, get) => ({
         set({ loading: false });
         // Only show toast if it's a new order, not a duplicate
         if (response.data.message.includes("order created")) {
-          toast.success("Payment successful! Your order has been placed.");
+          toast.success(getTranslation('payment.success', 'Payment successful! Your order has been placed.'));
         }
         return { success: true, data: response.data.data };
       } else {
         throw new Error("Failed to process payment success");
       }
     } catch (error) {
-      const errorMessage = 
-        error.response?.data?.message || 
-        error.message || 
-        "Failed to process payment success";
+      const errorMessage = getTranslation('payment.errors.processPaymentSuccessFailed', 'Failed to process payment success');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
       return { success: false, message: errorMessage };
@@ -138,7 +130,7 @@ export const usePaymentStore = create((set, get) => ({
     if (checkoutUrl) {
       window.location.href = checkoutUrl;
     } else {
-      toast.error("No checkout URL available");
+      toast.error(getTranslation('payment.errors.noCheckoutUrl', 'No checkout URL available'));
     }
   }
-})); 
+}));

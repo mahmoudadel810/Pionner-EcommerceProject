@@ -46,25 +46,30 @@ const SignUpPage = () => {
 
     if (name === "name") {
       if (!value.trim()) {
+        console.log(value);
+        
+        t('signUpPage.errors.nameRequired')
       } else if (value.trim().length < 2) {
+        newErrors.name = t('signUpPage.errors.nameTooShort');
       } else {
         delete newErrors.name;
       }
-      newErrors.name = t('signUpPage.errors.nameRequired');
     }
-    newErrors.name = t('signUpPage.errors.nameTooShort');
+    // 
 
     if (name === "email") {
       if (!value.trim()) {
+        t('signUpPage.errors.emailRequired')
       } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        t('signUpPage.errors.emailInvalid')
       } else if (value.length > 254) {
+         newErrors.email = t('signUpPage.errors.emailTooLong');
       } else {
         delete newErrors.email;
-        newErrors.email = t('signUpPage.errors.emailRequired');
+        
       }
-      newErrors.email = t('signUpPage.errors.emailInvalid');
     }
-    newErrors.email = t('signUpPage.errors.emailTooLong');
+    // 
 
     if (name === "phone") {
       if (!value.trim()) {
@@ -106,6 +111,10 @@ const SignUpPage = () => {
       }
     }
 
+    console.log(newErrors);
+    console.log(value);
+    
+    
     setErrors(newErrors);
   };
 

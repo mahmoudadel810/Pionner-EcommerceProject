@@ -80,6 +80,7 @@ const AdminDashboard = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [showOrderDetails, setShowOrderDetails] = useState(null);
   const [showUserDetails, setShowUserDetails] = useState(null);
+  const [showProductDetails, setShowProductDetails] = useState(null);
    //===================coupon code==>
   // const [showCouponForm, setShowCouponForm] = useState(false);
   // const [editingCoupon, setEditingCoupon] = useState(null);
@@ -286,10 +287,14 @@ const AdminDashboard = () => {
     try {
       const formData = new FormData();
       
+      // Debug: Log form data being sent
+      console.log('📝 Product form data:', productForm);
+      
       // Handle regular form fields
       Object.keys(productForm).forEach(key => {
         if (key !== 'images' && productForm[key] !== "") {
           formData.append(key, productForm[key]);
+          console.log(`📋 Added field: ${key} = ${productForm[key]}`);
         }
       });
       
@@ -297,22 +302,31 @@ const AdminDashboard = () => {
       if (productForm.images && productForm.images.length > 0) {
         productForm.images.forEach(file => {
           formData.append('images', file); // Use 'images' field name that server expects
+          console.log(`🖼️ Added image: ${file.name}`);
         });
       }
 
+      const endpoint = editingProduct 
+        ? buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.UPDATE(editingProduct._id))
+        : buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.CREATE);
+      
+      console.log(`🌐 Making ${editingProduct ? 'PUT' : 'POST'} request to:`, endpoint);
+
       if (editingProduct) {
-        await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.UPDATE.replace(":id", editingProduct._id)), formData ,{
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+        const response = await axios.put(endpoint, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log('✅ Product update response:', response.data);
         toast.success(t('admin.success.productUpdated'));
       } else {
-        await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.CREATE), formData ,{
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+        const response = await axios.post(endpoint, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log('✅ Product create response:', response.data);
         toast.success(t('admin.success.productCreated'));
       }
 
@@ -328,7 +342,14 @@ const AdminDashboard = () => {
       });
       fetchAllProducts();
     } catch (error) {
-      toast.error(t('admin.errors.failedToSaveProduct'));
+      console.error('❌ Product submit error:', error);
+      console.error('❌ Error response:', error.response?.data);
+      console.error('❌ Error status:', error.response?.status);
+      console.error('❌ Error message:', error.message);
+      
+      // Show more specific error message if available
+      const errorMessage = error.response?.data?.message || error.message || t('admin.errors.failedToSaveProduct');
+      toast.error(errorMessage);
     }
   };
  //===================coupon code==>
@@ -926,7 +947,7 @@ const AdminDashboard = () => {
                               <Trash2 size={16} />
                             </button>
                             <button
-                              onClick={() => setShowOrderDetails(product)}
+                              onClick={() => setShowProductDetails(product)}
                               className="p-2 text-green-500 hover:bg-green-500/10 rounded-lg transition-colors duration-300"
                               title={t("admin.products.view_details")}
                             >
@@ -1797,6 +1818,97 @@ const AdminDashboard = () => {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Product Details Modal */}
+        {showProductDetails && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold">{t("admin.products.product_details")}</h2>
+                <button
+                  onClick={() => setShowProductDetails(null)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <XCircle size={24} />
+                </button>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.name")}</h3>
+                    <p className="text-gray-900">{showProductDetails.name}</p>
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.category")}</h3>
+                    <p className="text-gray-900">{showProductDetails.category}</p>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.price")}</h3>
+                    <p className="text-gray-900">${showProductDetails.price}</p>
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.stock_quantity")}</h3>
+                    <p className="text-gray-900">{showProductDetails.stockQuantity}</p>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.description")}</h3>
+                  <p className="text-gray-900">{showProductDetails.description}</p>
+                </div>
+                
+                {showProductDetails.images && showProductDetails.images.length > 0 && (
+                  <div>
+                    <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.images")}</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      {showProductDetails.images.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image}
+                          alt={`Product ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-lg border"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                <div className="flex items-center justify-between pt-4 border-t">
+                  <div>
+                    <p className="text-sm text-gray-500">{t("admin.products.created_at")}: {new Date(showProductDetails.createdAt).toLocaleDateString()}</p>
+                    <p className="text-sm text-gray-500">{t("admin.products.updated_at")}: {new Date(showProductDetails.updatedAt).toLocaleDateString()}</p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={() => {
+                        setShowProductDetails(null);
+                        openProductForm(showProductDetails);
+                      }}
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center space-x-2"
+                    >
+                      <Edit size={16} />
+                      <span>{t("admin.products.edit")}</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowProductDetails(null);
+                        handleDeleteProduct(showProductDetails._id);
+                      }}
+                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 flex items-center space-x-2"
+                    >
+                      <Trash2 size={16} />
+                      <span>{t("admin.products.delete")}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

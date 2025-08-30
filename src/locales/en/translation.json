@@ -863,7 +863,10 @@
         "stock":"stock",
         "status":"status",
         "actions":"action"
-      }
+      },
+      "product_details": "Product Details",
+      "created_at": "Created At",
+      "updated_at": "Updated At"
 
     },
     "categories": {

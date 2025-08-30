@@ -58,7 +58,7 @@ const StripePaymentForm = ({ onSuccess, onError, returnUrl }) => {
 
   const addressElementOptions = {
     mode: "billing",
-    allowedCountries: ["US", "CA", "GB", "AU", "DE", "FR", "IT", "ES", "NL", "SA"],
+    allowedCountries: ["US", "CA", "GB", "AU", "DE", "FR", "IT", "ES", "NL", "SA"]
   };
 
   return (

@@ -834,7 +834,10 @@
         "stock":"القطعة",
         "status":"الحالة",
         "actions":"الافعال"
-      }
+      },
+      "product_details": "تفاصيل المنتج",
+      "created_at": "تاريخ الإنشاء",
+      "updated_at": "تاريخ التحديث"
     },
     "categories": {
       "management": "إدارة التصنيفات",

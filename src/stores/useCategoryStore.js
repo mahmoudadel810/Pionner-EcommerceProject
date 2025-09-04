@@ -27,7 +27,7 @@ export const useCategoryStore = create((set, get) => ({
       
       if (response.data && response.data.success) {
         set(prevState => ({
-          categories: [...prevState.categories, response.data.data],
+          categories: [...toArray(prevState.categories), response.data.data],
           loading: false,
         }));
         return { success: true, data: response.data.data };
@@ -123,7 +123,7 @@ export const useCategoryStore = create((set, get) => ({
       
       if (response.data && response.data.success) {
         set(prevState => ({
-          categories: prevState.categories.map(category =>
+          categories: toArray(prevState.categories).map(category =>
             category._id === categoryId ? response.data.data : category
           ),
           loading: false,
@@ -152,7 +152,7 @@ export const useCategoryStore = create((set, get) => ({
       
       if (response.data && response.data.success) {
         set(prevState => ({
-          categories: prevState.categories.filter(category => category._id !== categoryId),
+          categories: toArray(prevState.categories).filter(category => category._id !== categoryId),
           loading: false,
         }));
         return { success: true };
@@ -179,7 +179,7 @@ export const useCategoryStore = create((set, get) => ({
       
       if (response.data && response.data.success) {
         set(prevState => ({
-          categories: prevState.categories.map(category =>
+          categories: toArray(prevState.categories).map(category =>
             category._id === categoryId ? response.data.data : category
           ),
           loading: false,

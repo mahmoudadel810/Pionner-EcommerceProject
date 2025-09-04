@@ -134,7 +134,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     console.log("📋 Store categories updated:", storeCategories);
   }, [storeCategories]);
-  //  console.log("Using store categories:", storeCategories,categories);
+  console.log("Using store categories:", storeCategories,categories);
 
   const fetchData = async () => {
     try {

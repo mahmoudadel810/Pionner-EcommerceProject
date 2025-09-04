@@ -4,6 +4,9 @@ import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
 import { getTranslation } from "../utils/i18nUtils.js";
 
+// Ensure array safety for state updates
+const toArray = (value) => (Array.isArray(value) ? value : []);
+
 export const useCategoryStore = create((set, get) => ({
   categories: [],
   loading: false,

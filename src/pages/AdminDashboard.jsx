@@ -43,19 +43,20 @@ import { useCategoryStore } from "../stores/useCategoryStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
-import { categories } from "@/data/mockData";
+ 
 
 const AdminDashboard = () => {
   const { t } = useTranslation();
   const { products, fetchAllProducts, deleteProduct, loading } = useProductStore();
   const { 
-    categories: storeCategories, 
-    fetchAllCategories, 
     createCategory, 
     updateCategory, 
     deleteCategory,
     loading: categoryLoading 
   } = useCategoryStore();
+
+  // Local categories state (aligned with CategoriesPage fetching)
+  const [dashboardCategories, setDashboardCategories] = useState([]);
   
 // console.log(categories,storeCategories );
 
@@ -132,9 +133,8 @@ const AdminDashboard = () => {
 
   // Debug: Log categories when they change
   useEffect(() => {
-    console.log("📋 Store categories updated:", storeCategories);
-  }, [storeCategories]);
-  console.log("Using store categories:", storeCategories,categories);
+    console.log("📋 Dashboard categories updated:", dashboardCategories);
+  }, [dashboardCategories]);
 
   const fetchData = async () => {
     try {
@@ -187,14 +187,32 @@ const AdminDashboard = () => {
 
   const fetchCategories = async () => {
     try {
-      console.log("🔄 Fetching categories...");
-      const result = await fetchAllCategories();
-      // storeCategories= result
-      // console.log(result);
-      
-      console.log("✅ Categories fetched:", result);
+      console.log("🔄 Fetching categories (AdminDashboard, same as CategoriesPage)...");
+      const params = {
+        search: '',
+        sortBy: 'order',
+        sortOrder: 'asc',
+        page: '1',
+        limit: '1000'
+      };
+      const queryString = new URLSearchParams(params).toString();
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_ALL) + `?${queryString}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const responseData = await response.json();
+      if (responseData.success) {
+        const data = responseData.data;
+        const items = data?.data || data;
+        setDashboardCategories(Array.isArray(items) ? items : []);
+        console.log("✅ Categories fetched:", items?.length || 0);
+      } else {
+        setDashboardCategories([]);
+        console.warn("⚠️ Categories fetch not successful:", responseData);
+      }
     } catch (error) {
       console.error("❌ Failed to fetch categories:", error);
+      setDashboardCategories([]);
     }
   };
  //===================coupon code==>
@@ -548,10 +566,10 @@ const AdminDashboard = () => {
     return true;
   });
 
-  // Ensure storeCategories is always an array
-  const categoriesArray = Array.isArray(storeCategories) ? storeCategories : [];
+  // Ensure dashboardCategories is always an array
+  const categoriesArray = Array.isArray(dashboardCategories) ? dashboardCategories : [];
   // 
-  console.log(storeCategories,"categories");
+  console.log(dashboardCategories,"categories");
   // categoriesArray.map(cat=>{
   //   console.log(cat.name);
     

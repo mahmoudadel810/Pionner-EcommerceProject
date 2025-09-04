@@ -405,11 +405,11 @@ const AdminDashboard = () => {
 
   const openProductForm = (product = null) => {
     // Ensure categories are loaded when opening the product form
-    if (!Array.isArray(storeCategories) || storeCategories.length === 0) {
-      console.log(storeCategories);
+    // if (!Array.isArray(storeCategories) || storeCategories.length === 0) {
+    //   console.log(storeCategories);
       
-      fetchAllCategories();
-    }
+    //   fetchAllCategories();
+    // }
     
     if (product) {
       setEditingProduct(product);

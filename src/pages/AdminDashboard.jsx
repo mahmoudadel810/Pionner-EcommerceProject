@@ -128,10 +128,6 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchData();
-    
-
-    console.log(fetchAllCategories());
-    
   }, []);
 
   // Debug: Log categories when they change
@@ -563,8 +559,8 @@ const AdminDashboard = () => {
   
   const filteredCategories = categoriesArray.filter(
     (category) =>
-      category.name && category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      category.description && category.description.toLowerCase().includes(searchQuery.toLowerCase())
+      (category.name && category.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (category.description && category.description.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   const tabs = [
@@ -1037,14 +1033,11 @@ const AdminDashboard = () => {
                                 className="w-12 h-12 rounded-lg object-cover"
                               />
                             )}
-                            {/* <div>
+                            <div>
                               <p className="font-medium text-foreground">
                                 {category.name}
                               </p>
-                              <p className="text-sm text-muted-foreground">
-                                {t("admin.categories.slug")}: {category.slug}
-                              </p>
-                            </div> */}
+                            </div>
                           </div>
                         </td>
                         <td className="py-3 px-4 text-foreground">

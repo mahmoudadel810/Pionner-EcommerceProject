@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
@@ -18,7 +18,9 @@ import { buildApiUrl } from "../config/api.js";
 import { useTranslation } from "react-i18next";
 import { handleImageError } from "../lib/imageFallback";
 import { formatCurrency } from "../lib/currency";
-import { categoryLabel } from "../lib/categories";
+import { STORE_CATEGORIES, categoryLabel } from "../lib/categories";
+import { productImage } from "../lib/productImage";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 // The API has no price filter, so the selected range is applied to the returned page.
 const isInPriceRange = (price, range) => {
@@ -28,267 +30,36 @@ const isInPriceRange = (price, range) => {
   return price >= min && price <= max;
 };
 
-const SearchPage = () => {
+const SORT_VALUES = ["relevance", "name-asc", "name-desc", "price-asc", "price-desc", "createdAt-desc"];
+const PRICE_VALUES = ["all", "0-100", "100-500", "500-1000", "1000+"];
+const PAGE_SIZES = ["6", "12", "24", "48"];
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
+};
+
+const SearchResultCard = ({ product, inWishlist, inCart, onToggleWishlist, onToggleCart }) => {
   const { t } = useTranslation();
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const query = searchParams.get('q') || '';
-  
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(query);
-  const [sortBy, setSortBy] = useState("relevance");
-  const [viewMode, setViewMode] = useState("grid");
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const [priceRange, setPriceRange] = useState("all");
-  const [searchTimeout, setSearchTimeout] = useState(null);
-  
-  // Pagination state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalItems, setTotalItems] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(12);
-  const [paginationInfo, setPaginationInfo] = useState({
-    currentPage: 1,
-    totalPages: 1,
-    totalItems: 0,
-    hasNextPage: false,
-    hasPrevPage: false
-  });
 
-  const { toggleCart, isInCart } = useCartStore();
-  const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
-  const { user } = useUserStore();
-
-  // Debounced search function
-  const debouncedSearch = useCallback((query) => {
-    if (searchTimeout) {
-      clearTimeout(searchTimeout);
-    }
-    
-    const timeout = setTimeout(() => {
-      fetchProducts(query, 1);
-    }, 300);
-    
-    setSearchTimeout(timeout);
-  }, [searchTimeout]);
-
-  // Fetch products on mount and when query changes
-  useEffect(() => {
-    if (query) {
-      setSearchQuery(query);
-      fetchProducts(query, 1);
-    }
-  }, [query]);
-
-  // Fetch when filters change
-  useEffect(() => {
-    if (query) {
-      const timeoutId = setTimeout(() => {
-        fetchProducts(query, 1);
-      }, 300);
-      return () => clearTimeout(timeoutId);
-    }
-  }, [sortBy, categoryFilter, priceRange, itemsPerPage]);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (searchTimeout) {
-        clearTimeout(searchTimeout);
-      }
-    };
-  }, [searchTimeout]);
-
-  const fetchProducts = async (searchTerm = searchQuery, page = currentPage) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const params = {
-        search: searchTerm.trim(),
-        page: page.toString(),
-        limit: itemsPerPage.toString(),
-        ...(categoryFilter && categoryFilter !== "all" && { category: categoryFilter }),
-      };
-      if (sortBy !== "relevance") {
-        const [field, order] = sortBy.split("-");
-        params.sortBy = field;
-        params.sortOrder = order;
-      }
-
-      const queryString = new URLSearchParams(params).toString();
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_ALL) + `?${queryString}`);
-
-      if (response.data.success) {
-        const items = Array.isArray(response.data.data) ? response.data.data : [];
-        setProducts(items.filter((product) => isInPriceRange(product.price, priceRange)));
-
-        const pagination = response.data.pagination;
-        if (pagination) {
-          const paginationData = {
-            currentPage: pagination.currentPage || page,
-            totalPages: pagination.totalPages || 1,
-            totalItems: pagination.totalCount || 0,
-            hasNextPage: pagination.hasNextPage || false,
-            hasPrevPage: pagination.hasPrevPage || false
-          };
-          setPaginationInfo(paginationData);
-          setCurrentPage(paginationData.currentPage);
-          setTotalPages(paginationData.totalPages);
-          setTotalItems(paginationData.totalItems);
-        }
-      } else {
-        setError(t('search.errors.fetchFailed'));
-      }
-    } catch (error) {
-      setError(error.response?.data?.message || t('search.errors.fetchFailed'));
-      toast.error(t('search.errors.loadFailed'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
-
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchQuery(value);
-    setCurrentPage(1);
-    debouncedSearch(value);
-  };
-
-  const clearSearch = () => {
-    setSearchQuery("");
-    setCurrentPage(1);
-    navigate("/search");
-  };
-
-  const handleSortChange = (value) => {
-    setSortBy(value);
-    setCurrentPage(1);
-  };
-
-  const handleCategoryFilterChange = (value) => {
-    setCategoryFilter(value);
-    setCurrentPage(1);
-  };
-
-  const handlePriceRangeChange = (value) => {
-    setPriceRange(value);
-    setCurrentPage(1);
-  };
-
-  const handleRefresh = () => {
-    setCurrentPage(1);
-    fetchProducts(query, 1);
-  };
-
-  // Pagination handlers
-  const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-      fetchProducts(query, page);
-    }
-  };
-
-  const goToNextPage = () => {
-    if (paginationInfo.hasNextPage) {
-      goToPage(currentPage + 1);
-    }
-  };
-
-  const goToPrevPage = () => {
-    if (paginationInfo.hasPrevPage) {
-      goToPage(currentPage - 1);
-    }
-  };
-
-  const goToFirstPage = () => {
-    goToPage(1);
-  };
-
-  const goToLastPage = () => {
-    goToPage(totalPages);
-  };
-
-  const handleItemsPerPageChange = (value) => {
-    setItemsPerPage(parseInt(value));
-    setCurrentPage(1);
-  };
-
-  const handleToggleCart = async (product) => {
-    if (!user) {
-      toast.error(t('search.errors.loginRequired'));
-      return;
-    }
-
-    try {
-      const result = await toggleCart(product);
-      if (result.success) {
-        // Success message is handled in the store
-      } else {
-        toast.error(result.message || t('search.errors.cartUpdateFailed'));
-      }
-    } catch {
-      toast.error(t('search.errors.cartUpdateFailed'));
-    }
-  };
-
-  const handleWishlistToggle = async (product) => {
-    if (!user) {
-      toast.error(t('search.errors.loginRequired'));
-      return;
-    }
-
-    try {
-      const isInWishlist = wishlist.some(item => item._id === product._id);
-      if (isInWishlist) {
-        await removeFromWishlist(product._id);
-      } else {
-        await addToWishlist(product);
-      }
-    } catch {
-      toast.error(t('search.errors.wishlistUpdateFailed'));
-    }
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.3
-      }
-    }
-  };
-
-  const ProductCard = ({ product }) => (
+  return (
     <motion.div variants={itemVariants}>
-      <Card className="group h-full cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 hover:border-blue-500/20 bg-white/80 backdrop-blur-sm">
+      <Link to={`/product/${product._id}`} className="block h-full">
+      <Card className="group h-full transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 hover:border-blue-500/20 bg-white/80 backdrop-blur-sm">
         <CardHeader className="p-0">
           <div className="relative overflow-hidden rounded-t-lg">
             <img
-              src={product.image}
+              src={productImage(product.image, 480)}
               alt={product.name}
+              width={480}
+              height={192}
               loading="lazy"
+              decoding="async"
               className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
               onError={handleImageError}
             />
@@ -298,27 +69,23 @@ const SearchPage = () => {
                 variant="ghost"
                 size="sm"
                 onClick={(e) => {
+                  e.preventDefault();
                   e.stopPropagation();
-                  handleWishlistToggle(product);
+                  onToggleWishlist(product);
                 }}
                 className="w-8 h-8 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-0"
               >
-                <Heart 
-                  size={16} 
-                  className={wishlist.some(item => item._id === product._id) ? "fill-red-500 text-red-500" : ""} 
+                <Heart
+                  size={16}
+                  className={inWishlist ? "fill-red-500 text-red-500" : ""}
                 />
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  navigate(`/product/${product._id}`);
-                }}
-                className="w-8 h-8 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-0"
+              <span
+                aria-hidden="true"
+                className="w-8 h-8 inline-flex items-center justify-center rounded-md bg-white/20 backdrop-blur-sm text-white"
               >
                 <Eye size={16} />
-              </Button>
+              </span>
             </div>
             <div className="absolute bottom-4 start-4 end-4">
               <h3 className="text-white font-bold text-lg mb-2 line-clamp-2">
@@ -354,33 +121,27 @@ const SearchPage = () => {
               )}
             </div>
             <Button
-              variant={isInCart(product._id) ? "destructive" : "default"}
+              variant={inCart ? "destructive" : "default"}
               size="sm"
               onClick={(e) => {
+                e.preventDefault();
                 e.stopPropagation();
-                handleToggleCart(product);
+                onToggleCart(product);
               }}
               className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
             >
-              {isInCart(product._id) ? (
-                <>
-                  <ShoppingCart size={16} className="me-1" />
-                  {t('home.remove_from_cart')}
-                </>
-              ) : (
-                <>
-                  <ShoppingCart size={16} className="me-1" />
-                  {t('home.add_to_cart')}
-                </>
-              )}
+              <ShoppingCart size={16} className="me-1" />
+              {inCart ? t('home.remove_from_cart') : t('home.add_to_cart')}
             </Button>
           </div>
         </CardContent>
       </Card>
+      </Link>
     </motion.div>
   );
+};
 
-  const LoadingSkeleton = () => (
+const LoadingSkeleton = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {Array.from({ length: 8 }).map((_, index) => (
         <Card key={index} className="h-full bg-white/80 backdrop-blur-sm">
@@ -399,7 +160,212 @@ const SearchPage = () => {
         </Card>
       ))}
     </div>
-  );
+);
+
+const SearchPage = () => {
+  const { t } = useTranslation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  // Every search setting lives in the URL so refresh, Back and shared links reproduce the results.
+  const query = searchParams.get('q') || '';
+  const sortBy = SORT_VALUES.includes(searchParams.get('sort')) ? searchParams.get('sort') : "relevance";
+  const categoryFilter = searchParams.get('category') || "all";
+  const priceRange = PRICE_VALUES.includes(searchParams.get('price')) ? searchParams.get('price') : "all";
+  const itemsPerPage = PAGE_SIZES.includes(searchParams.get('limit')) ? Number(searchParams.get('limit')) : 12;
+  const requestedPage = Math.max(1, Number.parseInt(searchParams.get('page'), 10) || 1);
+
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(Boolean(query));
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(query);
+  const [viewMode, setViewMode] = useState("grid");
+  const [reloadKey, setReloadKey] = useState(0);
+  const typingTimer = useRef(null);
+  const [paginationInfo, setPaginationInfo] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 0,
+    hasNextPage: false,
+    hasPrevPage: false
+  });
+  const { currentPage, totalPages, totalItems } = paginationInfo;
+
+  const { toggleCart, isInCart } = useCartStore();
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
+  const { user } = useUserStore();
+
+  // Keep the box in step with the URL (Back/Forward, navbar searches).
+  useEffect(() => {
+    setSearchQuery(query);
+  }, [query]);
+
+  useEffect(() => () => clearTimeout(typingTimer.current), []);
+
+  useEffect(() => {
+    if (!query) {
+      setProducts([]);
+      setLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+
+    const params = {
+      search: query.trim(),
+      page: String(requestedPage),
+      limit: String(itemsPerPage),
+      ...(categoryFilter !== "all" && { category: categoryFilter }),
+    };
+    if (sortBy !== "relevance") {
+      const [field, order] = sortBy.split("-");
+      params.sortBy = field;
+      params.sortOrder = order;
+    }
+
+    axios
+      .get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_ALL) + `?${new URLSearchParams(params)}`)
+      .then((response) => {
+        if (cancelled) return;
+        if (!response.data.success) {
+          setError(t('search.errors.fetchFailed'));
+          return;
+        }
+        const items = Array.isArray(response.data.data) ? response.data.data : [];
+        setProducts(items.filter((product) => isInPriceRange(product.price, priceRange)));
+        const pagination = response.data.pagination;
+        setPaginationInfo({
+          currentPage: pagination?.currentPage || requestedPage,
+          totalPages: pagination?.totalPages || 1,
+          totalItems: pagination?.totalCount || items.length,
+          hasNextPage: pagination?.hasNextPage || false,
+          hasPrevPage: pagination?.hasPrevPage || false,
+        });
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setError(err.response?.data?.message || t('search.errors.fetchFailed'));
+        toast.error(t('search.errors.loadFailed'));
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [query, sortBy, categoryFilter, priceRange, itemsPerPage, requestedPage, reloadKey, t]);
+
+  // Filter changes replace the current entry and start again from page 1.
+  const updateParams = (changes, { push = false } = {}) => {
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        for (const [key, value] of Object.entries(changes)) {
+          if (value === null || value === undefined || value === "") next.delete(key);
+          else next.set(key, String(value));
+        }
+        return next;
+      },
+      { replace: !push }
+    );
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    clearTimeout(typingTimer.current);
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    clearTimeout(typingTimer.current);
+    if (!value.trim()) return;
+    typingTimer.current = setTimeout(() => {
+      updateParams({ q: value.trim(), page: null });
+    }, 400);
+  };
+
+  const clearSearch = () => {
+    clearTimeout(typingTimer.current);
+    setSearchQuery("");
+    navigate("/search");
+  };
+
+  const handleSortChange = (value) => updateParams({ sort: value === "relevance" ? null : value, page: null });
+  const handleCategoryFilterChange = (value) => updateParams({ category: value === "all" ? null : value, page: null });
+  const handlePriceRangeChange = (value) => updateParams({ price: value === "all" ? null : value, page: null });
+  const handleItemsPerPageChange = (value) => updateParams({ limit: value === "12" ? null : value, page: null });
+
+  const handleRefresh = () => setReloadKey((key) => key + 1);
+
+  // Page changes are history entries, so Back returns to the previous page of results.
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      updateParams({ page: page === 1 ? null : page }, { push: true });
+    }
+  };
+
+  const goToNextPage = () => {
+    if (paginationInfo.hasNextPage) {
+      goToPage(currentPage + 1);
+    }
+  };
+
+  const goToPrevPage = () => {
+    if (paginationInfo.hasPrevPage) {
+      goToPage(currentPage - 1);
+    }
+  };
+
+  const goToFirstPage = () => {
+    goToPage(1);
+  };
+
+  const goToLastPage = () => {
+    goToPage(totalPages);
+  };
+
+  const handleToggleCart = async (product) => {
+    if (!user) {
+      toast.error(t('search.errors.loginRequired'));
+      return;
+    }
+
+    try {
+      const result = await toggleCart(product);
+      if (!result.success) {
+        toast.error(result.message || t('search.errors.cartUpdateFailed'));
+      }
+    } catch {
+      toast.error(t('search.errors.cartUpdateFailed'));
+    }
+  };
+
+  const handleWishlistToggle = async (product) => {
+    if (!user) {
+      toast.error(t('search.errors.loginRequired'));
+      return;
+    }
+
+    try {
+      const isInWishlist = wishlist.some(item => item._id === product._id);
+      if (isInWishlist) {
+        await removeFromWishlist(product._id);
+      } else {
+        await addToWishlist(product);
+      }
+    } catch {
+      toast.error(t('search.errors.wishlistUpdateFailed'));
+    }
+  };
+
+  useDocumentTitle(query ? t('titles.searchFor', { query }) : null);
 
   if (error) {
     return (
@@ -528,7 +494,6 @@ const SearchPage = () => {
                         <SelectItem value="name-desc">{t('search.filters.nameZA')}</SelectItem>
                         <SelectItem value="price-asc">{t('search.filters.priceLowHigh')}</SelectItem>
                         <SelectItem value="price-desc">{t('search.filters.priceHighLow')}</SelectItem>
-                        <SelectItem value="rating-desc">{t('search.filters.highestRated')}</SelectItem>
                         <SelectItem value="createdAt-desc">{t('search.filters.newest')}</SelectItem>
                       </SelectContent>
                     </Select>
@@ -540,11 +505,11 @@ const SearchPage = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">{t('search.filters.allCategories')}</SelectItem>
-                        <SelectItem value="smartphones">{t('categories.smartphones')}</SelectItem>
-                        <SelectItem value="laptops">{t('categories.laptops')}</SelectItem>
-                        <SelectItem value="gaming">{t('categories.gaming')}</SelectItem>
-                        <SelectItem value="audio">{t('categories.audio')}</SelectItem>
-                        <SelectItem value="tablets">{t('categories.tablets')}</SelectItem>
+                        {STORE_CATEGORIES.map((category) => (
+                          <SelectItem key={category.key} value={category.name}>
+                            {t(`categories.${category.key}`)}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
 
@@ -632,10 +597,7 @@ const SearchPage = () => {
                   {t('search.noProductsMatch', { query })}
                 </p>
                 <Button
-                  onClick={() => {
-                    setSearchQuery("");
-                    navigate("/search");
-                  }}
+                  onClick={clearSearch}
                   className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"
                 >
                   {t('search.clearSearch')}
@@ -646,10 +608,19 @@ const SearchPage = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+                className={`grid gap-8 ${
+                  viewMode === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1 max-w-2xl mx-auto"
+                }`}
               >
                 {products.map((product) => (
-                  <ProductCard key={product._id} product={product} />
+                  <SearchResultCard
+                    key={product._id}
+                    product={product}
+                    inWishlist={wishlist.some(item => item._id === product._id)}
+                    inCart={isInCart(product._id)}
+                    onToggleWishlist={handleWishlistToggle}
+                    onToggleCart={handleToggleCart}
+                  />
                 ))}
               </motion.div>
             )}

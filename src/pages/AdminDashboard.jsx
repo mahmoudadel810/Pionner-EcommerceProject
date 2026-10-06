@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Plus,
@@ -52,8 +53,14 @@ const emptyCouponForm = {
   expiryDate: "",
 };
 
+const TAB_IDS = ["overview", "products", "categories", "orders", "users", "coupons", "analytics"];
+
 const AdminDashboard = () => {
   const { t } = useTranslation();
+  // The open tab is kept in the URL so a refresh or a shared link reopens it.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = TAB_IDS.includes(searchParams.get("tab")) ? searchParams.get("tab") : "overview";
+  const setActiveTab = (tab) => setSearchParams(tab === "overview" ? {} : { tab }, { replace: true });
   const { products, fetchAllProducts, deleteProduct } = useProductStore();
   const { 
     createCategory, 
@@ -74,7 +81,6 @@ const AdminDashboard = () => {
     totalRevenue: 0,
     totalCustomers: 0,
   });
-  const [activeTab, setActiveTab] = useState("overview");
   const [searchQuery, setSearchQuery] = useState("");
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -103,7 +109,7 @@ const AdminDashboard = () => {
     try {
       setIsLoading(true);
       await Promise.all([
-        fetchAllProducts(),
+        fetchAllProducts({ force: true }),
         fetchContacts(),
         fetchOrders(),
         fetchUsers(),
@@ -288,7 +294,7 @@ const AdminDashboard = () => {
       setShowCreateForm(false);
       setEditingProduct(null);
       setProductForm(emptyProductForm);
-      fetchAllProducts();
+      fetchAllProducts({ force: true });
     } catch (error) {
       toast.error(error.response?.data?.message || error.message || t('admin.errors.failedToSaveProduct'));
     }

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useParams, useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader } from "../components/ui/card";
@@ -19,76 +19,327 @@ import { buildApiUrl } from "../config/api.js";
 import { handleImageError } from "../lib/imageFallback";
 import { formatCurrency } from "../lib/currency";
 import { categoryLabel } from "../lib/categories";
+import { productImage } from "../lib/productImage";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import NotFoundPage from "./NotFoundPage";
+
+const SORT_VALUES = ["name-asc", "name-desc", "price-asc", "price-desc", "createdAt-desc", "createdAt-asc"];
+const PAGE_SIZE = 12;
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
+const ProductCard = ({ product, inWishlist: isInWishlist, inCart, onToggleWishlist, onToggleCart }) => {
+  const { t } = useTranslation();
+
+  return (
+    <motion.div variants={itemVariants}>
+      <Card className="group h-full transition-all duration-300 hover:shadow-lg hover:scale-105 border-2 hover:border-primary/20">
+        <CardHeader className="p-0">
+          <div className="relative overflow-hidden rounded-t-lg">
+            <Link to={`/product/${product._id}`}>
+              <img
+                src={productImage(product.image, 480)}
+                alt={product.name}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+                onError={handleImageError}
+              />
+            </Link>
+            <div className="absolute top-2 end-2">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-8 w-8 p-0 bg-white/80 hover:bg-white"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onToggleWishlist(product);
+                }}
+              >
+                <Heart 
+                  className={`h-4 w-4 ${isInWishlist ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
+                />
+              </Button>
+            </div>
+            {product.isFeatured && (
+              <div className="absolute top-2 start-2">
+                <Badge variant="destructive" className="text-xs">
+                  {t('categoryProducts.badges.featured')}
+                </Badge>
+              </div>
+            )}
+          </div>
+        </CardHeader>
+        <CardContent className="p-4">
+          <Link to={`/product/${product._id}`}>
+            <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+              <bdi>{product.name}</bdi>
+            </h3>
+          </Link>
+          
+          {/* Category Badge */}
+          <div className="mb-2">
+            <Badge variant="outline" className="text-xs">
+              {categoryLabel(t, product.categoryId?.name || product.category)}
+            </Badge>
+          </div>
+
+          <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
+            <bdi>{product.description}</bdi>
+          </p>
+
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-1">
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <span className="text-sm font-medium">{(product.averageRating || 0).toFixed(1)}</span>
+              <span className="text-xs text-muted-foreground">({product.reviewCount || 0})</span>
+            </div>
+            <span className="text-lg font-bold text-primary">
+              {formatCurrency(product.price)}
+            </span>
+          </div>
+
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onToggleCart(product);
+            }}
+            className={`w-full ${
+              inCart
+                ? "bg-red-500 hover:bg-red-600"
+                : ""
+            }`}
+            size="sm"
+          >
+            <ShoppingCart className="h-4 w-4 me-2" />
+            {inCart ? t('categoryProducts.buttons.removeFromCart') : t('categoryProducts.buttons.addToCart')}
+          </Button>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
+
+const ProductListItem = ({ product, inWishlist: isInWishlist, inCart, onToggleWishlist, onToggleCart }) => {
+  const { t } = useTranslation();
+
+  return (
+    <motion.div variants={itemVariants}>
+      <Card className="group transition-all duration-300 hover:shadow-md hover:border-primary/20">
+        <CardContent className="p-6">
+          <div className="flex items-center gap-4">
+            <Link to={`/product/${product._id}`} className="relative w-32 h-32 flex-shrink-0">
+              <img
+                src={productImage(product.image, 480)}
+                alt={product.name}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover rounded-lg"
+                onError={handleImageError}
+              />
+              {product.isFeatured && (
+                <Badge variant="destructive" className="absolute top-2 start-2 text-xs">
+                  {t('categoryProducts.badges.featured')}
+                </Badge>
+              )}
+            </Link>
+            
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex-1">
+                  <Link to={`/product/${product._id}`}>
+                    <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
+                      <bdi>{product.name}</bdi>
+                    </h3>
+                  </Link>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="outline" className="text-xs">
+                      {categoryLabel(t, product.categoryId?.name || product.category)}
+                    </Badge>
+                    <div className="flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                      <span className="text-xs font-medium">{(product.averageRating || 0).toFixed(1)}</span>
+                      <span className="text-xs text-muted-foreground">({product.reviewCount || 0})</span>
+                    </div>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-8 w-8 p-0"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onToggleWishlist(product);
+                  }}
+                >
+                  <Heart 
+                    className={`h-4 w-4 ${isInWishlist ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
+                  />
+                </Button>
+              </div>
+              
+              <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
+                <bdi>{product.description}</bdi>
+              </p>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-xl font-bold text-primary">
+                  {formatCurrency(product.price)}
+                </span>
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onToggleCart(product);
+                  }}
+                  className={inCart ? "bg-red-500 hover:bg-red-600" : ""}
+                  size="sm"
+                >
+                  <ShoppingCart className="h-4 w-4 me-2" />
+                  {inCart ? t('categoryProducts.buttons.removeFromCart') : t('categoryProducts.buttons.addToCart')}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
 
 const CategoryProductsPage = () => {
   const { t } = useTranslation();
   const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get("q") || "";
+  const sortValue = SORT_VALUES.includes(searchParams.get("sort")) ? searchParams.get("sort") : "createdAt-desc";
+  const [sortBy, sortOrder] = sortValue.split("-");
+  const currentPage = Math.max(1, Number.parseInt(searchParams.get("page"), 10) || 1);
+
   const [category, setCategory] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("createdAt");
-  const [sortOrder, setSortOrder] = useState("desc");
+  const [notFound, setNotFound] = useState(false);
+  const [searchInput, setSearchInput] = useState(searchQuery);
   const [viewMode, setViewMode] = useState("grid");
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [reloadKey, setReloadKey] = useState(0);
+  const typingTimer = useRef(null);
 
   const { user } = useUserStore();
   const { toggleCart, isInCart } = useCartStore();
   const { addToWishlist, removeFromWishlist, wishlist } = useWishlistStore();
 
+  useDocumentTitle(category ? categoryLabel(t, category.name) : null);
+
   useEffect(() => {
-    fetchCategoryAndProducts();
-  }, [id, searchQuery, sortBy, sortOrder, currentPage]);
+    setSearchInput(searchQuery);
+  }, [searchQuery]);
 
-  const fetchCategoryAndProducts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+  useEffect(() => () => clearTimeout(typingTimer.current), []);
 
-      // Fetch category details
-      const categoryResponse = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_BY_ID(id)));
-      if (categoryResponse.data.success) {
-        setCategory(categoryResponse.data.data);
-      }
+  useEffect(() => {
+    let cancelled = false;
+    setCategory(null);
+    setNotFound(false);
+    axios
+      .get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_BY_ID(id)))
+      .then((response) => {
+        if (!cancelled && response.data.success) setCategory(response.data.data);
+      })
+      .catch((err) => {
+        // 400 is a malformed id, 404 an unknown or inactive category.
+        if (!cancelled && [400, 404].includes(err.response?.status)) setNotFound(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
 
-      // Fetch products for this category
-      const params = new URLSearchParams({
-        page: currentPage,
-        limit: 12,
-        sortBy,
-        sortOrder,
-        ...(searchQuery && { search: searchQuery })
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+
+    const params = new URLSearchParams({
+      page: currentPage,
+      limit: PAGE_SIZE,
+      sortBy,
+      sortOrder,
+      ...(searchQuery && { search: searchQuery })
+    });
+
+    axios
+      .get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_PRODUCTS_BY_ID(id)) + `?${params}`)
+      .then((response) => {
+        if (cancelled) return;
+        if (response.data.success) {
+          setProducts(response.data.data.data || response.data.data);
+          setTotalPages(response.data.pagination?.totalPages || 1);
+        } else {
+          setError(t('categoryProducts.errors.fetchFailed'));
+        }
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        if ([400, 404].includes(err.response?.status)) {
+          setNotFound(true);
+          return;
+        }
+        setError(err.response?.data?.message || t('categoryProducts.errors.fetchFailed'));
+        toast.error(t('categoryProducts.toast.loadFailed'));
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
       });
 
-      const productsResponse = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_PRODUCTS_BY_ID(id)) + `?${params}`);
-      
-      if (productsResponse.data.success) {
-        setProducts(productsResponse.data.data.data || productsResponse.data.data);
-        setTotalPages(productsResponse.data.pagination?.totalPages || 1);
-      } else {
-        setError(t('categoryProducts.errors.fetchFailed'));
-      }
-    } catch (error) {
-      setError(error.response?.data?.message || t('categoryProducts.errors.fetchFailed'));
-      toast.error(t('categoryProducts.toast.loadFailed'));
-    } finally {
-      setLoading(false);
-    }
+    return () => {
+      cancelled = true;
+    };
+  }, [id, searchQuery, sortBy, sortOrder, currentPage, reloadKey, t]);
+
+  const updateParams = (changes, { push = false } = {}) => {
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        for (const [key, value] of Object.entries(changes)) {
+          if (value) next.set(key, String(value));
+          else next.delete(key);
+        }
+        return next;
+      },
+      { replace: !push }
+    );
   };
 
   const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-    setCurrentPage(1);
+    const value = e.target.value;
+    setSearchInput(value);
+    clearTimeout(typingTimer.current);
+    typingTimer.current = setTimeout(() => updateParams({ q: value.trim(), page: null }), 400);
   };
 
-  const handleSortChange = (value) => {
-    const [field, order] = value.split("-");
-    setSortBy(field);
-    setSortOrder(order);
-    setCurrentPage(1);
+  const clearSearch = () => {
+    clearTimeout(typingTimer.current);
+    setSearchInput("");
+    updateParams({ q: null, page: null });
   };
+
+  const handleSortChange = (value) => updateParams({ sort: value === "createdAt-desc" ? null : value, page: null });
+
+  const setCurrentPage = (page) => updateParams({ page: page > 1 ? page : null }, { push: true });
 
   const handleToggleCart = async (product) => {
     if (!user) {
@@ -126,200 +377,12 @@ const CategoryProductsPage = () => {
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
-
-  const ProductCard = ({ product }) => {
-    const isInWishlist = wishlist.some(item => item._id === product._id);
-
-    return (
-      <motion.div variants={itemVariants}>
-        <Card className="group h-full cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 border-2 hover:border-primary/20">
-          <CardHeader className="p-0">
-            <div className="relative overflow-hidden rounded-t-lg">
-              <Link to={`/product/${product._id}`}>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-                  onError={handleImageError}
-                />
-              </Link>
-              <div className="absolute top-2 end-2">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="h-8 w-8 p-0 bg-white/80 hover:bg-white"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleWishlistToggle(product);
-                  }}
-                >
-                  <Heart 
-                    className={`h-4 w-4 ${isInWishlist ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
-                  />
-                </Button>
-              </div>
-              {product.isFeatured && (
-                <div className="absolute top-2 start-2">
-                  <Badge variant="destructive" className="text-xs">
-                    {t('categoryProducts.badges.featured')}
-                  </Badge>
-                </div>
-              )}
-            </div>
-          </CardHeader>
-          <CardContent className="p-4">
-            <Link to={`/product/${product._id}`}>
-              <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                <bdi>{product.name}</bdi>
-              </h3>
-            </Link>
-            
-            {/* Category Badge */}
-            <div className="mb-2">
-              <Badge variant="outline" className="text-xs">
-                {categoryLabel(t, product.categoryId?.name || product.category)}
-              </Badge>
-            </div>
-
-            <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
-              <bdi>{product.description}</bdi>
-            </p>
-
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span className="text-sm font-medium">{(product.averageRating || 0).toFixed(1)}</span>
-                <span className="text-xs text-muted-foreground">({product.reviewCount || 0})</span>
-              </div>
-              <span className="text-lg font-bold text-primary">
-                {formatCurrency(product.price)}
-              </span>
-            </div>
-
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleToggleCart(product);
-              }}
-              className={`w-full ${
-                isInCart(product._id)
-                  ? "bg-red-500 hover:bg-red-600"
-                  : ""
-              }`}
-              size="sm"
-            >
-              <ShoppingCart className="h-4 w-4 me-2" />
-              {isInCart(product._id) ? t('categoryProducts.buttons.removeFromCart') : t('categoryProducts.buttons.addToCart')}
-            </Button>
-          </CardContent>
-        </Card>
-      </motion.div>
-    );
-  };
-
-  const ProductListItem = ({ product }) => {
-    const isInWishlist = wishlist.some(item => item._id === product._id);
-
-    return (
-      <motion.div variants={itemVariants}>
-        <Card className="group cursor-pointer transition-all duration-300 hover:shadow-md hover:border-primary/20">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <Link to={`/product/${product._id}`} className="relative w-32 h-32 flex-shrink-0">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover rounded-lg"
-                  onError={handleImageError}
-                />
-                {product.isFeatured && (
-                  <Badge variant="destructive" className="absolute top-2 start-2 text-xs">
-                    {t('categoryProducts.badges.featured')}
-                  </Badge>
-                )}
-              </Link>
-              
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1">
-                    <Link to={`/product/${product._id}`}>
-                      <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
-                        <bdi>{product.name}</bdi>
-                      </h3>
-                    </Link>
-                    <div className="flex items-center gap-2 mb-2">
-                      <Badge variant="outline" className="text-xs">
-                        {categoryLabel(t, product.categoryId?.name || product.category)}
-                      </Badge>
-                      <div className="flex items-center gap-1">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs font-medium">{(product.averageRating || 0).toFixed(1)}</span>
-                        <span className="text-xs text-muted-foreground">({product.reviewCount || 0})</span>
-                      </div>
-                    </div>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 w-8 p-0"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleWishlistToggle(product);
-                    }}
-                  >
-                    <Heart 
-                      className={`h-4 w-4 ${isInWishlist ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} 
-                    />
-                  </Button>
-                </div>
-                
-                <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
-                  <bdi>{product.description}</bdi>
-                </p>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-xl font-bold text-primary">
-                    {formatCurrency(product.price)}
-                  </span>
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleToggleCart(product);
-                    }}
-                    className={isInCart(product._id) ? "bg-red-500 hover:bg-red-600" : ""}
-                    size="sm"
-                  >
-                    <ShoppingCart className="h-4 w-4 me-2" />
-                    {isInCart(product._id) ? t('categoryProducts.buttons.removeFromCart') : t('categoryProducts.buttons.addToCart')}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-    );
-  };
+  const cardProps = (product) => ({
+    inWishlist: wishlist.some(item => item._id === product._id),
+    inCart: isInCart(product._id),
+    onToggleWishlist: handleWishlistToggle,
+    onToggleCart: handleToggleCart,
+  });
 
   const LoadingSkeleton = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -344,6 +407,10 @@ const CategoryProductsPage = () => {
     </div>
   );
 
+  if (notFound) {
+    return <NotFoundPage />;
+  }
+
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -352,7 +419,7 @@ const CategoryProductsPage = () => {
             {t('categoryProducts.errors.loadingTitle')}
           </h1>
           <p className="text-muted-foreground mb-6">{error}</p>
-          <Button onClick={fetchCategoryAndProducts} variant="outline">
+          <Button onClick={() => setReloadKey((key) => key + 1)} variant="outline">
             {t('categoryProducts.buttons.tryAgain')}
           </Button>
         </div>
@@ -399,7 +466,7 @@ const CategoryProductsPage = () => {
             <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder={t('categoryProducts.search.placeholder')}
-              value={searchQuery}
+              value={searchInput}
               onChange={handleSearch}
               className="ps-10"
             />
@@ -443,7 +510,7 @@ const CategoryProductsPage = () => {
       </div>
 
       {/* Products Grid/List */}
-      {loading ? (
+      {loading && products.length === 0 ? (
         <LoadingSkeleton />
       ) : products.length === 0 ? (
         <div className="text-center py-12">
@@ -457,7 +524,7 @@ const CategoryProductsPage = () => {
           {searchQuery && (
             <Button
               variant="outline"
-              onClick={() => setSearchQuery("")}
+              onClick={clearSearch}
             >
               {t('categoryProducts.buttons.clearSearch')}
             </Button>
@@ -469,17 +536,17 @@ const CategoryProductsPage = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className={
+            className={`${
               viewMode === "grid"
                 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
                 : "space-y-4"
-            }
+            } ${loading ? "opacity-60 transition-opacity" : ""}`}
           >
             {products.map((product) =>
               viewMode === "grid" ? (
-                <ProductCard key={product._id} product={product} />
+                <ProductCard key={product._id} product={product} {...cardProps(product)} />
               ) : (
-                <ProductListItem key={product._id} product={product} />
+                <ProductListItem key={product._id} product={product} {...cardProps(product)} />
               )
             )}
           </motion.div>
@@ -491,7 +558,7 @@ const CategoryProductsPage = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                   disabled={currentPage === 1}
                 >
                   {t('categoryProducts.pagination.previous')}
@@ -514,7 +581,7 @@ const CategoryProductsPage = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                   disabled={currentPage === totalPages}
                 >
                   {t('categoryProducts.pagination.next')}

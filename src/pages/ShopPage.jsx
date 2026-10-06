@@ -15,28 +15,32 @@ import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { STORE_CATEGORIES, categoryLabel, categorySlug } from "../lib/categories";
 
+const SORT_OPTIONS = ["newest", "price-low", "price-high", "name"];
+
 const ShopPage = () => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [viewMode, setViewMode] = useState("grid");
-  const [showFilters, setShowFilters] = useState(false);
-  const [filters, setFilters] = useState({
-    category: searchParams.get("category") || "",
-    priceRange: ["", ""],
-    sortBy: "newest",
-  });
 
-  const { products, fetchAllProducts, loading } = useProductStore();
+  // Filters live in the URL so they survive refresh, Back and shared links.
+  const filters = {
+    category: searchParams.get("category") || "",
+    priceRange: [searchParams.get("min") || "", searchParams.get("max") || ""],
+    sortBy: SORT_OPTIONS.includes(searchParams.get("sort")) ? searchParams.get("sort") : "newest",
+  };
+  const [showFilters, setShowFilters] = useState(
+    () => Boolean(searchParams.get("min") || searchParams.get("max") || searchParams.get("sort"))
+  );
+
+  const products = useProductStore((state) => state.products);
+  const loading = useProductStore((state) => state.loading);
+  const fetchAllProducts = useProductStore((state) => state.fetchAllProducts);
   const { toggleCart } = useCartStore();
   const { toggleWishlist, wishlist } = useWishlistStore();
 
   useEffect(() => {
     fetchAllProducts();
   }, [fetchAllProducts]);
-
-  useEffect(() => {
-    setFilters(prev => ({ ...prev, category: searchParams.get("category") || "" }));
-  }, [searchParams]);
 
   const handleToggleCart = async product => {
     const result = await toggleCart(product);
@@ -47,18 +51,21 @@ const ShopPage = () => {
 
   const handleWishlistToggle = product => toggleWishlist(product);
 
-  const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+  const updateParams = (changes) => {
+    setSearchParams(
+      (current) => {
+        const next = new URLSearchParams(current);
+        for (const [key, value] of Object.entries(changes)) {
+          if (value) next.set(key, value);
+          else next.delete(key);
+        }
+        return next;
+      },
+      { replace: true }
+    );
   };
 
-  const handleCategoryChange = category => {
-    handleFilterChange("category", category);
-    if (category) {
-      setSearchParams({ category });
-    } else {
-      setSearchParams({});
-    }
-  };
+  const handleCategoryChange = category => updateParams({ category });
 
   const filteredProducts = products.filter(product => {
     if (filters.category && categorySlug(product.category) !== categorySlug(filters.category)) {
@@ -87,7 +94,7 @@ const ShopPage = () => {
   });
 
 
-  const FilterSection = () => (
+  const filterSection = (
     <motion.div
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: showFilters ? "auto" : 0 }}
@@ -122,12 +129,7 @@ const ShopPage = () => {
                 type="number"
                 placeholder={t('shop.filters.min')}
                 value={filters.priceRange[0]}
-                onChange={e =>
-                  handleFilterChange("priceRange", [
-                    e.target.value,
-                    filters.priceRange[1],
-                  ])
-                }
+                onChange={e => updateParams({ min: e.target.value })}
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-gray-50 focus:bg-white transition-all duration-200"
               />
               <span className="flex items-center text-gray-500">-</span>
@@ -135,12 +137,7 @@ const ShopPage = () => {
                 type="number"
                 placeholder={t('shop.filters.max')}
                 value={filters.priceRange[1]}
-                onChange={e =>
-                  handleFilterChange("priceRange", [
-                    filters.priceRange[0],
-                    e.target.value,
-                  ])
-                }
+                onChange={e => updateParams({ max: e.target.value })}
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-gray-50 focus:bg-white transition-all duration-200"
               />
             </div>
@@ -151,7 +148,7 @@ const ShopPage = () => {
             <label className="block text-sm font-medium mb-2 text-gray-700">{t('shop.filters.sortBy')}</label>
             <select
               value={filters.sortBy}
-              onChange={e => handleFilterChange("sortBy", e.target.value)}
+              onChange={e => updateParams({ sort: e.target.value === "newest" ? "" : e.target.value })}
               className="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-gray-50 focus:bg-white transition-all duration-200"
             >
               <option value="newest">{t('shop.sort.newest')}</option>
@@ -166,7 +163,7 @@ const ShopPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 pt-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
@@ -232,10 +229,10 @@ const ShopPage = () => {
         </motion.div>
 
         {/* Filters */}
-        <FilterSection />
+        {filterSection}
 
         {/* Products Grid */}
-        {loading ? (
+        {loading && products.length === 0 ? (
           <div className="flex justify-center py-12">
             <div className="relative">
               <div className="w-12 h-12 border-4 border-gray-200 rounded-full animate-spin"></div>

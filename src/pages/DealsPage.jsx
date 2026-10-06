@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useProductStore } from "../stores/useProductStore";
@@ -15,9 +15,11 @@ import {
 
 const DealsPage = () => {
   const { t } = useTranslation();
-  const { products, fetchFeaturedProducts, loading } = useProductStore();
+  const products = useProductStore((state) => state.featured);
+  const fetchFeaturedProducts = useProductStore((state) => state.fetchFeaturedProducts);
+  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    fetchFeaturedProducts();
+    fetchFeaturedProducts().finally(() => setLoaded(true));
   }, [fetchFeaturedProducts]);
 
   const dealStats = [
@@ -27,9 +29,9 @@ const DealsPage = () => {
     { number: t('deals.stats.happyBuyersValue'), label: t('deals.stats.happyBuyers'), icon: ShoppingBag, color: "from-blue-500 to-blue-600" },
   ];
 
-  if (loading) {
+  if (!loaded && products.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30 pt-20">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/30">
         <div className="container mx-auto px-4 py-8">
           <LoadingSpinner />
         </div>

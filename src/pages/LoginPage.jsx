@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
@@ -18,6 +18,7 @@ const LoginPage = () => {
 
   const { login, loading } = useUserStore();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -122,7 +123,7 @@ const LoginPage = () => {
 
       if (loginData && loginData.success) {
         // The success toast is already handled in the store
-        navigate("/");
+        navigate(location.state?.from || "/", { replace: true });
       } else {
         // Handle specific login errors that don't come from the server
         if (loginData && loginData.error) {

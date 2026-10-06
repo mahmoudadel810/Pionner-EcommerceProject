@@ -10,7 +10,7 @@ import { formatCurrency } from "../lib/currency";
 
 const WishlistPage = () => {
   const { t } = useTranslation();
-  const { wishlist, removeFromWishlist } = useWishlistStore();
+  const { wishlist, loaded, removeFromWishlist } = useWishlistStore();
   const { toggleCart, isInCart } = useCartStore();
   const navigate = useNavigate();
 
@@ -45,7 +45,11 @@ const WishlistPage = () => {
           </p>
         </motion.div>
 
-        {wishlist.length === 0 ? (
+        {!loaded && wishlist.length === 0 ? (
+          <div className="flex justify-center py-20">
+            <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          </div>
+        ) : wishlist.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}

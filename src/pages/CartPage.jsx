@@ -21,11 +21,13 @@ import { buildApiUrl } from "../config/api.js";
 import { useTranslation } from "react-i18next";
 import { formatCurrency } from "../lib/currency";
 import { categoryLabel } from "../lib/categories";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const CartPage = () => {
   const { t } = useTranslation();
   const {
     cart,
+    cartLoaded,
     removeFromCart,
     updateQuantity,
     applyCoupon,
@@ -136,9 +138,13 @@ const CartPage = () => {
     </motion.div>
   );
 
+  if (!cartLoaded && cart.length === 0) {
+    return <LoadingSpinner />;
+  }
+
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-background pt-20">
+      <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <EmptyCart />
         </div>
@@ -147,7 +153,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background pt-20">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div

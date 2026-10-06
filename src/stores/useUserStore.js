@@ -316,12 +316,14 @@ export const useUserStore = create((set, get) => ({
       coupon: null,
       total: 0,
       subtotal: 0,
-      isCouponApplied: false
+      isCouponApplied: false,
+      cartLoaded: false
     });
 
     useWishlistStore.setState({
       wishlist: [],
       loading: false,
+      loaded: false,
       error: null
     });
   },

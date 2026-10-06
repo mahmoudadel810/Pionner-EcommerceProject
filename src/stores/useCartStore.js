@@ -10,6 +10,8 @@ export const useCartStore = create((set, get) => ({
   total: 0,
   subtotal: 0,
   isCouponApplied: false,
+  // False until the first cart fetch for this session has finished.
+  cartLoaded: false,
 
   // Helper function to check if product is in cart
   isInCart: (productId) => {
@@ -49,24 +51,24 @@ export const useCartStore = create((set, get) => ({
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CART.GET));
       if (response.data && response.data.success) {
         const cartItems = response.data.data || [];
-        set({ cart: cartItems });
+        set({ cart: cartItems, cartLoaded: true });
         // Calculate totals after state update
         setTimeout(() => {
           get().calculateTotals();
         }, 0);
         return { success: true, data: cartItems };
       } else {
-        set({ cart: [] });
+        set({ cart: [], cartLoaded: true });
         return { success: true, data: [] };
       }
     } catch (error) {
       // Don't show toast for authentication errors - they're expected for non-authenticated users
       if (error.response?.status === 401) {
-        set({ cart: [] });
+        set({ cart: [], cartLoaded: true });
         return { success: false, message: "Authentication required" };
       }
       
-      set({ cart: [] });
+      set({ cart: [], cartLoaded: true });
       toast.error(getTranslation('cart.errors.fetchCartFailed', 'Failed to fetch cart items'));
       return { success: false, message: getTranslation('cart.errors.fetchCartFailed', 'Failed to fetch cart items') };
     }

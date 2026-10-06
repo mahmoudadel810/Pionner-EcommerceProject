@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useParams, useNavigate } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Heart,
@@ -16,12 +16,24 @@ import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import { usePaymentStore } from "../stores/usePaymentStore";
 import { useUserStore } from "../stores/useUserStore";
+import { useProductStore } from "../stores/useProductStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 import { getTranslation } from "../utils/i18nUtils.js";
 import { formatCurrency } from "../lib/currency";
+import { categorySlug } from "../lib/categories";
+import { productImage } from "../lib/productImage";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import NotFoundPage from "./NotFoundPage";
+
+const RELATED_COUNT = 4;
+
+const pickRelated = (products, product) =>
+  products
+    .filter((p) => p._id !== product._id && categorySlug(p.category) === categorySlug(product.category))
+    .slice(0, RELATED_COUNT);
 
 const ProductDetailPage = () => {
   const { t } = useTranslation();
@@ -32,47 +44,80 @@ const ProductDetailPage = () => {
   const { wishlist, toggleWishlist } = useWishlistStore();
   const { createCheckoutSession, redirectToCheckout } = usePaymentStore();
 
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const fetchProductsByCategory = useProductStore((state) => state.fetchProductsByCategory);
+
+  const [product, setProduct] = useState(
+    () => useProductStore.getState().products.find((p) => p._id === id) || null
+  );
+  const [status, setStatus] = useState(product ? "ready" : "loading");
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isBuyingNow, setIsBuyingNow] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
+
+  useDocumentTitle(product?.name ?? null);
 
   useEffect(() => {
-    const fetchRelatedProducts = async category => {
-      try {
-        const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_CATEGORY(category)));
-        if (response.data && response.data.success) {
-          setRelatedProducts(
-            response.data.data.filter(p => p._id !== id).slice(0, 4)
-          );
-        }
-      } catch {
-        setRelatedProducts([]);
+    let cancelled = false;
+    // The catalogue is read once per product; later cache refreshes don't restart this effect.
+    const cached = useProductStore.getState().products;
+    const cachedProduct = cached.find((p) => p._id === id);
+
+    setQuantity(1);
+    setSelectedImage(0);
+    setProduct(cachedProduct || null);
+    setStatus(cachedProduct ? "ready" : "loading");
+    setRelatedProducts(cachedProduct ? pickRelated(cached, cachedProduct) : []);
+
+    const loadRelated = async (current) => {
+      if (cached.length > 0) {
+        setRelatedProducts(pickRelated(cached, current));
+        return;
+      }
+      const result = await fetchProductsByCategory(current.category);
+      if (!cancelled && result.success) {
+        setRelatedProducts(pickRelated(result.data, current));
       }
     };
 
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_ID(id)));
-        if (response.data && response.data.success) {
-          setProduct(response.data.data);
-          fetchRelatedProducts(response.data.data.category);
-        } else {
-          throw new Error("Product not found");
+    axios
+      .get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_ID(id)))
+      .then((response) => {
+        if (cancelled) return;
+        if (!response.data?.success) {
+          setStatus("notFound");
+          return;
         }
-      } catch {
-        toast.error(t('productDetail.errors.productNotFound'));
-        navigate("/shop");
-      } finally {
-        setLoading(false);
-      }
-    };
+        setProduct(response.data.data);
+        setStatus("ready");
+        loadRelated(response.data.data);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        // 400 is the API's answer to a malformed id, 404 to an unknown one.
+        const code = error.response?.status;
+        if (code === 404 || code === 400) {
+          setStatus("notFound");
+        } else if (!cachedProduct) {
+          setStatus("error");
+        }
+      });
 
-    fetchProduct();
-  }, [id, navigate, t]);
+    return () => {
+      cancelled = true;
+    };
+  }, [id, reloadKey, fetchProductsByCategory]);
+
+  const goBack = () => {
+    // Opened directly (no history inside the app): go to the shop instead of leaving the site.
+    if (location.key === "default") {
+      navigate("/shop");
+    } else {
+      navigate(-1);
+    }
+  };
 
   const isProductInCart = isInCart(product?._id);
 
@@ -150,7 +195,25 @@ const ProductDetailPage = () => {
 
   const isInWishlist = wishlist.some(item => item._id === product?._id);
 
-  if (loading) {
+  if (status === "notFound") {
+    return <NotFoundPage />;
+  }
+
+  if (status === "error") {
+    return (
+      <div className="min-h-[60vh] bg-background flex flex-col items-center justify-center gap-4 px-4 text-center">
+        <p className="text-lg text-muted-foreground">{t('productDetail.errors.loadFailed')}</p>
+        <button
+          onClick={() => setReloadKey((key) => key + 1)}
+          className="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300"
+        >
+          {t('common.try_again')}
+        </button>
+      </div>
+    );
+  }
+
+  if (!product) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
@@ -158,11 +221,7 @@ const ProductDetailPage = () => {
     );
   }
 
-  if (!product) {
-    return null;
-  }
-
-  const images = [product.image, ...(product.additionalImages || [])];
+  const images = [...new Set([product.image, ...(product.images || [])].filter(Boolean))];
 
   return (
     <div className="min-h-screen bg-background py-8">
@@ -175,7 +234,7 @@ const ProductDetailPage = () => {
           className="mb-8"
         >
           <button
-            onClick={() => navigate(-1)}
+            onClick={goBack}
             className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
           >
             <ChevronLeft className="rtl:rotate-180" size={20} />
@@ -194,8 +253,12 @@ const ProductDetailPage = () => {
               {/* Main Image */}
               <div className="aspect-square bg-card rounded-2xl overflow-hidden">
                 <img
-                  src={images[selectedImage]}
+                  key={product._id}
+                  src={productImage(images[selectedImage] || images[0], 800)}
                   alt={product.name}
+                  width={800}
+                  height={800}
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -214,8 +277,12 @@ const ProductDetailPage = () => {
                       }`}
                     >
                       <img
-                        src={image}
+                        src={productImage(image, 160)}
                         alt={`${product.name} ${index + 1}`}
+                        width={80}
+                        height={80}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                     </button>
@@ -397,13 +464,17 @@ const ProductDetailPage = () => {
                 <motion.div
                   key={relatedProduct._id}
                   whileHover={{ y: -5 }}
-                  className="bg-card rounded-2xl shadow-lg border border-border overflow-hidden cursor-pointer"
-                  onClick={() => navigate(`/product/${relatedProduct._id}`)}
+                  className="bg-card rounded-2xl shadow-lg border border-border overflow-hidden"
                 >
+                  <Link to={`/product/${relatedProduct._id}`} className="block">
                   <div className="aspect-square overflow-hidden">
                     <img
-                      src={relatedProduct.image}
+                      src={productImage(relatedProduct.image, 480)}
                       alt={relatedProduct.name}
+                      width={480}
+                      height={480}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                     />
                   </div>
@@ -415,6 +486,7 @@ const ProductDetailPage = () => {
                       {formatCurrency(relatedProduct.price)}
                     </p>
                   </div>
+                  </Link>
                 </motion.div>
               ))}
             </div>

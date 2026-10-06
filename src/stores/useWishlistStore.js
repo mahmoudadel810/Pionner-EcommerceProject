@@ -7,6 +7,8 @@ import { getTranslation } from "../utils/i18nUtils.js";
 export const useWishlistStore = create((set, get) => ({
   wishlist: [],
   loading: false,
+  // False until the first wishlist fetch for this session has finished.
+  loaded: false,
   error: null,
 
   // Fetch user's wishlist from server
@@ -15,15 +17,15 @@ export const useWishlistStore = create((set, get) => ({
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.WISHLIST.GET));
       if (response.data && response.data.success) {
-        set({ wishlist: response.data.data, loading: false });
+        set({ wishlist: response.data.data, loading: false, loaded: true });
         return { success: true, data: response.data.data };
       } else {
-        set({ wishlist: [], loading: false });
+        set({ wishlist: [], loading: false, loaded: true });
         return { success: true, data: [] };
       }
     } catch {
       const errorMessage = getTranslation('wishlist.errors.fetchFailed', 'Failed to fetch wishlist');
-      set({ error: errorMessage, loading: false, wishlist: [] });
+      set({ error: errorMessage, loading: false, loaded: true, wishlist: [] });
       return { success: false, message: errorMessage };
     }
   },

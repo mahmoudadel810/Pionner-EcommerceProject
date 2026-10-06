@@ -24,7 +24,7 @@ const CheckoutPage = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { user } = useUserStore();
-  const { cart, total, subtotal, coupon, isCouponApplied } = useCartStore();
+  const { cart, cartLoaded, total, subtotal, coupon, isCouponApplied } = useCartStore();
   const { createPaymentIntent, loading } = usePaymentStore();
 
   const [clientSecret, setClientSecret] = useState("");
@@ -109,8 +109,10 @@ const CheckoutPage = () => {
   }, [cart, coupon, isCouponApplied, createPaymentIntent]);
 
   useEffect(() => {
+    // On a direct load the cart is still being fetched; an empty cart then means nothing yet.
+    if (!cartLoaded) return;
     if (cart.length === 0) {
-      navigate("/cart");
+      navigate("/cart", { replace: true });
       toast.error(t("checkout.cartEmpty"));
       return;
     }
@@ -118,10 +120,10 @@ const CheckoutPage = () => {
     initializePayment().then((ok) => {
       if (!ok) {
         toast.error(t("checkout.paymentInitializationFailed"));
-        navigate("/cart");
+        navigate("/cart", { replace: true });
       }
     });
-  }, [cart, navigate, initializePayment, t]);
+  }, [cart, cartLoaded, navigate, initializePayment, t]);
 
   // Stripe redirects to /purchase-success on success; the order and cart are finalised there.
   const handlePaymentSuccess = () => {

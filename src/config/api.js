@@ -1,8 +1,4 @@
-
-
-// All API requests go to the backend directly, no Vite proxy or rewrites.
-const BASE_URL = 'https://pionner-v2.vercel.app/api/v2';
-// const BASE_URL = 'http://localhost:8000/api/v2';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://pionner-v2.vercel.app/api/v2';
 
 const ENDPOINTS = {
   AUTH: {
@@ -24,7 +20,6 @@ const ENDPOINTS = {
   },
   PRODUCTS: {
     GET_ALL: '/products/getProducts',
-    SEARCH: '/products/search',
     SEARCH_SUGGESTIONS: '/products/searchSuggestions',
     GET_FEATURED: '/products/getFeaturedProducts',
     GET_RECOMMENDED: '/products/getRecommendedProducts',
@@ -78,9 +73,7 @@ const ENDPOINTS = {
     GET_ALL: '/categories/',
     GET_FEATURED: '/categories/featured',
     GET_BY_ID: (id) => `/categories/${id}`,
-    GET_BY_SLUG: (slug) => `/categories/slug/${slug}`,
     GET_PRODUCTS_BY_ID: (id) => `/categories/${id}/products`,
-    GET_PRODUCTS_BY_SLUG: (slug) => `/categories/slug/${slug}/products`,
     CREATE: '/categories/',
     UPDATE: (id) => `/categories/${id}`,
     DELETE: (id) => `/categories/${id}`,
@@ -105,26 +98,17 @@ const ENDPOINTS = {
   ANALYTICS: {
     GET: '/analytics/getAnalyticsData',
     GET_DAILY_SALES: '/analytics/getDailySalesData',
-    GET_ORDERS_ANALYTICS: '/analytics/getOrdersAnalytics',
-    GET_PRODUCT_ANALYTICS: '/analytics/getProductAnalytics',
-    GET_USER_ANALYTICS: '/analytics/getUserAnalytics',
   },
 };
 
-// Helper to build a full API URL for fetch/axios
 export const buildApiUrl = (endpoint) => {
-  // Ensure no double slashes
   const normalizedEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
   return `${BASE_URL}${normalizedEndpoint}`;
 };
 
-// Export base URL for axios instance
 export { BASE_URL, ENDPOINTS };
 
-// Re-add getApiBaseUrl for compatibility with axios.js
 export const getApiBaseUrl = () => BASE_URL;
 
-// Default export for config object
 const API_CONFIG = { BASE_URL, ENDPOINTS };
 export default API_CONFIG;
-

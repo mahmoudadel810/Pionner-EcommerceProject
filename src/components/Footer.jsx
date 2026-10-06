@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Twitter,
   Youtube,
@@ -16,6 +17,15 @@ import { useTranslation } from "react-i18next";
 
 const Footer = () => {
   const { t } = useTranslation();
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const update = () => setShowScrollTop(window.scrollY > 400);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -26,28 +36,28 @@ const Footer = () => {
     company: [
       { name: t('footer.company.aboutUs'), href: "/about" },
       { name: t('footer.company.contact'), href: "/contact" },
-      { name: t('footer.company.careers'), href: "#" },
-      { name: t('footer.company.press'), href: "#" },
+      { name: t('footer.company.careers') },
+      { name: t('footer.company.press') },
     ],
     support: [
-      { name: t('footer.support.helpCenter'), href: "#" },
-      { name: t('footer.support.returns'), href: "#" },
-      { name: t('footer.support.shippingInfo'), href: "#" },
-      { name: t('footer.support.sizeGuide'), href: "#" },
+      { name: t('footer.support.helpCenter'), href: "/contact" },
+      { name: t('footer.support.returns') },
+      { name: t('footer.support.shippingInfo') },
+      { name: t('footer.support.sizeGuide') },
     ],
     legal: [
-      { name: t('footer.legal.privacyPolicy'), href: "#" },
-      { name: t('footer.legal.termsOfService'), href: "#" },
-      { name: t('footer.legal.cookiePolicy'), href: "#" },
-      { name: t('footer.legal.gdpr'), href: "#" },
+      { name: t('footer.legal.privacyPolicy') },
+      { name: t('footer.legal.termsOfService') },
+      { name: t('footer.legal.cookiePolicy') },
+      { name: t('footer.legal.gdpr') },
     ],
   };
 
   const socialLinks = [
-    { icon: Twitter, href: "#", label: "X @pionner_sa" },
-    { icon: Instagram, href: "#", label: "Instagram @pionner_sa" },
-    { icon: Youtube, href: "#", label: "YouTube @pionner_sa" },
-    { icon: Linkedin, href: "#", label: "LinkedIn pionner-sa" },
+    { icon: Twitter, label: "X @pionner_sa" },
+    { icon: Instagram, label: "Instagram @pionner_sa" },
+    { icon: Youtube, label: "YouTube @pionner_sa" },
+    { icon: Linkedin, label: "LinkedIn pionner-sa" },
   ];
 
   return (
@@ -94,16 +104,15 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
-                <motion.a
+                <span
                   key={social.label}
-                  href={social.href}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center hover:bg-primary hover:text-white transition-colors duration-300"
+                  title={social.label}
+                  className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center"
                   aria-label={social.label}
+                  role="img"
                 >
                   <social.icon size={20} />
-                </motion.a>
+                </span>
               ))}
             </div>
           </div>
@@ -112,14 +121,18 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-lg mb-4">{t('footer.company.title')}</h4>
             <ul className="space-y-2">
-              {footerLinks.company.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    to={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                  >
-                    {link.name}
-                  </Link>
+              {footerLinks.company.map((link) => (
+                <li key={link.name}>
+                  {link.href ? (
+                    <Link
+                      to={link.href}
+                      className="text-muted-foreground hover:text-foreground transition-colors duration-300"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <span className="text-muted-foreground">{link.name}</span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -129,14 +142,18 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-lg mb-4">{t('footer.support.title')}</h4>
             <ul className="space-y-2">
-              {footerLinks.support.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    to={link.href}
-                    className="text-muted-foreground hover:text-foreground transition-colors duration-300"
-                  >
-                    {link.name}
-                  </Link>
+              {footerLinks.support.map((link) => (
+                <li key={link.name}>
+                  {link.href ? (
+                    <Link
+                      to={link.href}
+                      className="text-muted-foreground hover:text-foreground transition-colors duration-300"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <span className="text-muted-foreground">{link.name}</span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -179,14 +196,10 @@ const Footer = () => {
               <span>{t('footer.forYou')}</span>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-              {footerLinks.legal.map((link, index) => (
-                <Link
-                  key={index}
-                  to={link.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm"
-                >
+              {footerLinks.legal.map((link) => (
+                <span key={link.name} className="text-muted-foreground text-sm">
                   {link.name}
-                </Link>
+                </span>
               ))}
             </div>
           </div>
@@ -194,15 +207,22 @@ const Footer = () => {
       </div>
 
       {/* Scroll to Top Button */}
-      <motion.button
-        onClick={scrollToTop}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="fixed bottom-6 end-6 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-50"
-        aria-label={t('footer.scroll_to_top')}
-      >
-        <ArrowUp size={20} />
-      </motion.button>
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            onClick={scrollToTop}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="fixed bottom-6 end-6 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300 z-50"
+            aria-label={t('footer.scroll_to_top')}
+          >
+            <ArrowUp size={20} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </footer>
   );
 };

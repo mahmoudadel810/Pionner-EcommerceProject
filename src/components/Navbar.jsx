@@ -63,6 +63,12 @@ const Navbar = memo(() => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useUserStore();
+
+  // Menus close whenever the page changes, including Back/Forward and programmatic navigation.
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setShowUserDropdown(false);
+  }, [location.pathname, location.search]);
   const { cart } = useCartStore();
   const { wishlist } = useWishlistStore();
 
@@ -163,10 +169,13 @@ const Navbar = memo(() => {
 
   const isActive = useCallback(
     href => {
-      if (href === "/") return location.pathname === "/";
-      return location.pathname.startsWith(href);
+      const { pathname } = location;
+      if (href === "/") return pathname === "/";
+      // A product page belongs to the shop.
+      if (href === "/shop" && pathname.startsWith("/product/")) return true;
+      return pathname === href || pathname.startsWith(`${href}/`);
     },
-    [location.pathname]
+    [location]
   );
 
   const closeMobileMenu = useCallback(() => {
@@ -185,9 +194,9 @@ const Navbar = memo(() => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <div
-              className="flex items-center space-x-3 cursor-pointer select-none group"
-              onClick={() => navigate("/")}
+            <Link
+              to="/"
+              className="flex items-center space-x-3 select-none group"
             >
               <div className="relative">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-600 via-purple-600 to-orange-500 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
@@ -200,7 +209,7 @@ const Navbar = memo(() => {
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent tracking-tight drop-shadow-lg">
                 {t('company.name')}
               </span>
-            </div>
+            </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
@@ -308,32 +317,36 @@ const Navbar = memo(() => {
               
               {/* Wishlist */}
               <Button
+                asChild
                 variant="ghost"
                 className={`relative hidden md:flex p-2.5 rounded-xl transition-colors ${
                   isScrolled ? "hover:bg-gray-100" : "hover:bg-white/10"
                 }`}
-                onClick={() => navigate("/wishlist")}
               >
+                <Link to="/wishlist" aria-label={t('nav.wishlist')}>
                 <Heart size={20} className="text-gray-600" />
                 {wishlistItemCount > 0 && (
                   <Badge className="absolute -top-1 -end-1 bg-pink-500 text-white text-xs min-w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
                     {wishlistItemCount}
                   </Badge>
                 )}
+                </Link>
               </Button>
 
               {/* Cart */}
               <Button
+                asChild
                 variant="ghost"
                 className="relative p-2.5 rounded-xl transition-colors hover:bg-gray-100"
-                onClick={() => navigate("/cart")}
               >
+                <Link to="/cart" aria-label={t('nav.cart')}>
                 <ShoppingCart size={20} className="text-gray-600" />
                 {cartItemCount > 0 && (
                   <Badge className="absolute -top-1 -end-1 bg-blue-600 text-white text-xs min-w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
                     {cartItemCount}
                   </Badge>
                 )}
+                </Link>
               </Button>
 
               {/* User Menu - Simplified Dropdown */}
@@ -394,29 +407,25 @@ const Navbar = memo(() => {
 
                       {/* Menu Items */}
                       <div className="py-1">
-                        <button
-                          onClick={() => {
-                            navigate("/profile");
-                            setShowUserDropdown(false);
-                          }}
+                        <Link
+                          to="/profile"
+                          onClick={() => setShowUserDropdown(false)}
                           className="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors text-start"
                         >
                           <User size={18} />
                           <span className="font-medium">{t('nav.profile')}</span>
-                        </button>
+                        </Link>
 
                         {/* Admin Dashboard Link */}
                         {user.data?.user?.role === "admin" && (
-                          <button
-                            onClick={() => {
-                              navigate("/admin");
-                              setShowUserDropdown(false);
-                            }}
+                          <Link
+                            to="/admin"
+                            onClick={() => setShowUserDropdown(false)}
                             className="w-full flex items-center gap-3 px-4 py-3 text-purple-600 hover:text-purple-700 hover:bg-purple-50 transition-colors text-start"
                           >
                             <Shield size={18} />
                             <span className="font-medium">{t('nav.admin')}</span>
-                          </button>
+                          </Link>
                         )}
 
                         <div className="border-t border-gray-100 my-1" />
@@ -437,14 +446,16 @@ const Navbar = memo(() => {
                 </div>
               ) : (
                 <Button
+                asChild
                 variant="ghost"
                 className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl transition-colors hover:bg-gray-100"
-                onClick={() => navigate("/login")}
               >
-                <User size={20} className="text-gray-600" />
-                <span className="text-sm font-medium text-gray-700">
-                  {t('auth.signIn')}
-                </span>
+                <Link to="/login" state={{ from: location }}>
+                  <User size={20} className="text-gray-600" />
+                  <span className="text-sm font-medium text-gray-700">
+                    {t('auth.signIn')}
+                  </span>
+                </Link>
               </Button>
               )}
 
@@ -625,15 +636,14 @@ const Navbar = memo(() => {
                 <>
                   <Separator className="my-6" />
                   <Button
+                    asChild
                     variant="default"
-                    onClick={() => {
-                      navigate("/login");
-                      closeMobileMenu();
-                    }}
                     className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium rounded-xl shadow-lg"
                   >
-                    <User size={20} className="me-2" />
-                    {t('auth.signIn')}
+                    <Link to="/login" state={{ from: location }} onClick={closeMobileMenu}>
+                      <User size={20} className="me-2" />
+                      {t('auth.signIn')}
+                    </Link>
                   </Button>
                 </>
               )}

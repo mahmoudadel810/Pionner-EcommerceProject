@@ -1,19 +1,9 @@
-/** @format */
-
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import {
-  ArrowLeft,
-  CreditCard,
-  Truck,
-  Shield,
-  Lock,
-  CheckCircle,
-  AlertCircle
-} from "lucide-react";
+import { ArrowLeft, CreditCard, Shield } from "lucide-react";
 import { useCartStore } from "../stores/useCartStore";
 import { usePaymentStore } from "../stores/usePaymentStore";
 import { useUserStore } from "../stores/useUserStore";
@@ -21,8 +11,9 @@ import { toast } from "react-hot-toast";
 import LoadingSpinner from "../components/LoadingSpinner";
 import StripePaymentForm from "../components/StripePaymentForm";
 import { useTranslation } from "react-i18next";
+import { handleImageError } from "../lib/imageFallback";
 
-// Initialize Stripe with your publishable key
+// Publishable keys are safe to ship in client code; the fallback keeps the demo deployment working.
 const stripePromise = loadStripe(
   import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
     "pk_test_51Oy17F2Lmqh9OD3ZVN8Dn0xnxV4w48IXJnuPVBDLM52yizUAp2z7uKvLU6ksU2NpZRLJFYO2YYM33lCiLPjlm88b00P7RHwiR2"
@@ -30,36 +21,16 @@ const stripePromise = loadStripe(
 
 const CheckoutPage = () => {
   const { t } = useTranslation();
-  const [showNewSessionModal, setShowNewSessionModal] = useState(false);
-  const [newSessionMsg, setNewSessionMsg] = useState("");
-
-  // Modal accessibility: close on Esc, prevent background scroll
-  useEffect(() => {
-    if (showNewSessionModal) {
-      const handleKeyDown = (e) => {
-        if (e.key === "Escape") setShowNewSessionModal(false);
-      };
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
-      return () => {
-        window.removeEventListener("keydown", handleKeyDown);
-        document.body.style.overflow = "";
-      };
-    }
-  }, [showNewSessionModal]);
   const navigate = useNavigate();
   const { user } = useUserStore();
-   //===================coupon code==>
-    // coupon, isCouponApplied,
-  const { cart, total, subtotal, clearCart } =
-    useCartStore();
+  const { cart, total, subtotal, coupon, isCouponApplied } = useCartStore();
   const { createPaymentIntent, loading } = usePaymentStore();
 
   const [clientSecret, setClientSecret] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [showNewSessionModal, setShowNewSessionModal] = useState(false);
+  const [newSessionMsg, setNewSessionMsg] = useState("");
 
-  // Add form state for shipping info
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -72,10 +43,22 @@ const CheckoutPage = () => {
   });
   const [errors, setErrors] = useState({});
 
+  useEffect(() => {
+    if (!showNewSessionModal) return;
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setShowNewSessionModal(false);
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [showNewSessionModal]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
@@ -101,12 +84,9 @@ const CheckoutPage = () => {
       }
     });
 
-    // Email validation
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
-
-    // Phone validation (basic)
     if (
       formData.phone &&
       !/^\d{10,}$/.test(formData.phone.replace(/[^\d]/g, ""))
@@ -118,147 +98,62 @@ const CheckoutPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  useEffect(() => {
-    return () => {
-      // Wide cleanup: clear payment data from all storages on unmount/navigation away
-      localStorage.removeItem('clientSecret');
-      localStorage.removeItem('paymentIntentId');
-      sessionStorage.removeItem('clientSecret');
-      sessionStorage.removeItem('paymentIntentId');
-      document.cookie = "clientSecret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = "paymentIntentId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    };
-  }, []);
+  const initializePayment = useCallback(async () => {
+    const result = await createPaymentIntent(cart, isCouponApplied ? coupon : null);
+    if (result.success) {
+      setClientSecret(result.data.clientSecret);
+    }
+    return result.success;
+  }, [cart, coupon, isCouponApplied, createPaymentIntent]);
 
   useEffect(() => {
-    // On mount, clear any stale payment data from all storages
-    localStorage.removeItem('clientSecret');
-    localStorage.removeItem('paymentIntentId');
-    sessionStorage.removeItem('clientSecret');
-    sessionStorage.removeItem('paymentIntentId');
-    document.cookie = "clientSecret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "paymentIntentId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
     if (cart.length === 0) {
       navigate("/cart");
-      toast.error(t('checkout.cartEmpty'));
+      toast.error(t("checkout.cartEmpty"));
       return;
     }
 
-    // Create payment intent when component mounts
-    const initializePayment = async () => {
-      try {
-        const result = await createPaymentIntent(
-          cart,
-          // isCouponApplied ? coupon : null
-        );
-        if (result.success) {
-          setClientSecret(result.data.clientSecret);
-        } else {
-          toast.error(t('checkout.paymentInitializationFailed'));
-          navigate("/cart");
-        }
-      } catch (error) {
-        toast.error(t('checkout.paymentInitializationFailed'));
+    initializePayment().then((ok) => {
+      if (!ok) {
+        toast.error(t("checkout.paymentInitializationFailed"));
         navigate("/cart");
       }
-    };
+    });
+  }, [cart, navigate, initializePayment, t]);
 
-    initializePayment();
-  }, [cart, navigate, createPaymentIntent,]);
-   //===================coupon code==>
-    // coupon, isCouponApplied
-
-  const handlePaymentSuccess = async () => {
-    // Wide cleanup: clear payment data from all storages
-    localStorage.removeItem('clientSecret');
-    localStorage.removeItem('paymentIntentId');
-    sessionStorage.removeItem('clientSecret');
-    sessionStorage.removeItem('paymentIntentId');
-    document.cookie = "clientSecret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "paymentIntentId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-    toast.success(t('checkout.paymentSuccess'));
-    clearCart();
-    // Always reset payment state and fetch new intent after payment
-    setShowPaymentForm(false);
-    setClientSecret("");
-    await initializePayment();
-    // The Stripe confirmPayment will handle the redirect to /purchase-success
+  // Stripe redirects to /purchase-success on success; the order and cart are finalised there.
+  const handlePaymentSuccess = () => {
+    toast.success(t("checkout.paymentSuccess"));
   };
 
+  // A payment intent can't be reused after a failed or duplicate confirmation, so start a fresh one.
   const handlePaymentError = async (error) => {
-    // Wide cleanup: clear payment data from all storages
-    localStorage.removeItem('clientSecret');
-    localStorage.removeItem('paymentIntentId');
-    sessionStorage.removeItem('clientSecret');
-    sessionStorage.removeItem('paymentIntentId');
-    document.cookie = "clientSecret=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "paymentIntentId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-    // Always reset payment state and fetch new intent after ANY error
     setShowPaymentForm(false);
     setClientSecret("");
-    await initializePayment();
-    // Enhanced UI: show modal on duplicate/409 error
-    if (error && error.duplicate) {
+    const ok = await initializePayment();
+
+    if (error?.duplicate) {
       setNewSessionMsg(
-        "Your previous payment session was already used or expired. We've created a new secure payment session for you. Please try again."
+        ok ? t("checkout.paymentSessionExpired") : t("checkout.paymentSessionGenerationFailed")
       );
       setShowNewSessionModal(true);
-      setShowPaymentForm(false);
-      setClientSecret("");
-      try {
-        const result = await createPaymentIntent(
-          cart,
-          // isCouponApplied ? coupon : null
-        );
-        if (result.success) {
-          setClientSecret(result.data.clientSecret);
-        } else {
-          setNewSessionMsg("Failed to generate a new payment session. Please refresh the page or try again later.");
-        }
-      } catch (e) {
-        setNewSessionMsg("Failed to generate a new payment session. Please refresh the page or try again later.");
-      }
-      setIsProcessing(false);
       return;
     }
-    if (error && error.duplicate) {
-      toast.error(t('checkout.paymentSessionExpired'));
-      setShowPaymentForm(false);
-      setClientSecret("");
-      // Regenerate a new payment intent for the user
-      try {
-        const result = await createPaymentIntent(
-          cart,
-          // isCouponApplied ? coupon : null
-        );
-        if (result.success) {
-          setClientSecret(result.data.clientSecret);
-          toast.success(t('checkout.newPaymentSessionCreated'));
-          setShowPaymentForm(true);
-        } else {
-          toast.error(t('checkout.paymentSessionGenerationFailed'));
-        }
-      } catch (e) {
-        toast.error(t('checkout.paymentSessionGenerationFailed'));
-      }
-      setIsProcessing(false);
-      return;
+
+    if (ok) {
+      setShowPaymentForm(true);
+    } else {
+      toast.error(t("checkout.paymentSessionGenerationFailed"));
     }
-    console.error("Payment error:", error);
-    setIsProcessing(false);
   };
 
   const handleProceedToPayment = () => {
     if (validateForm()) {
       setShowPaymentForm(true);
       setTimeout(() => {
-        const paymentSection = document.getElementById("payment-section");
-        if (paymentSection) {
-          paymentSection.scrollIntoView({ behavior: "smooth" });
-        }
+        document
+          .getElementById("payment-section")
+          ?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }
   };
@@ -291,7 +186,6 @@ const CheckoutPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      {/* Modal for new payment session */}
       {showNewSessionModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 animate-fade-in">
           <div className="bg-white rounded-2xl shadow-xl p-8 max-w-sm w-full text-center relative transform animate-scale-in">
@@ -299,7 +193,7 @@ const CheckoutPage = () => {
               <svg className="w-12 h-12 text-blue-600 mb-4 animate-pulse" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20.5A8.5 8.5 0 103.5 12a8.5 8.5 0 008.5 8.5z" />
               </svg>
-              <h2 className="text-xl font-bold mb-2 text-gray-900">New Payment Session</h2>
+              <h2 className="text-xl font-bold mb-2 text-gray-900">{t("checkout.newPaymentSession")}</h2>
               <p className="mb-4 text-gray-700">{newSessionMsg}</p>
               <button
                 className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow transition focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -309,13 +203,13 @@ const CheckoutPage = () => {
                 }}
                 autoFocus
               >
-                Try Again
+                {t("checkout.tryAgain")}
               </button>
             </div>
             <button
               className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 focus:outline-none"
               onClick={() => setShowNewSessionModal(false)}
-              aria-label="Close"
+              aria-label={t("checkout.close")}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -325,7 +219,6 @@ const CheckoutPage = () => {
         </div>
       )}
 
-      {/* Tailwind animation keyframes (inject into global CSS or Tailwind config if not present) */}
       <style>{`
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
         .animate-fade-in { animation: fade-in 0.25s ease; }
@@ -558,19 +451,9 @@ const CheckoutPage = () => {
                   <StripePaymentForm
                     onSuccess={handlePaymentSuccess}
                     onError={handlePaymentError}
-                    isProcessing={isProcessing}
-                    setIsProcessing={setIsProcessing}
-                    shippingData={formData}
                   />
                 </Elements>
               </motion.div>
-            )}
-            {/* If payment form is hidden while fetching new intent, show a spinner or info */}
-            {!showPaymentForm && (
-              <div className="flex items-center justify-center py-8">
-                <LoadingSpinner />
-                <span className="ml-3 text-gray-600">{t('checkout.preparingPaymentSession')}</span>
-              </div>
             )}
 
             {/* Security Notice */}
@@ -610,11 +493,7 @@ const CheckoutPage = () => {
                         alt={item.name}
                         className="w-full h-full object-cover"
                         crossOrigin="anonymous"
-                        onError={(e) => {
-                          // Fallback to a placeholder image if the original fails to load
-                          e.target.src =
-                            "https://via.placeholder.com/80x80?text=Product+Image";
-                        }}
+                        onError={handleImageError}
                       />
                     </div>
                     <div className="flex-1">
@@ -640,17 +519,12 @@ const CheckoutPage = () => {
                   <span>{t('checkout.subtotal')}</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
-                {/* {isCouponApplied && coupon && (
+                {isCouponApplied && coupon && (
                   <div className="flex justify-between text-green-600">
                     <span>{t('checkout.discount')} ({coupon.code})</span>
-                    <span>
-                      -$
-                      {(subtotal * (coupon.discountPercentage / 100)).toFixed(
-                        2
-                      )}
-                    </span>
+                    <span>-${(subtotal - total).toFixed(2)}</span>
                   </div>
-                )} */}
+                )}
                 <div className="flex justify-between text-gray-600">
                   <span>{t('checkout.shipping')}</span>
                   <span className="text-green-600">{t('checkout.free')}</span>

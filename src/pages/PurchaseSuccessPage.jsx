@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -17,22 +17,12 @@ const PurchaseSuccessPage = () => {
   const paymentIntentId = searchParams.get("payment_intent");
 
   const navigate = useNavigate();
-  // Auth store functions removed (store does not exist)
   const { clearCart } = useCartStore();
 
   const [loading, setLoading] = useState(true);
   const [successProcessed, setSuccessProcessed] = useState(false);
   const [error, setError] = useState(null);
   const [orderDetails, setOrderDetails] = useState(null);
-
-  // 🧼 Unified cleanup
-  const clearStoredPaymentData = () => {
-    ["clientSecret", "paymentIntentId"].forEach((key) => {
-      localStorage.removeItem(key);
-      sessionStorage.removeItem(key);
-      document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    });
-  };
 
   useEffect(() => {
     let isMounted = true;
@@ -52,41 +42,23 @@ const PurchaseSuccessPage = () => {
       try {
         setLoading(true);
 
-
         if (successProcessed) return;
 
-        const hasRefreshToken = document.cookie.includes("refreshToken");
-        if (hasRefreshToken) {
-
-          await new Promise((resolve) => setTimeout(resolve, 500));
-        }
-
-        let result;
-        if (sessionId) {
-          const response = await fetch(`/api/orders/checkout-success/${sessionId}`);
-          result = await response.json();
-        } else if (paymentIntentId) {
-          // Use best practice: POST to /payments/paymentIntentSuccess
-          const { handlePaymentIntentSuccess } = usePaymentStore.getState();
-          result = await handlePaymentIntentSuccess(paymentIntentId);
-        }
+        const { handleCheckoutSuccess, handlePaymentIntentSuccess } = usePaymentStore.getState();
+        const result = sessionId
+          ? await handleCheckoutSuccess(sessionId)
+          : await handlePaymentIntentSuccess(paymentIntentId);
 
         if (!isMounted) return;
 
         if (result?.success) {
           setOrderDetails(result.data);
           setSuccessProcessed(true);
-          if (intentKey) localStorage.setItem(intentKey, "1");
+          localStorage.setItem(intentKey, "1");
 
           toast.success(t('purchase.orderConfirmed'));
 
-          try {
-            await clearCart();
-          } catch (error) {
-            console.error("Error clearing cart:", error);
-          }
-
-          clearStoredPaymentData();
+          await clearCart();
 
           setTimeout(() => {
             if (isMounted) {
@@ -104,7 +76,6 @@ const PurchaseSuccessPage = () => {
         if (!isMounted) return;
         const errorMsg =
           error?.response?.data?.message || error?.message || t('purchase.failedToProcessPayment');
-        console.error("Payment processing error:", error);
         setError(errorMsg);
         toast.error(errorMsg);
         setSuccessProcessed(true);
@@ -115,12 +86,10 @@ const PurchaseSuccessPage = () => {
       }
     };
 
-    clearStoredPaymentData(); // clear before starting
     processPaymentSuccess();
 
     return () => {
       isMounted = false;
-      clearStoredPaymentData();
     };
   }, [sessionId, paymentIntentId, successProcessed, clearCart, navigate, setError, setOrderDetails]);
 

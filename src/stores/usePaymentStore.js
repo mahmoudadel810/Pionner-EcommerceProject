@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
 import { getTranslation } from "../utils/i18nUtils.js";
 
-export const usePaymentStore = create((set, get) => ({
+export const usePaymentStore = create((set) => ({
   loading: false,
   error: null,
   checkoutSession: null,
@@ -34,7 +34,7 @@ export const usePaymentStore = create((set, get) => ({
       } else {
         throw new Error(response.data?.message || "Failed to create payment intent");
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('payment.errors.createPaymentIntentFailed', 'Failed to create payment intent');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
@@ -70,7 +70,7 @@ export const usePaymentStore = create((set, get) => ({
       } else {
         throw new Error("Failed to create checkout session");
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('payment.errors.createCheckoutSessionFailed', 'Failed to create checkout session');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
@@ -87,7 +87,7 @@ export const usePaymentStore = create((set, get) => ({
       
       if (response.data && response.data.success) {
         set({ loading: false });
-        // Only show toast if it's a new order, not a duplicate
+        // The server returns the existing order for an already-processed session.
         if (response.data.message.includes("order created")) {
           toast.success(getTranslation('payment.success', 'Payment successful! Your order has been placed.'));
         }
@@ -95,7 +95,7 @@ export const usePaymentStore = create((set, get) => ({
       } else {
         throw new Error("Failed to process payment success");
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('payment.errors.processPaymentSuccessFailed', 'Failed to process payment success');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });

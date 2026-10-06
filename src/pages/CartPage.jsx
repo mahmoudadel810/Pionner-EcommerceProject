@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -26,22 +26,18 @@ const CartPage = () => {
     cart,
     removeFromCart,
     updateQuantity,
-    // applyCoupon,
-    // removeCoupon,
-    // coupon,
+    applyCoupon,
+    removeCoupon,
+    coupon,
     total,
     subtotal,
-    // isCouponApplied,
-    clearCart,
+    isCouponApplied,
   } = useCartStore();
 
-  const { addToWishlist, wishlist } = useWishlistStore();
-   //===================coupon code==>
-  // const [couponCode, setCouponCode] = useState("");
-  // const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
   const navigate = useNavigate();
 
-  // Calculate total quantity in cart for display
   const cartItemCount = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
 
   const handleQuantityChange = async (productId, newQuantity) => {
@@ -58,32 +54,28 @@ const CartPage = () => {
 
   const handleMoveToWishlist = async product => {
     try {
-      // Temporarily suppress toasts by calling the API directly
+      // Call the API directly so the user sees one toast instead of one per store action.
       const removeResponse = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.REMOVE), { 
         productId: product._id 
       });
       
       if (removeResponse.data && removeResponse.data.success) {
-        // Update cart state manually
         const { cart } = useCartStore.getState();
         useCartStore.setState({
           cart: cart.filter(item => item._id !== product._id)
         });
         useCartStore.getState().calculateTotals();
         
-        // Add to wishlist
         const wishlistResponse = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.WISHLIST.ADD), {
           productId: product._id,
         });
         
         if (wishlistResponse.data && wishlistResponse.data.success) {
-          // Update wishlist state manually
           const { wishlist } = useWishlistStore.getState();
           useWishlistStore.setState({
             wishlist: [...wishlist, wishlistResponse.data.data]
           });
           
-          // Show single success toast
           toast.success(t('cart.productMovedToWishlist'));
         } else {
           throw new Error("Failed to add to wishlist");
@@ -91,27 +83,23 @@ const CartPage = () => {
       } else {
         throw new Error("Failed to remove from cart");
       }
-    } catch (error) {
+    } catch {
       toast.error(t('cart.failedToMoveToWishlist'));
     }
   };
- //===================coupon code==>
-  // const handleApplyCoupon = async () => {
-  //   if (!couponCode.trim()) {
-  //     toast.error(t('cart.enterCouponCode'));
-  //     return;
-  //   }
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) {
+      toast.error(t('cart.enterCouponCode'));
+      return;
+    }
 
-  //   setIsApplyingCoupon(true);
-  //   try {
-  //     await applyCoupon(couponCode);
-  //     setCouponCode("");
-  //   } catch (error) {
-  //     // Error is handled in the store
-  //   } finally {
-  //     setIsApplyingCoupon(false);
-  //   }
-  // };
+    setIsApplyingCoupon(true);
+    const result = await applyCoupon(couponCode.trim());
+    if (result.success) {
+      setCouponCode("");
+    }
+    setIsApplyingCoupon(false);
+  };
 
   const handleCheckout = () => {
     if (cart.length === 0) {
@@ -298,10 +286,9 @@ const CartPage = () => {
             <div className="card-modern p-6 sticky top-24">
               <h2 className="text-xl font-bold mb-6">{t('cart.orderSummary')}</h2>
 
-              {/* Coupon Section */}
-              {/* <div className="mb-6">
+              <div className="mb-6">
                 <h3 className="font-semibold mb-3">{t('cart.haveCoupon')}</h3>
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 rtl:space-x-reverse">
                   <input
                     type="text"
                     value={couponCode}
@@ -328,7 +315,7 @@ const CartPage = () => {
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-green-800 font-medium">
-                        {t('cart.couponApplied')}: {coupon.code}
+                        {coupon.code}
                       </span>
                       <button
                         onClick={removeCoupon}
@@ -338,11 +325,11 @@ const CartPage = () => {
                       </button>
                     </div>
                     <p className="text-green-600 text-sm">
-                      {coupon.discountPercentage}% off
+                      {t('cart.discount')}: {coupon.discountPercentage}%
                     </p>
                   </motion.div>
                 )}
-              </div> */}
+              </div>
 
               {/* Price Breakdown */}
               <div className="space-y-3 mb-6">
@@ -350,17 +337,12 @@ const CartPage = () => {
                   <span>{t('cart.subtotal')}</span>
                   <span>${subtotal.toFixed(2)}</span>
                 </div>
-                {/* {coupon && isCouponApplied && (
+                {coupon && isCouponApplied && (
                   <div className="flex justify-between text-green-600">
                     <span>{t('cart.discount')}</span>
-                    <span>
-                      -$
-                      {(subtotal * (coupon.discountPercentage / 100)).toFixed(
-                        2
-                      )}
-                    </span>
+                    <span>-${(subtotal - total).toFixed(2)}</span>
                   </div>
-                )} */}
+                )}
                 <div className="flex justify-between">
                   <span>{t('cart.shipping')}</span>
                   <span className="text-green-600">{t('cart.free')}</span>

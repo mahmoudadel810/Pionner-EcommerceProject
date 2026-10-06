@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   PaymentElement,
   AddressElement,
@@ -165,4 +165,3 @@ const StripePaymentForm = ({ onSuccess, onError, returnUrl }) => {
 };
 
 export default StripePaymentForm;
-

@@ -17,36 +17,22 @@ export const useCartStore = create((set, get) => ({
     return cart.some(item => item._id === productId);
   },
 
-  getMyCoupon: async () => {
-    try {
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.GET));
-      if (response.data) {
-        set({ coupon: response.data });
-        return { success: true, data: response.data };
-      }
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ;
-      toast.error(getTranslation('cart.errors.fetchCouponFailed'));
-      return { success: false, message: errorMessage };
-    }
-  },
-
   applyCoupon: async code => {
     try {
       const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.VALIDATE), { code });
-      if (response.data) {
-        set({ coupon: response.data, isCouponApplied: true });
-        get().calculateTotals();
-        toast.success(getTranslation('cart.couponApplied', 'Coupon applied successfully'));
-        return { success: true, data: response.data };
-      } else {
+      const coupon = response.data?.data;
+      if (!coupon) {
         throw new Error("Invalid coupon response");
       }
+      set({ coupon, isCouponApplied: true });
+      get().calculateTotals();
+      toast.success(getTranslation('cart.couponApplied', 'Coupon applied successfully'));
+      return { success: true, data: coupon };
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message || "Failed to apply coupon";
-      toast.error(getTranslation('cart.errors.applyCouponFailed', 'Failed to apply coupon'));
+        error.response?.data?.message ||
+        getTranslation('cart.errors.applyCouponFailed', 'Failed to apply coupon');
+      toast.error(errorMessage);
       return { success: false, message: errorMessage };
     }
   },
@@ -89,10 +75,10 @@ export const useCartStore = create((set, get) => ({
   clearCart: async () => {
     try {
       await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.REMOVE), {});
-      set({ cart: [], coupon: null, total: 0, subtotal: 0 });
+      set({ cart: [], coupon: null, isCouponApplied: false, total: 0, subtotal: 0 });
       toast.success(getTranslation('cart.cleared', 'Cart cleared successfully'));
       return { success: true };
-    } catch (error) {
+    } catch {
       toast.error(getTranslation('cart.errors.clearCartFailed', 'Failed to clear cart'));
       return { success: false, message: getTranslation('cart.errors.clearCartFailed', 'Failed to clear cart') };
     }
@@ -149,53 +135,6 @@ export const useCartStore = create((set, get) => ({
       
       toast.error(getTranslation('cart.errors.updateCartFailed'));
       return { success: false, message: getTranslation('cart.errors.updateCartFailed', 'Failed to update cart') };
-    }
-  },
-
-  // Keep the original addToCart for backward compatibility
-  addToCart: async product => {
-    try {
-      const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CART.ADD), {
-        productId: product._id,
-      });
-
-      if (response.data && response.data.success) {
-        // Update cart state based on server response
-        set(prevState => {
-          const existingItem = prevState.cart.find(
-            item => item._id === product._id
-          );
-          const newCart = existingItem
-            ? prevState.cart.map(item =>
-                item._id === product._id
-                  ? { ...item, quantity: item.quantity + 1 }
-                  : item
-              )
-            : [...prevState.cart, { ...product, quantity: 1 }];
-          return { cart: newCart };
-        });
-        
-        // Calculate totals after state update
-        setTimeout(() => {
-          get().calculateTotals();
-        }, 0);
-        
-        toast.success(getTranslation('cart.productAdded', 'Product added to cart'));
-        return { success: true, data: response.data };
-      } else {
-        throw new Error("Failed to add product to cart");
-      }
-    } catch (error) {
-      // Handle authentication errors - even if interceptor retries, we should still show auth error
-      if (error.response?.status === 401) {
-        // Don't update cart state for auth errors
-        return { success: false, message: "Please login to add items to cart" };
-      }
-      
-      const errorMessage =
-        error.response?.data?.message || "Failed to add product to cart";
-      toast.error(errorMessage);
-      return { success: false, message: errorMessage };
     }
   },
 

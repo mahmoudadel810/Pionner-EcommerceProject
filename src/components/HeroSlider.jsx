@@ -17,7 +17,9 @@ import { useTranslation } from "react-i18next";
 import "../App.css";
 
 const HeroSlider = memo(() => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.dir() === "rtl";
+  const slideInX = isRTL ? 40 : -40;
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -139,12 +141,13 @@ const HeroSlider = memo(() => {
     const isLeftSwipe = distance > 50;
     const isRightSwipe = distance < -50;
 
-    if (isLeftSwipe) {
+    // Swiping towards the reading direction's start shows the next slide.
+    if (isRTL ? isRightSwipe : isLeftSwipe) {
       nextSlide();
-    } else if (isRightSwipe) {
+    } else if (isRTL ? isLeftSwipe : isRightSwipe) {
       prevSlide();
     }
-  }, [touchStart, touchEnd, nextSlide, prevSlide]);
+  }, [touchStart, touchEnd, nextSlide, prevSlide, isRTL]);
 
   useEffect(() => {
     const handleKeyDown = e => {
@@ -152,8 +155,8 @@ const HeroSlider = memo(() => {
       if (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) {
         return;
       }
-      if (e.key === "ArrowRight") nextSlide();
-      if (e.key === "ArrowLeft") prevSlide();
+      if (e.key === (isRTL ? "ArrowLeft" : "ArrowRight")) nextSlide();
+      if (e.key === (isRTL ? "ArrowRight" : "ArrowLeft")) prevSlide();
       if (e.key === " ") {
         e.preventDefault();
         togglePlayPause();
@@ -162,7 +165,7 @@ const HeroSlider = memo(() => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [nextSlide, prevSlide, togglePlayPause]);
+  }, [nextSlide, prevSlide, togglePlayPause, isRTL]);
 
   const currentSlideData = heroSlides[currentSlide];
 
@@ -189,7 +192,7 @@ const HeroSlider = memo(() => {
             <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900" />
 
             {/* Gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
+            <div className="absolute inset-0 bg-gradient-to-r rtl:bg-gradient-to-l from-black/80 via-black/50 to-black/20" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
             <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/40" />
 
@@ -240,7 +243,7 @@ const HeroSlider = memo(() => {
 
                 {/* Subtitle */}
                 <motion.p
-                  initial={{ opacity: 0, x: -40 }}
+                  initial={{ opacity: 0, x: slideInX }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.4 }}
                   className="text-xl md:text-2xl font-medium text-blue-300 mb-3 tracking-wide"
@@ -250,7 +253,7 @@ const HeroSlider = memo(() => {
 
                 {/* Main Title */}
                 <motion.h1
-                  initial={{ opacity: 0, x: -40 }}
+                  initial={{ opacity: 0, x: slideInX }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.5 }}
                   className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight"
@@ -264,7 +267,7 @@ const HeroSlider = memo(() => {
 
                 {/* Description */}
                 <motion.p
-                  initial={{ opacity: 0, x: -40 }}
+                  initial={{ opacity: 0, x: slideInX }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.6 }}
                   className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl leading-relaxed"
@@ -288,7 +291,7 @@ const HeroSlider = memo(() => {
                       <span className="relative z-10">
                         {currentSlideData.cta}
                       </span>
-                      <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                      <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rtl:origin-right"></div>
                     </motion.button>
                   </Link>
 
@@ -299,7 +302,7 @@ const HeroSlider = memo(() => {
                       className="group relative overflow-hidden bg-white/10 backdrop-blur-md border-2 border-white/30 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-white/20 transition-all duration-300"
                     >
                       <span className="relative z-10">{t('hero.browseAll')}</span>
-                      <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                      <div className="absolute inset-0 bg-white/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rtl:origin-right"></div>
                     </motion.button>
                   </Link>
                 </motion.div>
@@ -309,7 +312,7 @@ const HeroSlider = memo(() => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.8 }}
-                  className="flex items-center gap-6 mt-8 text-gray-300"
+                  className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-8 text-gray-300"
                 >
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500"></div>
@@ -332,23 +335,23 @@ const HeroSlider = memo(() => {
 
       {/* Navigation Arrows - Adjusted z-index */}
       <motion.button
-        whileHover={{ scale: 1.1, x: -5 }}
+        whileHover={{ scale: 1.1, x: isRTL ? 5 : -5 }}
         whileTap={{ scale: 0.95 }}
         onClick={prevSlide}
-        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-4 rounded-full transition-all duration-300 shadow-lg z-30 border border-white/20"
-        aria-label="Previous slide"
+        className="absolute hidden sm:block start-4 md:start-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-4 rounded-full transition-all duration-300 shadow-lg z-30 border border-white/20"
+        aria-label={t('hero.aria.previous')}
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft className="rtl:rotate-180" size={24} />
       </motion.button>
 
       <motion.button
-        whileHover={{ scale: 1.1, x: 5 }}
+        whileHover={{ scale: 1.1, x: isRTL ? -5 : 5 }}
         whileTap={{ scale: 0.95 }}
         onClick={nextSlide}
-        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-4 rounded-full transition-all duration-300 shadow-lg z-30 border border-white/20"
-        aria-label="Next slide"
+        className="absolute hidden sm:block end-4 md:end-8 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-4 rounded-full transition-all duration-300 shadow-lg z-30 border border-white/20"
+        aria-label={t('hero.aria.next')}
       >
-        <ChevronRight size={24} />
+        <ChevronRight className="rtl:rotate-180" size={24} />
       </motion.button>
 
       {/* Slide Indicators - Adjusted z-index */}
@@ -364,7 +367,7 @@ const HeroSlider = memo(() => {
                 ? "w-8 h-3 bg-white rounded-full"
                 : "w-3 h-3 bg-white/50 hover:bg-white/75 rounded-full"
             }`}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={t('hero.aria.goTo', { number: index + 1 })}
           >
             {index === currentSlide && (
               <motion.div
@@ -377,7 +380,7 @@ const HeroSlider = memo(() => {
       </div>
 
       {/* Control Panel - Adjusted z-index */}
-      <div className="absolute bottom-8 right-8 flex items-center gap-3 z-30">
+      <div className="absolute bottom-8 start-4 sm:start-8 hidden sm:flex items-center gap-3 z-30">
         {/* Slide Counter */}
         <div className="bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-white text-sm font-medium border border-white/20">
           {currentSlide + 1} / {heroSlides.length}
@@ -389,14 +392,14 @@ const HeroSlider = memo(() => {
           whileTap={{ scale: 0.95 }}
           onClick={togglePlayPause}
           className="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-3 rounded-full transition-all duration-300 border border-white/20 shadow-lg"
-          aria-label={isPlaying ? "Pause slideshow" : "Play slideshow"}
+          aria-label={isPlaying ? t('hero.aria.pause') : t('hero.aria.play')}
         >
           {isPlaying ? <Pause size={16} /> : <Play size={16} />}
         </motion.button>
       </div>
 
       {/* Progress bar */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10 z-30">
+      <div className="absolute bottom-0 start-0 w-full h-1 bg-white/10 z-30">
         <motion.div
           key={currentSlide}
           initial={{ width: 0 }}
@@ -407,7 +410,7 @@ const HeroSlider = memo(() => {
       </div>
 
       {/* Floating Elements - Adjusted z-index */}
-      <div className="absolute top-20 right-20 opacity-20 pointer-events-none z-20">
+      <div className="absolute top-20 end-20 opacity-20 pointer-events-none z-20">
         <motion.div
           animate={{
             y: [0, -20, 0],

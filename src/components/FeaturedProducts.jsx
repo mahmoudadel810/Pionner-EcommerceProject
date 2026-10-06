@@ -9,9 +9,11 @@ import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { formatCurrency } from "../lib/currency";
 
 const FeaturedProducts = ({ featuredProducts }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.dir() === "rtl";
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const { toggleCart, isInCart } = useCartStore();
@@ -100,7 +102,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
             <div
               className="flex transition-transform duration-300 ease-in-out"
               style={{
-                transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)`,
+                transform: `translateX(${isRTL ? "" : "-"}${currentIndex * (100 / itemsPerPage)}%)`,
               }}
             >
               {featuredProducts.map(product => (
@@ -120,14 +122,14 @@ const FeaturedProducts = ({ featuredProducts }) => {
                           className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         {product.isFeatured && (
-                          <Badge className="absolute top-2 left-2 bg-primary text-primary-foreground">
+                          <Badge className="absolute top-2 start-2 bg-primary text-primary-foreground">
                             {t('featured.featured_badge')}
                           </Badge>
                         )}
                         <Button
                           size="icon"
                           variant="ghost"
-                          className="absolute top-2 right-2 bg-background/80 hover:bg-background/90 opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="absolute top-2 end-2 bg-background/80 hover:bg-background/90 opacity-0 group-hover:opacity-100 transition-opacity"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleToggleWishlist(product);
@@ -141,18 +143,18 @@ const FeaturedProducts = ({ featuredProducts }) => {
                     <CardFooter className="p-4 flex flex-col items-start space-y-3">
                       <div className="w-full">
                         <h3 className="font-semibold text-lg mb-1 line-clamp-2 group-hover:text-primary transition-colors">
-                          {product.name}
+                          <bdi>{product.name}</bdi>
                         </h3>
                         <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
-                          {product.description}
+                          <bdi>{product.description}</bdi>
                         </p>
                         <div className="flex items-center justify-between mb-3">
                           <span className="text-2xl font-bold text-primary">
-                            {product.price.toFixed(2)} SR
+                            {formatCurrency(product.price)}
                           </span>
-                          {product.oldPrice && (
+                          {product.originalPrice > product.price && (
                             <span className="text-sm text-muted-foreground line-through">
-                              {product.oldPrice.toFixed(2)} SR
+                              {formatCurrency(product.originalPrice)}
                             </span>
                           )}
                         </div>
@@ -170,7 +172,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
                         }`}
                         size="sm"
                       >
-                        <ShoppingCart className="w-4 h-4 mr-2" />
+                        <ShoppingCart className="w-4 h-4 me-2" />
                         {isInCart(product._id) ? t('home.remove_from_cart') : t('home.add_to_cart')}
                       </Button>
                     </CardFooter>
@@ -186,13 +188,13 @@ const FeaturedProducts = ({ featuredProducts }) => {
             disabled={isStartDisabled}
             variant="outline"
             size="icon"
-            className={`absolute top-1/2 -left-4 transform -translate-y-1/2 ${
+            className={`absolute top-1/2 -start-4 transform -translate-y-1/2 ${
               isStartDisabled
                 ? "opacity-50 cursor-not-allowed"
                 : "hover:bg-primary hover:text-primary-foreground"
             }`}
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="rtl:rotate-180 w-4 h-4" />
           </Button>
 
           <Button
@@ -200,13 +202,13 @@ const FeaturedProducts = ({ featuredProducts }) => {
             disabled={isEndDisabled}
             variant="outline"
             size="icon"
-            className={`absolute top-1/2 -right-4 transform -translate-y-1/2 ${
+            className={`absolute top-1/2 -end-4 transform -translate-y-1/2 ${
               isEndDisabled
                 ? "opacity-50 cursor-not-allowed"
                 : "hover:bg-primary hover:text-primary-foreground"
             }`}
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="rtl:rotate-180 w-4 h-4" />
           </Button>
         </div>
       </div>

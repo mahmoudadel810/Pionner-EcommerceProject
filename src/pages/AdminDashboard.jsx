@@ -25,6 +25,8 @@ import { useCategoryStore } from "../stores/useCategoryStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
+import { formatCurrency, formatDate } from "../lib/currency";
+import { categoryLabel } from "../lib/categories";
 
 const emptyProductForm = {
   name: "",
@@ -566,8 +568,8 @@ const AdminDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-muted-foreground text-sm">{t("admin.stats.total_revenue")}</p>
-                <p className="text-3xl font-bold text-foreground">
-                  {stats.totalRevenue?.toFixed(2) || "0.00"} SR
+                <p className="text-2xl 2xl:text-3xl font-bold text-foreground whitespace-nowrap">
+                  {formatCurrency(stats.totalRevenue)}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {paidOrders} {t("admin.stats.paid_orders")}
@@ -604,12 +606,12 @@ const AdminDashboard = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-8"
         >
-          <div className="flex space-x-1 rtl:space-x-reverse bg-card rounded-lg p-1 border border-border overflow-x-auto">
+          <div className="flex space-x-1 bg-card rounded-lg p-1 border border-border overflow-x-auto">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-md transition-all duration-300 whitespace-nowrap ${
+                className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-300 whitespace-nowrap ${
                   activeTab === tab.id
                     ? "bg-primary text-white"
                     : "text-muted-foreground hover:text-foreground"
@@ -654,15 +656,15 @@ const AdminDashboard = () => {
                           {t("admin.overview.order_number")}{order._id ? order._id.slice(-8) : 'N/A'}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {new Date(order.createdAt).toLocaleDateString()}
+                          {formatDate(order.createdAt)}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {order.user?.name || t("admin.overview.unknown_user")}
                         </p>
                       </div>
-                      <div className="text-right">
+                      <div className="text-end">
                         <p className="font-medium text-foreground">
-                          ${order.totalAmount?.toFixed(2) || "0.00"}
+                          {formatCurrency(order.totalAmount)}
                         </p>
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
@@ -672,7 +674,7 @@ const AdminDashboard = () => {
                           {order.status}
                         </span>
                         <span
-                          className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                          className={`ms-2 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
                             order.paymentStatus
                           )}`}
                         >
@@ -700,7 +702,7 @@ const AdminDashboard = () => {
                           {contact.name}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {new Date(contact.createdAt).toLocaleDateString()}
+                          {formatDate(contact.createdAt)}
                         </p>
                       </div>
                       <p className="text-sm text-muted-foreground mb-2">
@@ -726,7 +728,7 @@ const AdminDashboard = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => openProductForm()}
-                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2 rtl:space-x-reverse"
+                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
                 >
                   <Plus size={16} />
                   <span>{t("admin.products.add_product")}</span>
@@ -738,14 +740,14 @@ const AdminDashboard = () => {
                 <div className="relative">
                   <Search
                     size={20}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                    className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                   />
                   <input
                     type="text"
                     placeholder={t("admin.products.search_placeholder")}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                    className="w-full ps-10 pe-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                   />
                 </div>
               </div>
@@ -755,22 +757,22 @@ const AdminDashboard = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border">
-                      <th className="text-left py-3 px-3 font-medium text-foreground">
+                      <th className="text-start py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.product")}
                       </th>
-                      <th className="text-left py-3 px-3 font-medium text-foreground">
+                      <th className="text-start py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.category")}
                       </th>
-                      <th className="text-left py-3 px-3 font-medium text-foreground">
+                      <th className="text-start py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.price")}
                       </th>
-                      <th className="text-left py-3 px-3 font-medium text-foreground">
+                      <th className="text-start py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.stock")}
                       </th>
-                      <th className="text-left py-3 px-3 font-medium text-foreground">
+                      <th className="text-start py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.status")}
                       </th>
-                      <th className="text-left py-3 px-3 font-medium text-foreground">
+                      <th className="text-start py-3 px-3 font-medium text-foreground">
                         {t("admin.products.table.actions")}
                       </th>
                     </tr>
@@ -782,27 +784,27 @@ const AdminDashboard = () => {
                         className="border-b border-border hover:bg-background/50"
                       >
                         <td className="py-3 px-4">
-                          <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                          <div className="flex items-center space-x-3">
                             <img
                               src={product.image}
                               alt={product.name}
-                              className="w-12 h-12 rounded-lg object-cover"
+                              className="w-12 h-12 rounded-lg object-cover shrink-0"
                             />
-                            <div>
+                            <div className="min-w-0">
                               <p className="font-medium text-foreground">
-                                {product.name}
+                                <bdi>{product.name}</bdi>
                               </p>
-                              <p className="text-sm text-muted-foreground">
-                                {product.description}
+                              <p className="text-sm text-muted-foreground line-clamp-1 max-w-md">
+                                <bdi>{product.description}</bdi>
                               </p>
                             </div>
                           </div>
                         </td>
                         <td className="py-3 px-4 text-foreground">
-                          {product.category}
+                          {categoryLabel(t, product.category)}
                         </td>
-                        <td className="py-3 px-4 text-foreground">
-                          ${product.price}
+                        <td className="py-3 px-4 text-foreground whitespace-nowrap">
+                          {formatCurrency(product.price)}
                         </td>
                         <td className="py-3 px-4 text-foreground">
                           {product.stockQuantity || 0}
@@ -819,7 +821,7 @@ const AdminDashboard = () => {
                           </span>
                         </td>
                         <td className="py-3 px-4">
-                          <div className="flex items-center space-x-2 rtl:space-x-reverse">
+                          <div className="flex items-center space-x-2">
                             <button
                               onClick={() => openProductForm(product)}
                               className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors duration-300"
@@ -873,14 +875,14 @@ const AdminDashboard = () => {
                 <div className="relative">
                   <Search
                     size={20}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                    className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                   />
                   <input
                     type="text"
                     placeholder={t("admin.categories.search_placeholder")}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                    className="w-full ps-10 pe-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                   />
                 </div>
               </div>
@@ -890,22 +892,22 @@ const AdminDashboard = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border">
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.categories.table.category")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.categories.table.description")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.categories.table.products")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.categories.table.featured")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.categories.table.status")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.categories.table.actions")}
                       </th>
                     </tr>
@@ -1034,15 +1036,15 @@ const AdminDashboard = () => {
                           {t("admin.orders.order_number")} #{order._id ? order._id.slice(-8) : 'N/A'}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          {new Date(order.createdAt).toLocaleDateString()}
+                          {formatDate(order.createdAt)}
                         </p>
                         <p className="text-sm text-muted-foreground">
                           {t("admin.orders.customer")}: {order.user?.name || t("admin.orders.unknown")}
                         </p>
                       </div>
-                      <div className="text-right">
+                      <div className="text-end">
                         <p className="text-xl font-bold text-primary">
-                          {order.totalAmount?.toFixed(2) || "0.00"} SR
+                          {formatCurrency(order.totalAmount)}
                         </p>
                         <div className="flex space-x-2 mt-2">
                           <span
@@ -1126,22 +1128,22 @@ const AdminDashboard = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border">
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.users.table.user")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.users.table.email")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.users.table.role")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.users.table.status")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.users.table.joined")}
                       </th>
-                      <th className="text-left py-3 px-4 font-medium text-foreground">
+                      <th className="text-start py-3 px-4 font-medium text-foreground">
                         {t("admin.users.table.actions")}
                       </th>
                     </tr>
@@ -1193,7 +1195,7 @@ const AdminDashboard = () => {
                           </span>
                         </td>
                         <td className="py-3 px-4 text-foreground">
-                          {new Date(user.createdAt).toLocaleDateString()}
+                          {formatDate(user.createdAt)}
                         </td>
                         <td className="py-3 px-4">
                           <div className="flex items-center space-x-2">
@@ -1227,7 +1229,7 @@ const AdminDashboard = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => openCouponForm()}
-                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2 rtl:space-x-reverse"
+                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
                 >
                   <Plus size={16} />
                   <span>{t("admin.coupons.add_coupon")}</span>
@@ -1260,10 +1262,10 @@ const AdminDashboard = () => {
                         </p>
                         <p>
                           <span className="text-muted-foreground">{t("admin.coupons.expires")}:</span>{" "}
-                          {new Date(coupon.expiryDate).toLocaleDateString()}
+                          {formatDate(coupon.expiryDate)}
                         </p>
                       </div>
-                      <div className="flex space-x-2 rtl:space-x-reverse mt-3">
+                      <div className="flex space-x-2 mt-3">
                         <button
                           onClick={() => openCouponForm(coupon)}
                           className="p-1 text-blue-500 hover:bg-blue-500/10 rounded"
@@ -1304,7 +1306,7 @@ const AdminDashboard = () => {
                   <div className="p-4 bg-background rounded-lg">
                     <p className="text-sm text-muted-foreground">{t("admin.analytics.total_revenue")}</p>
                     <p className="text-2xl font-bold text-foreground">
-                      ${stats.totalRevenue?.toFixed(2) || "0.00"}
+                      {formatCurrency(stats.totalRevenue)}
                     </p>
                   </div>
                   <div className="p-4 bg-background rounded-lg">
@@ -1316,7 +1318,7 @@ const AdminDashboard = () => {
                   <div className="p-4 bg-background rounded-lg">
                     <p className="text-sm text-muted-foreground">{t("admin.analytics.average_order_value")}</p>
                     <p className="text-2xl font-bold text-foreground">
-                      ${stats.totalOrders > 0 ? (stats.totalRevenue / stats.totalOrders).toFixed(2) : "0.00"}
+                      {formatCurrency(stats.totalOrders > 0 ? stats.totalRevenue / stats.totalOrders : 0)}
                     </p>
                   </div>
                 </div>
@@ -1536,7 +1538,7 @@ const AdminDashboard = () => {
                     required
                   />
                 </div>
-                <div className="flex space-x-2 rtl:space-x-reverse">
+                <div className="flex space-x-2">
                   <button
                     type="submit"
                     className="flex-1 bg-primary text-white py-2 rounded hover:bg-primary/90"
@@ -1618,7 +1620,7 @@ const AdminDashboard = () => {
                     id="featured"
                     checked={categoryForm.featured}
                     onChange={(e) => setCategoryForm({ ...categoryForm, featured: e.target.checked })}
-                    className="mr-2"
+                    className="me-2"
                   />
                   <label htmlFor="featured" className="text-sm font-medium">
                     {t("admin.categories.form.featured_category")}
@@ -1663,18 +1665,18 @@ const AdminDashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.name")}</h3>
-                    <p className="text-gray-900">{showProductDetails.name}</p>
+                    <p className="text-gray-900"><bdi>{showProductDetails.name}</bdi></p>
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.category")}</h3>
-                    <p className="text-gray-900">{showProductDetails.category}</p>
+                    <p className="text-gray-900">{categoryLabel(t, showProductDetails.category)}</p>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.price")}</h3>
-                    <p className="text-gray-900">${showProductDetails.price}</p>
+                    <p className="text-gray-900">{formatCurrency(showProductDetails.price)}</p>
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.stock_quantity")}</h3>
@@ -1684,7 +1686,7 @@ const AdminDashboard = () => {
                 
                 <div>
                   <h3 className="font-medium text-gray-700 mb-2">{t("admin.products.form.description")}</h3>
-                  <p className="text-gray-900">{showProductDetails.description}</p>
+                  <p className="text-gray-900"><bdi>{showProductDetails.description}</bdi></p>
                 </div>
                 
                 {showProductDetails.images && showProductDetails.images.length > 0 && (
@@ -1705,8 +1707,8 @@ const AdminDashboard = () => {
                 
                 <div className="flex items-center justify-between pt-4 border-t">
                   <div>
-                    <p className="text-sm text-gray-500">{t("admin.products.created_at")}: {new Date(showProductDetails.createdAt).toLocaleDateString()}</p>
-                    <p className="text-sm text-gray-500">{t("admin.products.updated_at")}: {new Date(showProductDetails.updatedAt).toLocaleDateString()}</p>
+                    <p className="text-sm text-gray-500">{t("admin.products.created_at")}: {formatDate(showProductDetails.createdAt)}</p>
+                    <p className="text-sm text-gray-500">{t("admin.products.updated_at")}: {formatDate(showProductDetails.updatedAt)}</p>
                   </div>
                   <div className="flex space-x-2">
                     <button

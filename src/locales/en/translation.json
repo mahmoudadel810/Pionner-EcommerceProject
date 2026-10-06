@@ -6,42 +6,50 @@
     "deals": "Deals",
     "about": "About",
     "contact": "Contact Us",
-    "profile": "Profile",
+    "profile": "My Account",
     "admin": "Admin Dashboard",
-    "logout": "Logout",
+    "logout": "Sign Out",
     "signin": "Sign In",
     "language": "Language",
-    "search_placeholder": "Search electronics...",
+    "search_placeholder": "Search for phones, laptops, accessories...",
     "wishlist": "Wishlist",
     "cart": "Cart",
     "user": "User",
-    "noEmail": "No email"
+    "noEmail": "No email",
+    "hot": "Sale",
+    "toggleMenu": "Toggle menu"
   },
   "payment": {
     "success": "Payment successful! Your order has been placed.",
     "errors": {
-      "noCheckoutUrl": "No checkout URL available",
+      "noCheckoutUrl": "The checkout link is unavailable",
       "unexpected": "An unexpected error occurred.",
-      "createPaymentIntentFailed": "Failed to create payment intent",
-      "createCheckoutSessionFailed": "Failed to create checkout session",
-      "processPaymentSuccessFailed": "Failed to process payment success"
+      "createPaymentIntentFailed": "Failed to start the payment",
+      "createCheckoutSessionFailed": "Failed to create the checkout session",
+      "processPaymentSuccessFailed": "Failed to confirm the payment"
+    },
+    "form": {
+      "methodSubtitle": "Choose how you want to pay",
+      "billingSubtitle": "Enter your billing details"
     }
   },
   "cart": {
     "couponApplied": "Coupon applied successfully",
     "couponRemoved": "Coupon removed",
-    "cleared": "Cart cleared successfully",
+    "cleared": "Cart cleared",
     "productAdded": "Product added to cart",
     "productRemoved": "Product removed from cart",
     "errors": {
-      "fetchCouponFailed": "Failed to fetch coupon",
-      "applyCouponFailed": "Failed to apply coupon",
-      "fetchCartFailed": "Failed to fetch cart items",
-      "clearCartFailed": "Failed to clear cart",
-      "updateCartFailed": "Failed to update cart"
+      "fetchCouponFailed": "Failed to load the coupon",
+      "applyCouponFailed": "Failed to apply the coupon",
+      "fetchCartFailed": "Failed to load your cart",
+      "clearCartFailed": "Failed to clear the cart",
+      "updateCartFailed": "Failed to update the cart",
+      "productRemoved": "Product removed from cart",
+      "productMovedToWishlist": "Product moved to wishlist"
     },
-     "productMovedToWishlist": "Product moved to wishlist",
-    "failedToMoveToWishlist": "Failed to move product to wishlist",
+    "productMovedToWishlist": "Product moved to wishlist",
+    "failedToMoveToWishlist": "Failed to move the product to your wishlist",
     "enterCouponCode": "Please enter a coupon code",
     "cartIsEmpty": "Your cart is empty",
     "yourCartIsEmpty": "Your cart is empty",
@@ -49,8 +57,8 @@
     "startShopping": "Start Shopping",
     "continueShopping": "Continue Shopping",
     "shoppingCart": "Shopping Cart",
-    "moveToWishlist": "Move to wishlist",
-    "removeFromCart": "Remove from cart",
+    "moveToWishlist": "Move to Wishlist",
+    "removeFromCart": "Remove from Cart",
     "orderSummary": "Order Summary",
     "haveCoupon": "Have a coupon?",
     "applying": "Applying...",
@@ -62,34 +70,36 @@
     "free": "Free",
     "total": "Total",
     "proceedToCheckout": "Proceed to Checkout",
-    "freeShippingOver99": "Free shipping on orders over $99",
+    "freeShippingOver99": "Free shipping on orders over 200 SAR",
     "moneyBackGuarantee": "30-day money-back guarantee"
   },
   "wishlist": {
     "productAdded": "Product added to wishlist",
     "productRemoved": "Product removed from wishlist",
-    "cleared": "Wishlist cleared successfully",
+    "cleared": "Wishlist cleared",
     "errors": {
-      "fetchFailed": "Failed to fetch wishlist",
-      "addFailed": "Failed to add product to wishlist",
-      "removeFailed": "Failed to remove product from wishlist",
-      "clearFailed": "Failed to clear wishlist"
+      "fetchFailed": "Failed to load your wishlist",
+      "addFailed": "Failed to add the product to your wishlist",
+      "removeFailed": "Failed to remove the product from your wishlist",
+      "clearFailed": "Failed to clear your wishlist"
     },
     "title": "My Wishlist",
     "count_items": "{{count}} item{{suffix}} in your wishlist",
     "plural_suffix": "s",
     "empty_title": "Your wishlist is empty",
-    "empty_msg": "Start adding products to your wishlist to save them for later",
+    "empty_msg": "Add products to your wishlist to save them for later",
     "start_shopping": "Start Shopping",
-        "itemCount": "{{count}} item",
-        "itemCount_plural": "{{count}} items",
-        "addToCart": "Add to Cart",
-        "removeFromCart": "Remove from Cart",
-        "empty": {
-          "title": "Your wishlist is empty",
-          "message": "Start adding products to your wishlist to save them for later",
-          "startShopping": "Start Shopping"
-        }
+    "itemCount": "{{count}} items",
+    "itemCount_plural": "{{count}} items",
+    "addToCart": "Add to Cart",
+    "removeFromCart": "Remove from Cart",
+    "empty": {
+      "title": "Your wishlist is empty",
+      "message": "Add products to your wishlist to save them for later",
+      "startShopping": "Start Shopping"
+    },
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items"
   },
   "product": {
     "created": "Product created successfully",
@@ -97,16 +107,17 @@
     "updated": "Product updated successfully",
     "errors": {
       "createFailed": "Failed to create product",
-      "fetchFailed": "Failed to fetch products",
+      "fetchFailed": "Failed to load products",
       "deleteFailed": "Failed to delete product",
       "updateFailed": "Failed to update product",
-      "fetchFeaturedFailed": "Failed to fetch featured products"
+      "fetchFeaturedFailed": "Failed to load featured products",
+      "back": "Back"
     },
     "back": "Back",
     "reviews": "reviews",
     "quantity": "Quantity",
     "free_shipping": "Free Shipping",
-    "free_shipping_threshold": "On orders over ﷼50",
+    "free_shipping_threshold": "On orders over 200 SAR",
     "secure_payment": "Secure Payment",
     "easy_returns": "Easy Returns",
     "buy_now": "Buy Now",
@@ -114,19 +125,19 @@
     "related_products": "Related Products",
     "featured": "Featured",
     "quick_view": "Quick View",
-    "add_to_wishlist": "Add to wishlist",
-    "remove_from_wishlist": "Remove from wishlist",
+    "add_to_wishlist": "Add to Wishlist",
+    "remove_from_wishlist": "Remove from Wishlist",
     "add_to_cart": "Add to Cart",
     "remove_from_cart": "Remove from Cart"
   },
   "checkout": {
     "error": "An error occurred during checkout",
-     "paymentInitialized": "Payment initialized successfully!",
-    "paymentInitializationFailed": "Failed to initialize payment. Please try again.",
+    "paymentInitialized": "Payment is ready!",
+    "paymentInitializationFailed": "Failed to start the payment. Please try again.",
     "cartEmpty": "Your cart is empty",
     "paymentSuccess": "Payment successful! Redirecting...",
     "paymentSessionExpired": "This payment session has expired or was already used. Please try again.",
-    "paymentSessionExists": "A payment session already exists. Please complete it or start a new one.",
+    "paymentSessionExists": "A payment session is already open. Please complete it or start a new one.",
     "newPaymentSession": "New Payment Session",
     "tryAgain": "Try Again",
     "close": "Close",
@@ -139,21 +150,21 @@
     "lastName": "Last Name",
     "enterLastName": "Enter last name",
     "email": "Email",
-    "enterEmail": "Enter email",
-    "phone": "Phone",
-    "enterPhoneNumber": "Enter phone number",
+    "enterEmail": "Enter your email",
+    "phone": "Phone Number",
+    "enterPhoneNumber": "Enter your phone number",
     "address": "Address",
-    "enterStreetAddress": "Enter street address",
+    "enterStreetAddress": "Enter your street address",
     "city": "City",
     "enterCity": "Enter city",
-    "stateProvince": "State/Province",
-    "enterState": "Enter state",
-    "zipCode": "ZIP Code",
-    "enterZipCode": "Enter ZIP code",
+    "stateProvince": "Region",
+    "enterState": "Enter your region",
+    "zipCode": "Postal Code",
+    "enterZipCode": "Enter postal code",
     "proceedToPayment": "Proceed to Payment",
     "paymentInformation": "Payment Information",
     "preparingPaymentSession": "Preparing a new secure payment session...",
-    "securityNotice": "Your payment information is encrypted and secure. We use Stripe for secure payment processing and never store your credit card details.",
+    "securityNotice": "Your payment information is encrypted and secure. We use Stripe to process payments and never store your card details.",
     "orderSummary": "Order Summary",
     "qty": "Qty",
     "subtotal": "Subtotal",
@@ -162,35 +173,57 @@
     "free": "Free",
     "total": "Total",
     "newPaymentSessionCreated": "New payment session created. Please try again.",
-    "paymentSessionGenerationFailed": "Failed to generate new payment session. Please refresh the page or try again later.",
+    "paymentSessionGenerationFailed": "Failed to create a new payment session. Please refresh the page or try again later.",
     "billing_address": "Billing Address",
     "payment_method": "Payment Method",
     "complete_payment": "Complete Payment",
     "processing": "Processing...",
-    "secure_notice": "Your payment information is secure and encrypted"
+    "secure_notice": "Your payment information is secure and encrypted",
+    "validation": {
+      "required": "{{field}} is required",
+      "invalidEmail": "Please enter a valid email address",
+      "invalidPhone": "Please enter a valid phone number"
+    }
   },
   "common": {
     "loading": "Loading...",
-    "pleaseLoginCart": "Please login to manage cart",
-    "pleaseLoginWishlist": "Please login to manage wishlist",
+    "pleaseLoginCart": "Please log in to manage your cart",
+    "pleaseLoginWishlist": "Please log in to manage your wishlist",
     "failedUpdateCart": "Failed to update cart",
     "failedUpdateWishlist": "Failed to update wishlist",
-     "back": "Back",
+    "back": "Back",
     "try_again": "Try Again",
     "clear_search": "Clear Search"
   },
   "company": {
     "name": "Pioneer",
-    "email": "support@pioneer.com",
-    "address": "123 Pioneer Street, Tech City, TC 12345",
-    "phone": "+1 (555) 123-4567"
+    "email": "support@pionner.sa",
+    "address": "King Fahd Road, Al Olaya, Riyadh 12214, Saudi Arabia",
+    "phone": "9200 33145",
+    "infoEmail": "info@pionner.sa",
+    "phoneDial": "920033145",
+    "whatsapp": "+966 50 312 4876",
+    "whatsappLabel": "WhatsApp",
+    "hoursTitle": "Working Hours",
+    "hours": "Saturday–Thursday 9:00 AM – 11:00 PM; Friday 4:00 PM – 11:00 PM",
+    "hoursWeekdays": "Saturday–Thursday: 9:00 AM – 11:00 PM",
+    "hoursFriday": "Friday: 4:00 PM – 11:00 PM",
+    "founded": "Since 2021",
+    "tagline": "Online electronics and accessories store in Saudi Arabia",
+    "shippingPolicy": "Free delivery on orders over 200 SAR. Delivery in 1–3 business days in Riyadh, Jeddah and Dammam, and 3–5 business days to other cities.",
+    "returnPolicy": "Returns accepted within 30 days of delivery.",
+    "social": {
+      "twitter": "@pionner_sa",
+      "instagram": "@pionner_sa",
+      "tiktok": "@pionner_sa",
+      "snapchat": "@pionner_sa"
+    }
   },
-  
   "footer": {
     "newsletter": {
       "title": "Newsletter",
       "subscribe": "Subscribe",
-      "description": "Subscribe to our newsletter for the latest deals and products",
+      "description": "Subscribe to our newsletter for the latest deals and new arrivals",
       "placeholder": "Enter your email"
     },
     "contact": {
@@ -205,9 +238,9 @@
     },
     "company": {
       "title": "Company",
-      "description": "A leading e-commerce company providing the best products and services to our valued customers",
+      "description": "Pioneer is an online electronics and accessories store in Saudi Arabia, serving customers since 2021.",
       "aboutUs": "About Us",
-      "contact": "Contact",
+      "contact": "Contact Us",
       "careers": "Careers",
       "press": "Press"
     },
@@ -215,40 +248,36 @@
       "privacyPolicy": "Privacy Policy",
       "termsOfService": "Terms of Service",
       "cookiePolicy": "Cookie Policy",
-      "gdpr": "GDPR"
+      "gdpr": "Data Protection"
     },
-    "copyright": "© 2024 All rights reserved",
+    "copyright": "© 2026 Pioneer. All rights reserved.",
     "madeWith": "Made with",
     "forYou": "for you",
-    "newsletter_title": "Stay Updated with Our Newsletter",
-    "newsletter_desc": "Get the latest updates on new products, exclusive offers, and fashion trends delivered to your inbox.",
+    "newsletter_title": "Subscribe to Our Newsletter",
+    "newsletter_desc": "Get the latest products, exclusive offers and tech news delivered to your inbox.",
     "enter_email": "Enter your email",
     "subscribe": "Subscribe",
-    "company_desc": "Your premier destination for quality products and exceptional shopping experiences.",
-   
-    
-   
-   
+    "company_desc": "Your online destination for electronics and accessories in Saudi Arabia since 2021.",
     "rights_reserved": "All rights reserved.",
     "made_with_love": "Made with",
     "for_you": "for you",
-    "scroll_to_top": "Scroll to top"
+    "scroll_to_top": "Back to top"
   },
   "auth": {
     "fields": {
       "email": "Email",
       "password": "Password",
-      "fullName":"Full Name",
-      "phone":"Phone Number",
-      "confirmPassword":"confirm Password"
-
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "confirmPassword": "Confirm Password"
     },
     "placeholders": {
       "email": "Enter your email",
       "password": "Enter your password",
-      "fullName":"Full Name",
-      "confirmPassword":"confirm Password",
-      "createPassword":"Create Password"
+      "fullName": "Enter your full name",
+      "confirmPassword": "Confirm your password",
+      "createPassword": "Create a password",
+      "phone": "Enter your phone number"
     },
     "passwordRequirements": {
       "title": "Password must contain:",
@@ -263,59 +292,70 @@
     "confirmNewPassword": "Confirm New Password",
     "passwordPlaceholder": "Enter your password",
     "confirmPasswordPlaceholder": "Confirm your password",
-    "backToLogin": "Back to Login",
-    "forgotPassword": "Forgot Password?",
+    "backToLogin": "Back to Sign In",
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "description": "Enter your email and we'll send you a password reset link",
+      "emailPlaceholder": "Enter your email",
+      "sending": "Sending...",
+      "sendResetLink": "Send Reset Link",
+      "rememberPassword": "Remember your password?",
+      "checkEmail": "Check Your Email",
+      "emailSent": "Password reset link sent to {{email}}",
+      "resetPassword": "Reset Password",
+      "tryAnotherEmail": "Try Another Email"
+    },
     "errors": {
       "nameRequired": "Name is required",
       "nameTooShort": "Name is too short",
       "emailRequired": "Email is required",
-      "emailInvalid": "Email is invalid",
+      "emailInvalid": "Please enter a valid email address",
       "fixFormErrors": "Please fix the errors in the form",
       "emailTooLong": "Email is too long",
       "phoneRequired": "Phone number is required",
-      "phoneInvalid": "Phone number is invalid",
+      "phoneInvalid": "Please enter a valid phone number",
       "passwordRequired": "Password is required",
-      "passwordTooShort": "Password is too short",
+      "passwordTooShort": "Password must be at least 8 characters",
       "passwordTooLong": "Password is too long",
       "passwordLowercase": "Password must contain a lowercase letter",
       "passwordUppercase": "Password must contain an uppercase letter",
       "passwordNumber": "Password must contain a number",
       "passwordSpecial": "Password must contain a special character",
-      "confirmPasswordRequired": "Confirm password is required",
+      "confirmPasswordRequired": "Please confirm your password",
       "passwordMismatch": "Passwords do not match",
-      "accountNotFound": "Account not found. Please check your email or sign up.",
+      "accountNotFound": "Account not found. Please check your email or create an account.",
       "incorrectPassword": "Incorrect password. Please try again.",
       "emailNotVerified": "Please verify your email address first.",
-      "invalidCredentials": "Invalid email or password. Please check your credentials.",
-      "tooManyAttempts": "Too many login attempts. Please try again later.",
+      "invalidCredentials": "Invalid email or password. Please check your details.",
+      "tooManyAttempts": "Too many sign-in attempts. Please try again later.",
       "serverError": "Server error. Please try again later.",
-      "loginFailed": "Login failed. Please try again.",
-      "signupFailed": "An error occurred during signup.",
-      "resetEmailFailed": "An error occurred while sending reset email.",
-      "resetPasswordFailed": "An error occurred while resetting password."
+      "loginFailed": "Sign-in failed. Please try again.",
+      "signupFailed": "An error occurred while creating your account.",
+      "resetEmailFailed": "An error occurred while sending the reset email.",
+      "resetPasswordFailed": "An error occurred while resetting your password."
     },
     "validation": {
       "codeRequired": "Code is required",
       "codeMinLength": "Code is too short",
       "passwordRequired": "Password is required",
-      "passwordComplexity": "Password is too complex",
-      "passwordMinLength": "Password is too short",
-      "confirmPasswordRequired": "Confirm password is required",
+      "passwordComplexity": "Password must include an uppercase letter, a lowercase letter, a number and a special character (@$!%*?&)",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "confirmPasswordRequired": "Please confirm your password",
       "passwordsDoNotMatch": "Passwords do not match"
     },
-    "loginSuccess": "Login successful!",
+    "loginSuccess": "Signed in successfully!",
     "login": {
       "title": "Sign In",
       "subtitle": "Welcome back! Sign in to your account to continue",
       "signIn": "Sign In",
       "signingIn": "Signing in...",
-      "success": "Login successful!"
+      "success": "Signed in successfully!"
     },
     "signup": {
-      "success": "Account created successfully! Please check your email to confirm your account."
-    },
-    "signup": {
-      "creatingAccount": "Creating account..."
+      "success": "Account created successfully! Please check your email to confirm your account.",
+      "creatingAccount": "Creating account...",
+      "title": "Create Your Account",
+      "subtitle": "Enter your details to get started"
     },
     "forgotPasswordFlow": {
       "title": "Forgot Password",
@@ -331,15 +371,15 @@
     },
     "resetPassword": {
       "title": "Reset Password",
-      "description": "Enter the code sent to your email and your new password",
+      "description": "Enter the code sent to your email and choose a new password",
       "resetCode": "Reset Code",
-      "codePlaceholder": "Enter code",
+      "codePlaceholder": "Enter the code",
       "resetting": "Resetting...",
       "resetPassword": "Reset Password",
       "rememberPassword": "Remember your password?",
-      "success": "Success!",
-      "successMessage": "Password reset successfully",
-      "continueToLogin": "Continue to Login"
+      "success": "Password Reset Successful!",
+      "successMessage": "You can now sign in with your new password.",
+      "continueToLogin": "Continue to Sign In"
     },
     "logout": {
       "success": "Logged out successfully"
@@ -359,9 +399,9 @@
     "sign_in": "Sign In",
     "signing_in": "Signing in...",
     "no_account": "Don't have an account?",
-    "sign_up": "Sign up",
+    "sign_up": "Sign Up",
     "create_account": "Create your account",
-    "join_community": "Join our community and start shopping",
+    "join_community": "Join us and start shopping",
     "full_name": "Full Name",
     "phone": "Phone Number",
     "confirm_password": "Confirm Password",
@@ -371,7 +411,7 @@
     "confirm_your_password": "Confirm your password",
     "creating_account": "Creating account...",
     "have_account": "Already have an account?",
-    "sign_in_link": "Sign in",
+    "sign_in_link": "Sign In",
     "password_requirements": "Password must contain:",
     "min_8_chars": "At least 8 characters",
     "one_lowercase": "One lowercase letter",
@@ -394,15 +434,59 @@
     "reset_password_button": "Reset Password",
     "resetting": "Resetting...",
     "passwords_no_match": "Passwords do not match",
-    "back_to_login": "Back to Login",
+    "back_to_login": "Back to Sign In",
     "continue_with_google": "Continue with Google",
     "continue_with_apple": "Continue with Apple",
-    
-    
-    
-    
     "signIn": "Sign In",
-    
+    "forgotMyPassword": "Forgot your password?",
+    "agreeToTerms": "I agree to the",
+    "termsOfService": "Terms of Service",
+    "and": "and",
+    "privacyPolicy": "Privacy Policy",
+    "twitter": "Twitter",
+    "alreadyHaveAccount": "Already have an account?"
+  },
+  "home": {
+    "explore_by_category": "Shop by Category",
+    "discover_subtitle": "Discover great products in every category, handpicked for you",
+    "quick_view": "Quick View",
+    "featured": "Featured",
+    "add_to_cart": "Add to Cart",
+    "experience_future": "Experience the Future of Shopping",
+    "join_millions": "Join thousands of customers across Saudi Arabia who shop with Pioneer for genuine products, fast delivery and dependable support.",
+    "start_shopping": "Start Shopping Now",
+    "join_premium": "Join Premium",
+    "remove_from_cart": "Remove from Cart",
+    "view_all_products": "View All {{count}} Products",
+    "exploreByCategory": "Shop by Category",
+    "discover_products": "Discover great products across our categories",
+    "view_all": "View All",
+    "category_descriptions": {
+      "smartphones": "The latest smartphones with cutting-edge technology",
+      "laptops": "High-performance laptops for work and gaming",
+      "gaming": "Gaming gear for the ultimate experience",
+      "smart_home": "Smart home devices for modern living",
+      "audio": "Premium audio equipment for music lovers",
+      "tablets": "Versatile tablets for work and entertainment",
+      "monitors": "Sharp, responsive displays for work and gaming",
+      "wearables": "Smartwatches and fitness bands that keep you connected",
+      "accessories": "Chargers, cables, cases and everyday essentials",
+      "eyewear": "Stylish frames, sunglasses and blue-light glasses"
+    },
+    "errors": {
+      "loginRequired": "Please log in to manage your cart",
+      "cartUpdateFailed": "Failed to update the cart"
+    },
+    "view_all_products_one": "View {{count}} Product",
+    "view_all_products_other": "View All {{count}} Products"
+  },
+  "signUpPage": {
+    "emailAddress": "Email Address",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "backToLogin": "Back to Sign In",
     "forgotPassword": {
       "title": "Forgot Password",
       "description": "Enter your email and we'll send you a password reset link",
@@ -414,98 +498,55 @@
       "emailSent": "Password reset link sent to {{email}}",
       "resetPassword": "Reset Password",
       "tryAnotherEmail": "Try Another Email"
-    }
-  },
-  "home": {
-    "explore_by_category": "Explore by Category",
-    "discover_subtitle": "Discover amazing products from each category, handpicked for you",
-    
-    
-   
-    
-    "quick_view": "Quick View",
-    
-    
-    
-    "featured": "Featured",
-    "add_to_cart": "Add to Cart",
-    "experience_future": "Experience the Future of Shopping",
-    "join_millions": "Join millions of users who trust our platform for their shopping needs. Get personalized recommendations, smart search, and seamless shopping experience.",
-    "start_shopping": "Start Shopping Now",
-    "join_premium": "Join Premium",
-    "remove_from_cart": "Remove from Cart",
-    "view_all_products": "View All {{count}} Products",
-    "exploreByCategory": "Explore by Category",
-     "discover_products": "Discover amazing products across different categories",
-     "view_all": "View All",
-     "category_descriptions": {
-       "smartphones": "Latest smartphones with cutting-edge technology",
-       "laptops": "High-performance laptops for work and gaming",
-       "gaming": "Gaming gear for the ultimate experience",
-       "smart_home": "Smart home devices for modern living",
-       "audio": "Premium audio equipment for music lovers",
-       "tablets": "Versatile tablets for productivity and entertainment"
-     },
-     "errors": {
-         "loginRequired": "Please login to manage cart",
-         "cartUpdateFailed": "Failed to update cart"
-       }
-  },
-  "signUpPage": {
-    "emailAddress": "Email Address",
-    "newPassword": "New Password",
-    "confirmNewPassword": "Confirm New Password",
-    "passwordPlaceholder": "Enter your password",
-    "confirmPasswordPlaceholder": "Confirm your password",
-    "backToLogin": "Back to Login",
-    "forgotPassword": "Forgot Password?",
+    },
     "errors": {
       "nameRequired": "Name is required",
       "nameTooShort": "Name is too short",
       "emailRequired": "Email is required",
-      "emailInvalid": "Email is invalid",
+      "emailInvalid": "Please enter a valid email address",
       "emailTooLong": "Email is too long",
       "phoneRequired": "Phone number is required",
-      "phoneInvalid": "Phone number is invalid",
+      "phoneInvalid": "Please enter a valid phone number",
       "passwordRequired": "Password is required",
-      "passwordTooShort": "Password is too short",
+      "passwordTooShort": "Password must be at least 8 characters",
       "passwordTooLong": "Password is too long",
       "passwordLowercase": "Password must contain a lowercase letter",
       "passwordUppercase": "Password must contain an uppercase letter",
       "passwordNumber": "Password must contain a number",
       "passwordSpecial": "Password must contain a special character",
-      "confirmPasswordRequired": "Confirm password is required",
+      "confirmPasswordRequired": "Please confirm your password",
       "passwordMismatch": "Passwords do not match"
     },
-        "validation": {
+    "validation": {
       "codeRequired": "Code is required",
       "codeMinLength": "Code is too short",
       "passwordRequired": "Password is required",
-      "passwordComplexity": "Password is too complex",
-      "passwordMinLength": "Password is too short",
-      "confirmPasswordRequired": "Confirm password is required",
+      "passwordComplexity": "Password must include an uppercase letter, a lowercase letter, a number and a special character (@$!%*?&)",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "confirmPasswordRequired": "Please confirm your password",
       "passwordsDoNotMatch": "Passwords do not match"
     },
     "login": {
       "title": "Sign In",
       "subtitle": "Welcome back! Sign in to continue",
       "signIn": "Sign In",
-      "signingIn": "Signing in..."
+      "signingIn": "Signing in...",
+      "success": "Signed in successfully!"
     },
     "fields": {
       "email": "Email",
       "password": "Password",
-      "fullName":"Full Name",
-      "phone":"Phone Number",
-      "confirmPassword":"confirm Password"
-
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "confirmPassword": "Confirm Password"
     },
     "placeholders": {
       "email": "Enter your email",
       "password": "Enter your password",
-      "fullName":"Full Name",
-      "confirmPassword":"confirm Password",
-      "createPassword":"Create Password"
+      "fullName": "Enter your full name",
+      "confirmPassword": "Confirm your password",
+      "createPassword": "Create a password",
+      "phone": "Enter your phone number"
     },
     "passwordRequirements": {
       "title": "Password must contain:",
@@ -520,18 +561,29 @@
     "apple": "Apple",
     "noAccount": "Don't have an account?",
     "signUp": "Sign Up",
-"sign_in": "Sign In",
-    "alreadyHaveAccount":"Already Have Account",
-    "createAccount":" Create Account",
-
-    
+    "sign_in": "Sign In",
+    "alreadyHaveAccount": "Already have an account?",
+    "createAccount": "Create Account",
     "signup": {
-      "creatingMyAccount": "Craeting Account...",
-      "title":"Rigister Your Account ",
-      "subtitle":"user Info"
+      "creatingMyAccount": "Creating account...",
+      "title": "Create Your Account",
+      "subtitle": "Your Details",
+      "success": "Account created successfully! Please check your email to confirm your account."
     },
-    "forgotPassword": {
-       "title": "Forgot Password",
+    "resetPassword": {
+      "title": "Reset Password",
+      "description": "Enter the code sent to your email and choose a new password",
+      "resetCode": "Reset Code",
+      "codePlaceholder": "Enter the code",
+      "resetting": "Resetting...",
+      "resetPassword": "Reset Password",
+      "rememberPassword": "Remember your password?",
+      "success": "Password Reset Successful!",
+      "successMessage": "You can now sign in with your new password.",
+      "continueToLogin": "Continue to Sign In"
+    },
+    "forgotPasswordSection": {
+      "title": "Forgot Password",
       "description": "Enter your email and we'll send you a password reset link",
       "emailPlaceholder": "Enter your email",
       "sending": "Sending...",
@@ -541,22 +593,14 @@
       "emailSent": "Password reset link sent to {{email}}",
       "resetPassword": "Reset Password",
       "tryAnotherEmail": "Try Another Email"
-        },
-    "resetPassword": {
-      "title": "Reset Password",
-      "description": "Enter the code sent to your email and your new password",
-      "resetCode": "Reset Code",
-      "codePlaceholder": "Enter code",
-      "resetting": "Resetting...",
-      "resetPassword": "Reset Password",
-      "rememberPassword": "Remember your password?",
-      "success": "Success!",
-      "successMessage": "Password reset successfully",
-      "continueToLogin": "Continue to Login"
-    }
+    },
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "agreeTo": "I agree to the",
+    "and": "and",
+    "twitter": "Twitter",
+    "signIn": "Sign In"
   },
-  
-  
   "category": {
     "back_to_categories": "Back to Categories",
     "search_products": "Search products...",
@@ -569,7 +613,7 @@
     "oldest": "Oldest",
     "no_products_found": "No products found",
     "adjust_search": "Try adjusting your search criteria",
-    "no_products_in_category": "No products are available in this category at the moment",
+    "no_products_in_category": "There are no products in this category right now",
     "clear_search": "Clear Search",
     "previous": "Previous",
     "next": "Next",
@@ -578,17 +622,17 @@
     "explore": "Explore {{name}}",
     "errors": {
       "createFailed": "Failed to create category",
-      "fetchFailed": "Failed to fetch categories",
-      "fetchFeaturedFailed": "Failed to fetch featured categories",
+      "fetchFailed": "Failed to load categories",
+      "fetchFeaturedFailed": "Failed to load featured categories",
       "updateFailed": "Failed to update category",
       "deleteFailed": "Failed to delete category",
       "toggleStatusFailed": "Failed to update category status",
-      "fetchByIdFailed": "Failed to fetch category"
+      "fetchByIdFailed": "Failed to load category"
     }
   },
   "search": {
     "results_title": "Search Results",
-    "searching_for": "Searching for \"{{query}}\"",
+    "searching_for": "Results for \"{{query}}\"",
     "enter_term": "Enter a search term to find products",
     "sort_by": "Sort by",
     "relevance": "Relevance",
@@ -610,56 +654,61 @@
     "found_count_matching": "Found {{count}} product{{suffix}} matching \"{{query}}\"",
     "plural_suffix": "s",
     "title": "Search",
-          "results": "Results",
-          "searchingFor": "Searching for \"{{query}}\"",
-          "enterSearchTerm": "Enter a search term to find products",
-          "placeholder": "Search for products...",
-          "tryAgain": "Try Again",
-          "noProductsFound": "No products found",
-          "noProductsMatch": "No products match your search for '{{query}}'. Try different keywords or check your spelling.",
-          "startSearching": "Start searching to find amazing products!",
-          "clearSearch": "Clear Search",
-          "addToCart": "Add to Cart",
-          "removeFromCart": "Remove from Cart",
-     "foundProducts": "Found {{count}} product{{count, plural, one {} other {s}}} matching '{{query}}'",
-     "showingProducts": "Showing {{count}} product{{count, plural, one {} other {s}}}",
-     "showingRange": "Showing {{start}} to {{end}} of {{total}} products",
-     "filters": {
-       "sortBy": "Sort by",
-       "relevance": "Relevance",
-       "nameAZ": "Name (A-Z)",
-       "nameZA": "Name (Z-A)",
-       "priceLowHigh": "Price: Low to High",
-       "priceHighLow": "Price: High to Low",
-       "highestRated": "Highest Rated",
-       "newest": "Newest",
-       "category": "Category",
-       "allCategories": "All Categories",
-       "priceRange": "Price Range",
-       "allPrices": "All Prices",
-       "under100": "Under 100 SR",
-       "range100to500": "100 - 500 SR",
-       "range500to1000": "500 - 1000 SR",
-       "over1000": "Over 1000 SR",
-       "gridView": "Grid View",
-       "listView": "List View",
-       "perPage": "Per page",
-       "sixPerPage": "6 per page",
-       "twelvePerPage": "12 per page",
-       "twentyFourPerPage": "24 per page",
-       "fortyEightPerPage": "48 per page",
-       "refresh": "Refresh"
-     },
-     "errors": {
-       "fetchFailed": "Failed to fetch products",
-       "loadFailed": "Failed to load search results",
-       "loginRequired": "Please login to manage cart",
-       "cartUpdateFailed": "Failed to update cart",
-       "wishlistUpdateFailed": "Failed to update wishlist"
-     }
+    "results": "Results",
+    "searchingFor": "Results for \"{{query}}\"",
+    "enterSearchTerm": "Enter a search term to find products",
+    "placeholder": "Search for products...",
+    "tryAgain": "Try Again",
+    "noProductsFound": "No products found",
+    "noProductsMatch": "No products match your search for \"{{query}}\". Try different keywords or check your spelling.",
+    "startSearching": "Start searching to find great products!",
+    "clearSearch": "Clear Search",
+    "addToCart": "Add to Cart",
+    "removeFromCart": "Remove from Cart",
+    "foundProducts": "Found {{count}} products matching \"{{query}}\"",
+    "showingProducts": "Showing {{count}} products",
+    "showingRange": "Showing {{start}}–{{end}} of {{total}} products",
+    "filters": {
+      "sortBy": "Sort by",
+      "relevance": "Relevance",
+      "nameAZ": "Name (A-Z)",
+      "nameZA": "Name (Z-A)",
+      "priceLowHigh": "Price: Low to High",
+      "priceHighLow": "Price: High to Low",
+      "highestRated": "Highest Rated",
+      "newest": "Newest",
+      "category": "Category",
+      "allCategories": "All Categories",
+      "priceRange": "Price Range",
+      "allPrices": "All Prices",
+      "under100": "Under 100 SAR",
+      "range100to500": "100 - 500 SAR",
+      "range500to1000": "500 - 1000 SAR",
+      "over1000": "Over 1000 SAR",
+      "gridView": "Grid View",
+      "listView": "List View",
+      "perPage": "Per page",
+      "sixPerPage": "6 per page",
+      "twelvePerPage": "12 per page",
+      "twentyFourPerPage": "24 per page",
+      "fortyEightPerPage": "48 per page",
+      "refresh": "Refresh"
+    },
+    "errors": {
+      "fetchFailed": "Failed to load products",
+      "loadFailed": "Failed to load search results",
+      "loginRequired": "Please log in to manage your cart",
+      "cartUpdateFailed": "Failed to update cart",
+      "wishlistUpdateFailed": "Failed to update wishlist"
+    },
+    "foundProducts_one": "Found {{count}} product matching \"{{query}}\"",
+    "foundProducts_other": "Found {{count}} products matching \"{{query}}\"",
+    "showingProducts_one": "Showing {{count}} product",
+    "showingProducts_other": "Showing {{count}} products",
+    "errorTitle": "Search error",
+    "heroTitle": "Search",
+    "heroHighlight": "Results"
   },
-  
-  
   "categories": {
     "smartphones": "Smartphones",
     "laptops": "Laptops",
@@ -668,96 +717,99 @@
     "audio": "Audio",
     "tablets": "Tablets",
     "hero": {
-            "title": "Explore",
-            "titleHighlight": "Categories",
-            "description": "Discover our curated collection of product categories. Find exactly what you're looking for with our organized selection."
-          },
-          "search": {
-            "placeholder": "Search categories by name or description...",
-            "resultsFor": "Search results for \"{{query}}\"",
-            "clear": "Clear search"
-          },
-          "sort": {
-            "placeholder": "Sort by",
-            "nameAsc": "Name (A-Z)",
-            "nameDesc": "Name (Z-A)",
-            "mostProducts": "Most Products",
-            "leastProducts": "Least Products",
-            "newest": "Newest",
-            "oldest": "Oldest"
-          },
-          "filter": {
-            "placeholder": "Filter by",
-            "all": "All Categories",
-            "featuredOnly": "Featured Only"
-          },
-          "card": {
-            "products": "products",
-            "featured": "Featured",
-            "active": "Active",
-            "inactive": "Inactive"
-          },
-          "actions": {
-            "refresh": "Refresh"
-          },
-          "empty": {
-            "noResults": "No categories found",
-            "noCategories": "No categories available",
-            "noResultsDescription": "No categories match your search for \"{{query}}\". Try different keywords or check your spelling.",
-            "noFeatured": "No featured categories are available at the moment.",
-            "noCategoriesDescription": "No categories are available at the moment.",
-            "clearFilters": "Clear All Filters"
-          },
-          "results": {
-            "found": "Found {{count}} categor{{count, plural, one{y} other{ies}}} matching \"{{query}}\"",
-            "showing": "Showing {{count}} categor{{count, plural, one{y} other{ies}}}",
-            "cached": "Cached"
-          },
-          "pagination": {
-            "showing": "Showing {{start}} to {{end}} of {{total}} categories",
-            "itemsPerPage": "Items per page",
-            "perPage": "Per page",
-            "perPageOption": "{{count}} per page",
-            "selectItemsPerPage": "Select items per page"
-          },
-          "errors": {
-            "failedToLoad": "Failed to load categories",
-            "loadingTitle": "Error Loading Categories",
-            "tryAgain": "Try Again",
-            "page_not_found": "Page Not Found",
-         "page_not_exist": "Sorry, the page you are looking for does not exist or has been moved.",
-            "go_home": "Go Home"
-
-          }
+      "title": "Explore",
+      "titleHighlight": "Categories",
+      "description": "Browse our curated product categories and find exactly what you're looking for."
+    },
+    "search": {
+      "placeholder": "Search categories by name or description...",
+      "resultsFor": "Search results for \"{{query}}\"",
+      "clear": "Clear search"
+    },
+    "sort": {
+      "placeholder": "Sort by",
+      "nameAsc": "Name (A-Z)",
+      "nameDesc": "Name (Z-A)",
+      "mostProducts": "Most Products",
+      "leastProducts": "Least Products",
+      "newest": "Newest",
+      "oldest": "Oldest"
+    },
+    "filter": {
+      "placeholder": "Filter by",
+      "all": "All Categories",
+      "featuredOnly": "Featured Only"
+    },
+    "card": {
+      "products": "products",
+      "featured": "Featured",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "refresh": "Refresh"
+    },
+    "empty": {
+      "noResults": "No categories found",
+      "noCategories": "No categories available",
+      "noResultsDescription": "No categories match your search for \"{{query}}\". Try different keywords or check your spelling.",
+      "noFeatured": "No featured categories are available right now.",
+      "noCategoriesDescription": "No categories are available right now.",
+      "clearFilters": "Clear All Filters"
+    },
+    "results": {
+      "found": "Found {{count}} categories matching \"{{query}}\"",
+      "showing": "Showing {{count}} categories",
+      "cached": "Cached",
+      "found_one": "Found {{count}} category matching \"{{query}}\"",
+      "found_other": "Found {{count}} categories matching \"{{query}}\"",
+      "showing_one": "Showing {{count}} category",
+      "showing_other": "Showing {{count}} categories"
+    },
+    "pagination": {
+      "showing": "Showing {{start}} to {{end}} of {{total}} categories",
+      "itemsPerPage": "Items per page",
+      "perPage": "Per page",
+      "perPageOption": "{{count}} per page",
+      "selectItemsPerPage": "Select items per page"
+    },
+    "errors": {
+      "failedToLoad": "Failed to load categories",
+      "loadingTitle": "Error Loading Categories",
+      "tryAgain": "Try Again",
+      "page_not_found": "Page Not Found",
+      "page_not_exist": "Sorry, the page you are looking for does not exist or has been moved.",
+      "go_home": "Back to Home"
+    },
+    "monitors": "Monitors",
+    "wearables": "Wearables",
+    "accessories": "Accessories",
+    "eyewear": "Eyewear"
   },
-  
   "featured": {
     "title": "Featured Products",
     "description": "Discover our handpicked selection of premium products",
     "featured_badge": "Featured"
   },
-  
-  
-  
   "hero": {
     "slides": {
       "iphone": {
         "title": "iPhone 15 Pro Max",
         "subtitle": "Latest Technology",
-        "description": "Experience the future with titanium design, advanced cameras, and the powerful A17 Pro chip.",
-        "cta": "Shop iPhones"
+        "description": "Experience the future with a titanium design, advanced cameras and the powerful A17 Pro chip.",
+        "cta": "Shop iPhone"
       },
       "gaming": {
         "title": "Gaming Powerhouse",
         "subtitle": "Ultimate Performance",
-        "description": "Dominate every game with RTX 4080, 32GB RAM, and lightning-fast SSD storage.",
+        "description": "Dominate every game with an RTX 4080, 32GB of RAM and lightning-fast SSD storage.",
         "cta": "Game On"
       },
       "smartHome": {
         "title": "Smart Home Revolution",
         "subtitle": "Connected Living",
-        "description": "Transform your home into a smart ecosystem with voice control, automation, and security.",
-        "cta": "Smart Home"
+        "description": "Turn your home into a smart ecosystem with voice control, automation and security.",
+        "cta": "Shop Smart Home"
       },
       "audio": {
         "title": "Audio Excellence",
@@ -768,13 +820,13 @@
       "workspace": {
         "title": "Professional Workspace",
         "subtitle": "Work Redefined",
-        "description": "Boost productivity with professional-grade monitors, keyboards, and ergonomic accessories.",
-        "cta": "Shop Tools"
+        "description": "Boost your productivity with professional-grade monitors, keyboards and ergonomic accessories.",
+        "cta": "Shop Workspace"
       }
     },
     "badges": {
       "new": "New",
-      "hot": "Hot",
+      "hot": "Best Seller",
       "trending": "Trending",
       "premium": "Premium",
       "pro": "Pro"
@@ -782,14 +834,21 @@
     "features": {
       "freeShipping": "Free Shipping",
       "warranty": "2-Year Warranty",
-      "support": "24/7 Support"
+      "support": "Support 7 Days a Week"
     },
     "browseAll": "Browse All",
-    "reviews": "reviews"
+    "reviews": "reviews",
+    "aria": {
+      "previous": "Previous slide",
+      "next": "Next slide",
+      "goTo": "Go to slide {{number}}",
+      "pause": "Pause slideshow",
+      "play": "Play slideshow"
+    }
   },
   "admin": {
     "dashboard": "Admin Dashboard",
-    "manage_store": "Manage your store and monitor performance",
+    "manage_store": "Manage your store and track its performance",
     "refresh_data": "Refresh Data",
     "loading": "Loading admin dashboard...",
     "stats": {
@@ -810,16 +869,16 @@
       "coupons": "Coupons",
       "analytics": "Analytics"
     },
-    "analytics":{
-      "sales_analytics":" Sales Analytic",
-      "total_revenue":" Total Revenue",
-      "total_orders":" Total Orders",
-      "average_order_value":"  Average order value ",
-      "order_status_distribution":"  Order status Distribution",
-      "pending":"Pending",
-      "paid":"Paid",
-      "cancelled":"Cancelled",
-      "total":"Total"
+    "analytics": {
+      "sales_analytics": "Sales Analytics",
+      "total_revenue": "Total Revenue",
+      "total_orders": "Total Orders",
+      "average_order_value": "Average Order Value",
+      "order_status_distribution": "Order Status Distribution",
+      "pending": "Pending",
+      "paid": "Paid",
+      "cancelled": "Cancelled",
+      "total": "Total"
     },
     "overview": {
       "recent_orders": "Recent Orders",
@@ -829,7 +888,7 @@
       "recent_messages": "Recent Customer Messages"
     },
     "products": {
-      "management": "Products Management",
+      "management": "Product Management",
       "add_product": "Add Product",
       "search_placeholder": "Search products...",
       "featured": "Featured",
@@ -849,11 +908,13 @@
         "select_category": "Select a category",
         "stock_quantity": "Stock",
         "images": "Images",
-        "images_selected": "{{count}} image(s) selected",
+        "images_selected": "{{count}} images selected",
         "image_update_hint": "Leave empty to keep the current images.",
         "update": "Update",
         "create": "Create",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "images_selected_one": "{{count}} image selected",
+        "images_selected_other": "{{count}} images selected"
       },
       "table": {
         "product": "Product",
@@ -865,11 +926,11 @@
       },
       "product_details": "Product Details",
       "created_at": "Created At",
-      "updated_at": "Updated At"
-
+      "updated_at": "Updated At",
+      "images": "Images"
     },
     "categories": {
-      "management": "Categories Management",
+      "management": "Category Management",
       "add_category": "Add Category",
       "add_new_category": "Add New Category",
       "edit_category": "Edit Category",
@@ -892,7 +953,7 @@
         "name": "Name",
         "description": "Description",
         "image": "Image",
-        "image_update_hint": "Upload a new image to update the current one",
+        "image_update_hint": "Upload a new image to replace the current one",
         "order": "Order",
         "order_placeholder": "Display order (optional)",
         "featured_category": "Featured Category",
@@ -900,12 +961,13 @@
         "update": "Update",
         "create": "Create",
         "cancel": "Cancel"
-      }
+      },
+      "slug": "Slug",
+      "delete_category": "Delete Category"
     },
     "orders": {
-            "all_payment_status":"Payment Status ",
-
-      "management": "Orders Management",
+      "all_payment_status": "All Payment Statuses",
+      "management": "Order Management",
       "filter_by_status": "Filter by Status",
       "filter_by_payment": "Filter by Payment",
       "all_status": "All Status",
@@ -915,46 +977,46 @@
       "delivered": "Delivered",
       "cancelled": "Cancelled",
       "paid": "Paid",
-      "order_number": "Order number",
-      "customer": "customer",
-      "unknown": " unknown",
-      "items": " items",
+      "order_number": "Order Number",
+      "customer": "Customer",
+      "unknown": "Unknown",
+      "items": "Items",
       "view_details": "View Details",
-      "status":{
-        "pending":"Pending",
-        "processing":" processing...",
-        "delivered":" delivered",
-        "cancelled":"Cancelled",
-        "shipped":" shippede"
+      "status": {
+        "pending": "Pending",
+        "processing": "Processing",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled",
+        "shipped": "Shipped"
       },
-      "payment":{
-        "pending":"Pending",
-        "paid":"Paid",
-        "failed":"failed",
-        "refunded":"refunded"
+      "payment": {
+        "pending": "Pending",
+        "paid": "Paid",
+        "failed": "Failed",
+        "refunded": "Refunded"
       }
     },
     "users": {
-      "management": "Users Management",
+      "management": "User Management",
       "filter_by_role": "Filter by Role",
       "all_roles": "All Roles",
       "admin": "Admin",
       "user": "User",
       "active": "Active",
       "inactive": "Inactive",
-      "customer":"customer",
-      "view_details":"View Details",
-      "table":{
-        "user":"User",
-        "email":"Enter your email",
-        "role":"role",
-        "status":"status",
-        "joined":"joined",
-        "actions":"action"
+      "customer": "Customer",
+      "view_details": "View Details",
+      "table": {
+        "user": "User",
+        "email": "Email",
+        "role": "Role",
+        "status": "Status",
+        "joined": "Joined",
+        "actions": "Actions"
       }
     },
     "coupons": {
-      "management": "Coupons Management",
+      "management": "Coupon Management",
       "add_coupon": "Add Coupon",
       "search_placeholder": "Search coupons...",
       "edit": "Edit Coupon",
@@ -965,13 +1027,13 @@
       "expires": "Expires",
       "edit_coupon": "Edit Coupon",
       "delete_coupon": "Delete Coupon",
-      "toggle_status": "Activate / deactivate",
+      "toggle_status": "Activate / Deactivate",
       "add_new_coupon": "Add New Coupon",
       "empty": "No coupons yet.",
       "form": {
-        "code": "Code",
-        "email": "Customer email",
-        "discount_value": "Discount",
+        "code": "Coupon Code",
+        "email": "Customer Email",
+        "discount_value": "Discount Value",
         "expiry_date": "Expiry Date",
         "update": "Update",
         "create": "Create",
@@ -1018,7 +1080,7 @@
       "userStatusUpdated": "User status updated to {{status}}"
     },
     "errors": {
-      "failed_to_fetch_data": "Failed to fetch data",
+      "failed_to_fetch_data": "Failed to load data",
       "failed_to_delete_product": "Failed to delete product",
       "failed_to_update_order_status": "Failed to update order status",
       "failed_to_update_payment_status": "Failed to update payment status",
@@ -1026,7 +1088,7 @@
       "failed_to_delete_coupon": "Failed to delete coupon",
       "failed_to_save_category": "Failed to save category",
       "failed_to_delete_category": "Failed to delete category",
-      "failedToFetchData": "Failed to fetch data",
+      "failedToFetchData": "Failed to load data",
       "failedToDeleteProduct": "Failed to delete product",
       "failedToUpdateOrderStatus": "Failed to update order status",
       "failedToUpdatePaymentStatus": "Failed to update payment status",
@@ -1035,7 +1097,8 @@
       "failedToSaveCategory": "Failed to save category",
       "failedToDeleteCategory": "Failed to delete category",
       "failedToSaveCoupon": "Failed to save coupon",
-      "maxImagesExceeded": "Maximum 10 images allowed"
+      "maxImagesExceeded": "You can upload up to 10 images",
+      "failedToSaveProduct": "Failed to save product"
     },
     "confirmations": {
       "delete_product": "Are you sure you want to delete this product?",
@@ -1046,12 +1109,9 @@
       "deleteCoupon": "Are you sure you want to delete this coupon?"
     }
   },
-  
-
-
   "profile": {
     "invalidOrderData": "Invalid order data",
-    "failedToFetchOrders": "Failed to fetch orders",
+    "failedToFetchOrders": "Failed to load orders",
     "fillAllRequiredFields": "Please fill in all required fields",
     "failedToUploadImage": "Failed to upload profile image. Please try again.",
     "profileUpdatedSuccessfully": "Profile updated successfully",
@@ -1069,7 +1129,7 @@
     "fullName": "Full Name",
     "emailAddress": "Email Address",
     "avatarPreview": "Avatar Preview",
-    "emailNotChangeable": "Email address is not changeable",
+    "emailNotChangeable": "Email address cannot be changed",
     "saving": "Saving...",
     "saveChanges": "Save Changes",
     "cancel": "Cancel",
@@ -1085,28 +1145,32 @@
     "payment": "Payment",
     "shipping": "Shipping",
     "viewDetails": "View Details",
-    "cancelOrder": "Cancel Order"
+    "cancelOrder": "Cancel Order",
+    "fillRequiredFields": "Please fill in the required fields"
   },
   "contact": {
     "validation": {
       "nameRequired": "Name is required",
       "nameMinLength": "Name must be at least 2 characters",
-      "nameMaxLength": "Name must be less than 50 characters",
+      "nameMaxLength": "Name must be 50 characters or fewer",
       "emailRequired": "Email is required",
       "emailInvalid": "Please enter a valid email address",
-      "emailMaxLength": "Email must be less than 100 characters",
+      "emailMaxLength": "Email must be 100 characters or fewer",
       "subjectRequired": "Subject is required",
       "subjectMinLength": "Subject must be at least 5 characters",
-      "subjectMaxLength": "Subject must be less than 100 characters",
+      "subjectMaxLength": "Subject must be 100 characters or fewer",
       "messageRequired": "Message is required",
       "messageMinLength": "Message must be at least 10 characters",
-      "messageMaxLength": "Message must be less than 1000 characters"
+      "messageMaxLength": "Message must be 1000 characters or fewer",
+      "nameInvalid": "Please enter a valid name (letters and spaces only)",
+      "fixErrors": "Please fix the errors before sending",
+      "fixErrorsBelow": "Please fix the errors below"
     },
     "toast": {
-      "validationErrors": "Please fix all validation errors before submitting",
+      "validationErrors": "Please fix all errors before sending",
       "messageSuccess": "Message sent successfully! We'll get back to you soon.",
-      "messageFailed": "Failed to send message. Please try again.",
-      "invalidData": "Invalid form data. Please check your inputs.",
+      "messageFailed": "Failed to send your message. Please try again.",
+      "invalidData": "Invalid form data. Please check your entries.",
       "loginRequired": "Please log in to send a message.",
       "tooManyRequests": "Too many requests. Please try again later.",
       "serverError": "Server error. Please try again later.",
@@ -1114,14 +1178,14 @@
       "unexpectedError": "An unexpected error occurred. Please try again."
     },
     "letConnect": "Let's Connect",
-    "heroDescription": "Have a question or need help? We'd love to hear from you. Our team is here to provide the support you need.",
+    "heroDescription": "Have a question or need help? We'd love to hear from you — our team is here to support you.",
     "getInTouch": "Get in Touch",
-    "choosePreferredWay": "Choose your preferred way to reach us. We're here to help!",
+    "choosePreferredWay": "Choose the way that suits you best. We're here to help!",
     "sendMessage": "Send us a Message",
     "fillFormDescription": "Fill out the form below and we'll get back to you as soon as possible.",
-    "proTip": "Pro Tip",
-    "loginBenefit": "Logging in will pre-fill your contact information and provide faster support.",
-    "loginToContinue": "Login to Continue",
+    "proTip": "Tip",
+    "loginBenefit": "Signing in pre-fills your contact details and gets you faster support.",
+    "loginToContinue": "Sign In to Continue",
     "welcomeBack": "Welcome back!",
     "fullName": "Full Name",
     "enterFullName": "Enter your full name",
@@ -1134,195 +1198,276 @@
     "sendingMessage": "Sending Message...",
     "sendMessageButton": "Send Message",
     "findUs": "Find Us",
-    "visitOffice": "Visit our office or get in touch with us anytime",
+    "visitOffice": "Visit our office or contact us during working hours",
     "ourLocation": "Our Location",
-    "address": "123 Tech Street, Digital City, DC 12345",
-    "mapComingSoon": "Interactive Map Coming Soon",
-     "workingOnExperience": "We're working on bringing you a better experience"
-   },
-   "emailConfirmation": {
-     "success": "Email confirmed successfully!",
-     "failed": "Email confirmation failed. Please try again.",
-     "invalidLink": "Invalid confirmation link.",
-     "confirming": "Confirming your email...",
-     "pleaseWait": "Please wait while we verify your email address.",
-     "confirmed": "Email Confirmed!",
-     "redirecting": "Redirecting to login page...",
-     "confirmationFailed": "Confirmation Failed",
-     "goToLogin": "Go to Login",
-     "createNewAccount": "Create New Account",
-     "title": "Email Confirmation",
-     "verifying": "Verifying your email address"
-   },
-   "categoryProducts": {
-     "errors": {
-       "fetchFailed": "Failed to fetch products",
-       "loadingTitle": "Error Loading Products"
-     },
-     "toast": {
-       "loadFailed": "Failed to load products",
-       "cartUpdateFailed": "Failed to update cart",
-       "loginRequiredCart": "Please login to manage cart",
-       "loginRequiredWishlist": "Please login to manage wishlist",
-       "wishlistUpdateFailed": "Failed to update wishlist"
-     },
-     "badges": {
-       "featured": "Featured"
-     },
-     "buttons": {
-       "addToCart": "Add to Cart",
-       "removeFromCart": "Remove from Cart",
-       "tryAgain": "Try Again",
-       "clearSearch": "Clear Search"
-     },
-     "navigation": {
-       "backToCategories": "Back to Categories"
-     },
-     "search": {
-       "placeholder": "Search products..."
-     },
-     "sort": {
-       "placeholder": "Sort by",
-       "nameAsc": "Name (A-Z)",
-       "nameDesc": "Name (Z-A)",
-       "priceAsc": "Price (Low to High)",
-       "priceDesc": "Price (High to Low)",
-       "newest": "Newest",
-       "oldest": "Oldest"
-     },
-     "empty": {
-       "title": "No products found",
-       "searchMessage": "Try adjusting your search criteria",
-       "categoryMessage": "No products are available in this category at the moment"
-     },
-     "pagination": {
-       "previous": "Previous",
-       "next": "Next"
-     },
-     "results": {
-       "showing": "Showing {{count}} product{{count, plural, one {} other {s}}} in {{category}}"
-     }
-   },
-  
-   
-     "shop": {
-       "title": "All Products",
-       "productsFound": "{{count}} products found",
-       "filters": {
-         "title": "Filters",
-         "category": "Category",
-         "allCategories": "All Categories",
-         "priceRange": "Price Range",
-         "min": "Min",
-         "max": "Max",
-         "sortBy": "Sort By"
-       },
-       "sort": {
-         "newest": "Newest First",
-         "priceLowToHigh": "Price: Low to High",
-         "priceHighToLow": "Price: High to Low",
-         "nameAtoZ": "Name: A to Z"
-       },
-       "empty": {
-         "title": "No products found",
-         "message": "Try adjusting your filters or search criteria."
-       },
-       "errors": {
-         "cartUpdateFailed": "Failed to update cart"
-       }
-     },
-     "about": {
-       "hero": {
-         "title": "About",
-         "brand": "Pioneer",
-         "description": "We are passionate about bringing you the latest and greatest in electronics. Our mission is to provide high-quality products with exceptional customer service."
-       },
-       "features": {
-         "title": "Why Choose Us",
-         "subtitle": "We provide the best shopping experience with our comprehensive features",
-         "secureShoppingTitle": "Secure Shopping",
-         "secureShoppingDesc": "Your data is protected with industry-leading security measures",
-         "fastDeliveryTitle": "Fast Delivery",
-         "fastDeliveryDesc": "Get your products delivered within 24-48 hours",
-         "supportTitle": "24/7 Support",
-         "supportDesc": "Our customer support team is available round the clock",
-         "expertTeamTitle": "Expert Team",
-         "expertTeamDesc": "Our team of experts ensures quality service"
-       },
-       "stats": {
-         "happyCustomers": "Happy Customers",
-         "productsSold": "Products Sold",
-         "satisfactionRate": "Satisfaction Rate",
-         "customerSupport": "Customer Support"
-       },
-       "values": {
-         "title": "Our Values",
-         "subtitle": "The principles that guide everything we do",
-         "missionTitle": "Our Mission",
-         "missionDesc": "To make cutting-edge technology accessible to everyone while providing exceptional customer service.",
-         "innovationTitle": "Innovation",
-         "innovationDesc": "We stay ahead of the curve, offering the latest and greatest in electronics and technology.",
-         "globalReachTitle": "Global Reach",
-         "globalReachDesc": "Serving customers across the country with reliable shipping and local support.",
-         "growthTitle": "Growth",
-         "growthDesc": "Continuously expanding our product range and improving our services based on customer feedback."
-       },
-       "story": {
-         "title": "Our Story",
-         "paragraph1": "Founded in 2020, Pioneer started as a small local electronics store with a big dream: to make cutting-edge technology accessible to everyone. What began as a passion project has grown into one of the most trusted names in online electronics retail.",
-         "paragraph2": "Today, we serve customers across the country, offering a carefully curated selection of the latest gadgets, computers, and electronic accessories. Our commitment to quality, customer service, and competitive pricing remains at the heart of everything we do.",
-         "paragraph3": "We believe that technology should enhance your life, not complicate it. That's why we go beyond just selling products – we provide expert advice, comprehensive support, and a shopping experience that puts you first."
-       }
-      },
-     
-       "productDetail": {
-          "addToCart": "Add to Cart",
-          "removeFromCart": "Remove from Cart",
-          "buyNow": "Buy Now",
-          "processing": "Processing...",
-          "quantity": "Quantity",
-          "back": "Back",
-          "relatedProducts": "Related Products",
-          "freeShipping": "Free Shipping",
-          "onOrdersOver": "On orders over $50",
-          "securePayment": "Secure Payment",
-          "secureCheckout": "100% secure checkout",
-          "easyReturns": "Easy Returns",
-          "returnPolicy": "30 day return policy",
-          "reviews": "reviews",
-          "errors": {
-            "productNotFound": "Product not found",
-            "loginRequired": "Please login to manage cart",
-            "cartUpdateFailed": "Failed to update cart"
-          }
-        },
-        "deals": {
-          "hero": {
-            "hot": "Hot",
-            "deals": "Deals",
-            "description": "Discover amazing deals on our featured products. Limited time offers with incredible savings!"
-          },
-          "stats": {
-            "activeDeals": "Active Deals",
-            "flashSales": "Flash Sales",
-            "maxDiscount": "Max Discount",
-            "happyBuyers": "Happy Buyers"
-          },
-          "products": {
-            "title": "Featured Products",
-            "subtitle": "Handpicked deals on our most popular products"
-          },
-          "empty": {
-            "title": "No Deals Available",
-            "message": "Check back soon for amazing deals and offers!"
-          },
-          "errors": {
-            "loginRequired": "Please login to manage cart",
-            "cartUpdateFailed": "Failed to update cart",
-            "wishlistLoginRequired": "Please login to manage wishlist"
-          }
-        }
-      }
-
-     
-    
+    "address": "King Fahd Road, Al Olaya, Riyadh 12214, Saudi Arabia",
+    "mapComingSoon": "Interactive map coming soon",
+    "workingOnExperience": "We're working on bringing you a better experience",
+    "success": {
+      "messageSent": "Your message has been sent. We'll get back to you soon."
+    },
+    "error": {
+      "failedToSend": "Failed to send your message. Please try again.",
+      "invalidFormData": "Invalid form data. Please check your entries.",
+      "loginRequired": "Please log in to send a message.",
+      "tooManyRequests": "Too many requests. Please try again later.",
+      "serverError": "Server error. Please try again later.",
+      "networkError": "Network error. Please check your connection.",
+      "unexpectedError": "An unexpected error occurred. Please try again."
+    },
+    "charactersCount": "{{count}}/{{max}} characters",
+    "mapTitle": "Our location in Riyadh"
+  },
+  "emailConfirmation": {
+    "success": "Email confirmed successfully!",
+    "failed": "Email confirmation failed. Please try again.",
+    "invalidLink": "Invalid confirmation link.",
+    "confirming": "Confirming your email...",
+    "pleaseWait": "Please wait while we verify your email address.",
+    "confirmed": "Email Confirmed!",
+    "redirecting": "Redirecting to the sign-in page...",
+    "confirmationFailed": "Confirmation Failed",
+    "goToLogin": "Go to Sign In",
+    "createNewAccount": "Create New Account",
+    "title": "Email Confirmation",
+    "verifying": "Verifying your email address"
+  },
+  "categoryProducts": {
+    "errors": {
+      "fetchFailed": "Failed to load products",
+      "loadingTitle": "Error Loading Products"
+    },
+    "toast": {
+      "loadFailed": "Failed to load products",
+      "cartUpdateFailed": "Failed to update cart",
+      "loginRequiredCart": "Please log in to manage your cart",
+      "loginRequiredWishlist": "Please log in to manage your wishlist",
+      "wishlistUpdateFailed": "Failed to update wishlist"
+    },
+    "badges": {
+      "featured": "Featured"
+    },
+    "buttons": {
+      "addToCart": "Add to Cart",
+      "removeFromCart": "Remove from Cart",
+      "tryAgain": "Try Again",
+      "clearSearch": "Clear Search"
+    },
+    "navigation": {
+      "backToCategories": "Back to Categories"
+    },
+    "search": {
+      "placeholder": "Search products..."
+    },
+    "sort": {
+      "placeholder": "Sort by",
+      "nameAsc": "Name (A-Z)",
+      "nameDesc": "Name (Z-A)",
+      "priceAsc": "Price (Low to High)",
+      "priceDesc": "Price (High to Low)",
+      "newest": "Newest",
+      "oldest": "Oldest"
+    },
+    "empty": {
+      "title": "No products found",
+      "searchMessage": "Try adjusting your search criteria",
+      "categoryMessage": "There are no products in this category right now"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "results": {
+      "showing": "Showing {{count}} products in {{category}}",
+      "showing_one": "Showing {{count}} product in {{category}}",
+      "showing_other": "Showing {{count}} products in {{category}}"
+    }
+  },
+  "shop": {
+    "title": "All Products",
+    "productsFound": "{{count}} products found",
+    "filters": {
+      "title": "Filters",
+      "category": "Category",
+      "allCategories": "All Categories",
+      "priceRange": "Price Range",
+      "min": "Min",
+      "max": "Max",
+      "sortBy": "Sort By"
+    },
+    "sort": {
+      "newest": "Newest First",
+      "priceLowToHigh": "Price: Low to High",
+      "priceHighToLow": "Price: High to Low",
+      "nameAtoZ": "Name: A to Z"
+    },
+    "empty": {
+      "title": "No products found",
+      "message": "Try adjusting your filters or search terms."
+    },
+    "errors": {
+      "cartUpdateFailed": "Failed to update cart"
+    },
+    "productsFound_one": "{{count}} product found",
+    "productsFound_other": "{{count}} products found"
+  },
+  "about": {
+    "hero": {
+      "title": "About",
+      "brand": "Pioneer",
+      "description": "We're passionate about bringing customers across Saudi Arabia the latest electronics. Our mission is to offer genuine, high-quality products backed by outstanding customer service."
+    },
+    "features": {
+      "title": "Why Choose Us",
+      "subtitle": "Everything you need for a reliable shopping experience",
+      "secureShoppingTitle": "Secure Shopping",
+      "secureShoppingDesc": "Your data is protected with industry-standard security",
+      "fastDeliveryTitle": "Fast Delivery",
+      "fastDeliveryDesc": "Delivery in 1–3 business days in Riyadh, Jeddah and Dammam, and 3–5 business days to other cities",
+      "supportTitle": "Support 7 Days a Week",
+      "supportDesc": "Our customer care team is available Saturday–Thursday 9:00 AM – 11:00 PM and Friday 4:00 PM – 11:00 PM",
+      "expertTeamTitle": "Expert Team",
+      "expertTeamDesc": "Our specialists help you choose the right product"
+    },
+    "stats": {
+      "happyCustomers": "Happy Customers",
+      "productsSold": "Products Sold",
+      "satisfactionRate": "Satisfaction Rate",
+      "customerSupport": "Customer Support",
+      "happyCustomersValue": "25,000+",
+      "productsAvailable": "Products Available",
+      "productsAvailableValue": "3,000+",
+      "customerRating": "Customer Rating",
+      "customerRatingValue": "4.7/5",
+      "citiesServed": "Cities Served",
+      "citiesServedValue": "40+"
+    },
+    "values": {
+      "title": "Our Values",
+      "subtitle": "The principles that guide everything we do",
+      "missionTitle": "Our Mission",
+      "missionDesc": "To make cutting-edge technology accessible to everyone while providing exceptional customer service.",
+      "innovationTitle": "Innovation",
+      "innovationDesc": "We keep up with the latest technology to bring you the newest and best electronics.",
+      "globalReachTitle": "Nationwide Reach",
+      "globalReachDesc": "Delivering to 40+ cities across Saudi Arabia with reliable shipping and local support.",
+      "growthTitle": "Growth",
+      "growthDesc": "Continuously expanding our range and improving our services based on customer feedback."
+    },
+    "story": {
+      "title": "Our Story",
+      "paragraph1": "Founded in Riyadh in 2021, Pioneer started as a small online electronics store with a simple goal: to make the latest technology easy to buy for everyone in Saudi Arabia. Since then, we've become a trusted destination for more than 25,000 customers.",
+      "paragraph2": "Today we offer more than 3,000 products — phones, laptops, gaming PCs, monitors, smartwatches, audio, accessories and eyewear — and deliver to more than 40 cities across the Kingdom. Quality, customer service and competitive prices remain at the heart of everything we do.",
+      "paragraph3": "We believe technology should make your life easier, not more complicated. That's why we go beyond selling products: we offer expert advice, dependable support and a shopping experience that puts you first."
+    }
+  },
+  "productDetail": {
+    "addToCart": "Add to Cart",
+    "removeFromCart": "Remove from Cart",
+    "buyNow": "Buy Now",
+    "processing": "Processing...",
+    "quantity": "Quantity",
+    "back": "Back",
+    "relatedProducts": "Related Products",
+    "freeShipping": "Free Shipping",
+    "onOrdersOver": "On orders over 200 SAR",
+    "securePayment": "Secure Payment",
+    "secureCheckout": "100% secure checkout",
+    "easyReturns": "Easy Returns",
+    "returnPolicy": "30-day return policy",
+    "reviews": "reviews",
+    "errors": {
+      "productNotFound": "Product not found",
+      "loginRequired": "Please log in to manage your cart",
+      "cartUpdateFailed": "Failed to update cart"
+    }
+  },
+  "deals": {
+    "hero": {
+      "hot": "Hot",
+      "deals": "Deals",
+      "description": "Discover great deals on our featured products. Limited-time offers with big savings!"
+    },
+    "stats": {
+      "activeDeals": "Active Deals",
+      "flashSales": "Flash Sales",
+      "maxDiscount": "Max Discount",
+      "happyBuyers": "Happy Buyers",
+      "activeDealsValue": "60+",
+      "flashSalesValue": "48 hrs",
+      "maxDiscountValue": "30%",
+      "happyBuyersValue": "25,000+"
+    },
+    "products": {
+      "title": "Featured Products",
+      "subtitle": "Handpicked deals on our most popular products"
+    },
+    "empty": {
+      "title": "No Deals Available",
+      "message": "Check back soon for new deals and offers!"
+    },
+    "errors": {
+      "loginRequired": "Please log in to manage your cart",
+      "cartUpdateFailed": "Failed to update cart",
+      "wishlistLoginRequired": "Please log in to manage your wishlist"
+    }
+  },
+  "errors": {
+    "page_not_found": "Page Not Found",
+    "page_not_exist": "Sorry, the page you are looking for does not exist or has been moved.",
+    "go_home": "Back to Home"
+  },
+  "purchase": {
+    "processingPayment": "Processing your payment...",
+    "pleaseWait": "Please wait and don't close this page.",
+    "somethingWentWrong": "Something went wrong",
+    "goBack": "Go Back",
+    "paymentSuccessful": "Payment Successful!",
+    "thankYouMessage": "Thank you for shopping with Pioneer! Your order is confirmed and we'll email you the details.",
+    "downloadInvoice": "Download Invoice",
+    "backToHome": "Back to Home",
+    "orderAlreadyConfirmed": "This order has already been confirmed",
+    "orderConfirmed": "Your order has been confirmed!",
+    "redirectingHome": "Redirecting you to the home page...",
+    "paymentConfirmationFailed": "Payment confirmation failed",
+    "failedToProcessPayment": "Failed to process payment",
+    "invoice": {
+      "title": "Invoice",
+      "orderId": "Order ID",
+      "date": "Date",
+      "customer": "Customer",
+      "email": "Email",
+      "guest": "Guest",
+      "notProvided": "Not provided",
+      "product": "Product",
+      "qty": "Qty",
+      "price": "Price",
+      "total": "Total"
+    }
+  },
+  "purchaseCancel": {
+    "title": "Payment Cancelled",
+    "message": "Your payment was cancelled and you haven't been charged. The items are still in your cart.",
+    "needHelp": "Need help?",
+    "commonIssues": "Common issues",
+    "issues": [
+      "Card declined by the bank",
+      "Incorrect card details",
+      "Payment window closed before completion",
+      "Unstable internet connection"
+    ],
+    "whatYouCanDo": "What you can do",
+    "actions": [
+      "Check your card details and try again",
+      "Use a different card or payment method",
+      "Contact your bank if the problem continues",
+      "Contact our support team"
+    ],
+    "returnToCart": "Return to Cart",
+    "continueShopping": "Continue Shopping",
+    "goHome": "Back to Home",
+    "supportNote": "Still having trouble? Our support team is here to help.",
+    "email": "Email:",
+    "phone": "Phone:"
+  }
+}

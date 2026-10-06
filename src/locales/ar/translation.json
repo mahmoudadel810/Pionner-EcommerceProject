@@ -2,67 +2,88 @@
   "nav": {
     "home": "الرئيسية",
     "shop": "المتجر",
-    "categories": "التصنيفات",
+    "categories": "الفئات",
     "deals": "العروض",
     "about": "من نحن",
-    "contact": "اتصل بنا",
-    "profile": "الملف الشخصي",
+    "contact": "تواصل معنا",
+    "profile": "حسابي",
     "admin": "لوحة التحكم",
     "logout": "تسجيل الخروج",
     "signin": "تسجيل الدخول",
     "language": "اللغة",
-    "search_placeholder": "ابحث عن الأجهزة...",
+    "search_placeholder": "ابحث عن الجوالات واللابتوبات والإكسسوارات...",
     "wishlist": "المفضلة",
     "cart": "السلة",
     "user": "المستخدم",
-    "noEmail": "لا يوجد بريد إلكتروني"
+    "noEmail": "لا يوجد بريد إلكتروني",
+    "hot": "تخفيضات",
+    "toggleMenu": "فتح القائمة أو إغلاقها"
   },
   "company": {
     "name": "بايونير",
-    "email": "support@pioneer.com",
-    "address": "123 شارع بايونير، مدينة التكنولوجيا، TC 12345",
-    "phone": "+1 (555) 123-4567"
-    
+    "email": "support@pionner.sa",
+    "address": "طريق الملك فهد، حي العليا، الرياض 12214، المملكة العربية السعودية",
+    "phone": "9200 33145",
+    "infoEmail": "info@pionner.sa",
+    "phoneDial": "920033145",
+    "whatsapp": "+966 50 312 4876",
+    "whatsappLabel": "واتساب",
+    "hoursTitle": "ساعات العمل",
+    "hours": "السبت – الخميس: 9:00 ص – 11:00 م، الجمعة: 4:00 م – 11:00 م",
+    "hoursWeekdays": "السبت – الخميس: 9:00 ص – 11:00 م",
+    "hoursFriday": "الجمعة: 4:00 م – 11:00 م",
+    "founded": "منذ 2021",
+    "tagline": "متجر إلكتروني للأجهزة والإكسسوارات في المملكة العربية السعودية",
+    "shippingPolicy": "شحن مجاني للطلبات فوق 200 ر.س. التوصيل خلال 1–3 أيام عمل في الرياض وجدة والدمام، و3–5 أيام عمل لباقي المدن.",
+    "returnPolicy": "يمكنك إرجاع المنتجات خلال 30 يومًا من تاريخ الاستلام.",
+    "social": {
+      "twitter": "@pionner_sa",
+      "instagram": "@pionner_sa",
+      "tiktok": "@pionner_sa",
+      "snapchat": "@pionner_sa"
+    }
   },
   "payment": {
-    "success": "تم الدفع بنجاح! تم تقديم طلبك.",
+    "success": "تم الدفع بنجاح! تم تأكيد طلبك.",
     "errors": {
       "noCheckoutUrl": "رابط الدفع غير متوفر",
       "unexpected": "حدث خطأ غير متوقع.",
-      "createPaymentIntentFailed": "فشل في إنشاء نية الدفع",
-      "createCheckoutSessionFailed": "فشل في إنشاء جلسة الدفع",
-      "processPaymentSuccessFailed": "فشل في معالجة نجاح الدفع"
+      "createPaymentIntentFailed": "تعذّر بدء عملية الدفع",
+      "createCheckoutSessionFailed": "تعذّر إنشاء جلسة الدفع",
+      "processPaymentSuccessFailed": "تعذّر تأكيد عملية الدفع"
+    },
+    "form": {
+      "methodSubtitle": "اختر طريقة الدفع المناسبة لك",
+      "billingSubtitle": "أدخل بيانات الفوترة"
     }
   },
   "cart": {
-    "couponApplied": "تم تطبيق الكوبون بنجاح",
-    "couponRemoved": "تم إزالة الكوبون",
-    "cleared": "تم مسح السلة بنجاح",
-    "productAdded": "تم إضافة المنتج إلى السلة",
-    "productRemoved": "تم إزالة المنتج من السلة",
+    "couponApplied": "تم تطبيق كوبون الخصم بنجاح",
+    "couponRemoved": "تمت إزالة الكوبون",
+    "cleared": "تم إفراغ السلة",
+    "productAdded": "تمت إضافة المنتج إلى السلة",
+    "productRemoved": "تمت إزالة المنتج من السلة",
     "errors": {
-      "fetchCouponFailed": "فشل في جلب الكوبون",
-      "applyCouponFailed": "فشل في تطبيق الكوبون",
-      "fetchCartFailed": "فشل في جلب عناصر السلة",
-      "clearCartFailed": "فشل في مسح السلة",
-      "updateCartFailed": "فشل في تحديث السلة",
-      "productRemoved":"تم إزالة المنتج من السلة",
-      "productMovedToWishlist": "تم نقل المنتج إلى قائمة المفضلة"
-    
-      
+      "fetchCouponFailed": "تعذّر تحميل الكوبون",
+      "applyCouponFailed": "تعذّر تطبيق الكوبون",
+      "fetchCartFailed": "تعذّر تحميل منتجات السلة",
+      "clearCartFailed": "تعذّر إفراغ السلة",
+      "updateCartFailed": "تعذّر تحديث السلة",
+      "productRemoved": "تمت إزالة المنتج من السلة",
+      "productMovedToWishlist": "تم نقل المنتج إلى المفضلة"
     },
-    "failedToMoveToWishlist": "فشل في نقل المنتج إلى قائمة المفضلة",
+    "failedToMoveToWishlist": "تعذّر نقل المنتج إلى المفضلة",
     "enterCouponCode": "يرجى إدخال رمز الكوبون",
     "cartIsEmpty": "سلة التسوق فارغة",
     "yourCartIsEmpty": "سلة التسوق فارغة",
-    "noProductsInCart": "يبدو أنك لم تضف أي منتجات إلى سلة التسوق بعد.",
+    "noProductsInCart": "يبدو أنك لم تُضف أي منتجات إلى سلة التسوق بعد.",
     "startShopping": "ابدأ التسوق",
     "continueShopping": "متابعة التسوق",
     "shoppingCart": "سلة التسوق",
     "moveToWishlist": "نقل إلى المفضلة",
     "removeFromCart": "إزالة من السلة",
     "orderSummary": "ملخص الطلب",
-    "haveCoupon": "لديك كوبون؟",
+    "haveCoupon": "لديك كوبون خصم؟",
     "applying": "جارٍ التطبيق...",
     "apply": "تطبيق",
     "remove": "إزالة",
@@ -70,149 +91,160 @@
     "discount": "الخصم",
     "shipping": "الشحن",
     "free": "مجاني",
-    "total": "المجموع",
-    "proceedToCheckout": "المتابعة للدفع",
-    "freeShippingOver99": "شحن مجاني للطلبات فوق 99 ريال ",
-    "moneyBackGuarantee": "ضمان استرداد الأموال لمدة 30 يومًا"
-
+    "total": "الإجمالي",
+    "proceedToCheckout": "المتابعة لإتمام الشراء",
+    "freeShippingOver99": "شحن مجاني للطلبات فوق 200 ر.س",
+    "moneyBackGuarantee": "ضمان استرداد المبلغ خلال 30 يومًا",
+    "productMovedToWishlist": "تم نقل المنتج إلى المفضلة"
   },
   "wishlist": {
-    "productAdded": "تم إضافة المنتج إلى قائمة الأمنيات",
-    "productRemoved": "تم إزالة المنتج من قائمة الأمنيات",
-    "cleared": "تم مسح قائمة الأمنيات بنجاح",
+    "productAdded": "تمت إضافة المنتج إلى المفضلة",
+    "productRemoved": "تمت إزالة المنتج من المفضلة",
+    "cleared": "تم مسح المفضلة",
     "errors": {
-      "fetchFailed": "فشل في جلب قائمة الأمنيات",
-      "addFailed": "فشل في إضافة المنتج إلى قائمة الأمنيات",
-      "removeFailed": "فشل في إزالة المنتج من قائمة الأمنيات",
-      "clearFailed": "فشل في مسح قائمة الأمنيات"
+      "fetchFailed": "تعذّر تحميل المفضلة",
+      "addFailed": "تعذّر إضافة المنتج إلى المفضلة",
+      "removeFailed": "تعذّر إزالة المنتج من المفضلة",
+      "clearFailed": "تعذّر مسح المفضلة"
     },
-    "title": "قائمة المفضلة",
-    "count_items": "{{count}} منتج{{suffix}} في قائمتك",
+    "title": "المفضلة",
+    "count_items": "{{count}} منتج{{suffix}} في المفضلة",
     "plural_suffix": "",
-    "empty_title": "قائمة المفضلة فارغة",
-    "empty_msg": "ابدأ بإضافة المنتجات إلى قائمتك للاحتفاظ بها لاحقاً",
+    "empty_title": "المفضلة فارغة",
+    "empty_msg": "أضف المنتجات إلى المفضلة لتعود إليها لاحقًا",
     "start_shopping": "ابدأ التسوق",
-    
-          "itemCount": "{{count}} عنصر في قائمة الأمنيات",
-          "addToCart": "أضف إلى السلة",
-          "removeFromCart": "إزالة من السلة",
-          "empty": {
-            "title": "قائمة الأمنيات فارغة",
-            "message": "ابدأ بإضافة المنتجات إلى قائمة الأمنيات لحفظها لاحقاً",
-            "startShopping": "ابدأ التسوق"
-          }
+    "itemCount": "{{count}} منتج في المفضلة",
+    "addToCart": "أضف إلى السلة",
+    "removeFromCart": "إزالة من السلة",
+    "empty": {
+      "title": "المفضلة فارغة",
+      "message": "أضف المنتجات إلى المفضلة لتعود إليها لاحقًا",
+      "startShopping": "ابدأ التسوق"
+    },
+    "itemCount_plural": "{{count}} منتجات في المفضلة",
+    "itemCount_zero": "لا توجد منتجات في المفضلة",
+    "itemCount_one": "منتج واحد في المفضلة",
+    "itemCount_two": "منتجان في المفضلة",
+    "itemCount_few": "{{count}} منتجات في المفضلة",
+    "itemCount_many": "{{count}} منتجًا في المفضلة",
+    "itemCount_other": "{{count}} منتج في المفضلة"
   },
   "product": {
     "created": "تم إنشاء المنتج بنجاح",
     "deleted": "تم حذف المنتج بنجاح",
     "updated": "تم تحديث المنتج بنجاح",
-        "quick_view": "عرض سريع",
-
+    "quick_view": "عرض سريع",
     "errors": {
-      "createFailed": "فشل في إنشاء المنتج",
-      "fetchFailed": "فشل في جلب المنتجات",
-      "deleteFailed": "فشل في حذف المنتج",
-      "updateFailed": "فشل في تحديث المنتج",
-      "fetchFeaturedFailed": "فشل في جلب المنتجات المميزة",
+      "createFailed": "تعذّر إنشاء المنتج",
+      "fetchFailed": "تعذّر تحميل المنتجات",
+      "deleteFailed": "تعذّر حذف المنتج",
+      "updateFailed": "تعذّر تحديث المنتج",
+      "fetchFeaturedFailed": "تعذّر تحميل المنتجات المميزة",
       "back": "رجوع"
-    
     },
     "reviews": "تقييمات",
     "quantity": "الكمية",
     "free_shipping": "شحن مجاني",
-    "free_shipping_threshold": "للطلبات فوق ﷼50",
+    "free_shipping_threshold": "للطلبات فوق 200 ر.س",
     "secure_payment": "دفع آمن",
     "easy_returns": "إرجاع سهل",
-    "buy_now": "اشتري الآن",
+    "buy_now": "اشترِ الآن",
     "processing": "جارٍ المعالجة...",
     "related_products": "منتجات ذات صلة",
-    "featured": "مميز", 
-    "add_to_wishlist": "إضافة إلى المفضلة",
+    "featured": "مميز",
+    "add_to_wishlist": "أضف إلى المفضلة",
     "remove_from_wishlist": "إزالة من المفضلة",
-    "add_to_cart": "إضافة إلى السلة",
-    "remove_from_cart": "إزالة من السلة"
-
+    "add_to_cart": "أضف إلى السلة",
+    "remove_from_cart": "إزالة من السلة",
+    "back": "رجوع"
   },
   "checkout": {
-    "error": "حدث خطأ أثناء عملية الدفع",
-    "paymentInitialized": "تم تهيئة الدفع بنجاح!",
-    "paymentInitializationFailed": "فشل في تهيئة الدفع. يرجى المحاولة مرة أخرى.",
-    "cartEmpty": "عربة التسوق فارغة",
-    "paymentSuccess": "تم الدفع بنجاح! جاري التحويل...",
+    "error": "حدث خطأ أثناء إتمام الشراء",
+    "paymentInitialized": "تم تجهيز عملية الدفع بنجاح!",
+    "paymentInitializationFailed": "تعذّر تجهيز عملية الدفع. يرجى المحاولة مرة أخرى.",
+    "cartEmpty": "سلة التسوق فارغة",
+    "paymentSuccess": "تم الدفع بنجاح! جارٍ التحويل...",
     "paymentSessionExpired": "انتهت صلاحية جلسة الدفع أو تم استخدامها بالفعل. يرجى المحاولة مرة أخرى.",
-    "paymentSessionExists": "توجد جلسة دفع بالفعل. يرجى إكمالها أو بدء جلسة جديدة.",
+    "paymentSessionExists": "توجد جلسة دفع مفتوحة بالفعل. يرجى إكمالها أو بدء جلسة جديدة.",
     "newPaymentSession": "جلسة دفع جديدة",
     "tryAgain": "حاول مرة أخرى",
     "close": "إغلاق",
-    "backToCart": "العودة إلى العربة",
-    "secureCheckout": "دفع آمن",
+    "backToCart": "العودة إلى السلة",
+    "secureCheckout": "إتمام شراء آمن",
     "completePurchaseSecurely": "أكمل عملية الشراء بأمان",
-    "shippingInformation": "معلومات الشحن",
+    "shippingInformation": "بيانات الشحن",
     "firstName": "الاسم الأول",
     "enterFirstName": "أدخل الاسم الأول",
     "lastName": "اسم العائلة",
     "enterLastName": "أدخل اسم العائلة",
     "email": "البريد الإلكتروني",
-    "enterEmail": "أدخل البريد الإلكتروني",
-    "phone": "الهاتف",
-    "enterPhoneNumber": "أدخل رقم الهاتف",
+    "enterEmail": "أدخل بريدك الإلكتروني",
+    "phone": "رقم الجوال",
+    "enterPhoneNumber": "أدخل رقم الجوال",
     "address": "العنوان",
-    "enterStreetAddress": "أدخل عنوان الشارع",
+    "enterStreetAddress": "أدخل اسم الشارع والحي",
     "city": "المدينة",
     "enterCity": "أدخل المدينة",
-    "stateProvince": "الولاية/المحافظة",
-    "enterState": "أدخل الولاية",
+    "stateProvince": "المنطقة",
+    "enterState": "أدخل المنطقة",
     "zipCode": "الرمز البريدي",
     "enterZipCode": "أدخل الرمز البريدي",
-    "proceedToPayment": "المتابعة للدفع",
+    "proceedToPayment": "المتابعة إلى الدفع",
     "paymentInformation": "معلومات الدفع",
-    "preparingPaymentSession": "جاري تحضير جلسة دفع آمنة جديدة...",
-    "securityNotice": "معلومات الدفع الخاصة بك مشفرة وآمنة. نحن نستخدم Stripe لمعالجة الدفع الآمن ولا نحتفظ أبداً بتفاصيل بطاقتك الائتمانية.",
+    "preparingPaymentSession": "جارٍ تجهيز جلسة دفع آمنة جديدة...",
+    "securityNotice": "بيانات الدفع الخاصة بك مشفّرة وآمنة. نستخدم Stripe لمعالجة المدفوعات بأمان، ولا نحتفظ ببيانات بطاقتك.",
     "orderSummary": "ملخص الطلب",
     "qty": "الكمية",
     "subtotal": "المجموع الفرعي",
     "discount": "الخصم",
     "shipping": "الشحن",
     "free": "مجاني",
-    "total": "المجموع",
+    "total": "الإجمالي",
     "newPaymentSessionCreated": "تم إنشاء جلسة دفع جديدة. يرجى المحاولة مرة أخرى.",
-    "paymentSessionGenerationFailed": "فشل في إنشاء جلسة دفع جديدة. يرجى تحديث الصفحة أو المحاولة مرة أخرى لاحقاً.", "billing_address": "عنوان الفاتورة",
+    "paymentSessionGenerationFailed": "تعذّر إنشاء جلسة دفع جديدة. يرجى تحديث الصفحة أو المحاولة مرة أخرى لاحقًا.",
+    "billing_address": "عنوان الفاتورة",
     "payment_method": "طريقة الدفع",
     "complete_payment": "إتمام الدفع",
     "processing": "جارٍ المعالجة...",
-    "secure_notice": "معلومات الدفع الخاصة بك آمنة ومشفرة"
-
+    "secure_notice": "بيانات الدفع الخاصة بك آمنة ومشفّرة",
+    "validation": {
+      "required": "حقل {{field}} مطلوب",
+      "invalidEmail": "يرجى إدخال بريد إلكتروني صحيح",
+      "invalidPhone": "يرجى إدخال رقم جوال صحيح"
+    }
   },
   "common": {
-    "loading": "جاري التحميل...",
+    "loading": "جارٍ التحميل...",
     "pleaseLoginCart": "يرجى تسجيل الدخول لإدارة السلة",
     "pleaseLoginWishlist": "يرجى تسجيل الدخول لإدارة المفضلة",
-    "failedUpdateCart": "فشل في تحديث السلة",
-    "failedUpdateWishlist": "فشل في تحديث المفضلة",
+    "failedUpdateCart": "تعذّر تحديث السلة",
+    "failedUpdateWishlist": "تعذّر تحديث المفضلة",
     "try_again": "حاول مرة أخرى",
     "clear_search": "مسح البحث",
-     "back":"رجوع"
-
+    "back": "رجوع"
   },
   "auth": {
-    "forgotMyPassword":"نسيت كلمة المرور؟",
+    "forgotMyPassword": "نسيت كلمة المرور؟",
     "fields": {
       "email": "البريد الإلكتروني",
-      "password": "كلمة المرور"
+      "password": "كلمة المرور",
+      "fullName": "الاسم الكامل",
+      "phone": "رقم الجوال",
+      "confirmPassword": "تأكيد كلمة المرور"
     },
     "placeholders": {
       "email": "أدخل بريدك الإلكتروني",
       "password": "أدخل كلمة المرور",
-      "fullName":"الاسم الكامل",
-      "phone":"رقم الهاتف",
-      "createPassword":"ادخل الرقم السري",
-      "confirmPassword":"تاكيد الرقم السري"
+      "fullName": "أدخل اسمك الكامل",
+      "phone": "أدخل رقم الجوال",
+      "createPassword": "أنشئ كلمة مرور",
+      "confirmPassword": "أعد إدخال كلمة المرور"
     },
     "passwordRequirements": {
-      "title": "متطلبات كلمة المرور:",
+      "title": "يجب أن تحتوي كلمة المرور على:",
       "minLength": "8 أحرف على الأقل",
-      "lowercase": "حرف صغير واحد",
-      "uppercase": "حرف كبير واحد",
+      "lowercase": "حرف إنجليزي صغير واحد",
+      "uppercase": "حرف إنجليزي كبير واحد",
       "special": "رمز خاص واحد (!@#$...)",
       "number": "رقم واحد"
     },
@@ -223,18 +255,20 @@
     "noAccount": "ليس لديك حساب؟",
     "signUp": "إنشاء حساب",
     "signIn": "تسجيل الدخول",
-    "emailAddress": "عنوان البريد الإلكتروني",
-    "backToLogin": "العودة لتسجيل الدخول",
+    "emailAddress": "البريد الإلكتروني",
+    "backToLogin": "العودة إلى تسجيل الدخول",
     "login": {
       "title": "تسجيل الدخول",
-      "subtitle": "مرحباً بعودتك! سجل دخولك للمتابعة",
+      "subtitle": "مرحبًا بعودتك! سجّل الدخول إلى حسابك للمتابعة",
       "signIn": "تسجيل الدخول",
-      "signingIn": "جاري تسجيل الدخول..."
+      "signingIn": "جارٍ تسجيل الدخول...",
+      "success": "تم تسجيل الدخول بنجاح!"
     },
     "signup": {
-      "creatingAccount": "جاري إنشاء الحساب...",
-      "title":"سجل معنا",
-      "subtitle":" تعريف العمل"
+      "creatingAccount": "جارٍ إنشاء الحساب...",
+      "title": "إنشاء حساب جديد",
+      "subtitle": "أدخل بياناتك لإنشاء حسابك",
+      "success": "تم إنشاء حسابك بنجاح! يرجى مراجعة بريدك الإلكتروني لتأكيد الحساب."
     },
     "agreeToTerms": "أوافق على",
     "termsOfService": "شروط الخدمة",
@@ -244,45 +278,62 @@
     "alreadyHaveAccount": "لديك حساب بالفعل؟",
     "errors": {
       "emailRequired": "البريد الإلكتروني مطلوب",
-      "emailInvalid": "البريد الإلكتروني غير صحيح",
+      "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح",
       "passwordRequired": "كلمة المرور مطلوبة",
-      "passwordUppercase": "كلمة المرور يجب أن تحتوي على حرف كبير",
-      "passwordLowercase": "كلمة المرور يجب أن تحتوي على حرف صغير",
-      "passwordNumber": "كلمة المرور يجب أن تحتوي على رقم",
-      "passwordSpecial": "كلمة المرور يجب أن تحتوي على رمز خاص",
-      "passwordTooShort": "كلمة المرور قصيرة جداً",
-      "fixFormErrors": "يرجى إصلاح الأخطاء في النموذج",
-      "accountNotFound": "الحساب غير موجود. يرجى التحقق من بريدك الإلكتروني أو إنشاء حساب جديد",
-      "incorrectPassword": "كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى",
-      "emailNotVerified": "يرجى تأكيد عنوان بريدك الإلكتروني أولاً",
-      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التحقق من بياناتك",
-      "tooManyAttempts": "محاولات تسجيل دخول كثيرة جداً. يرجى المحاولة لاحقاً",
-      "serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً",
-      "loginFailed": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى",
-      "signupFailed": "حدث خطأ أثناء إنشاء الحساب",
-      "resetEmailFailed": "حدث خطأ أثناء إرسال بريد إعادة التعيين",
-      "resetPasswordFailed": "حدث خطأ أثناء إعادة تعيين كلمة المرور"
+      "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف إنجليزي كبير",
+      "passwordLowercase": "يجب أن تحتوي كلمة المرور على حرف إنجليزي صغير",
+      "passwordNumber": "يجب أن تحتوي كلمة المرور على رقم",
+      "passwordSpecial": "يجب أن تحتوي كلمة المرور على رمز خاص",
+      "passwordTooShort": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+      "fixFormErrors": "يرجى تصحيح الأخطاء في النموذج",
+      "accountNotFound": "الحساب غير موجود. يرجى التحقق من بريدك الإلكتروني أو إنشاء حساب جديد.",
+      "incorrectPassword": "كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.",
+      "emailNotVerified": "يرجى تأكيد بريدك الإلكتروني أولًا.",
+      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التحقق من بياناتك.",
+      "tooManyAttempts": "محاولات تسجيل دخول كثيرة. يرجى المحاولة لاحقًا.",
+      "serverError": "حدث خطأ في الخادم. يرجى المحاولة لاحقًا.",
+      "loginFailed": "تعذّر تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+      "signupFailed": "حدث خطأ أثناء إنشاء الحساب.",
+      "resetEmailFailed": "حدث خطأ أثناء إرسال رسالة إعادة التعيين.",
+      "resetPasswordFailed": "حدث خطأ أثناء إعادة تعيين كلمة المرور.",
+      "nameRequired": "الاسم مطلوب",
+      "nameTooShort": "الاسم قصير جدًا",
+      "emailTooLong": "البريد الإلكتروني طويل جدًا",
+      "phoneRequired": "رقم الجوال مطلوب",
+      "phoneInvalid": "يرجى إدخال رقم جوال صحيح",
+      "passwordTooLong": "كلمة المرور طويلة جدًا",
+      "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين"
     },
     "forgotPassword": {
       "title": "نسيت كلمة المرور",
-      "description": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور",
+      "description": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور",
       "emailPlaceholder": "أدخل بريدك الإلكتروني",
-      "sending": "جاري الإرسال...",
+      "sending": "جارٍ الإرسال...",
       "sendResetLink": "إرسال رابط إعادة التعيين",
       "rememberPassword": "تذكرت كلمة المرور؟",
       "checkEmail": "تحقق من بريدك الإلكتروني",
-      "emailSent": "تم إرسال بريد إعادة تعيين كلمة المرور بنجاح!",
+      "emailSent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى {{email}}",
       "resetPassword": "إعادة تعيين كلمة المرور",
-      "tryAnotherEmail": "جرب بريد إلكتروني آخر"
+      "tryAnotherEmail": "جرّب بريدًا إلكترونيًا آخر"
     },
     "resetPassword": {
-      "success": "تم إعادة تعيين كلمة المرور بنجاح!"
+      "success": "تمت إعادة تعيين كلمة المرور بنجاح!",
+      "title": "إعادة تعيين كلمة المرور",
+      "description": "أدخل الرمز المرسل إلى بريدك الإلكتروني ثم اختر كلمة مرور جديدة",
+      "resetCode": "رمز إعادة التعيين",
+      "codePlaceholder": "أدخل الرمز",
+      "resetting": "جارٍ إعادة التعيين...",
+      "resetPassword": "إعادة تعيين كلمة المرور",
+      "rememberPassword": "تذكرت كلمة المرور؟",
+      "successMessage": "يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة.",
+      "continueToLogin": "المتابعة إلى تسجيل الدخول"
     },
     "logout": {
       "success": "تم تسجيل الخروج بنجاح"
     },
-    "welcome_back": "مرحباً بعودتك",
-    "sign_in_account": "سجل دخولك إلى حسابك للمتابعة",
+    "welcome_back": "مرحبًا بعودتك",
+    "sign_in_account": "سجّل الدخول إلى حسابك للمتابعة",
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",
     "enter_email": "أدخل بريدك الإلكتروني",
@@ -292,128 +343,151 @@
     "signing_in": "جارٍ تسجيل الدخول...",
     "no_account": "ليس لديك حساب؟",
     "sign_up": "إنشاء حساب",
-    "create_account": "إنشاء حسابك",
-    "join_community": "انضم إلى مجتمعنا وابدأ التسوق",
+    "create_account": "أنشئ حسابك",
+    "join_community": "انضم إلينا وابدأ التسوق",
     "full_name": "الاسم الكامل",
-    "phone": "رقم الهاتف",
+    "phone": "رقم الجوال",
     "confirm_password": "تأكيد كلمة المرور",
     "enter_name": "أدخل اسمك الكامل",
-    "enter_phone": "أدخل رقم هاتفك",
-    "create_password": "إنشاء كلمة مرور",
-    "confirm_your_password": "أكد كلمة المرور",
+    "enter_phone": "أدخل رقم جوالك",
+    "create_password": "أنشئ كلمة مرور",
+    "confirm_your_password": "أعد إدخال كلمة المرور",
     "creating_account": "جارٍ إنشاء الحساب...",
     "have_account": "لديك حساب بالفعل؟",
     "sign_in_link": "تسجيل الدخول",
     "password_requirements": "يجب أن تحتوي كلمة المرور على:",
     "min_8_chars": "8 أحرف على الأقل",
-    "one_lowercase": "حرف صغير واحد",
-    "one_uppercase": "حرف كبير واحد",
+    "one_lowercase": "حرف إنجليزي صغير واحد",
+    "one_uppercase": "حرف إنجليزي كبير واحد",
     "one_special": "رمز خاص واحد !@#$...",
     "one_number": "رقم واحد",
     "forgot_password_title": "نسيت كلمة المرور",
-    "forgot_password_desc": "أدخل عنوان بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.",
-    "send_reset_link": "إرسال رابط الإعادة",
+    "forgot_password_desc": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.",
+    "send_reset_link": "إرسال رابط إعادة التعيين",
     "sending": "جارٍ الإرسال...",
     "remember_password": "تذكرت كلمة المرور؟",
     "reset_password_title": "إعادة تعيين كلمة المرور",
     "reset_password_desc": "أدخل كلمة المرور الجديدة أدناه لإعادة تعيين كلمة مرور حسابك.",
-    "reset_code": "رمز الإعادة",
+    "reset_code": "رمز إعادة التعيين",
     "new_password": "كلمة المرور الجديدة",
     "confirm_new_password": "تأكيد كلمة المرور الجديدة",
-    "enter_reset_code": "أدخل رمز الإعادة",
+    "enter_reset_code": "أدخل رمز إعادة التعيين",
     "enter_new_password": "أدخل كلمة المرور الجديدة",
-    "confirm_new_password_placeholder": "أكد كلمة المرور الجديدة",
+    "confirm_new_password_placeholder": "أعد إدخال كلمة المرور الجديدة",
     "reset_password_button": "إعادة تعيين كلمة المرور",
     "resetting": "جارٍ إعادة التعيين...",
-    "passwords_no_match": "كلمات المرور غير متطابقة",
-    "back_to_login": "العودة لتسجيل الدخول",
-    "continue_with_google": "المتابعة مع جوجل",
-    "continue_with_apple": "المتابعة مع آبل"
-    
-    
-    
-   
-    
+    "passwords_no_match": "كلمتا المرور غير متطابقتين",
+    "back_to_login": "العودة إلى تسجيل الدخول",
+    "continue_with_google": "المتابعة باستخدام جوجل",
+    "continue_with_apple": "المتابعة باستخدام آبل",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmNewPassword": "تأكيد كلمة المرور الجديدة",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
+    "validation": {
+      "codeRequired": "الرمز مطلوب",
+      "codeMinLength": "الرمز قصير جدًا",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordComplexity": "يجب أن تحتوي كلمة المرور على حرف إنجليزي كبير وحرف صغير ورقم ورمز خاص (@$!%*?&)",
+      "passwordMinLength": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+      "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+      "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين"
+    },
+    "forgotPasswordFlow": {
+      "title": "نسيت كلمة المرور",
+      "description": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "sending": "جارٍ الإرسال...",
+      "sendResetLink": "إرسال رابط إعادة التعيين",
+      "rememberPassword": "تذكرت كلمة المرور؟",
+      "checkEmail": "تحقق من بريدك الإلكتروني",
+      "emailSent": "تم إرسال رسالة إعادة تعيين كلمة المرور بنجاح!",
+      "resetPassword": "إعادة تعيين كلمة المرور",
+      "tryAnotherEmail": "جرّب بريدًا إلكترونيًا آخر"
+    }
   },
   "hero": {
     "slides": {
       "iphone": {
         "title": "آيفون 15 برو ماكس",
         "subtitle": "أحدث التقنيات",
-        "description": "اختبر المستقبل مع التصميم التيتانيوم والكاميرات المتطورة ومعالج A17 Pro القوي.",
-        "cta": "تسوق الآيفون"
+        "description": "عِش المستقبل مع تصميم من التيتانيوم وكاميرات متطورة وشريحة A17 Pro القوية.",
+        "cta": "تسوّق آيفون"
       },
       "gaming": {
-        "title": "قوة الألعاب",
-        "subtitle": "الأداء المطلق",
-        "description": "سيطر على كل لعبة مع RTX 4080 و 32GB RAM وتخزين SSD فائق السرعة.",
+        "title": "أجهزة ألعاب جبّارة",
+        "subtitle": "أداء لا يُضاهى",
+        "description": "تفوّق في كل لعبة مع بطاقة RTX 4080 وذاكرة 32GB RAM وتخزين SSD فائق السرعة.",
         "cta": "ابدأ اللعب"
       },
       "smartHome": {
-        "title": "ثورة المنزل الذكي",
-        "subtitle": "العيش المتصل",
-        "description": "حول منزلك إلى نظام بيئي ذكي مع التحكم الصوتي والأتمتة والأمان.",
-        "cta": "المنزل الذكي"
+        "title": "عالم المنزل الذكي",
+        "subtitle": "حياة متصلة",
+        "description": "حوّل منزلك إلى منظومة ذكية مع التحكم الصوتي والأتمتة وأنظمة الأمان.",
+        "cta": "تسوّق المنزل الذكي"
       },
       "audio": {
-        "title": "التميز الصوتي",
-        "subtitle": "الصوت المميز",
-        "description": "انغمس في الصوت بجودة الاستوديو مع إلغاء الضوضاء والصوت المكاني.",
+        "title": "تميّز صوتي",
+        "subtitle": "جودة صوت فائقة",
+        "description": "انغمس في صوت بجودة الاستوديو مع خاصية إلغاء الضوضاء والصوت المحيطي.",
         "cta": "استمع الآن"
       },
       "workspace": {
-        "title": "مساحة العمل المهنية",
-        "subtitle": "إعادة تعريف العمل",
-        "description": "عزز الإنتاجية مع شاشات وأجهزة لوحة مفاتيح وإكسسوارات مريحة بجودة احترافية.",
-        "cta": "تسوق الأدوات"
+        "title": "مساحة عمل احترافية",
+        "subtitle": "العمل بمفهوم جديد",
+        "description": "ارفع إنتاجيتك مع شاشات ولوحات مفاتيح وإكسسوارات مريحة بمواصفات احترافية.",
+        "cta": "تسوّق مستلزمات المكتب"
       }
     },
     "badges": {
       "new": "جديد",
-      "hot": "ساخن",
+      "hot": "الأكثر مبيعًا",
       "trending": "رائج",
-      "premium": "مميز",
+      "premium": "فاخر",
       "pro": "احترافي"
     },
     "features": {
       "freeShipping": "شحن مجاني",
-      "warranty": "ضمان سنتان",
-      "support": "دعم 24/7"
+      "warranty": "ضمان لمدة سنتين",
+      "support": "دعم طوال أيام الأسبوع"
     },
-    "browseAll": "تصفح الكل",
-    "reviews": "تقييمات"
+    "browseAll": "تصفّح الكل",
+    "reviews": "تقييمات",
+    "aria": {
+      "previous": "الشريحة السابقة",
+      "next": "الشريحة التالية",
+      "goTo": "الانتقال إلى الشريحة {{number}}",
+      "pause": "إيقاف العرض التلقائي مؤقتًا",
+      "play": "تشغيل العرض التلقائي"
+    }
   },
   "footer": {
-   
-   
-    
-    
-    
-    "copyright": "© 2024 جميع الحقوق محفوظة",
+    "copyright": "© 2026 بايونير. جميع الحقوق محفوظة.",
     "madeWith": "صُنع بـ",
-    "forYou": "من أجلك", "newsletter_title": "ابق على اطلاع مع نشرتنا الإخبارية",
-    "newsletter_desc": "احصل على آخر التحديثات حول المنتجات الجديدة والعروض الحصرية واتجاهات الموضة في بريدك الإلكتروني.",
+    "forYou": "من أجلك",
+    "newsletter_title": "اشترك في النشرة البريدية",
+    "newsletter_desc": "احصل على أحدث المنتجات والعروض الحصرية وأخبار التقنية مباشرة في بريدك الإلكتروني.",
     "enter_email": "أدخل بريدك الإلكتروني",
-    "subscribe": "اشتراك",
-    "company_desc": "وجهتك الأولى للمنتجات عالية الجودة وتجارب التسوق الاستثنائية.",
+    "subscribe": "اشترك",
+    "company_desc": "وجهتك الإلكترونية للأجهزة والإكسسوارات في المملكة العربية السعودية منذ 2021.",
     "company": {
       "title": "الشركة",
       "aboutUs": "من نحن",
-      "contact": "اتصل بنا",
+      "contact": "تواصل معنا",
       "careers": "الوظائف",
-      "press": "الصحافة",
-      "description":"تواصل معنا علي "
+      "press": "المركز الإعلامي",
+      "description": "بايونير متجر إلكتروني للأجهزة الإلكترونية والإكسسوارات في المملكة العربية السعودية، نخدم عملاءنا منذ عام 2021."
     },
-    "newsletter":{
-      "subscribe":"اشتراك",
-      "placeholder":"أدخل بريدك الإلكتروني",
-      "description":"شركة رائدة في التجارة الإلكترونية تقدم أفضل المنتجات والخدمات لعملائها الكرام",
-      "title":"استكشف"
+    "newsletter": {
+      "subscribe": "اشترك",
+      "placeholder": "أدخل بريدك الإلكتروني",
+      "description": "اشترك في نشرتنا البريدية لتصلك أحدث العروض والمنتجات الجديدة",
+      "title": "النشرة البريدية"
     },
     "support": {
       "title": "الدعم",
       "helpCenter": "مركز المساعدة",
-      "returns": "المرتجعات",
+      "returns": "الإرجاع والاستبدال",
       "shippingInfo": "معلومات الشحن",
       "sizeGuide": "دليل المقاسات"
     },
@@ -424,342 +498,375 @@
       "privacyPolicy": "سياسة الخصوصية",
       "termsOfService": "شروط الخدمة",
       "cookiePolicy": "سياسة ملفات تعريف الارتباط",
-      "gdpr": "اللائحة العامة لحماية البيانات"
+      "gdpr": "حماية البيانات الشخصية"
     },
     "rights_reserved": "جميع الحقوق محفوظة.",
     "made_with_love": "صُنع بـ",
     "for_you": "من أجلك",
-    "scroll_to_top": "العودة للأعلى"
+    "scroll_to_top": "العودة إلى الأعلى"
   },
   "signUpPage": {
-    "emailAddress": "عنوان البريد الإلكتروني",
+    "emailAddress": "البريد الإلكتروني",
     "newPassword": "كلمة المرور الجديدة",
     "confirmNewPassword": "تأكيد كلمة المرور الجديدة",
     "passwordPlaceholder": "أدخل كلمة المرور",
-    "confirmPasswordPlaceholder": "أكد كلمة المرور",
-    "backToLogin": "العودة لتسجيل الدخول",
-    "forgotPassword": "نسيت كلمة المرور؟",
-    "termsOfService":"شروط الخدمة",
-    "privacyPolicy":"سياسة الخصوصية",
-    "agreeTo":"الموفقة علي",
-    "and":"و",
-    "errors": {
-      "nameRequired": "الاسم مطلوب",
-      "nameTooShort": "الاسم قصير جداً",
-      "emailRequired": "البريد الإلكتروني مطلوب",
-      "emailInvalid": "البريد الإلكتروني غير صحيح",
-      "emailTooLong": "البريد الإلكتروني طويل جداً",
-      "phoneRequired": "رقم الهاتف مطلوب",
-      "phoneInvalid": "رقم الهاتف غير صحيح",
-      "passwordRequired": "كلمة المرور مطلوبة",
-      "passwordTooShort": "كلمة المرور قصيرة جداً",
-      "passwordTooLong": "كلمة المرور طويلة جداً",
-      "passwordLowercase": "كلمة المرور يجب أن تحتوي على حرف صغير",
-      "passwordUppercase": "كلمة المرور يجب أن تحتوي على حرف كبير",
-      "passwordNumber": "كلمة المرور يجب أن تحتوي على رقم",
-      "passwordSpecial": "كلمة المرور يجب أن تحتوي على رمز خاص",
-      "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب",
-      "passwordMismatch": "كلمات المرور غير متطابقة"
-    },
-    "validation": {
-      "codeRequired": "الرمز مطلوب",
-      "codeMinLength": "الرمز قصير جداً",
-      "passwordRequired": "كلمة المرور مطلوبة",
-      "passwordComplexity": "كلمة المرور معقدة جداً",
-      "passwordMinLength": "كلمة المرور قصيرة جداً",
-      "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب",
-      "passwordsDoNotMatch": "كلمات المرور غير متطابقة"
-    },
-    "login": {
-      "subtitle": "مرحباً بعودتك! سجل دخولك للمتابعة",
-      "signingIn": "جاري تسجيل الدخول...",
-      "success": "تم تسجيل الدخول بنجاح!"
-    },
-    "signup": {
-      "success": "تم إنشاء الحساب بنجاح! يرجى التحقق من بريدك الإلكتروني لتأكيد حسابك."
-    },
-    "fields": {
-      "email": "البريد الإلكتروني",
-      "password": "كلمة المرور",
-      "fullName":"الاسم الكامل",
-      "phone":"رقم الهاتف",
-      "confirmPassword":"تاكيد الرقم السري"
-    },
-    "placeholders": {
-      "email": "البريد الإلكتروني",
-      "password": "كلمة المرور",
-      "fullName":"الاسم الكامل",
-      "phone":"رقم الهاتف",
-      "confirmPassword":"تاكيد الرقم السري",
-      "createPassword":"ادخل الرقم السري"
-    },
-    "passwordRequirements": {
-      "title": "يجب أن تحتوي كلمة المرور على:",
-      "minLength": "8 أحرف على الأقل",
-      "lowercase": "حرف صغير واحد",
-      "uppercase": "حرف كبير واحد",
-      "special": "رمز خاص واحد (!@#$...)",
-      "number": "رقم واحد"
-    },
-    "orContinueWith": "أو تابع باستخدام",
-    "google": "جوجل",
-    "twitter":"تويتر",
-    "apple": "آبل",
-    "noAccount": "ليس لديك حساب؟",
-    "signUp": "إنشاء حساب",
-    "signIn":"تسجيل الدخول",
-    "alreadyHaveAccount":"لديك حساب بالفعل؟",
-    "createAccount":"انشاء الحساب",
-
-    
-    "signup": {
-      "creatingMyAccount": "جاري إنشاء الحساب...",
-      "title":"سجل حسابك",
-      "subtitle":"معلومات المستخدم"
-    },
-    "forgotPasswordSection": {
+    "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
+    "backToLogin": "العودة إلى تسجيل الدخول",
+    "forgotPassword": {
       "title": "نسيت كلمة المرور",
-      "description": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور",
+      "description": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور",
       "emailPlaceholder": "أدخل بريدك الإلكتروني",
-      "sending": "جاري الإرسال...",
+      "sending": "جارٍ الإرسال...",
       "sendResetLink": "إرسال رابط إعادة التعيين",
       "rememberPassword": "تذكرت كلمة المرور؟",
       "checkEmail": "تحقق من بريدك الإلكتروني",
       "emailSent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى {{email}}",
       "resetPassword": "إعادة تعيين كلمة المرور",
-      "tryAnotherEmail": "جرب بريد إلكتروني آخر"
+      "tryAnotherEmail": "جرّب بريدًا إلكترونيًا آخر"
+    },
+    "termsOfService": "شروط الخدمة",
+    "privacyPolicy": "سياسة الخصوصية",
+    "agreeTo": "أوافق على",
+    "and": "و",
+    "errors": {
+      "nameRequired": "الاسم مطلوب",
+      "nameTooShort": "الاسم قصير جدًا",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح",
+      "emailTooLong": "البريد الإلكتروني طويل جدًا",
+      "phoneRequired": "رقم الجوال مطلوب",
+      "phoneInvalid": "يرجى إدخال رقم جوال صحيح",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordTooShort": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+      "passwordTooLong": "كلمة المرور طويلة جدًا",
+      "passwordLowercase": "يجب أن تحتوي كلمة المرور على حرف إنجليزي صغير",
+      "passwordUppercase": "يجب أن تحتوي كلمة المرور على حرف إنجليزي كبير",
+      "passwordNumber": "يجب أن تحتوي كلمة المرور على رقم",
+      "passwordSpecial": "يجب أن تحتوي كلمة المرور على رمز خاص",
+      "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين"
+    },
+    "validation": {
+      "codeRequired": "الرمز مطلوب",
+      "codeMinLength": "الرمز قصير جدًا",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordComplexity": "يجب أن تحتوي كلمة المرور على حرف إنجليزي كبير وحرف صغير ورقم ورمز خاص (@$!%*?&)",
+      "passwordMinLength": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+      "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+      "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين"
+    },
+    "login": {
+      "subtitle": "مرحبًا بعودتك! سجّل الدخول للمتابعة",
+      "signingIn": "جارٍ تسجيل الدخول...",
+      "success": "تم تسجيل الدخول بنجاح!",
+      "title": "تسجيل الدخول",
+      "signIn": "تسجيل الدخول"
+    },
+    "signup": {
+      "success": "تم إنشاء حسابك بنجاح! يرجى مراجعة بريدك الإلكتروني لتأكيد الحساب.",
+      "creatingMyAccount": "جارٍ إنشاء الحساب...",
+      "title": "أنشئ حسابك",
+      "subtitle": "بياناتك الشخصية"
+    },
+    "fields": {
+      "email": "البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "fullName": "الاسم الكامل",
+      "phone": "رقم الجوال",
+      "confirmPassword": "تأكيد كلمة المرور"
+    },
+    "placeholders": {
+      "email": "أدخل بريدك الإلكتروني",
+      "password": "أدخل كلمة المرور",
+      "fullName": "أدخل اسمك الكامل",
+      "phone": "أدخل رقم الجوال",
+      "confirmPassword": "أعد إدخال كلمة المرور",
+      "createPassword": "أنشئ كلمة مرور"
+    },
+    "passwordRequirements": {
+      "title": "يجب أن تحتوي كلمة المرور على:",
+      "minLength": "8 أحرف على الأقل",
+      "lowercase": "حرف إنجليزي صغير واحد",
+      "uppercase": "حرف إنجليزي كبير واحد",
+      "special": "رمز خاص واحد (!@#$...)",
+      "number": "رقم واحد"
+    },
+    "orContinueWith": "أو تابع باستخدام",
+    "google": "جوجل",
+    "twitter": "تويتر",
+    "apple": "آبل",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "إنشاء حساب",
+    "signIn": "تسجيل الدخول",
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "createAccount": "إنشاء حساب",
+    "forgotPasswordSection": {
+      "title": "نسيت كلمة المرور",
+      "description": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "sending": "جارٍ الإرسال...",
+      "sendResetLink": "إرسال رابط إعادة التعيين",
+      "rememberPassword": "تذكرت كلمة المرور؟",
+      "checkEmail": "تحقق من بريدك الإلكتروني",
+      "emailSent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى {{email}}",
+      "resetPassword": "إعادة تعيين كلمة المرور",
+      "tryAnotherEmail": "جرّب بريدًا إلكترونيًا آخر"
     },
     "resetPassword": {
       "title": "إعادة تعيين كلمة المرور",
-      "description": "أدخل الرمز المرسل إلى بريدك الإلكتروني وكلمة المرور الجديدة",
+      "description": "أدخل الرمز المرسل إلى بريدك الإلكتروني ثم اختر كلمة مرور جديدة",
       "resetCode": "رمز إعادة التعيين",
       "codePlaceholder": "أدخل الرمز",
-      "resetting": "جاري إعادة التعيين...",
+      "resetting": "جارٍ إعادة التعيين...",
       "resetPassword": "إعادة تعيين كلمة المرور",
       "rememberPassword": "تذكرت كلمة المرور؟",
-      "success": "تم بنجاح!",
-      "successMessage": "تم إعادة تعيين كلمة المرور بنجاح",
-      "continueToLogin": "المتابعة لتسجيل الدخول"
-    }
+      "success": "تمت إعادة تعيين كلمة المرور بنجاح!",
+      "successMessage": "يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة.",
+      "continueToLogin": "المتابعة إلى تسجيل الدخول"
+    },
+    "sign_in": "تسجيل الدخول"
   },
   "home": {
-    "explore_by_category": "استكشف حسب التصنيف",
-    "discover_subtitle": "اكتشف منتجات مذهلة من كل تصنيف، اخترناها لك بعناية",
+    "explore_by_category": "تسوّق حسب الفئة",
+    "discover_subtitle": "اكتشف منتجات مختارة بعناية من كل فئة",
     "view_all": "عرض الكل",
     "featured": "مميز",
     "start_shopping": "ابدأ التسوق الآن",
-    "join_premium": "انضم إلى البريميوم",
+    "join_premium": "اشترك في بريميوم",
     "quick_view": "عرض سريع",
     "add_to_cart": "أضف إلى السلة",
     "remove_from_cart": "إزالة من السلة",
-    
-    "join_millions":"انضم إلى ملايين المستخدمين الذين يثقون في منصتنا لاحتياجات التسوق. احصل على توصيات شخصية وبحث ذكي وتجربة تسوق سلسة."
-    ,"experience_future":"اختبر مستقبل التسوق",
-    "view_all_products":"عرض جميع المنتجات ",
-      "category_descriptions": {
-      "smartphones": "أحدث الهواتف الذكية والأجهزة المحمولة",
-      "laptops": "أجهزة كمبيوتر محمولة عالية الأداء",
-      "gaming": "إكسسوارات وملحقات الألعاب",
-      "smart_home": "أجهزة المنزل الذكي والأتمتة",
-      "audio": "سماعات ومكبرات صوت ومعدات صوتية",
-      "tablets": "الأجهزة اللوحية وقارئات الكتب الإلكترونية"
+    "join_millions": "انضم إلى آلاف العملاء في أنحاء المملكة الذين يتسوقون من بايونير للحصول على منتجات أصلية وتوصيل سريع ودعم موثوق.",
+    "experience_future": "عِش مستقبل التسوق",
+    "view_all_products": "عرض جميع المنتجات ({{count}})",
+    "category_descriptions": {
+      "smartphones": "أحدث الجوالات الذكية بأحدث التقنيات",
+      "laptops": "أجهزة لابتوب عالية الأداء للعمل والألعاب",
+      "gaming": "معدات ألعاب لتجربة لعب استثنائية",
+      "smart_home": "أجهزة المنزل الذكي لحياة عصرية",
+      "audio": "سماعات ومعدات صوت فاخرة لعشاق الموسيقى",
+      "tablets": "أجهزة لوحية متعددة الاستخدامات للعمل والترفيه",
+      "monitors": "شاشات عالية الدقة وسريعة الاستجابة للعمل والألعاب",
+      "wearables": "ساعات ذكية وأساور رياضية تبقيك على اتصال دائم",
+      "accessories": "شواحن وكابلات وأغطية ومستلزمات يومية",
+      "eyewear": "إطارات أنيقة ونظارات شمسية ونظارات للحماية من الضوء الأزرق"
     },
-    
-     "exploreByCategory": "استكشف حسب الفئة",
-       "discover_products": "اكتشف منتجات رائعة عبر فئات مختلفة",
-       
-       "errors": {
-         "loginRequired": "يرجى تسجيل الدخول لإدارة السلة",
-         "cartUpdateFailed": "فشل في تحديث السلة"
-       }
-    
+    "exploreByCategory": "تسوّق حسب الفئة",
+    "discover_products": "اكتشف منتجات رائعة في مختلف الفئات",
+    "errors": {
+      "loginRequired": "يرجى تسجيل الدخول لإدارة السلة",
+      "cartUpdateFailed": "تعذّر تحديث السلة"
+    }
   },
-
-   
- 
   "category": {
-    "back_to_categories": "العودة إلى التصنيفات",
+    "back_to_categories": "العودة إلى الفئات",
     "search_products": "ابحث عن المنتجات...",
     "sort_by": "ترتيب حسب",
     "name_asc": "الاسم (أ-ي)",
     "name_desc": "الاسم (ي-أ)",
-    "price_asc": "السعر (من الأقل للأعلى)",
-    "price_desc": "السعر (من الأعلى للأقل)",
+    "price_asc": "السعر (من الأقل إلى الأعلى)",
+    "price_desc": "السعر (من الأعلى إلى الأقل)",
     "newest": "الأحدث",
     "oldest": "الأقدم",
-    "no_products_found": "لا توجد منتجات",
-    "adjust_search": "حاول تعديل معايير البحث",
-    "no_products_in_category": "لا تتوفر منتجات في هذا التصنيف حالياً",
+    "no_products_found": "لم يتم العثور على منتجات",
+    "adjust_search": "جرّب تعديل معايير البحث",
+    "no_products_in_category": "لا توجد منتجات في هذه الفئة حاليًا",
     "clear_search": "مسح البحث",
     "previous": "السابق",
     "next": "التالي",
     "showing_count_in": "عرض {{count}} منتج{{suffix}} في {{category}}",
-    "plural_suffix":"",
+    "plural_suffix": "",
     "explore": "استكشف {{name}}",
     "errors": {
-      "createFailed": "فشل في إنشاء التصنيف",
-      "fetchFailed": "فشل في جلب التصنيفات",
-      "fetchFeaturedFailed": "فشل في جلب التصنيفات المميزة",
-      "updateFailed": "فشل في تحديث التصنيف",
-      "deleteFailed": "فشل في حذف التصنيف",
-      "toggleStatusFailed": "فشل في تحديث حالة التصنيف",
-      "fetchByIdFailed": "فشل في جلب التصنيف"
+      "createFailed": "تعذّر إنشاء الفئة",
+      "fetchFailed": "تعذّر تحميل الفئات",
+      "fetchFeaturedFailed": "تعذّر تحميل الفئات المميزة",
+      "updateFailed": "تعذّر تحديث الفئة",
+      "deleteFailed": "تعذّر حذف الفئة",
+      "toggleStatusFailed": "تعذّر تحديث حالة الفئة",
+      "fetchByIdFailed": "تعذّر تحميل الفئة"
     }
   },
   "search": {
     "results_title": "نتائج البحث",
-    "searching_for": "يتم البحث عن \"{{query}}\"",
-    "enter_term": "أدخل كلمة للبحث عن المنتجات",
+    "searching_for": "نتائج البحث عن \"{{query}}\"",
+    "enter_term": "أدخل كلمة البحث للعثور على المنتجات",
     "sort_by": "ترتيب حسب",
-    "relevance": "الصلة",
+    "relevance": "الأكثر صلة",
     "name_asc": "الاسم (أ-ي)",
     "name_desc": "الاسم (ي-أ)",
-    "price_asc": "السعر: من الأقل للأعلى",
-    "price_desc": "السعر: من الأعلى للأقل",
-    "rating_desc": "الأعلى تقييماً",
+    "price_asc": "السعر: من الأقل إلى الأعلى",
+    "price_desc": "السعر: من الأعلى إلى الأقل",
+    "rating_desc": "الأعلى تقييمًا",
     "newest": "الأحدث",
-    "category": "التصنيف",
-    "all_categories": "كل التصنيفات",
+    "category": "الفئة",
+    "all_categories": "جميع الفئات",
     "price_range": "نطاق السعر",
-    "all_prices": "كل الأسعار",
+    "all_prices": "جميع الأسعار",
     "items_per_page": "لكل صفحة",
     "refresh": "تحديث",
-    "no_products_found": "لا توجد منتجات",
-    "none_match_for": "لا توجد منتجات مطابقة لبحثك عن \"{{query}}\". جرّب كلمات مختلفة أو تحقق من الإملاء.",
+    "no_products_found": "لم يتم العثور على منتجات",
+    "none_match_for": "لا توجد منتجات تطابق بحثك عن \"{{query}}\". جرّب كلمات أخرى أو تحقّق من الإملاء.",
     "clear_search": "مسح البحث",
-    "found_count_matching": "تم العثور على {{count}} منتج{{suffix}} مطابق لـ \"{{query}}\"",
+    "found_count_matching": "تم العثور على {{count}} منتج{{suffix}} يطابق \"{{query}}\"",
     "plural_suffix": "",
-     "title": "البحث",
-        "results": "النتائج",
-        "searchingFor": "البحث عن \"{{query}}\"",
-        "enterSearchTerm": "أدخل مصطلح البحث للعثور على المنتجات",
-        "placeholder": "البحث عن المنتجات...",
-        "tryAgain": "حاول مرة أخرى",
-        "noProductsFound": "لم يتم العثور على منتجات",
-        "noProductsMatch": "لا توجد منتجات تطابق بحثك عن '{{query}}'. جرب كلمات مفتاحية مختلفة أو تحقق من الإملاء.",
-        "startSearching": "ابدأ البحث للعثور على منتجات رائعة!",
-        "clearSearch": "مسح البحث",
-        "addToCart": "أضف إلى السلة",
-        "removeFromCart": "إزالة من السلة",
-      "foundProducts": "تم العثور على {{count}} منتج يطابق '{{query}}'",
-      "showingProducts": "عرض {{count}} منتج",
-      "showingRange": "عرض {{start}} إلى {{end}} من {{total}} منتج",
-      "filters": {
-        "sortBy": "ترتيب حسب",
-        "relevance": "الصلة",
-        "nameAZ": "الاسم (أ-ي)",
-        "nameZA": "الاسم (ي-أ)",
-        "priceLowHigh": "السعر: من الأقل للأعلى",
-        "priceHighLow": "السعر: من الأعلى للأقل",
-        "highestRated": "الأعلى تقييماً",
-        "newest": "الأحدث",
-        "category": "الفئة",
-        "allCategories": "جميع الفئات",
-        "priceRange": "نطاق السعر",
-        "allPrices": "جميع الأسعار",
-        "under100": "أقل من 100 ريال",
-        "range100to500": "100 - 500 ريال",
-        "range500to1000": "500 - 1000 ريال",
-        "over1000": "أكثر من 1000 ريال",
-        "gridView": "عرض الشبكة",
-        "listView": "عرض القائمة",
-        "perPage": "في الصفحة",
-        "sixPerPage": "6 في الصفحة",
-        "twelvePerPage": "12 في الصفحة",
-        "twentyFourPerPage": "24 في الصفحة",
-        "fortyEightPerPage": "48 في الصفحة",
-        "refresh": "تحديث"
-      },
-      "errors": {
-        "fetchFailed": "فشل في جلب المنتجات",
-        "loadFailed": "فشل في تحميل نتائج البحث",
-        "loginRequired": "يرجى تسجيل الدخول لإدارة السلة",
-        "cartUpdateFailed": "فشل في تحديث السلة",
-        "wishlistUpdateFailed": "فشل في تحديث قائمة الأمنيات"
-       }
+    "title": "بحث",
+    "results": "النتائج",
+    "searchingFor": "نتائج البحث عن \"{{query}}\"",
+    "enterSearchTerm": "أدخل كلمة البحث للعثور على المنتجات",
+    "placeholder": "ابحث عن المنتجات...",
+    "tryAgain": "حاول مرة أخرى",
+    "noProductsFound": "لم يتم العثور على منتجات",
+    "noProductsMatch": "لا توجد منتجات تطابق بحثك عن \"{{query}}\". جرّب كلمات أخرى أو تحقّق من الإملاء.",
+    "startSearching": "ابدأ البحث للعثور على منتجات رائعة!",
+    "clearSearch": "مسح البحث",
+    "addToCart": "أضف إلى السلة",
+    "removeFromCart": "إزالة من السلة",
+    "foundProducts": "تم العثور على {{count}} منتج يطابق \"{{query}}\"",
+    "showingProducts": "عرض {{count}} منتج",
+    "showingRange": "عرض {{start}}–{{end}} من أصل {{total}} منتج",
+    "filters": {
+      "sortBy": "ترتيب حسب",
+      "relevance": "الأكثر صلة",
+      "nameAZ": "الاسم (أ-ي)",
+      "nameZA": "الاسم (ي-أ)",
+      "priceLowHigh": "السعر: من الأقل إلى الأعلى",
+      "priceHighLow": "السعر: من الأعلى إلى الأقل",
+      "highestRated": "الأعلى تقييمًا",
+      "newest": "الأحدث",
+      "category": "الفئة",
+      "allCategories": "جميع الفئات",
+      "priceRange": "نطاق السعر",
+      "allPrices": "جميع الأسعار",
+      "under100": "أقل من 100 ر.س",
+      "range100to500": "100 - 500 ر.س",
+      "range500to1000": "500 - 1000 ر.س",
+      "over1000": "أكثر من 1000 ر.س",
+      "gridView": "عرض شبكي",
+      "listView": "عرض قائمة",
+      "perPage": "لكل صفحة",
+      "sixPerPage": "6 لكل صفحة",
+      "twelvePerPage": "12 لكل صفحة",
+      "twentyFourPerPage": "24 لكل صفحة",
+      "fortyEightPerPage": "48 لكل صفحة",
+      "refresh": "تحديث"
+    },
+    "errors": {
+      "fetchFailed": "تعذّر تحميل المنتجات",
+      "loadFailed": "تعذّر تحميل نتائج البحث",
+      "loginRequired": "يرجى تسجيل الدخول لإدارة السلة",
+      "cartUpdateFailed": "تعذّر تحديث السلة",
+      "wishlistUpdateFailed": "تعذّر تحديث المفضلة"
+    },
+    "foundProducts_zero": "لم يتم العثور على منتجات تطابق \"{{query}}\"",
+    "foundProducts_one": "تم العثور على منتج واحد يطابق \"{{query}}\"",
+    "foundProducts_two": "تم العثور على منتجين يطابقان \"{{query}}\"",
+    "foundProducts_few": "تم العثور على {{count}} منتجات تطابق \"{{query}}\"",
+    "foundProducts_many": "تم العثور على {{count}} منتجًا يطابق \"{{query}}\"",
+    "foundProducts_other": "تم العثور على {{count}} منتج يطابق \"{{query}}\"",
+    "showingProducts_zero": "لا توجد منتجات للعرض",
+    "showingProducts_one": "عرض منتج واحد",
+    "showingProducts_two": "عرض منتجين",
+    "showingProducts_few": "عرض {{count}} منتجات",
+    "showingProducts_many": "عرض {{count}} منتجًا",
+    "showingProducts_other": "عرض {{count}} منتج",
+    "errorTitle": "تعذّر إجراء البحث",
+    "heroTitle": "نتائج",
+    "heroHighlight": "البحث"
   },
-
-  
   "categories": {
-    "smartphones": "الهواتف الذكية",
-    "laptops": "أجهزة الكمبيوتر المحمولة",
+    "smartphones": "الجوالات الذكية",
+    "laptops": "أجهزة اللابتوب",
     "gaming": "الألعاب",
     "smart_home": "المنزل الذكي",
     "audio": "الصوتيات",
     "tablets": "الأجهزة اللوحية",
     "hero": {
-             "title": "استكشف",
-             "titleHighlight": "الفئات",
-             "description": "اكتشف مجموعتنا المنسقة من فئات المنتجات. اعثر على ما تبحث عنه بالضبط من خلال تشكيلتنا المنظمة."
-           },
-           "search": {
-             "placeholder": "البحث في الفئات بالاسم أو الوصف...",
-             "resultsFor": "نتائج البحث عن \"{{query}}\"",
-             "clear": "مسح البحث"
-           },
-           "sort": {
-             "placeholder": "ترتيب حسب",
-             "nameAsc": "الاسم (أ-ي)",
-             "nameDesc": "الاسم (ي-أ)",
-             "mostProducts": "الأكثر منتجات",
-             "leastProducts": "الأقل منتجات",
-             "newest": "الأحدث",
-             "oldest": "الأقدم"
-           },
-           "filter": {
-             "placeholder": "تصفية حسب",
-             "all": "جميع الفئات",
-             "featuredOnly": "المميزة فقط"
-           },
-           "card": {
-             "products": "منتجات",
-             "featured": "مميز",
-             "active": "نشط",
-             "inactive": "غير نشط"
-           },
-           "actions": {
-             "refresh": "تحديث"
-           },
-           "empty": {
-             "noResults": "لم يتم العثور على فئات",
-             "noCategories": "لا توجد فئات متاحة",
-             "noResultsDescription": "لا توجد فئات تطابق بحثك عن \"{{query}}\". جرب كلمات مفتاحية مختلفة أو تحقق من الإملاء.",
-             "noFeatured": "لا توجد فئات مميزة متاحة في الوقت الحالي.",
-             "noCategoriesDescription": "لا توجد فئات متاحة في الوقت الحالي.",
-             "clearFilters": "مسح جميع المرشحات"
-           },
-           "results": {
-             "found": "تم العثور على {{count}} فئة تطابق \"{{query}}\"",
-             "showing": "عرض {{count}} فئة",
-             "cached": "محفوظ مؤقتاً"
-           },
-           "pagination": {
-             "showing": "عرض {{start}} إلى {{end}} من {{total}} فئة",
-             "itemsPerPage": "عناصر لكل صفحة",
-             "perPage": "لكل صفحة",
-             "perPageOption": "{{count}} لكل صفحة",
-             "selectItemsPerPage": "اختر عناصر لكل صفحة"
-           },
-           "errors": {
-             "failedToLoad": "فشل في تحميل الفئات",
-             "loadingTitle": "خطأ في تحميل الفئات",
-             "tryAgain": "حاول مرة أخرى"
-           }
+      "title": "استكشف",
+      "titleHighlight": "الفئات",
+      "description": "تصفّح فئات منتجاتنا المختارة بعناية، واعثر على ما تبحث عنه بسهولة."
+    },
+    "search": {
+      "placeholder": "ابحث في الفئات بالاسم أو الوصف...",
+      "resultsFor": "نتائج البحث عن \"{{query}}\"",
+      "clear": "مسح البحث"
+    },
+    "sort": {
+      "placeholder": "ترتيب حسب",
+      "nameAsc": "الاسم (أ-ي)",
+      "nameDesc": "الاسم (ي-أ)",
+      "mostProducts": "الأكثر منتجات",
+      "leastProducts": "الأقل منتجات",
+      "newest": "الأحدث",
+      "oldest": "الأقدم"
+    },
+    "filter": {
+      "placeholder": "تصفية حسب",
+      "all": "جميع الفئات",
+      "featuredOnly": "المميزة فقط"
+    },
+    "card": {
+      "products": "منتجات",
+      "featured": "مميزة",
+      "active": "نشطة",
+      "inactive": "غير نشطة"
+    },
+    "actions": {
+      "refresh": "تحديث"
+    },
+    "empty": {
+      "noResults": "لم يتم العثور على فئات",
+      "noCategories": "لا توجد فئات متاحة",
+      "noResultsDescription": "لا توجد فئات تطابق بحثك عن \"{{query}}\". جرّب كلمات أخرى أو تحقّق من الإملاء.",
+      "noFeatured": "لا توجد فئات مميزة متاحة حاليًا.",
+      "noCategoriesDescription": "لا توجد فئات متاحة حاليًا.",
+      "clearFilters": "مسح جميع عوامل التصفية"
+    },
+    "results": {
+      "found": "تم العثور على {{count}} فئة تطابق \"{{query}}\"",
+      "showing": "عرض {{count}} فئة",
+      "cached": "محفوظ مؤقتًا",
+      "found_zero": "لم يتم العثور على فئات تطابق \"{{query}}\"",
+      "found_one": "تم العثور على فئة واحدة تطابق \"{{query}}\"",
+      "found_two": "تم العثور على فئتين تطابقان \"{{query}}\"",
+      "found_few": "تم العثور على {{count}} فئات تطابق \"{{query}}\"",
+      "found_many": "تم العثور على {{count}} فئةً تطابق \"{{query}}\"",
+      "found_other": "تم العثور على {{count}} فئة تطابق \"{{query}}\"",
+      "showing_zero": "لا توجد فئات للعرض",
+      "showing_one": "عرض فئة واحدة",
+      "showing_two": "عرض فئتين",
+      "showing_few": "عرض {{count}} فئات",
+      "showing_many": "عرض {{count}} فئةً",
+      "showing_other": "عرض {{count}} فئة"
+    },
+    "pagination": {
+      "showing": "عرض {{start}} إلى {{end}} من {{total}} فئة",
+      "itemsPerPage": "عدد العناصر في الصفحة",
+      "perPage": "لكل صفحة",
+      "perPageOption": "{{count}} في الصفحة",
+      "selectItemsPerPage": "اختر عدد العناصر في الصفحة"
+    },
+    "errors": {
+      "failedToLoad": "تعذّر تحميل الفئات",
+      "loadingTitle": "خطأ في تحميل الفئات",
+      "tryAgain": "حاول مرة أخرى",
+      "page_not_found": "الصفحة غير موجودة",
+      "page_not_exist": "عذرًا، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+      "go_home": "العودة إلى الرئيسية"
+    },
+    "monitors": "الشاشات",
+    "wearables": "الساعات الذكية",
+    "accessories": "الإكسسوارات",
+    "eyewear": "النظارات"
   },
-
-  
   "featured": {
     "title": "المنتجات المميزة",
     "description": "اكتشف مجموعتنا المختارة بعناية من المنتجات المميزة",
     "featured_badge": "مميز"
   },
-  
-  
-  
   "admin": {
-    
-    "dashboard": "لوحة التحكم الإدارية",
-    "manage_store": "إدارة متجرك ومراقبة الأداء",
+    "dashboard": "لوحة التحكم",
+    "manage_store": "أدِر متجرك وتابع أداءه",
     "refresh_data": "تحديث البيانات",
     "loading": "جارٍ تحميل لوحة التحكم...",
     "stats": {
@@ -767,29 +874,29 @@
       "total_orders": "إجمالي الطلبات",
       "total_revenue": "إجمالي الإيرادات",
       "total_customers": "إجمالي العملاء",
-      "pending_orders": "معلقة",
+      "pending_orders": "قيد الانتظار",
       "paid_orders": "طلبات مدفوعة",
       "active_users": "مستخدمون نشطون"
     },
     "tabs": {
       "overview": "نظرة عامة",
       "products": "المنتجات",
-      "categories": "التصنيفات",
+      "categories": "الفئات",
       "orders": "الطلبات",
       "users": "المستخدمون",
       "coupons": "الكوبونات",
       "analytics": "التحليلات"
     },
-    "analytics":{
-      "sales_analytics":"تحليل المبيعات",
-      "total_revenue":"إجمالي العائدات",
-      "total_orders":"اجمال الطلبات",
-      "average_order_value":"متوسط قيمة الطلب ",
-      "order_status_distribution":"توزيع حالة الطلب",
-      "pending":"معلق",
-      "paid":"مدفوع",
-      "cancelled":"ملغي",
-      "total":"المجموع"
+    "analytics": {
+      "sales_analytics": "تحليلات المبيعات",
+      "total_revenue": "إجمالي الإيرادات",
+      "total_orders": "إجمالي الطلبات",
+      "average_order_value": "متوسط قيمة الطلب",
+      "order_status_distribution": "توزيع حالات الطلبات",
+      "pending": "قيد الانتظار",
+      "paid": "مدفوع",
+      "cancelled": "ملغى",
+      "total": "الإجمالي"
     },
     "overview": {
       "recent_orders": "الطلبات الأخيرة",
@@ -800,12 +907,11 @@
     },
     "products": {
       "management": "إدارة المنتجات",
-      "edit_product":"تعديل المنتج",
-      "delete_product":"حزف المنتج",
-      
+      "edit_product": "تعديل المنتج",
+      "delete_product": "حذف المنتج",
       "add_product": "إضافة منتج",
       "add_new_product": "إضافة منتج جديد",
-      "search_placeholder": "البحث في المنتجات...",
+      "search_placeholder": "ابحث في المنتجات...",
       "featured": "مميز",
       "regular": "عادي",
       "edit": "تعديل المنتج",
@@ -816,19 +922,25 @@
         "name": "اسم المنتج",
         "description": "الوصف",
         "price": "السعر",
-        "category": "التصنيف",
-        "select_category": "اختر التصنيف",
+        "category": "الفئة",
+        "select_category": "اختر الفئة",
         "stock_quantity": "المخزون",
         "images": "الصور",
         "images_selected": "تم اختيار {{count}} صورة",
-        "image_update_hint": "اترك الحقل فارغاً للإبقاء على الصور الحالية.",
+        "image_update_hint": "اتركه فارغًا للإبقاء على الصور الحالية.",
         "update": "تحديث",
         "create": "إنشاء",
-        "cancel": "إلغاء"
+        "cancel": "إلغاء",
+        "images_selected_zero": "لم يتم اختيار أي صورة",
+        "images_selected_one": "تم اختيار صورة واحدة",
+        "images_selected_two": "تم اختيار صورتين",
+        "images_selected_few": "تم اختيار {{count}} صور",
+        "images_selected_many": "تم اختيار {{count}} صورة",
+        "images_selected_other": "تم اختيار {{count}} صورة"
       },
       "table": {
         "product": "المنتج",
-        "category": "التصنيف",
+        "category": "الفئة",
         "price": "السعر",
         "stock": "المخزون",
         "status": "الحالة",
@@ -836,42 +948,43 @@
       },
       "product_details": "تفاصيل المنتج",
       "created_at": "تاريخ الإنشاء",
-      "updated_at": "تاريخ التحديث"
+      "updated_at": "تاريخ التحديث",
+      "images": "الصور"
     },
     "categories": {
-      "management": "إدارة التصنيفات",
-      "add_category": "إضافة تصنيف",
-      "add_new_category": "إضافة تصنيف جديد",
-      "edit_category": "تعديل التصنيف",
-      "search_placeholder": "البحث في التصنيفات...",
-      "featured": "مميز",
-      "regular": "عادي",
-      "active": "نشط",
-      "inactive": "غير نشط",
-      "edit": "تعديل التصنيف",
-      "delete": "حذف التصنيف",
-      "slug": " حلزونة",
-      "delete_category": "حذف التصنيف",
-      "table":{
-        "category":"التصنيف",
-        "products":"المنتجات",
-        "featured":"مميز",
-        "status":"الحالة",
-        "actions":"الافعال",
-        "description":"الوصف"
+      "management": "إدارة الفئات",
+      "add_category": "إضافة فئة",
+      "add_new_category": "إضافة فئة جديدة",
+      "edit_category": "تعديل الفئة",
+      "search_placeholder": "ابحث في الفئات...",
+      "featured": "مميزة",
+      "regular": "عادية",
+      "active": "نشطة",
+      "inactive": "غير نشطة",
+      "edit": "تعديل الفئة",
+      "delete": "حذف الفئة",
+      "slug": "الرابط المختصر",
+      "delete_category": "حذف الفئة",
+      "table": {
+        "category": "الفئة",
+        "products": "المنتجات",
+        "featured": "مميزة",
+        "status": "الحالة",
+        "actions": "الإجراءات",
+        "description": "الوصف"
       },
-      "form":{
-        "name":"الاسم",
-        "description":"الوصف",
-        "image":"الصورة",
-        "image_update_hint":"تحميل صورة جديدة لتحديث الحالية",
-        "order":"الترتيب",
-        "order_placeholder":"ترتيب العرض (اختياري)",
-        "featured_category":"تصنيف مميز",
-        "saving":"جاري الحفظ...",
-        "update":"تحديث",
-        "create":"إنشاء",
-        "cancel":"إلغاء"
+      "form": {
+        "name": "الاسم",
+        "description": "الوصف",
+        "image": "الصورة",
+        "image_update_hint": "ارفع صورة جديدة لاستبدال الصورة الحالية",
+        "order": "الترتيب",
+        "order_placeholder": "ترتيب العرض (اختياري)",
+        "featured_category": "فئة مميزة",
+        "saving": "جارٍ الحفظ...",
+        "update": "تحديث",
+        "create": "إنشاء",
+        "cancel": "إلغاء"
       }
     },
     "orders": {
@@ -879,56 +992,55 @@
       "filter_by_status": "تصفية حسب الحالة",
       "filter_by_payment": "تصفية حسب الدفع",
       "all_status": "جميع الحالات",
-      "pending": "معلق",
+      "pending": "قيد الانتظار",
       "processing": "قيد المعالجة",
       "shipped": "تم الشحن",
-      "delivered": "تم التسليم",
-      "cancelled": "ملغي",
+      "delivered": "تم التوصيل",
+      "cancelled": "ملغى",
       "paid": "مدفوع",
-      "all_payment_status":"حالات الدفع",
+      "all_payment_status": "جميع حالات الدفع",
       "order_number": "رقم الطلب",
-      "customer": "الزبون",
+      "customer": "العميل",
       "unknown": "غير معروف",
-      "items": " العناصر",
+      "items": "المنتجات",
       "view_details": "عرض التفاصيل",
-      "status":{
-        "pending":"معلق",
-        "processing":"جاري المعالجة...",
-        "delivered":"تم التسليم",
-        "cancelled":"ملغي",
-        "shipped":"تم الشحن"
+      "status": {
+        "pending": "قيد الانتظار",
+        "processing": "قيد المعالجة",
+        "delivered": "تم التوصيل",
+        "cancelled": "ملغى",
+        "shipped": "تم الشحن"
       },
-      "payment":{
-        "pending":"معلق",
-        "paid":"مدفوع",
-        "failed":"فشل",
-        "refunded":"مرتجع"
+      "payment": {
+        "pending": "قيد الانتظار",
+        "paid": "مدفوع",
+        "failed": "فشل",
+        "refunded": "مسترد"
       }
     },
     "users": {
       "management": "إدارة المستخدمين",
-      "filter_by_role": "تصفية حسب الدور",
-      "all_roles": "جميع الأدوار",
+      "filter_by_role": "تصفية حسب الصلاحية",
+      "all_roles": "جميع الصلاحيات",
       "admin": "مدير",
       "user": "مستخدم",
       "active": "نشط",
       "inactive": "غير نشط",
-      "customer":"الزبون",
-      "view_details":"عرض التفاصيل",
-      "table":{
-        "user":"المستخدم",
-        "email":"البريد الإلكتروني",
-        "role":"القواعد",
-        "status":"الحالة",
-        "joined":"مضاف",
-        "actions":"الافعال"
+      "customer": "عميل",
+      "view_details": "عرض التفاصيل",
+      "table": {
+        "user": "المستخدم",
+        "email": "البريد الإلكتروني",
+        "role": "الصلاحية",
+        "status": "الحالة",
+        "joined": "تاريخ الانضمام",
+        "actions": "الإجراءات"
       }
-
     },
     "coupons": {
       "management": "إدارة الكوبونات",
       "add_coupon": "إضافة كوبون",
-      "search_placeholder": "البحث في الكوبونات...",
+      "search_placeholder": "ابحث في الكوبونات...",
       "edit": "تعديل الكوبون",
       "delete": "حذف الكوبون",
       "active": "نشط",
@@ -941,9 +1053,9 @@
       "add_new_coupon": "إضافة كوبون جديد",
       "empty": "لا توجد كوبونات بعد.",
       "form": {
-        "code": "الكود",
+        "code": "رمز الكوبون",
         "email": "بريد العميل",
-        "discount_value": "الخصم",
+        "discount_value": "قيمة الخصم",
         "expiry_date": "تاريخ الانتهاء",
         "update": "تحديث",
         "create": "إنشاء",
@@ -954,7 +1066,7 @@
       "name": "الاسم",
       "description": "الوصف",
       "price": "السعر",
-      "category": "التصنيف",
+      "category": "الفئة",
       "stock_quantity": "كمية المخزون",
       "images": "الصور",
       "featured": "مميز",
@@ -967,9 +1079,9 @@
       "product_created": "تم إنشاء المنتج بنجاح",
       "product_updated": "تم تحديث المنتج بنجاح",
       "product_deleted": "تم حذف المنتج بنجاح",
-      "category_created": "تم إنشاء التصنيف بنجاح",
-      "category_updated": "تم تحديث التصنيف بنجاح",
-      "category_deleted": "تم حذف التصنيف بنجاح",
+      "category_created": "تم إنشاء الفئة بنجاح",
+      "category_updated": "تم تحديث الفئة بنجاح",
+      "category_deleted": "تم حذف الفئة بنجاح",
       "coupon_created": "تم إنشاء الكوبون بنجاح",
       "coupon_updated": "تم تحديث الكوبون بنجاح",
       "coupon_deleted": "تم حذف الكوبون بنجاح",
@@ -979,9 +1091,9 @@
       "productCreated": "تم إنشاء المنتج بنجاح",
       "productUpdated": "تم تحديث المنتج بنجاح",
       "productDeleted": "تم حذف المنتج بنجاح",
-      "categoryCreated": "تم إنشاء التصنيف بنجاح",
-      "categoryUpdated": "تم تحديث التصنيف بنجاح",
-      "categoryDeleted": "تم حذف التصنيف بنجاح",
+      "categoryCreated": "تم إنشاء الفئة بنجاح",
+      "categoryUpdated": "تم تحديث الفئة بنجاح",
+      "categoryDeleted": "تم حذف الفئة بنجاح",
       "couponCreated": "تم إنشاء الكوبون بنجاح",
       "couponUpdated": "تم تحديث الكوبون بنجاح",
       "couponDeleted": "تم حذف الكوبون بنجاح",
@@ -990,53 +1102,50 @@
       "userStatusUpdated": "تم تحديث حالة المستخدم إلى {{status}}"
     },
     "errors": {
-      "failed_to_fetch_data": "فشل في جلب البيانات",
-      "failed_to_delete_product": "فشل في حذف المنتج",
-      "failed_to_update_order_status": "فشل في تحديث حالة الطلب",
-      "failed_to_update_payment_status": "فشل في تحديث حالة الدفع",
-      "failed_to_update_user_status": "فشل في تحديث حالة المستخدم",
-      "failed_to_delete_coupon": "فشل في حذف الكوبون",
-      "failed_to_save_category": "فشل في حفظ التصنيف",
-      "failed_to_delete_category": "فشل في حذف التصنيف",
-      "failedToFetchData": "فشل في جلب البيانات",
-      "failedToDeleteProduct": "فشل في حذف المنتج",
-      "failedToUpdateOrderStatus": "فشل في تحديث حالة الطلب",
-      "failedToUpdatePaymentStatus": "فشل في تحديث حالة الدفع",
-      "failedToUpdateUserStatus": "فشل في تحديث حالة المستخدم",
-      "failedToDeleteCoupon": "فشل في حذف الكوبون",
-      "failedToSaveCategory": "فشل في حفظ التصنيف",
-      "failedToDeleteCategory": "فشل في حذف التصنيف",
-      "failedToSaveCoupon": "فشل في حفظ الكوبون",
-      "maxImagesExceeded": "الحد الأقصى 10 صور مسموح"
+      "failed_to_fetch_data": "تعذّر تحميل البيانات",
+      "failed_to_delete_product": "تعذّر حذف المنتج",
+      "failed_to_update_order_status": "تعذّر تحديث حالة الطلب",
+      "failed_to_update_payment_status": "تعذّر تحديث حالة الدفع",
+      "failed_to_update_user_status": "تعذّر تحديث حالة المستخدم",
+      "failed_to_delete_coupon": "تعذّر حذف الكوبون",
+      "failed_to_save_category": "تعذّر حفظ الفئة",
+      "failed_to_delete_category": "تعذّر حذف الفئة",
+      "failedToFetchData": "تعذّر تحميل البيانات",
+      "failedToDeleteProduct": "تعذّر حذف المنتج",
+      "failedToUpdateOrderStatus": "تعذّر تحديث حالة الطلب",
+      "failedToUpdatePaymentStatus": "تعذّر تحديث حالة الدفع",
+      "failedToUpdateUserStatus": "تعذّر تحديث حالة المستخدم",
+      "failedToDeleteCoupon": "تعذّر حذف الكوبون",
+      "failedToSaveCategory": "تعذّر حفظ الفئة",
+      "failedToDeleteCategory": "تعذّر حذف الفئة",
+      "failedToSaveCoupon": "تعذّر حفظ الكوبون",
+      "maxImagesExceeded": "يمكنك رفع 10 صور كحد أقصى",
+      "failedToSaveProduct": "تعذّر حفظ المنتج"
     },
     "confirmations": {
       "delete_product": "هل أنت متأكد من حذف هذا المنتج؟",
-      "delete_category": "هل أنت متأكد من حذف هذا التصنيف؟",
+      "delete_category": "هل أنت متأكد من حذف هذه الفئة؟",
       "delete_coupon": "هل أنت متأكد من حذف هذا الكوبون؟",
       "deleteProduct": "هل أنت متأكد من حذف هذا المنتج؟",
-      "deleteCategory": "هل أنت متأكد من حذف هذا التصنيف؟",
+      "deleteCategory": "هل أنت متأكد من حذف هذه الفئة؟",
       "deleteCoupon": "هل أنت متأكد من حذف هذا الكوبون؟"
     }
   },
-  
-   
-
-
   "errors": {
     "page_not_found": "الصفحة غير موجودة",
-    "page_not_exist": "عذراً، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
-    "go_home": "العودة للرئيسية"
+    "page_not_exist": "عذرًا، الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "go_home": "العودة إلى الرئيسية"
   },
   "profile": {
-    "invalidOrderData": "بيانات الطلب غير صحيحة",
-    "failedToFetchOrders": "فشل في جلب الطلبات",
-    "fillAllRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
-    "failedToUploadImage": "فشل في رفع صورة الملف الشخصي. يرجى المحاولة مرة أخرى.",
+    "invalidOrderData": "بيانات الطلب غير صالحة",
+    "failedToFetchOrders": "تعذّر تحميل الطلبات",
+    "fillAllRequiredFields": "يرجى تعبئة جميع الحقول المطلوبة",
+    "failedToUploadImage": "تعذّر رفع الصورة الشخصية. يرجى المحاولة مرة أخرى.",
     "profileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح",
-    "failedToUpdateProfile": "فشل في تحديث الملف الشخصي",
-    "loadingProfile": "جاري تحميل الملف الشخصي...",
+    "failedToUpdateProfile": "تعذّر تحديث الملف الشخصي",
+    "loadingProfile": "جارٍ تحميل الملف الشخصي...",
     "profile": "الملف الشخصي",
-    "manageAccountAndOrders": "إدارة حسابك وعرض طلباتك",
+    "manageAccountAndOrders": "أدِر حسابك واطّلع على طلباتك",
     "user": "المستخدم",
     "noEmail": "لا يوجد بريد إلكتروني",
     "memberSince": "عضو منذ",
@@ -1045,264 +1154,350 @@
     "editProfile": "تعديل الملف الشخصي",
     "avatar": "الصورة الشخصية",
     "fullName": "الاسم الكامل",
-    "emailAddress": "عنوان البريد الإلكتروني",
+    "emailAddress": "البريد الإلكتروني",
     "avatarPreview": "معاينة الصورة الشخصية",
-    "emailNotChangeable": "عنوان البريد الإلكتروني غير قابل للتغيير",
-    "saving": "جاري الحفظ...",
+    "emailNotChangeable": "لا يمكن تغيير البريد الإلكتروني",
+    "saving": "جارٍ الحفظ...",
     "saveChanges": "حفظ التغييرات",
     "cancel": "إلغاء",
-    "orderHistory": "تاريخ الطلبات",
+    "orderHistory": "سجل الطلبات",
     "noOrdersYet": "لا توجد طلبات بعد",
-    "startShoppingToSeeOrders": "ابدأ التسوق لرؤية طلباتك هنا",
+    "startShoppingToSeeOrders": "ابدأ التسوق لتظهر طلباتك هنا",
     "orderCancelledSuccessfully": "تم إلغاء الطلب بنجاح",
-    "failedToCancelOrder": "فشل في إلغاء الطلب",
+    "failedToCancelOrder": "تعذّر إلغاء الطلب",
     "orderNumber": "رقم الطلب",
-    "na": "غير متوفر",
+    "na": "غير متاح",
     "unknownDate": "تاريخ غير معروف",
-    "items": "عناصر",
+    "items": "منتجات",
     "payment": "الدفع",
     "shipping": "الشحن",
     "viewDetails": "عرض التفاصيل",
-    "cancelOrder": "إلغاء الطلب"
+    "cancelOrder": "إلغاء الطلب",
+    "fillRequiredFields": "يرجى تعبئة الحقول المطلوبة"
   },
   "contact": {
     "validation": {
       "nameRequired": "الاسم مطلوب",
-      "nameMinLength": "يجب أن يكون الاسم على الأقل حرفين",
-      "nameMaxLength": "يجب أن يكون الاسم أقل من 50 حرفاً",
+      "nameMinLength": "يجب ألا يقل الاسم عن حرفين",
+      "nameMaxLength": "يجب ألا يزيد الاسم عن 50 حرفًا",
       "emailRequired": "البريد الإلكتروني مطلوب",
-      "emailInvalid": "يرجى إدخال عنوان بريد إلكتروني صحيح",
-      "emailMaxLength": "يجب أن يكون البريد الإلكتروني أقل من 100 حرف",
+      "emailInvalid": "يرجى إدخال بريد إلكتروني صحيح",
+      "emailMaxLength": "يجب ألا يزيد البريد الإلكتروني عن 100 حرف",
       "subjectRequired": "الموضوع مطلوب",
-      "subjectMinLength": "يجب أن يكون الموضوع على الأقل 5 أحرف",
-      "subjectMaxLength": "يجب أن يكون الموضوع أقل من 100 حرف",
+      "subjectMinLength": "يجب ألا يقل الموضوع عن 5 أحرف",
+      "subjectMaxLength": "يجب ألا يزيد الموضوع عن 100 حرف",
       "messageRequired": "الرسالة مطلوبة",
-      "messageMinLength": "يجب أن تكون الرسالة على الأقل 10 أحرف",
-      "messageMaxLength": "يجب أن تكون الرسالة أقل من 1000 حرف"
+      "messageMinLength": "يجب ألا تقل الرسالة عن 10 أحرف",
+      "messageMaxLength": "يجب ألا تزيد الرسالة عن 1000 حرف",
+      "nameInvalid": "يرجى إدخال اسم صحيح (حروف ومسافات فقط)",
+      "fixErrors": "يرجى تصحيح الأخطاء قبل الإرسال",
+      "fixErrorsBelow": "يرجى تصحيح الأخطاء الموضحة أدناه"
     },
-    "success":{
-      "messageSent":"تم ارسال رسالتك بنجاح"
+    "success": {
+      "messageSent": "تم إرسال رسالتك بنجاح، وسنتواصل معك قريبًا."
     },
     "toast": {
-      "validationErrors": "يرجى إصلاح جميع أخطاء التحقق قبل الإرسال",
-      "messageSuccess": "تم إرسال الرسالة بنجاح! سنتواصل معك قريباً.",
-      "messageFailed": "فشل في إرسال الرسالة. يرجى المحاولة مرة أخرى.",
-      "invalidData": "بيانات النموذج غير صحيحة. يرجى التحقق من المدخلات.",
+      "validationErrors": "يرجى تصحيح جميع الأخطاء قبل الإرسال",
+      "messageSuccess": "تم إرسال رسالتك بنجاح! سنتواصل معك قريبًا.",
+      "messageFailed": "تعذّر إرسال الرسالة. يرجى المحاولة مرة أخرى.",
+      "invalidData": "بيانات النموذج غير صحيحة. يرجى مراجعة المدخلات.",
       "loginRequired": "يرجى تسجيل الدخول لإرسال رسالة.",
-      "tooManyRequests": "طلبات كثيرة جداً. يرجى المحاولة لاحقاً.",
-      "serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً.",
-      "networkError": "خطأ في الشبكة. يرجى التحقق من الاتصال.",
+      "tooManyRequests": "طلبات كثيرة جدًا. يرجى المحاولة لاحقًا.",
+      "serverError": "حدث خطأ في الخادم. يرجى المحاولة لاحقًا.",
+      "networkError": "خطأ في الشبكة. يرجى التحقق من اتصالك بالإنترنت.",
       "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
     },
     "letConnect": "لنتواصل",
-    "heroDescription": "هل لديك سؤال أو تحتاج مساعدة؟ نحن نحب أن نسمع منك. فريقنا هنا لتقديم الدعم الذي تحتاجه.",
+    "heroDescription": "لديك سؤال أو تحتاج إلى مساعدة؟ يسعدنا تواصلك معنا، وفريقنا جاهز لتقديم الدعم الذي تحتاجه.",
     "getInTouch": "تواصل معنا",
-    "choosePreferredWay": "اختر الطريقة المفضلة للتواصل معنا. نحن هنا للمساعدة!",
+    "choosePreferredWay": "اختر طريقة التواصل المناسبة لك. نحن هنا لمساعدتك!",
     "sendMessage": "أرسل لنا رسالة",
     "fillFormDescription": "املأ النموذج أدناه وسنتواصل معك في أقرب وقت ممكن.",
-    "proTip": "نصيحة مهنية",
-    "loginBenefit": "تسجيل الدخول سيملأ معلومات الاتصال الخاصة بك مسبقاً ويوفر دعماً أسرع.",
-    "loginToContinue": "تسجيل الدخول للمتابعة",
-    "welcomeBack": "مرحباً بعودتك!",
+    "proTip": "نصيحة",
+    "loginBenefit": "عند تسجيل الدخول تُعبّأ بيانات التواصل تلقائيًا وتحصل على دعم أسرع.",
+    "loginToContinue": "سجّل الدخول للمتابعة",
+    "welcomeBack": "مرحبًا بعودتك!",
     "fullName": "الاسم الكامل",
     "enterFullName": "أدخل اسمك الكامل",
-    "emailAddress": "عنوان البريد الإلكتروني",
+    "emailAddress": "البريد الإلكتروني",
     "enterEmail": "أدخل بريدك الإلكتروني",
     "subject": "الموضوع",
     "enterSubject": "أدخل الموضوع",
     "message": "الرسالة",
     "enterMessage": "أدخل رسالتك",
-    "sendingMessage": "جاري إرسال الرسالة...",
+    "sendingMessage": "جارٍ إرسال الرسالة...",
     "sendMessageButton": "إرسال الرسالة",
-    "findUs": "اعثر علينا",
-    "visitOffice": "قم بزيارة مكتبنا أو تواصل معنا في أي وقت",
-    "ourLocation": "موقعنا",
-    "address": "123 شارع التكنولوجيا، المدينة الرقمية، DC 12345",
-    "mapComingSoon": "الخريطة التفاعلية قريباً",
-     "workingOnExperience": "نحن نعمل على تقديم تجربة أفضل لك"
-   },
-   "emailConfirmation": {
-     "success": "تم تأكيد البريد الإلكتروني بنجاح!",
-     "failed": "فشل في تأكيد البريد الإلكتروني. يرجى المحاولة مرة أخرى.",
-     "invalidLink": "رابط التأكيد غير صحيح.",
-     "confirming": "جاري تأكيد بريدك الإلكتروني...",
-     "pleaseWait": "يرجى الانتظار بينما نتحقق من عنوان بريدك الإلكتروني.",
-     "confirmed": "تم تأكيد البريد الإلكتروني!",
-     "redirecting": "جاري التوجيه إلى صفحة تسجيل الدخول...",
-     "confirmationFailed": "فشل التأكيد",
-     "goToLogin": "الذهاب إلى تسجيل الدخول",
-     "createNewAccount": "إنشاء حساب جديد",
-     "title": "تأكيد البريد الإلكتروني",
-     "verifying": "التحقق من عنوان بريدك الإلكتروني"
-   },
-   "categoryProducts": {
-     "errors": {
-       "fetchFailed": "فشل في جلب المنتجات",
-       "loadingTitle": "خطأ في تحميل المنتجات"
-     },
-     "toast": {
-       "loadFailed": "فشل في تحميل المنتجات",
-       "cartUpdateFailed": "فشل في تحديث السلة",
-       "loginRequiredCart": "يرجى تسجيل الدخول لإدارة السلة",
-       "loginRequiredWishlist": "يرجى تسجيل الدخول لإدارة قائمة الأمنيات",
-       "wishlistUpdateFailed": "فشل في تحديث قائمة الأمنيات"
-     },
-     "badges": {
-       "featured": "مميز"
-     },
-     "buttons": {
-       "addToCart": "إضافة للسلة",
-       "removeFromCart": "إزالة من السلة",
-       "tryAgain": "حاول مرة أخرى",
-       "clearSearch": "مسح البحث"
-     },
-     "navigation": {
-       "backToCategories": "العودة للفئات"
-     },
-     "search": {
-       "placeholder": "البحث عن المنتجات..."
-     },
-     "sort": {
-       "placeholder": "ترتيب حسب",
-       "nameAsc": "الاسم (أ-ي)",
-       "nameDesc": "الاسم (ي-أ)",
-       "priceAsc": "السعر (من الأقل للأعلى)",
-       "priceDesc": "السعر (من الأعلى للأقل)",
-       "newest": "الأحدث",
-       "oldest": "الأقدم"
-     },
-     "empty": {
-       "title": "لم يتم العثور على منتجات",
-       "searchMessage": "حاول تعديل معايير البحث",
-       "categoryMessage": "لا توجد منتجات متاحة في هذه الفئة في الوقت الحالي"
-     },
-     "pagination": {
-       "previous": "السابق",
-       "next": "التالي"
-     },
-     "results": {
-        "showing": "عرض {{count}} منتج في {{category}}"
-      }
+    "findUs": "موقعنا",
+    "visitOffice": "تفضّل بزيارة مكتبنا أو تواصل معنا خلال ساعات العمل",
+    "ourLocation": "عنواننا",
+    "address": "طريق الملك فهد، حي العليا، الرياض 12214، المملكة العربية السعودية",
+    "mapComingSoon": "الخريطة التفاعلية قريبًا",
+    "workingOnExperience": "نعمل على تقديم تجربة أفضل لك",
+    "error": {
+      "failedToSend": "تعذّر إرسال الرسالة. يرجى المحاولة مرة أخرى.",
+      "invalidFormData": "بيانات النموذج غير صحيحة. يرجى مراجعة المدخلات.",
+      "loginRequired": "يرجى تسجيل الدخول لإرسال رسالة.",
+      "tooManyRequests": "طلبات كثيرة جدًا. يرجى المحاولة لاحقًا.",
+      "serverError": "حدث خطأ في الخادم. يرجى المحاولة لاحقًا.",
+      "networkError": "خطأ في الشبكة. يرجى التحقق من اتصالك بالإنترنت.",
+      "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
     },
-    
-   
-     "shop": {
-       "title": "جميع المنتجات",
-       "productsFound": "تم العثور على {{count}} منتج",
-       "filters": {
-         "title": "المرشحات",
-         "category": "الفئة",
-         "allCategories": "جميع الفئات",
-         "priceRange": "نطاق السعر",
-         "min": "الحد الأدنى",
-         "max": "الحد الأقصى",
-         "sortBy": "ترتيب حسب"
-       },
-       "sort": {
-         "newest": "الأحدث أولاً",
-         "priceLowToHigh": "السعر: من الأقل إلى الأعلى",
-         "priceHighToLow": "السعر: من الأعلى إلى الأقل",
-         "nameAtoZ": "الاسم: من أ إلى ي"
-       },
-       "empty": {
-         "title": "لم يتم العثور على منتجات",
-         "message": "حاول تعديل المرشحات أو معايير البحث."
-       },
-       "errors": {
-          "cartUpdateFailed": "فشل في تحديث السلة"
-        }
-      },
-      "about": {
-        "hero": {
-          "title": "حول",
-          "brand": "بايونير",
-          "description": "نحن متحمسون لتقديم أحدث وأفضل الإلكترونيات لك. مهمتنا هي توفير منتجات عالية الجودة مع خدمة عملاء استثنائية."
-        },
-        "features": {
-          "title": "لماذا تختارنا",
-          "subtitle": "نحن نوفر أفضل تجربة تسوق مع ميزاتنا الشاملة",
-          "secureShoppingTitle": "تسوق آمن",
-          "secureShoppingDesc": "بياناتك محمية بأحدث تدابير الأمان في الصناعة",
-          "fastDeliveryTitle": "توصيل سريع",
-          "fastDeliveryDesc": "احصل على منتجاتك خلال 24-48 ساعة",
-          "supportTitle": "دعم 24/7",
-          "supportDesc": "فريق دعم العملاء متاح على مدار الساعة",
-          "expertTeamTitle": "فريق خبراء",
-          "expertTeamDesc": "فريقنا من الخبراء يضمن خدمة عالية الجودة"
-        },
-        "stats": {
-          "happyCustomers": "عملاء سعداء",
-          "productsSold": "منتجات مباعة",
-          "satisfactionRate": "معدل الرضا",
-          "customerSupport": "دعم العملاء"
-        },
-        "values": {
-          "title": "قيمنا",
-          "subtitle": "المبادئ التي توجه كل ما نقوم به",
-          "missionTitle": "مهمتنا",
-          "missionDesc": "جعل التكنولوجيا المتطورة في متناول الجميع مع توفير خدمة عملاء استثنائية.",
-          "innovationTitle": "الابتكار",
-          "innovationDesc": "نحن نبقى في المقدمة، نقدم أحدث وأفضل الإلكترونيات والتكنولوجيا.",
-          "globalReachTitle": "الوصول العالمي",
-          "globalReachDesc": "خدمة العملاء في جميع أنحاء البلاد مع شحن موثوق ودعم محلي.",
-          "growthTitle": "النمو",
-          "growthDesc": "التوسع المستمر في مجموعة منتجاتنا وتحسين خدماتنا بناءً على ملاحظات العملاء."
-        },
-        "story": {
-          "title": "قصتنا",
-          "paragraph1": "تأسست بايونير في عام 2020، بدأت كمتجر إلكترونيات محلي صغير بحلم كبير: جعل التكنولوجيا المتطورة في متناول الجميع. ما بدأ كمشروع شغف نما ليصبح واحداً من أكثر الأسماء الموثوقة في تجارة الإلكترونيات عبر الإنترنت.",
-          "paragraph2": "اليوم، نخدم العملاء في جميع أنحاء البلاد، نقدم مجموعة مختارة بعناية من أحدث الأجهزة وأجهزة الكمبيوتر والإكسسوارات الإلكترونية. التزامنا بالجودة وخدمة العملاء والأسعار التنافسية يبقى في قلب كل ما نقوم به.",
-          "paragraph3": "نحن نؤمن أن التكنولوجيا يجب أن تعزز حياتك، وليس أن تعقدها. لهذا السبب نتجاوز مجرد بيع المنتجات - نقدم المشورة المتخصصة والدعم الشامل وتجربة تسوق تضعك في المقدمة."
-        }
-        },
-        
-        "productDetail": {
-           "addToCart": "أضف إلى السلة",
-           "removeFromCart": "إزالة من السلة",
-           "buyNow": "اشتري الآن",
-           "processing": "جاري المعالجة...",
-           "quantity": "الكمية",
-           "back": "رجوع",
-           "relatedProducts": "منتجات ذات صلة",
-           "freeShipping": "شحن مجاني",
-           "onOrdersOver": "على الطلبات أكثر من 50 دولار",
-           "securePayment": "دفع آمن",
-           "secureCheckout": "دفع آمن 100%",
-           "easyReturns": "إرجاع سهل",
-           "returnPolicy": "سياسة إرجاع 30 يوم",
-           "reviews": "تقييمات",
-           "errors": {
-             "productNotFound": "المنتج غير موجود",
-             "loginRequired": "يرجى تسجيل الدخول لإدارة السلة",
-             "cartUpdateFailed": "فشل في تحديث السلة"
-           }
-         },
-         "deals": {
-           "hero": {
-             "hot": "عروض",
-             "deals": "ساخنة",
-             "description": "اكتشف عروضاً مذهلة على منتجاتنا المميزة. عروض محدودة الوقت مع توفير لا يصدق!"
-           },
-           "stats": {
-             "activeDeals": "العروض النشطة",
-             "flashSales": "تخفيضات البرق",
-             "maxDiscount": "أقصى خصم",
-             "happyBuyers": "المشترون السعداء"
-           },
-           "products": {
-             "title": "المنتجات المميزة",
-             "subtitle": "عروض مختارة بعناية على منتجاتنا الأكثر شعبية"
-           },
-           "empty": {
-             "title": "لا توجد عروض متاحة",
-             "message": "تحقق مرة أخرى قريباً للحصول على عروض وخصومات مذهلة!"
-           },
-           "errors": {
-             "loginRequired": "يرجى تسجيل الدخول لإدارة السلة",
-             "cartUpdateFailed": "فشل في تحديث السلة",
-             "wishlistLoginRequired": "يرجى تسجيل الدخول لإدارة قائمة الأمنيات"
-           }
-         }
-         
-        }
- 
+    "charactersCount": "{{count}}/{{max}} حرف",
+    "mapTitle": "موقعنا على الخريطة – الرياض"
+  },
+  "emailConfirmation": {
+    "success": "تم تأكيد البريد الإلكتروني بنجاح!",
+    "failed": "تعذّر تأكيد البريد الإلكتروني. يرجى المحاولة مرة أخرى.",
+    "invalidLink": "رابط التأكيد غير صالح.",
+    "confirming": "جارٍ تأكيد بريدك الإلكتروني...",
+    "pleaseWait": "يرجى الانتظار بينما نتحقق من بريدك الإلكتروني.",
+    "confirmed": "تم تأكيد بريدك الإلكتروني!",
+    "redirecting": "جارٍ تحويلك إلى صفحة تسجيل الدخول...",
+    "confirmationFailed": "تعذّر تأكيد البريد الإلكتروني",
+    "goToLogin": "الانتقال إلى تسجيل الدخول",
+    "createNewAccount": "إنشاء حساب جديد",
+    "title": "تأكيد البريد الإلكتروني",
+    "verifying": "جارٍ التحقق من بريدك الإلكتروني"
+  },
+  "categoryProducts": {
+    "errors": {
+      "fetchFailed": "تعذّر تحميل المنتجات",
+      "loadingTitle": "خطأ في تحميل المنتجات"
+    },
+    "toast": {
+      "loadFailed": "تعذّر تحميل المنتجات",
+      "cartUpdateFailed": "تعذّر تحديث السلة",
+      "loginRequiredCart": "يرجى تسجيل الدخول لإدارة السلة",
+      "loginRequiredWishlist": "يرجى تسجيل الدخول لإدارة المفضلة",
+      "wishlistUpdateFailed": "تعذّر تحديث المفضلة"
+    },
+    "badges": {
+      "featured": "مميز"
+    },
+    "buttons": {
+      "addToCart": "أضف إلى السلة",
+      "removeFromCart": "إزالة من السلة",
+      "tryAgain": "حاول مرة أخرى",
+      "clearSearch": "مسح البحث"
+    },
+    "navigation": {
+      "backToCategories": "العودة إلى الفئات"
+    },
+    "search": {
+      "placeholder": "ابحث عن المنتجات..."
+    },
+    "sort": {
+      "placeholder": "ترتيب حسب",
+      "nameAsc": "الاسم (أ-ي)",
+      "nameDesc": "الاسم (ي-أ)",
+      "priceAsc": "السعر (من الأقل إلى الأعلى)",
+      "priceDesc": "السعر (من الأعلى إلى الأقل)",
+      "newest": "الأحدث",
+      "oldest": "الأقدم"
+    },
+    "empty": {
+      "title": "لم يتم العثور على منتجات",
+      "searchMessage": "جرّب تعديل معايير البحث",
+      "categoryMessage": "لا توجد منتجات في هذه الفئة حاليًا"
+    },
+    "pagination": {
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "results": {
+      "showing": "عرض {{count}} منتج في {{category}}",
+      "showing_zero": "لا توجد منتجات في {{category}}",
+      "showing_one": "عرض منتج واحد في {{category}}",
+      "showing_two": "عرض منتجين في {{category}}",
+      "showing_few": "عرض {{count}} منتجات في {{category}}",
+      "showing_many": "عرض {{count}} منتجًا في {{category}}",
+      "showing_other": "عرض {{count}} منتج في {{category}}"
+    }
+  },
+  "shop": {
+    "title": "جميع المنتجات",
+    "productsFound": "تم العثور على {{count}} منتج",
+    "filters": {
+      "title": "عوامل التصفية",
+      "category": "الفئة",
+      "allCategories": "جميع الفئات",
+      "priceRange": "نطاق السعر",
+      "min": "الحد الأدنى",
+      "max": "الحد الأقصى",
+      "sortBy": "ترتيب حسب"
+    },
+    "sort": {
+      "newest": "الأحدث أولًا",
+      "priceLowToHigh": "السعر: من الأقل إلى الأعلى",
+      "priceHighToLow": "السعر: من الأعلى إلى الأقل",
+      "nameAtoZ": "الاسم: من أ إلى ي"
+    },
+    "empty": {
+      "title": "لم يتم العثور على منتجات",
+      "message": "جرّب تعديل عوامل التصفية أو كلمات البحث."
+    },
+    "errors": {
+      "cartUpdateFailed": "تعذّر تحديث السلة"
+    },
+    "productsFound_zero": "لم يتم العثور على منتجات",
+    "productsFound_one": "تم العثور على منتج واحد",
+    "productsFound_two": "تم العثور على منتجين",
+    "productsFound_few": "تم العثور على {{count}} منتجات",
+    "productsFound_many": "تم العثور على {{count}} منتجًا",
+    "productsFound_other": "تم العثور على {{count}} منتج"
+  },
+  "about": {
+    "hero": {
+      "title": "عن",
+      "brand": "بايونير",
+      "description": "نحن شغوفون بتقديم أحدث الأجهزة الإلكترونية لعملائنا في أنحاء المملكة. مهمتنا توفير منتجات أصلية عالية الجودة مع خدمة عملاء متميزة."
+    },
+    "features": {
+      "title": "لماذا تختارنا",
+      "subtitle": "كل ما تحتاجه لتجربة تسوق موثوقة",
+      "secureShoppingTitle": "تسوق آمن",
+      "secureShoppingDesc": "بياناتك محمية بأحدث معايير الأمان",
+      "fastDeliveryTitle": "توصيل سريع",
+      "fastDeliveryDesc": "التوصيل خلال 1–3 أيام عمل في الرياض وجدة والدمام، و3–5 أيام عمل لباقي المدن",
+      "supportTitle": "دعم طوال أيام الأسبوع",
+      "supportDesc": "فريق خدمة العملاء متاح السبت – الخميس من 9:00 ص حتى 11:00 م، والجمعة من 4:00 م حتى 11:00 م",
+      "expertTeamTitle": "فريق خبراء",
+      "expertTeamDesc": "فريق من المختصين يساعدك في اختيار المنتج المناسب"
+    },
+    "stats": {
+      "happyCustomers": "عملاء سعداء",
+      "productsSold": "منتجات مباعة",
+      "satisfactionRate": "معدل الرضا",
+      "customerSupport": "دعم العملاء",
+      "happyCustomersValue": "25,000+",
+      "productsAvailable": "منتج متوفر",
+      "productsAvailableValue": "3,000+",
+      "customerRating": "تقييم العملاء",
+      "customerRatingValue": "4.7/5",
+      "citiesServed": "مدينة نوصل إليها",
+      "citiesServedValue": "40+"
+    },
+    "values": {
+      "title": "قيمنا",
+      "subtitle": "المبادئ التي توجه كل ما نقوم به",
+      "missionTitle": "مهمتنا",
+      "missionDesc": "جعل التكنولوجيا المتطورة في متناول الجميع مع توفير خدمة عملاء استثنائية.",
+      "innovationTitle": "الابتكار",
+      "innovationDesc": "نواكب أحدث التقنيات لنقدّم لك أحدث الأجهزة الإلكترونية وأفضلها.",
+      "globalReachTitle": "تغطية على مستوى المملكة",
+      "globalReachDesc": "نوصل طلباتك إلى أكثر من 40 مدينة في أنحاء المملكة مع شحن موثوق ودعم محلي.",
+      "growthTitle": "النمو",
+      "growthDesc": "نوسّع تشكيلة منتجاتنا ونطوّر خدماتنا باستمرار بناءً على آراء عملائنا."
+    },
+    "story": {
+      "title": "قصتنا",
+      "paragraph1": "تأسست بايونير في الرياض عام 2021 كمتجر إلكتروني صغير للأجهزة الإلكترونية بهدف بسيط: أن تكون أحدث التقنيات في متناول الجميع في المملكة العربية السعودية. ومنذ ذلك الحين أصبحنا وجهة موثوقة لأكثر من 25,000 عميل.",
+      "paragraph2": "نقدّم اليوم أكثر من 3,000 منتج تشمل الجوالات وأجهزة اللابتوب وأجهزة الألعاب والشاشات والساعات الذكية والصوتيات والإكسسوارات والنظارات، ونوصل طلباتك إلى أكثر من 40 مدينة في أنحاء المملكة. ويبقى التزامنا بالجودة وخدمة العملاء والأسعار المنافسة في صميم كل ما نقوم به.",
+      "paragraph3": "نؤمن بأن التقنية وُجدت لتسهّل حياتك لا لتعقّدها، لذلك لا نكتفي ببيع المنتجات، بل نقدّم لك المشورة والدعم وتجربة تسوق تضعك أولًا."
+    }
+  },
+  "productDetail": {
+    "addToCart": "أضف إلى السلة",
+    "removeFromCart": "إزالة من السلة",
+    "buyNow": "اشترِ الآن",
+    "processing": "جارٍ المعالجة...",
+    "quantity": "الكمية",
+    "back": "رجوع",
+    "relatedProducts": "منتجات ذات صلة",
+    "freeShipping": "شحن مجاني",
+    "onOrdersOver": "للطلبات فوق 200 ر.س",
+    "securePayment": "دفع آمن",
+    "secureCheckout": "دفع آمن 100%",
+    "easyReturns": "إرجاع سهل",
+    "returnPolicy": "إرجاع خلال 30 يومًا",
+    "reviews": "تقييمات",
+    "errors": {
+      "productNotFound": "المنتج غير موجود",
+      "loginRequired": "يرجى تسجيل الدخول لإدارة السلة",
+      "cartUpdateFailed": "تعذّر تحديث السلة"
+    }
+  },
+  "deals": {
+    "hero": {
+      "hot": "أقوى",
+      "deals": "العروض",
+      "description": "اكتشف عروضًا مميزة على منتجاتنا المختارة. عروض لفترة محدودة وتوفير كبير!"
+    },
+    "stats": {
+      "activeDeals": "العروض النشطة",
+      "flashSales": "عروض خاطفة",
+      "maxDiscount": "أعلى خصم",
+      "happyBuyers": "عملاء سعداء",
+      "activeDealsValue": "60+",
+      "flashSalesValue": "48 ساعة",
+      "maxDiscountValue": "30%",
+      "happyBuyersValue": "25,000+"
+    },
+    "products": {
+      "title": "المنتجات المميزة",
+      "subtitle": "عروض مختارة بعناية على منتجاتنا الأكثر شعبية"
+    },
+    "empty": {
+      "title": "لا توجد عروض متاحة",
+      "message": "تابعنا قريبًا لعروض وخصومات جديدة!"
+    },
+    "errors": {
+      "loginRequired": "يرجى تسجيل الدخول لإدارة السلة",
+      "cartUpdateFailed": "تعذّر تحديث السلة",
+      "wishlistLoginRequired": "يرجى تسجيل الدخول لإدارة المفضلة"
+    }
+  },
+  "purchase": {
+    "processingPayment": "جارٍ معالجة الدفع...",
+    "pleaseWait": "يرجى الانتظار وعدم إغلاق هذه الصفحة.",
+    "somethingWentWrong": "حدث خطأ ما",
+    "goBack": "رجوع",
+    "paymentSuccessful": "تم الدفع بنجاح!",
+    "thankYouMessage": "شكرًا لتسوقك من بايونير! تم تأكيد طلبك وسنرسل لك تفاصيله عبر البريد الإلكتروني.",
+    "downloadInvoice": "تحميل الفاتورة",
+    "backToHome": "العودة إلى الرئيسية",
+    "orderAlreadyConfirmed": "تم تأكيد هذا الطلب مسبقًا",
+    "orderConfirmed": "تم تأكيد طلبك!",
+    "redirectingHome": "جارٍ تحويلك إلى الصفحة الرئيسية...",
+    "paymentConfirmationFailed": "تعذّر تأكيد الدفع",
+    "failedToProcessPayment": "تعذّر معالجة الدفع",
+    "invoice": {
+      "title": "فاتورة",
+      "orderId": "رقم الطلب",
+      "date": "التاريخ",
+      "customer": "العميل",
+      "email": "البريد الإلكتروني",
+      "guest": "زائر",
+      "notProvided": "غير متوفر",
+      "product": "المنتج",
+      "qty": "الكمية",
+      "price": "السعر",
+      "total": "الإجمالي"
+    }
+  },
+  "purchaseCancel": {
+    "title": "تم إلغاء عملية الدفع",
+    "message": "تم إلغاء عملية الدفع ولم يتم خصم أي مبلغ منك. لا تزال المنتجات في سلة التسوق.",
+    "needHelp": "تحتاج إلى مساعدة؟",
+    "commonIssues": "أسباب شائعة",
+    "issues": [
+      "رفض البنك للبطاقة",
+      "بيانات البطاقة غير صحيحة",
+      "إغلاق صفحة الدفع قبل إتمام العملية",
+      "ضعف الاتصال بالإنترنت"
+    ],
+    "whatYouCanDo": "ما يمكنك فعله",
+    "actions": [
+      "تحقّق من بيانات البطاقة وحاول مرة أخرى",
+      "استخدم بطاقة أو طريقة دفع أخرى",
+      "تواصل مع البنك إذا استمرت المشكلة",
+      "تواصل مع فريق خدمة العملاء"
+    ],
+    "returnToCart": "العودة إلى السلة",
+    "continueShopping": "متابعة التسوق",
+    "goHome": "العودة إلى الرئيسية",
+    "supportNote": "لا تزال تواجه مشكلة؟ فريق خدمة العملاء جاهز لمساعدتك.",
+    "email": "البريد الإلكتروني:",
+    "phone": "الهاتف الموحد:"
+  }
+}

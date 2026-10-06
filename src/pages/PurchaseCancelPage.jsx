@@ -1,8 +1,13 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { XCircle, ShoppingCart, Home, RefreshCw } from "lucide-react";
 
 const PurchaseCancelPage = () => {
+  const { t } = useTranslation();
+  const issues = t("purchaseCancel.issues", { returnObjects: true });
+  const actions = t("purchaseCancel.actions", { returnObjects: true });
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center py-8">
       <motion.div
@@ -29,12 +34,11 @@ const PurchaseCancelPage = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <h1 className="text-3xl font-bold text-foreground mb-4">
-              Payment Cancelled
+              {t("purchaseCancel.title")}
             </h1>
 
             <p className="text-lg text-muted-foreground mb-8">
-              Your payment was cancelled. No charges have been made to your
-              account. You can try again or contact us if you need assistance.
+              {t("purchaseCancel.message")}
             </p>
           </motion.div>
 
@@ -46,31 +50,25 @@ const PurchaseCancelPage = () => {
             className="bg-background rounded-xl p-6 mb-8"
           >
             <h2 className="text-xl font-semibold text-foreground mb-4">
-              Need Help?
+              {t("purchaseCancel.needHelp")}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="text-left">
+              <div className="text-start">
                 <h3 className="font-medium text-foreground mb-2">
-                  Common Issues:
+                  {t("purchaseCancel.commonIssues")}
                 </h3>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Insufficient funds in your account</li>
-                  <li>• Payment method not supported</li>
-                  <li>• Browser security settings</li>
-                  <li>• Network connectivity issues</li>
+                  {Array.isArray(issues) && issues.map((item) => <li key={item}>• {item}</li>)}
                 </ul>
               </div>
 
-              <div className="text-left">
+              <div className="text-start">
                 <h3 className="font-medium text-foreground mb-2">
-                  What You Can Do:
+                  {t("purchaseCancel.whatYouCanDo")}
                 </h3>
                 <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• Try a different payment method</li>
-                  <li>• Check your account balance</li>
-                  <li>• Contact your bank if needed</li>
-                  <li>• Reach out to our support team</li>
+                  {Array.isArray(actions) && actions.map((item) => <li key={item}>• {item}</li>)}
                 </ul>
               </div>
             </div>
@@ -88,7 +86,7 @@ const PurchaseCancelPage = () => {
               className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300 flex items-center justify-center space-x-2"
             >
               <ShoppingCart size={20} />
-              <span>Return to Cart</span>
+              <span>{t("purchaseCancel.returnToCart")}</span>
             </Link>
 
             <Link
@@ -96,7 +94,7 @@ const PurchaseCancelPage = () => {
               className="flex-1 bg-secondary text-foreground py-3 px-6 rounded-lg font-medium hover:bg-secondary/80 transition-colors duration-300 flex items-center justify-center space-x-2"
             >
               <RefreshCw size={20} />
-              <span>Continue Shopping</span>
+              <span>{t("purchaseCancel.continueShopping")}</span>
             </Link>
 
             <Link
@@ -104,7 +102,7 @@ const PurchaseCancelPage = () => {
               className="flex-1 bg-background border border-border text-foreground py-3 px-6 rounded-lg font-medium hover:bg-background/80 transition-colors duration-300 flex items-center justify-center space-x-2"
             >
               <Home size={20} />
-              <span>Go Home</span>
+              <span>{t("purchaseCancel.goHome")}</span>
             </Link>
           </motion.div>
 
@@ -116,22 +114,24 @@ const PurchaseCancelPage = () => {
             className="mt-8 pt-8 border-t border-border"
           >
             <p className="text-sm text-muted-foreground mb-2">
-              Having trouble? Our support team is here to help!
+              {t("purchaseCancel.supportNote")}
             </p>
             <p className="text-sm text-muted-foreground">
-              Email:{" "}
+              {t("purchaseCancel.email")}{" "}
               <a
-                href="mailto:support@electroshop.com"
+                href={`mailto:${t("company.email")}`}
                 className="text-primary hover:text-primary/80"
+                dir="ltr"
               >
-                support@electroshop.com
+                {t("company.email")}
               </a>{" "}
-              | Phone:{" "}
+              | {t("purchaseCancel.phone")}{" "}
               <a
-                href="tel:+1234567890"
+                href={`tel:${t("company.phone").replace(/\s/g, "")}`}
                 className="text-primary hover:text-primary/80"
+                dir="ltr"
               >
-                +1 (555) 123-4567
+                {t("company.phone")}
               </a>
             </p>
           </motion.div>

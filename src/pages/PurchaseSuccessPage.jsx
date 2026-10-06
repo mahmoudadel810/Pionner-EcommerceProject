@@ -7,11 +7,12 @@ import { useCartStore } from "@/stores/useCartStore";
 import { usePaymentStore } from "@/stores/usePaymentStore";
 import { useTranslation } from "react-i18next";
 
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
+import { formatCurrency, formatDate } from "@/lib/currency";
 import { Loader, CheckCircle, AlertTriangle, FileDown, ArrowLeft } from "lucide-react";
 
 const PurchaseSuccessPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const paymentIntentId = searchParams.get("payment_intent");
@@ -95,48 +96,51 @@ const PurchaseSuccessPage = () => {
 
   const generateInvoice = () => {
     const order = orderDetails;
-    const orderId = order?.order?._id || "N/A";
-    const createdAt = order?.order?.createdAt ? new Date(order.order.createdAt).toLocaleString() : "N/A";
+    const orderId = order?.order?._id || "-";
+    const createdAt = order?.order?.createdAt
+      ? formatDate(order.order.createdAt, i18n.language, { dateStyle: "medium", timeStyle: "short" })
+      : "-";
     const user = order?.user || {};
 
+    const escape = (value) =>
+      String(value ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    const rows = Array.isArray(order?.order?.products)
+      ? order.order.products
+          .map(
+            (product) => `
+              <tr>
+                <td>${escape(product.productName || t("purchase.invoice.product"))}</td>
+                <td>${product.quantity}</td>
+                <td>${formatCurrency(product.price)}</td>
+                <td>${formatCurrency(product.price * product.quantity)}</td>
+              </tr>`
+          )
+          .join("")
+      : "";
+
     const invoiceHtml = `
-      <html>
+      <html lang="${i18n.language}" dir="${i18n.dir()}">
         <head>
-          <title>Invoice - Pioneer</title>
+          <meta charset="utf-8" />
+          <title>${t("purchase.invoice.title")} - ${t("company.name")}</title>
         </head>
-        <body>
-          <h1>🧾 Invoice - Pioneer Order</h1>
-          <p><strong>Order ID:</strong> ${orderId}</p>
-          <p><strong>Created At:</strong> ${createdAt}</p>
-          <p><strong>Customer:</strong> ${user?.name || "Guest"}</p>
-          <p><strong>Email:</strong> ${user?.email || "Not provided"}</p>
+        <body style="font-family: sans-serif">
+          <h1>🧾 ${t("purchase.invoice.title")} - ${t("company.name")}</h1>
+          <p><strong>${t("purchase.invoice.orderId")}:</strong> <bdi>${escape(orderId)}</bdi></p>
+          <p><strong>${t("purchase.invoice.date")}:</strong> ${createdAt}</p>
+          <p><strong>${t("purchase.invoice.customer")}:</strong> ${escape(user?.name || t("purchase.invoice.guest"))}</p>
+          <p><strong>${t("purchase.invoice.email")}:</strong> <bdi>${escape(user?.email || t("purchase.invoice.notProvided"))}</bdi></p>
           <br />
           <table border="1" cellpadding="10" cellspacing="0">
             <thead>
               <tr>
-                <th>Product</th>
-                <th>Qty</th>
-                <th>Price</th>
-                <th>Total</th>
+                <th>${t("purchase.invoice.product")}</th>
+                <th>${t("purchase.invoice.qty")}</th>
+                <th>${t("purchase.invoice.price")}</th>
+                <th>${t("purchase.invoice.total")}</th>
               </tr>
             </thead>
-            <tbody>
-              ${
-                Array.isArray(order?.order?.products)
-                  ? order.order.products
-                      .map(
-                        (product) => `
-                    <tr>
-                      <td>${product.productName || "Product"}</td>
-                      <td>${product.quantity}</td>
-                      <td>$${product.price}</td>
-                      <td>$${(product.price * product.quantity).toFixed(2)}</td>
-                    </tr>`
-                      )
-                      .join("")
-                  : ""
-              }
-            </tbody>
+            <tbody>${rows}</tbody>
           </table>
         </body>
       </html>
@@ -171,7 +175,7 @@ const PurchaseSuccessPage = () => {
           <h1 className="text-xl font-semibold">{t('purchase.somethingWentWrong')}</h1>
           <p>{error}</p>
           <Button onClick={() => navigate("/")} className="mt-4">
-            <ArrowLeft className="mr-2 h-4 w-4" /> {t('purchase.goBack')}
+            <ArrowLeft className="rtl:rotate-180 me-2 h-4 w-4" /> {t('purchase.goBack')}
           </Button>
         </div>
       ) : (
@@ -183,11 +187,11 @@ const PurchaseSuccessPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4">
             <Button variant="secondary" onClick={generateInvoice}>
-              <FileDown className="w-4 h-4 mr-2" />
+              <FileDown className="w-4 h-4 me-2" />
               {t('purchase.downloadInvoice')}
             </Button>
             <Button onClick={() => navigate("/")}>
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="rtl:rotate-180 w-4 h-4 me-2" />
               {t('purchase.backToHome')}
             </Button>
           </div>

@@ -8,9 +8,11 @@ import {
 import { motion } from "framer-motion";
 import { CreditCard, Lock, AlertCircle, CheckCircle } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { getTranslation } from "../utils/i18nUtils.js";
 
 const StripePaymentForm = ({ onSuccess, onError, returnUrl }) => {
+  const { t } = useTranslation();
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
@@ -76,8 +78,8 @@ const StripePaymentForm = ({ onSuccess, onError, returnUrl }) => {
               <CreditCard className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Payment Method</h3>
-              <p className="text-sm text-gray-600">Choose your preferred payment method</p>
+              <h3 className="font-semibold text-gray-900">{t('checkout.payment_method')}</h3>
+              <p className="text-sm text-gray-600">{t('payment.form.methodSubtitle')}</p>
             </div>
           </div>
           
@@ -94,8 +96,8 @@ const StripePaymentForm = ({ onSuccess, onError, returnUrl }) => {
               <Lock className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Billing Address</h3>
-              <p className="text-sm text-gray-600">Enter your billing information</p>
+              <h3 className="font-semibold text-gray-900">{t('checkout.billing_address')}</h3>
+              <p className="text-sm text-gray-600">{t('payment.form.billingSubtitle')}</p>
             </div>
           </div>
           
@@ -141,12 +143,12 @@ const StripePaymentForm = ({ onSuccess, onError, returnUrl }) => {
             {isLoading ? (
               <>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>Processing...</span>
+                <span>{t('checkout.processing')}</span>
               </>
             ) : (
               <>
                 <Lock className="w-5 h-5" />
-                <span>Complete Payment</span>
+                <span>{t('checkout.complete_payment')}</span>
               </>
             )}
           </div>
@@ -156,7 +158,7 @@ const StripePaymentForm = ({ onSuccess, onError, returnUrl }) => {
         <div className="text-center">
           <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
             <Lock className="w-4 h-4" />
-            <span>Your payment information is secure and encrypted</span>
+            <span>{t('checkout.secure_notice')}</span>
           </div>
         </div>
       </form>

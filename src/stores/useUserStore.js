@@ -168,7 +168,7 @@ export const useUserStore = create((set, get) => ({
 
       if (response.data && response.data.success)
       {
-        toast.success(getTranslation('auth.forgotPassword.emailSent', 'Password reset email sent successfully!'));
+        toast.success(getTranslation('auth.forgotPassword.emailSent', 'Password reset email sent successfully!', { email }));
         return response.data;
       } else
       {

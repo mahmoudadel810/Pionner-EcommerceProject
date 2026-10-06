@@ -12,6 +12,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import StripePaymentForm from "../components/StripePaymentForm";
 import { useTranslation } from "react-i18next";
 import { handleImageError } from "../lib/imageFallback";
+import { formatCurrency } from "../lib/currency";
 
 // Publishable keys are safe to ship in client code; the fallback keeps the demo deployment working.
 const stripePromise = loadStripe(
@@ -20,7 +21,7 @@ const stripePromise = loadStripe(
 );
 
 const CheckoutPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { user } = useUserStore();
   const { cart, total, subtotal, coupon, isCouponApplied } = useCartStore();
@@ -79,19 +80,20 @@ const CheckoutPage = () => {
 
     requiredFields.forEach((field) => {
       if (!formData[field].trim()) {
-        newErrors[field] =
-          `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+        newErrors[field] = t("checkout.validation.required", {
+          field: t(`checkout.${field === "state" ? "stateProvince" : field}`),
+        });
       }
     });
 
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t("checkout.validation.invalidEmail");
     }
     if (
       formData.phone &&
       !/^\d{10,}$/.test(formData.phone.replace(/[^\d]/g, ""))
     ) {
-      newErrors.phone = "Please enter a valid phone number";
+      newErrors.phone = t("checkout.validation.invalidPhone");
     }
 
     setErrors(newErrors);
@@ -173,7 +175,8 @@ const CheckoutPage = () => {
 
   const options = {
     clientSecret,
-    appearance
+    appearance,
+    locale: i18n.language === "ar" ? "ar" : "en",
   };
 
   if (loading || !clientSecret) {
@@ -207,7 +210,7 @@ const CheckoutPage = () => {
               </button>
             </div>
             <button
-              className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 focus:outline-none"
+              className="absolute top-2 end-2 text-gray-400 hover:text-gray-700 focus:outline-none"
               onClick={() => setShowNewSessionModal(false)}
               aria-label={t("checkout.close")}
             >
@@ -234,7 +237,7 @@ const CheckoutPage = () => {
           <button
             onClick={() => navigate("/cart")}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4">
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="rtl:rotate-180 w-5 h-5" />
             <span>{t('checkout.backToCart')}</span>
           </button>
           <h1 className="text-3xl font-bold text-gray-900">{t('checkout.secureCheckout')}</h1>
@@ -498,15 +501,15 @@ const CheckoutPage = () => {
                     </div>
                     <div className="flex-1">
                       <h4 className="font-medium text-gray-900 text-sm">
-                        {item.name}
+                        <bdi>{item.name}</bdi>
                       </h4>
                       <p className="text-gray-600 text-sm">
                         {t('checkout.qty')}: {item.quantity}
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-end">
                       <p className="font-semibold text-gray-900">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        {formatCurrency(item.price * item.quantity)}
                       </p>
                     </div>
                   </div>
@@ -517,12 +520,12 @@ const CheckoutPage = () => {
               <div className="border-t border-gray-200 pt-4 space-y-3">
                 <div className="flex justify-between text-gray-600">
                   <span>{t('checkout.subtotal')}</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{formatCurrency(subtotal)}</span>
                 </div>
                 {isCouponApplied && coupon && (
                   <div className="flex justify-between text-green-600">
                     <span>{t('checkout.discount')} ({coupon.code})</span>
-                    <span>-${(subtotal - total).toFixed(2)}</span>
+                    <span>-{formatCurrency(subtotal - total)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-gray-600">
@@ -532,7 +535,7 @@ const CheckoutPage = () => {
                 <div className="border-t border-gray-200 pt-3">
                   <div className="flex justify-between text-lg font-semibold text-gray-900">
                     <span>{t('checkout.total')}</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>{formatCurrency(total)}</span>
                   </div>
                 </div>
               </div>

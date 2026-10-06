@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from './ui/button';
 import {
@@ -7,14 +7,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from './ui/dropdown-menu';
-import { ChevronDown, Globe } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 const LanguageSwitcher = () => {
-  const { i18n, t } = useTranslation();
+  const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState(i18n.language);
 
-  // Listen for language changes to update the component
   useEffect(() => {
     const handleLanguageChanged = (lng) => {
       setCurrentLang(lng);
@@ -48,13 +47,7 @@ const LanguageSwitcher = () => {
     try {
       await i18n.changeLanguage(languageCode);
       setIsOpen(false);
-      
-      // Force a re-render by updating the document direction immediately
-      const dir = languageCode === 'ar' ? 'rtl' : 'ltr';
-      document.documentElement.dir = dir;
-      document.documentElement.lang = languageCode;
-      
-      // Trigger a window resize event to help components re-layout
+      // Layout-dependent components (sliders, menus) re-measure on resize after a direction change.
       window.dispatchEvent(new Event('resize'));
     } catch (error) {
       console.error('Failed to change language:', error);

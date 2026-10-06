@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
@@ -19,7 +19,7 @@ const ForgetPasswordPage = () => {
       if (res?.success) {
         setEmailSent(true);
       }
-    } catch (error) {
+    } catch {
       // Error is handled in the store
     }
   };

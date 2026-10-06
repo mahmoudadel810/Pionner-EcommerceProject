@@ -1,29 +1,24 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   User,
   Mail,
   Calendar,
   Package,
-  Settings,
   Edit,
   Save,
   X,
-  Key,
-  Eye,
-  EyeOff,
 } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
-import tokenManager from "../utils/tokenManager";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 import { useTranslation } from "react-i18next";
 
 const ProfilePage = () => {
   const { t } = useTranslation();
-  const { user, checkAuth, setUser } = useUserStore();
+  const { user, setUser } = useUserStore();
   const [isEditing, setIsEditing] = useState(false);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -31,17 +26,13 @@ const ProfilePage = () => {
     name: user?.data?.user?.name || "",
     email: user?.data?.user?.email || "",
   });
-  const [avatar, setAvatar] = useState(null); // File object
+  const [avatar, setAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(user?.data?.user?.profileImage || "");
-  const [showTokens, setShowTokens] = useState(false);
-  const [tokenInfo, setTokenInfo] = useState(null);
 
-  // Memoize fetchOrders to prevent infinite re-renders
   const fetchOrders = useCallback(async () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.GET_USER_ORDERS));
 
-      // Fixed: Check if response.data.data exists and is an array
       if (response.data && Array.isArray(response.data.data)) {
         setOrders(response.data.data);
       } else {
@@ -49,22 +40,15 @@ const ProfilePage = () => {
         toast.error(t('profile.invalidOrderData'));
       }
     } catch (error) {
-      setOrders([]); // Reset orders on error
+      setOrders([]);
       toast.error(error.response?.data?.message || t('profile.failedToFetchOrders'));
     }
-  }, []);
+  }, [t]);
 
-  // Fetch orders on mount
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
 
-  // Update token info
-  useEffect(() => {
-    setTokenInfo(tokenManager.getTokenInfo());
-  }, []);
-
-  // Handle avatar file change
   const handleAvatarChange = e => {
     const file = e.target.files[0];
     if (file) {
@@ -74,9 +58,6 @@ const ProfilePage = () => {
   };
 
   const handleInputChange = e => {
-    // Fixed: Add null check for event and target
-    if (!e || !e.target) return;
-
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -84,7 +65,6 @@ const ProfilePage = () => {
   };
 
   const handleSave = async () => {
-    // Fixed: Add validation before making the request
     if (!formData.name || !formData.email) {
       toast.error(t('profile.fillRequiredFields'));
       return;
@@ -94,7 +74,6 @@ const ProfilePage = () => {
     try {
       let profileImageUrl = null;
       
-      // First, upload the avatar if present
       if (avatar) {
         try {
           const imageFormData = new FormData();
@@ -109,14 +88,13 @@ const ProfilePage = () => {
           } else {
             throw new Error(imageResponse.data?.message || "Failed to upload profile image");
           }
-        } catch (imageError) {
+        } catch {
           toast.error(t('profile.failedToUploadImage'));
           setLoading(false);
           return;
         }
       }
 
-      // Then update the profile with name and email
       const updateData = {
         name: formData.name,
         email: formData.email
@@ -128,38 +106,32 @@ const ProfilePage = () => {
         toast.success(t('profile.profileUpdatedSuccessfully'));
         setIsEditing(false);
         
-        // Update the avatar preview if image was uploaded
         if (profileImageUrl) {
           setAvatarPreview(profileImageUrl);
         }
         
-        // Clear the avatar file
         setAvatar(null);
         
-        // Update the user store with the new profile image and data
+        // Keep the cached session in sync so a reload shows the new details.
         if (profileImageUrl || response.data.data) {
-          // Update the user data in localStorage
           const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
           if (currentUser.data && currentUser.data.user) {
-            // Update profile image if uploaded
             if (profileImageUrl) {
               currentUser.data.user.profileImage = profileImageUrl;
             }
-            // Update other profile data from response
             if (response.data.data) {
               currentUser.data.user.name = response.data.data.name || currentUser.data.user.name;
               currentUser.data.user.email = response.data.data.email || currentUser.data.user.email;
             }
             localStorage.setItem('user', JSON.stringify(currentUser));
             
-            // Update the user store directly without triggering checkAuth
             setUser(currentUser);
           }
         }
       } else {
         toast.error(t('profile.failedToUpdateProfile'));
       }
-    } catch (error) {
+    } catch {
       toast.error(t('profile.failedToUpdateProfile'));
     } finally {
       setLoading(false);
@@ -191,7 +163,6 @@ const ProfilePage = () => {
     }
   };
 
-  // Fixed: Add loading state and null checks for user data
   if (!user || !user.data || !user.data.user) {
     return (
       <div className="min-h-screen bg-background py-8 flex items-center justify-center">
@@ -408,28 +379,23 @@ const ProfilePage = () => {
               ) : (
                 <div className="space-y-4">
                   {orders.map(order => {
-                    // Determine order name
                     const orderName = order.products && order.products.length > 0
                       ? order.products[0].productName
                       : `Order #${order._id ? order._id.slice(-8) : 'N/A'}`;
-                    // Determine if cancellable
                     const isCancellable = ["pending", "processing"].includes(order.status);
-                    // Format shipping address
                     const shipping = order.shippingAddress
                       ? `${order.shippingAddress.street}, ${order.shippingAddress.city}, ${order.shippingAddress.state}, ${order.shippingAddress.zipCode}, ${order.shippingAddress.country}`
                       : "N/A";
-                    // Cancel handler
                     const handleCancelOrder = async () => {
                       try {
                         const response = await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.CANCEL(order._id)));
                         if (response.data && response.data.success) {
                           toast.success(t('profile.orderCancelledSuccessfully'));
-                          // Update order status in UI
                           setOrders(prev => prev.map(o => o._id === order._id ? { ...o, status: "cancelled" } : o));
                         } else {
                           toast.error(t('profile.failedToCancelOrder'));
                         }
-                      } catch (error) {
+                      } catch {
                         toast.error(t('profile.failedToCancelOrder'));
                       }
                     };

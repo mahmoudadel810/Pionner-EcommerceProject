@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 
@@ -10,30 +9,18 @@ import { toast } from "react-hot-toast";
 
 const WishlistPage = () => {
   const { t } = useTranslation();
-  const { wishlist, removeFromWishlist, loading } = useWishlistStore();
+  const { wishlist, removeFromWishlist } = useWishlistStore();
   const { toggleCart, isInCart } = useCartStore();
   const navigate = useNavigate();
 
   const handleToggleCart = async product => {
-    try {
-      const result = await toggleCart(product);
-      if (result.success) {
-        // Success message is handled in the store
-      } else {
-        toast.error(result.message || t('common.failedUpdateCart'));
-      }
-    } catch (error) {
-      // Error is already handled by the result check above
+    const result = await toggleCart(product);
+    if (!result?.success) {
+      toast.error(result?.message || t('common.failedUpdateCart'));
     }
   };
 
-  const handleRemoveFromWishlist = async productId => {
-    try {
-      await removeFromWishlist(productId);
-    } catch (error) {
-      // Error is already handled in the store
-    }
-  };
+  const handleRemoveFromWishlist = productId => removeFromWishlist(productId);
 
   const handleViewProduct = productId => {
     navigate(`/product/${productId}`);

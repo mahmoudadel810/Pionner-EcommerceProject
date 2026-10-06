@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -94,7 +93,7 @@ const Footer = () => {
               {t('footer.company.description')}
             </p>
             <div className="flex space-x-4">
-              {socialLinks.map((social, index) => (
+              {socialLinks.map((social) => (
                 <motion.a
                   key={social.label}
                   href={social.href}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router-dom";
 import { Lock, Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
@@ -34,7 +34,7 @@ const ResetPasswordPage = () => {
       }));
     }
   };
-  //validation form
+  // Validation
   const validateForm = () => {
     const newErrors = {};
 
@@ -77,7 +77,7 @@ const ResetPasswordPage = () => {
     try {
       const res = await resetPassword(formData);
       res?.success ? setPasswordReset(true) : setPasswordReset(false);
-    } catch (error) {
+    } catch {
       // Error is handled in the store
     }
   };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -8,7 +8,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Skeleton } from "../components/ui/skeleton";
-import { Search, Grid3X3, List, Filter, ArrowLeft, Package, Star, ShoppingCart, Heart } from "lucide-react";
+import { Search, Grid3X3, List, ArrowLeft, Package, Star, ShoppingCart, Heart } from "lucide-react";
 import axios from "../lib/axios";
 import toast from "react-hot-toast";
 import { useCartStore } from "../stores/useCartStore";
@@ -16,6 +16,7 @@ import { useWishlistStore } from "../stores/useWishlistStore";
 import { useUserStore } from "../stores/useUserStore";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
+import { handleImageError } from "../lib/imageFallback";
 
 const CategoryProductsPage = () => {
   const { t } = useTranslation();
@@ -100,7 +101,7 @@ const CategoryProductsPage = () => {
       } else {
         toast.error(result.message || t('common.failedUpdateCart'));
       }
-    } catch (error) {
+    } catch {
       toast.error(t('categoryProducts.toast.cartUpdateFailed'));
     }
   };
@@ -118,7 +119,7 @@ const CategoryProductsPage = () => {
       } else {
         await addToWishlist(product);
       }
-    } catch (error) {
+    } catch {
       toast.error(t('categoryProducts.toast.wishlistUpdateFailed'));
     }
   };
@@ -157,9 +158,7 @@ const CategoryProductsPage = () => {
                   src={product.image}
                   alt={product.name}
                   className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-                  onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/400x300?text=Product+Image";
-                  }}
+                  onError={handleImageError}
                 />
               </Link>
               <div className="absolute top-2 right-2">
@@ -249,9 +248,7 @@ const CategoryProductsPage = () => {
                   src={product.image}
                   alt={product.name}
                   className="w-full h-full object-cover rounded-lg"
-                  onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/128x128?text=Product";
-                  }}
+                  onError={handleImageError}
                 />
                 {product.isFeatured && (
                   <Badge variant="destructive" className="absolute top-2 left-2 text-xs">
@@ -381,9 +378,7 @@ const CategoryProductsPage = () => {
                 src={category.image}
                 alt={category.name}
                 className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/64x64?text=Category";
-                }}
+                onError={handleImageError}
               />
             </div>
             <div>

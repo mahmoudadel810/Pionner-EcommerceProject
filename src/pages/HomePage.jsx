@@ -1,80 +1,42 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useInView, useReducedMotion, useAnimation } from "framer-motion";
+import { motion, useInView, useReducedMotion, useAnimation } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useProductStore } from "../stores/useProductStore";
 import { useUserStore } from "../stores/useUserStore";
 import { useCartStore } from "../stores/useCartStore";
-import { useWishlistStore } from "../stores/useWishlistStore";
-import CategoryItem from "../components/CategoryItem";
 import FeaturedProducts from "../components/FeaturedProducts";
 import HeroSlider from "../components/HeroSlider";
 import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
-import { Card, CardContent, CardHeader } from "../components/ui/card";
+import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
-import { Input } from "../components/ui/input";
-import { Avatar } from "../components/ui/avatar";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
-import { 
-  ShoppingBag, 
-  Sparkles, 
-  TrendingUp, 
-  Mic, 
-  MicOff,
-  Bot,
-  Zap,
+import {
+  Sparkles,
   Star,
-  Eye,
-  Heart,
   ShoppingCart,
   ArrowRight,
-  ChevronRight,
-  ChevronLeft,
-  Play,
-  Pause,
-  Volume2,
-  Award,
-  Target,
-  Users,
-  Globe,
-  Shield,
-  Clock,
-  Gift,
   Crown,
-  Brain,
-  Cpu,
   Smartphone,
   Laptop,
   Gamepad2,
   Home,
   Headphones,
   Tablet,
-  MessageCircle,
-  X,
-  Send,
-  Search,
-  Filter,
-  Sparkles as SparklesIcon
 } from "lucide-react";
 import { toast } from "react-hot-toast";
-
-// Categories data
-
 
 const HomePage = () => {
   const { t } = useTranslation();
   const { products, fetchAllProducts, loading } = useProductStore();
   const { user } = useUserStore();
-  const { cart, toggleCart, isInCart } = useCartStore();
-  const { wishlist } = useWishlistStore();
+  const { toggleCart, isInCart } = useCartStore();
   const navigate = useNavigate();
   
-  // State
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const hasFetchedRef = useRef(false);
 
-  // Categories data with translations
   const categories = [
     {
       name: t('categories.smartphones'),
@@ -120,10 +82,8 @@ const HomePage = () => {
     }
   ];
 
-  // Performance optimizations
   const prefersReducedMotion = useReducedMotion();
   
-  // Animation variants for scroll-triggered elements (memoized)
   const fadeInUp = React.useMemo(() => ({
     hidden: { 
       opacity: prefersReducedMotion ? 1 : 0, 
@@ -135,64 +95,38 @@ const HomePage = () => {
       transition: { 
         duration: prefersReducedMotion ? 0 : 0.6, 
         ease: "easeOut",
-        // Only animate transform and opacity for better performance
         opacity: { duration: 0.6 },
         y: { duration: 0.6 }
       }
     }
   }), [prefersReducedMotion]);
   
-  // Use Intersection Observer for scroll-triggered animations
   const controls = useAnimation();
   const ref = React.useRef();
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   
-  // Only animate when in view and not in reduced motion mode
   React.useEffect(() => {
     if (isInView && !prefersReducedMotion) {
       controls.start("visible");
     }
   }, [controls, isInView, prefersReducedMotion]);
 
-  // Memoize fetchAllProducts to prevent it from changing on every render
-  const memoizedFetchAllProducts = useCallback(() => {
+  useEffect(() => {
+    if (hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+
     fetchAllProducts();
+    fetch(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_FEATURED))
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) setFeaturedProducts(data.data);
+      })
+      .catch(() => setFeaturedProducts([]));
   }, [fetchAllProducts]);
 
-  // Memoize fetchFeaturedProducts with its dependencies
-  const memoizedFetchFeaturedProducts = useCallback(async () => {
-    try {
-      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_FEATURED));
-      const data = await response.json();
-      if (data.success) {
-        setFeaturedProducts(data.data);
-      }
-    } catch (error) {
-      console.log(error ,"error fetch products");
-      
-    }
-  }, []);
-
-  // Initial data fetch - only run once on mount
-  useEffect(() => {
-    if (!hasFetchedRef.current) {
-      memoizedFetchAllProducts();
-      memoizedFetchFeaturedProducts();
-      hasFetchedRef.current = true;
-    }
-  }, [memoizedFetchAllProducts, memoizedFetchFeaturedProducts]);
-
-
-
-  // Get products by category
   const getProductsByCategory = useCallback((categoryName) => {
     return products.filter(product => product.category.toLowerCase() === categoryName.toLowerCase());
   }, [products]);
-
-  // Get actual product counts for each category
-  const getCategoryProductCount = useCallback((categoryName) => {
-    return getProductsByCategory(categoryName).length;
-  }, [getProductsByCategory]);
 
   const handleToggleCart = async (product) => {
     if (!user) {
@@ -202,12 +136,10 @@ const HomePage = () => {
 
     try {
       const result = await toggleCart(product);
-      if (result.success) {
-        // Success message is handled in the store
-      } else {
+      if (!result.success) {
         toast.error(result.message || t('home.errors.cartUpdateFailed'));
       }
-    } catch (error) {
+    } catch {
       toast.error(t('home.errors.cartUpdateFailed'));
     }
   };
@@ -230,16 +162,11 @@ const HomePage = () => {
         ref={ref}
         className="py-20 bg-gradient-to-br from-gray-50 to-blue-50/30 will-change-transform"
         style={{
-          // Force GPU acceleration
           transform: 'translateZ(0)',
-          // Optimize for scrolling performance
           backfaceVisibility: 'hidden',
           WebkitBackfaceVisibility: 'hidden',
-          // Optimize for animation performance
           transformStyle: 'preserve-3d',
-          // Prevent content from being repainted on scroll
           contentVisibility: 'auto',
-          // Optimize for scrolling performance
           contain: 'content',
         }}
       >
@@ -253,7 +180,7 @@ const HomePage = () => {
             </p>
           </div>
 
-          {categories.map((category, categoryIndex) => {
+          {categories.map((category) => {
             const categoryProducts = getProductsByCategory(category.name);
             if (categoryProducts.length === 0) return null;
 
@@ -288,16 +215,11 @@ const HomePage = () => {
                       animate={controls}
                       custom={productIndex}
                       style={{
-                        // Optimize for animation performance
                         willChange: 'transform, opacity',
-                        // Force hardware acceleration
                         transform: 'translateZ(0)',
-                        // Optimize for animation performance
                         backfaceVisibility: 'hidden',
                         WebkitBackfaceVisibility: 'hidden',
-                        // Optimize for scrolling performance
                         contentVisibility: 'auto',
-                        // Optimize for animation performance
                         transformStyle: 'preserve-3d',
                       }}
                       className="group cursor-pointer"
@@ -375,7 +297,7 @@ const HomePage = () => {
         <FeaturedProducts featuredProducts={featuredProducts} />
       )}
 
-      {/* Enhanced CTA Section */}
+      {/* Call to action */}
       <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="container mx-auto px-4 text-center relative z-10">

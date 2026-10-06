@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, AlertCircle } from "lucide-react";
@@ -143,7 +143,7 @@ const LoginPage = () => {
         }
         // Error toasts are already handled in the store
       }
-    } catch (error) {
+    } catch {
       // Error handling is already done in the store
     }
   };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -8,11 +8,11 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Skeleton } from "../components/ui/skeleton";
-import { Search, Grid3X3, List, Filter, Package, Layers, Sparkles, X, RefreshCw, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import axios from "../lib/axios";
+import { Search, Grid3X3, List, Package, Layers, Sparkles, X, RefreshCw, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import toast from "react-hot-toast";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
+import { handleImageError } from "../lib/imageFallback";
 
 const CategoriesPage = () => {
   const { t } = useTranslation();
@@ -102,18 +102,20 @@ const CategoriesPage = () => {
       const responseData = await response.json();
       
       if (responseData.success) {
+        // Cached responses wrap the payload one level deeper.
         const data = responseData.data;
-        setCategories(data.data || data);
+        const items = Array.isArray(data) ? data : data?.data || [];
+        const pagination = responseData.pagination || data?.pagination;
+        setCategories(items);
         setHasLoaded(true);
-        
-        // Update pagination info
-        if (data.pagination) {
+
+        if (pagination) {
           const paginationData = {
-            currentPage: data.pagination.currentPage || page,
-            totalPages: data.pagination.totalPages || 1,
-            totalItems: data.pagination.totalItems || 0,
-            hasNextPage: data.pagination.hasNextPage || false,
-            hasPrevPage: data.pagination.hasPrevPage || false
+            currentPage: pagination.currentPage || page,
+            totalPages: pagination.totalPages || 1,
+            totalItems: pagination.totalCount ?? pagination.totalItems ?? items.length,
+            hasNextPage: pagination.hasNextPage || false,
+            hasPrevPage: pagination.hasPrevPage || false
           };
           setPaginationInfo(paginationData);
           setCurrentPage(paginationData.currentPage);
@@ -227,9 +229,7 @@ const CategoriesPage = () => {
                 alt={category.name}
                 loading="lazy"
                 className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/400x300?text=Category+Image";
-                }}
+                onError={handleImageError}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
@@ -278,9 +278,7 @@ const CategoriesPage = () => {
                   alt={category.name}
                   loading="lazy"
                   className="w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
-                  onError={(e) => {
-                    e.target.src = "https://via.placeholder.com/96x96?text=Category";
-                  }}
+                  onError={handleImageError}
                 />
               </div>
               <div className="flex-1 min-w-0">

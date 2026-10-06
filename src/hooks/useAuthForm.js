@@ -32,7 +32,7 @@ export const useAuthForm = (isLogin = true) => {
           newErrors.password = "Password is required";
         } else if (formData.password.length < 8) {
           newErrors.password = "Password must be at least 8 characters";
-        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formData.password)) {
+        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(formData.password)) {
           newErrors.password = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
         }
 
@@ -106,14 +106,12 @@ export const useAuthForm = (isLogin = true) => {
             toast.success(t('auth.signup.success') || "Account created successfully! Please check your email to confirm your account.");
             navigate("/login");
           }
-        } else if (result && !result.success) {
-          // Error is already handled in the store, but we can add component-specific logic here
         }
-      } catch (error) {
-        // Error is already handled in the store
+      } catch {
+        // The store has already shown an error toast.
       }
     },
-    [formData, isLogin, login, signup, navigate, validateForm]
+    [formData, isLogin, login, signup, navigate, validateForm, t]
   );
 
   const resetForm = useCallback(() => {

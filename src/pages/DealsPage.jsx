@@ -1,84 +1,24 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useProductStore } from "../stores/useProductStore";
-import { useCartStore } from "../stores/useCartStore";
-import { useWishlistStore } from "../stores/useWishlistStore";
-import { useUserStore } from "../stores/useUserStore";
 import ProductCard from "../components/ProductCard";
-import { toast } from "react-hot-toast";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { 
-  Zap, 
-  Flame, 
-  TrendingUp, 
-  Star, 
-  Clock, 
+import {
+  Zap,
+  Flame,
+  TrendingUp,
   Percent,
   ShoppingBag,
-  Sparkles
+  Sparkles,
 } from "lucide-react";
 
 const DealsPage = () => {
   const { t } = useTranslation();
   const { products, fetchFeaturedProducts, loading } = useProductStore();
-  const { toggleCart, isInCart } = useCartStore();
-  const { toggleWishlist, wishlist } = useWishlistStore();
-  const { user } = useUserStore();
-
   useEffect(() => {
-    let isMounted = true;
-    const fetchDeals = async () => {
-      try {
-        const result = await fetchFeaturedProducts();
-        if (!isMounted) return;
-
-        if (!result?.success) {
-        }
-      } catch (error) {
-        if (!isMounted) return;
-      }
-    };
-
-    fetchDeals();
-
-    return () => {
-      isMounted = false;
-    };
+    fetchFeaturedProducts();
   }, [fetchFeaturedProducts]);
-
-  const handleToggleCart = async product => {
-    if (!user) {
-      toast.error(t('deals.errors.loginRequired'));
-      return;
-    }
-
-    try {
-      const result = await toggleCart(product);
-      if (result.success) {
-        // Success message is handled in the store
-      } else {
-        toast.error(result.message || t('deals.errors.cartUpdateFailed'));
-      }
-    } catch (error) {
-      // Error is already handled by the result check above
-    }
-  };
-
-  const handleWishlistToggle = async product => {
-    if (!user) {
-      toast.error(t('deals.errors.wishlistLoginRequired'));
-      return;
-    }
-
-    try {
-      await toggleWishlist(product);
-    } catch (error) {
-      // Error is already handled in the store
-    }
-  };
-
-      
 
   const dealStats = [
     { number: "500+", label: t('deals.stats.activeDeals'), icon: Zap, color: "from-purple-500 to-purple-600" },

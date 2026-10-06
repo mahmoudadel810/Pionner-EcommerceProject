@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,6 @@ import {
   Shield,
   RotateCcw,
   ChevronLeft,
-  ChevronRight,
   CreditCard,
 } from "lucide-react";
 import { useCartStore } from "../stores/useCartStore";
@@ -40,38 +39,39 @@ const ProductDetailPage = () => {
   const [isBuyingNow, setIsBuyingNow] = useState(false);
 
   useEffect(() => {
+    const fetchRelatedProducts = async category => {
+      try {
+        const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_CATEGORY(category)));
+        if (response.data && response.data.success) {
+          setRelatedProducts(
+            response.data.data.filter(p => p._id !== id).slice(0, 4)
+          );
+        }
+      } catch {
+        setRelatedProducts([]);
+      }
+    };
+
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_ID(id)));
+        if (response.data && response.data.success) {
+          setProduct(response.data.data);
+          fetchRelatedProducts(response.data.data.category);
+        } else {
+          throw new Error("Product not found");
+        }
+      } catch {
+        toast.error(t('productDetail.errors.productNotFound'));
+        navigate("/shop");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchProduct();
-  }, [id]);
-
-  const fetchProduct = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_ID(id)));
-      if (response.data && response.data.success) {
-        setProduct(response.data.data);
-        fetchRelatedProducts(response.data.data.category);
-      } else {
-        throw new Error("Product not found");
-      }
-    } catch (error) {
-      toast.error(t('productDetail.errors.productNotFound'));
-      navigate("/shop");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchRelatedProducts = async category => {
-    try {
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_CATEGORY(category)));
-      if (response.data && response.data.success) {
-        setRelatedProducts(
-          response.data.data.filter(p => p._id !== id).slice(0, 4)
-        );
-      }
-    } catch (error) {
-    }
-  };
+  }, [id, navigate, t]);
 
   const isProductInCart = isInCart(product?._id);
 

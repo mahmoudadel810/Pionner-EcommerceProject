@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -11,7 +11,6 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useUserStore } from "../stores/useUserStore";
-import { toast } from "react-hot-toast";
 import { Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -53,7 +52,6 @@ const SignUpPage = () => {
         delete newErrors.name;
       }
     }
-    // 
 
     if (name === "email") {
       if (!value.trim()) {
@@ -66,12 +64,11 @@ const SignUpPage = () => {
         delete newErrors.email;
       }
     }
-    // 
 
     if (name === "phone") {
       if (!value.trim()) {
         newErrors.phone = t('signUpPage.errors.phoneRequired');
-      } else if (!/^[0-9\+\(\)\.\s\-,]+$/.test(value)) {
+      } else if (!/^[0-9+().\s\-,]+$/.test(value)) {
         newErrors.phone = t('signUpPage.errors.phoneInvalid');
       } else {
         delete newErrors.phone;
@@ -108,10 +105,6 @@ const SignUpPage = () => {
       }
     }
 
-    console.log(newErrors);
-    console.log(value);
-    
-    
     setErrors(newErrors);
   };
 
@@ -164,7 +157,7 @@ const SignUpPage = () => {
 
     if (!formData.phone.trim()) {
       newErrors.phone = t('signUpPage.errors.phoneRequired');
-    } else if (!/^[0-9\+\(\)\.\s\-,]+$/.test(formData.phone)) {
+    } else if (!/^[0-9+().\s\-,]+$/.test(formData.phone)) {
       newErrors.phone = t('signUpPage.errors.phoneInvalid');
     }
 
@@ -206,7 +199,7 @@ const SignUpPage = () => {
       if (data?.success) {
         navigate("/login");
       }
-    } catch (error) {
+    } catch {
       // Error is handled in the store
     }
   };
@@ -642,7 +635,6 @@ const SignUpPage = () => {
             </p>
           </div>
         </motion.form>
-
 
 
 

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import {
   Filter,
   Grid,
   List,
-  Search,
-  SlidersHorizontal,
   ChevronDown,
 } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
@@ -28,28 +26,11 @@ const ShopPage = () => {
   });
 
   const { products, fetchAllProducts, loading } = useProductStore();
-  const { toggleCart, isInCart } = useCartStore();
+  const { toggleCart } = useCartStore();
   const { toggleWishlist, wishlist } = useWishlistStore();
 
   useEffect(() => {
-    let isMounted = true;
-    const fetchProducts = async () => {
-      try {
-        const result = await fetchAllProducts();
-        if (!isMounted) return;
-
-        if (!result?.success) {
-        }
-      } catch (error) {
-        if (!isMounted) return;
-      }
-    };
-
-    fetchProducts();
-
-    return () => {
-      isMounted = false;
-    };
+    fetchAllProducts();
   }, [fetchAllProducts]);
 
   useEffect(() => {
@@ -60,23 +41,13 @@ const ShopPage = () => {
   }, [searchParams]);
 
   const handleToggleCart = async product => {
-    try {
-      const result = await toggleCart(product);
-      if (!result.success) {
-        toast.error(result.message || t('shop.errors.cartUpdateFailed'));
-      }
-    } catch (error) {
-      // Error is already handled by the result check above
+    const result = await toggleCart(product);
+    if (!result?.success) {
+      toast.error(result?.message || t('shop.errors.cartUpdateFailed'));
     }
   };
 
-  const handleWishlistToggle = async product => {
-    try {
-      await toggleWishlist(product);
-    } catch (error) {
-      // Error is already handled in the store
-    }
-  };
+  const handleWishlistToggle = product => toggleWishlist(product);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -322,7 +293,6 @@ const ShopPage = () => {
                 onAddToCart={handleToggleCart}
                 onWishlistToggle={handleWishlistToggle}
                 isInWishlist={wishlist.some(item => item._id === product._id)}
-                viewMode={viewMode}
               />
             ))}
           </motion.div>

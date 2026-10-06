@@ -12,8 +12,6 @@ export const useProductStore = create(set => ({
   setProducts: products => set({ products }),
 
   createProduct: async productData => {
-    // console.log("user her",productData);
-    
     set({ loading: true, error: null });
     try {
      
@@ -29,7 +27,7 @@ export const useProductStore = create(set => ({
       } else {
         throw new Error("Failed to create product");
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('product.errors.createFailed', 'Failed to create product');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
@@ -56,7 +54,7 @@ export const useProductStore = create(set => ({
         set({ products: [], loading: false });
         return { success: true, data: [] };
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('product.errors.fetchFailed', 'Failed to fetch products');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false, products: [] });
@@ -75,7 +73,7 @@ export const useProductStore = create(set => ({
         set({ products: [], loading: false });
         return { success: true, data: [] };
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('product.errors.fetchFailed', 'Failed to fetch products');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false, products: [] });
@@ -99,7 +97,7 @@ export const useProductStore = create(set => ({
       } else {
         throw new Error("Failed to delete product");
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('product.errors.deleteFailed', 'Failed to delete product');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
@@ -125,7 +123,7 @@ export const useProductStore = create(set => ({
       } else {
         throw new Error("Failed to update product");
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('product.errors.updateFailed', 'Failed to update product');
       toast.error(errorMessage);
       set({ loading: false, error: errorMessage });
@@ -150,7 +148,7 @@ export const useProductStore = create(set => ({
         set({ products: [], loading: false });
         return { success: true, data: [] };
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('product.errors.fetchFeaturedFailed', 'Failed to fetch featured products');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false, products: [] });

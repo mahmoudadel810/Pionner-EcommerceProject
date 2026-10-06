@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader } from "../components/ui/card";
@@ -7,7 +7,7 @@ import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { Skeleton } from "../components/ui/skeleton";
-import { Search, Grid3X3, List, Filter, Package, Star, ShoppingCart, Heart, Eye, X, RefreshCw, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { Search, Grid3X3, List, Star, ShoppingCart, Heart, Eye, X, RefreshCw, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import axios from "../lib/axios";
 import toast from "react-hot-toast";
 import { useCartStore } from "../stores/useCartStore";
@@ -16,6 +16,15 @@ import { useUserStore } from "../stores/useUserStore";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 import { useTranslation } from "react-i18next";
+import { handleImageError } from "../lib/imageFallback";
+
+// The API has no price filter, so the selected range is applied to the returned page.
+const isInPriceRange = (price, range) => {
+  if (!range || range === "all") return true;
+  if (range.endsWith("+")) return price >= Number(range.slice(0, -1));
+  const [min, max] = range.split("-").map(Number);
+  return price >= min && price <= max;
+};
 
 const SearchPage = () => {
   const { t } = useTranslation();
@@ -97,28 +106,31 @@ const SearchPage = () => {
 
       const params = {
         search: searchTerm.trim(),
-        sortBy,
         page: page.toString(),
         limit: itemsPerPage.toString(),
         ...(categoryFilter && categoryFilter !== "all" && { category: categoryFilter }),
-        ...(priceRange && priceRange !== "all" && { priceRange })
       };
+      if (sortBy !== "relevance") {
+        const [field, order] = sortBy.split("-");
+        params.sortBy = field;
+        params.sortOrder = order;
+      }
 
       const queryString = new URLSearchParams(params).toString();
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.SEARCH) + `?${queryString}`);
-      
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_ALL) + `?${queryString}`);
+
       if (response.data.success) {
-        const data = response.data.data;
-        setProducts(data.data || data);
-        
-        // Update pagination info
-        if (data.pagination) {
+        const items = Array.isArray(response.data.data) ? response.data.data : [];
+        setProducts(items.filter((product) => isInPriceRange(product.price, priceRange)));
+
+        const pagination = response.data.pagination;
+        if (pagination) {
           const paginationData = {
-            currentPage: data.pagination.currentPage || page,
-            totalPages: data.pagination.totalPages || 1,
-            totalItems: data.pagination.totalItems || 0,
-            hasNextPage: data.pagination.hasNextPage || false,
-            hasPrevPage: data.pagination.hasPrevPage || false
+            currentPage: pagination.currentPage || page,
+            totalPages: pagination.totalPages || 1,
+            totalItems: pagination.totalCount || 0,
+            hasNextPage: pagination.hasNextPage || false,
+            hasPrevPage: pagination.hasPrevPage || false
           };
           setPaginationInfo(paginationData);
           setCurrentPage(paginationData.currentPage);
@@ -222,7 +234,7 @@ const SearchPage = () => {
       } else {
         toast.error(result.message || t('search.errors.cartUpdateFailed'));
       }
-    } catch (error) {
+    } catch {
       toast.error(t('search.errors.cartUpdateFailed'));
     }
   };
@@ -240,7 +252,7 @@ const SearchPage = () => {
       } else {
         await addToWishlist(product);
       }
-    } catch (error) {
+    } catch {
       toast.error(t('search.errors.wishlistUpdateFailed'));
     }
   };
@@ -276,9 +288,7 @@ const SearchPage = () => {
               alt={product.name}
               loading="lazy"
               className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-              onError={(e) => {
-                e.target.src = "https://via.placeholder.com/400x300?text=Product+Image";
-              }}
+              onError={handleImageError}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             <div className="absolute top-4 right-4 flex gap-2">

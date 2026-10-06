@@ -4,7 +4,6 @@ import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
 import { getTranslation } from "../utils/i18nUtils.js";
 
-// Ensure array safety for state updates
 const toArray = (value) => (Array.isArray(value) ? value : []);
 
 export const useCategoryStore = create((set, get) => ({
@@ -14,10 +13,7 @@ export const useCategoryStore = create((set, get) => ({
 
   setCategories: (categories) => set({ categories }),
 
-  // Create a new category
   createCategory: async (categoryData) => {
-    console.log(categoryData);
-    
     set({ loading: true, error: null });
     try {
       const response = await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.CREATE), categoryData, {
@@ -25,9 +21,7 @@ export const useCategoryStore = create((set, get) => ({
           'Content-Type': 'multipart/form-data',
         },
       });
-      // console.log(response);
-      
-      
+
       if (response.data && response.data.success) {
         set(prevState => ({
           categories: [...toArray(prevState.categories), response.data.data],
@@ -44,53 +38,34 @@ export const useCategoryStore = create((set, get) => ({
         error.message ||
         getTranslation('category.errors.createFailed');
       toast.error(errorMessage);
-      console.log(error);
-      
       set({ loading: false, error: errorMessage });
       return { success: false, message: errorMessage };
     }
   },
 
-  // Fetch all categories
   fetchAllCategories: async () => {
-    const currentState = get();
-    if (currentState.loading) {
-      console.log("⏳ Category fetch already in progress");
+    if (get().loading) {
       return { success: false, message: "Request already in progress" };
     }
-    
+
     set({ loading: true, error: null });
     try {
-      // Add limit parameter to get ALL categories (not just the default 10)
-      // Also add sortBy=order to get them in the correct display order
-      // Note: Backend currently only returns ACTIVE categories (isActive: true)
+      // The API paginates and only returns active categories.
       const apiUrl = buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_ALL) + "?limit=1000&sortBy=order&sortOrder=asc";
-      console.log("🌐 Fetching categories from API:", apiUrl);
       const response = await axios.get(apiUrl);
-      console.log("📡 Category API response:", response.data);
-      
-      if (response.data && response.data.success) {
-        const categories = response.data.data || [];
-        console.log("✅ Setting categories in store:", categories);
-        set({ categories, loading: false });
-        return { success: true, data: categories };
-      } else {
-        console.log("⚠️ API response not successful:", response.data);
-        set({ categories: [], loading: false });
-        return { success: true, data: [] };
-      }
+      const categories = response.data?.success ? toArray(response.data.data) : [];
+      set({ categories, loading: false });
+      return { success: true, data: categories };
     } catch (error) {
-      console.error("❌ Error fetching categories:", error);
       const errorMessage =
-        error.response?.data?.message || 
-        error.response?.data?.error || 
+        error.response?.data?.message ||
+        error.response?.data?.error ||
         getTranslation('category.errors.fetchFailed');
       set({ error: errorMessage, loading: false, categories: [] });
       return { success: false, message: errorMessage };
     }
   },
 
-  // Fetch featured categories
   fetchFeaturedCategories: async () => {
     set({ loading: true, error: null });
     try {
@@ -110,7 +85,6 @@ export const useCategoryStore = create((set, get) => ({
     }
   },
 
-  // Update category
   updateCategory: async (categoryId, categoryData) => {
     set({ loading: true, error: null });
     try {
@@ -147,7 +121,6 @@ export const useCategoryStore = create((set, get) => ({
     }
   },
 
-  // Delete category
   deleteCategory: async (categoryId) => {
     set({ loading: true, error: null });
     try {
@@ -174,7 +147,6 @@ export const useCategoryStore = create((set, get) => ({
     }
   },
 
-  // Toggle category status
   toggleCategoryStatus: async (categoryId) => {
     set({ loading: true, error: null });
     try {
@@ -203,7 +175,6 @@ export const useCategoryStore = create((set, get) => ({
     }
   },
 
-  // Get category by ID
   getCategoryById: async (categoryId) => {
     set({ loading: true, error: null });
     try {
@@ -226,9 +197,7 @@ export const useCategoryStore = create((set, get) => ({
     }
   },
 
-  // Clear error
   clearError: () => set({ error: null }),
 
-  // Clear categories
   clearCategories: () => set({ categories: [], error: null }),
 }));

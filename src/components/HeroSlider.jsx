@@ -1,6 +1,4 @@
-/** @format */
-
-import React, { useState, useEffect, memo, useCallback, useRef } from "react";
+import { useState, useEffect, memo, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft,
@@ -23,7 +21,6 @@ const HeroSlider = memo(() => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState({});
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const intervalRef = useRef(null);
@@ -34,7 +31,6 @@ const HeroSlider = memo(() => {
       title: t('hero.slides.iphone.title'),
       subtitle: t('hero.slides.iphone.subtitle'),
       description: t('hero.slides.iphone.description'),
-      image: "/src/assets/hero/iphone-15-pro.jpg",
       cta: t('hero.slides.iphone.cta'),
       link: "/shop?category=smartphones",
       accent: "from-blue-500 to-purple-600",
@@ -47,8 +43,6 @@ const HeroSlider = memo(() => {
       title: t('hero.slides.gaming.title'),
       subtitle: t('hero.slides.gaming.subtitle'),
       description: t('hero.slides.gaming.description'),
-      image:
-        "/src/assets/hero/gaming-pc.jpg",
       cta: t('hero.slides.gaming.cta'),
       link: "/shop?category=gaming",
       accent: "from-green-500 to-emerald-600",
@@ -61,8 +55,6 @@ const HeroSlider = memo(() => {
       title: t('hero.slides.smartHome.title'),
       subtitle: t('hero.slides.smartHome.subtitle'),
       description: t('hero.slides.smartHome.description'),
-      image:
-        "/src/assets/hero/smart-home.jpg",
       cta: t('hero.slides.smartHome.cta'),
       link: "/shop?category=smart-home",
       accent: "from-orange-500 to-red-600",
@@ -75,8 +67,6 @@ const HeroSlider = memo(() => {
       title: t('hero.slides.audio.title'),
       subtitle: t('hero.slides.audio.subtitle'),
       description: t('hero.slides.audio.description'),
-      image:
-        "/src/assets/hero/headphones.jpg",
       cta: t('hero.slides.audio.cta'),
       link: "/shop?category=audio",
       accent: "from-purple-500 to-pink-600",
@@ -89,8 +79,6 @@ const HeroSlider = memo(() => {
       title: t('hero.slides.workspace.title'),
       subtitle: t('hero.slides.workspace.subtitle'),
       description: t('hero.slides.workspace.description'),
-      image:
-        "/src/assets/hero/workspace.jpg",
       cta: t('hero.slides.workspace.cta'),
       link: "/shop",
       accent: "from-indigo-500 to-blue-600",
@@ -100,21 +88,6 @@ const HeroSlider = memo(() => {
     },
   ];
 
-  // Preload images
-  useEffect(() => {
-    const preloadImages = () => {
-      heroSlides.forEach((slide, index) => {
-        const img = new Image();
-        img.onload = () => {
-          setImageLoaded(prev => ({ ...prev, [index]: true }));
-        };
-        img.src = slide.image;
-      });
-    };
-    preloadImages();
-  }, [heroSlides]);
-
-  // Auto-play functionality with cleanup
   useEffect(() => {
     if (!isPlaying || isHovered) {
       if (intervalRef.current) {
@@ -133,15 +106,6 @@ const HeroSlider = memo(() => {
       }
     };
   }, [isPlaying, isHovered, heroSlides.length]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide(prev => (prev + 1) % heroSlides.length);
@@ -182,9 +146,12 @@ const HeroSlider = memo(() => {
     }
   }, [touchStart, touchEnd, nextSlide, prevSlide]);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = e => {
+      const target = e.target;
+      if (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) {
+        return;
+      }
       if (e.key === "ArrowRight") nextSlide();
       if (e.key === "ArrowLeft") prevSlide();
       if (e.key === " ") {
@@ -219,27 +186,16 @@ const HeroSlider = memo(() => {
           className="absolute inset-0"
         >
           <div className="relative w-full h-full">
-            {imageLoaded[currentSlide] ? (
-              <img
-                src={currentSlideData.image}
-                alt={currentSlideData.title}
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
-              </div>
-            )}
+            <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900" />
 
-            {/* Enhanced Multi-layer Gradient Overlay */}
+            {/* Gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
             <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/40" />
 
             {/* Dynamic accent overlay */}
             <div
-              className={`absolute inset-0 bg-gradient-to-r ${currentSlideData.accent} opacity-10`}
+              className={`absolute inset-0 bg-gradient-to-r ${currentSlideData.accent} opacity-30`}
             />
           </div>
         </motion.div>
@@ -439,7 +395,7 @@ const HeroSlider = memo(() => {
         </motion.button>
       </div>
 
-      {/* Enhanced Progress Bar - Adjusted z-index */}
+      {/* Progress bar */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10 z-30">
         <motion.div
           key={currentSlide}

@@ -15,7 +15,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const { toggleCart, isInCart } = useCartStore();
-  const { toggleWishlist, wishlist, fetchWishlist } = useWishlistStore();
+  const { toggleWishlist, wishlist } = useWishlistStore();
   const { user } = useUserStore();
   const navigate = useNavigate();
 
@@ -31,14 +31,6 @@ const FeaturedProducts = ({ featuredProducts }) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Fetch wishlist when component mounts
-  useEffect(() => {
-    if (user) {
-      fetchWishlist().catch(error => {
-      });
-    }
-  }, [fetchWishlist, user]);
 
   const nextSlide = () => {
     setCurrentIndex(prevIndex =>
@@ -58,7 +50,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
       } else {
         toast.error(result.message || t('common.failedUpdateCart'));
       }
-    } catch (error) {
+    } catch {
       // Error is already handled by the result check above
     }
   };
@@ -74,7 +66,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
       if (!result.success) {
         toast.error(result.message || t('common.failedUpdateWishlist'));
       }
-    } catch (error) {
+    } catch {
       // Error is already handled by the result check above
     }
   };

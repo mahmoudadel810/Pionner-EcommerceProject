@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "./ui/card";
-import { cn } from "../lib/utils";
 import { useTranslation } from "react-i18next";
 
 const CategoryItem = ({ category }) => {

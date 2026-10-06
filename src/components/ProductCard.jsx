@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -14,7 +13,6 @@ const ProductCard = ({
   onAddToCart, 
   onWishlistToggle, 
   isInWishlist: propIsInWishlist,
-  viewMode = "grid" 
 }) => {
   const { t } = useTranslation();
   const { toggleCart, isInCart } = useCartStore();
@@ -42,7 +40,7 @@ const ProductCard = ({
           toast.error(result.message || t('common.failedUpdateCart'));
         }
       }
-    } catch (error) {
+    } catch {
       // Error is already handled in the store or by the result check above
     }
   };

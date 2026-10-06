@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -19,28 +19,25 @@ const ContactPage = () => {
   const navigate = useNavigate();
   const { user } = useUserStore();
   const [formData, setFormData] = useState({
-    name: user?.data?.name || "",
-    email: user?.data?.email || "",
+    name: user?.data?.user?.name || "",
+    email: user?.data?.user?.email || "",
     subject: "",
     message: "",
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
 
   // Update form data when user changes
   useEffect(() => {
-    if (user?.data) {
+    if (user?.data?.user) {
       setFormData(prev => ({
         ...prev,
-        name: user.data.name || "",
-        email: user.data.email || "",
+        name: user.data.user.name || "",
+        email: user.data.user.email || "",
       }));
     }
   }, [user]);
-
-
 
 
 
@@ -144,8 +141,7 @@ const ContactPage = () => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    // Clear previous success message and errors
-    setSuccessMessage("");
+    // Reset errors from the previous attempt
     setErrors({});
 
     // Mark all fields as touched
@@ -197,8 +193,8 @@ const ContactPage = () => {
         
         // Reset form but keep user data if logged in
         setFormData({
-          name: user?.data?.name || "",
-          email: user?.data?.email || "",
+          name: user?.data?.user?.name || "",
+          email: user?.data?.user?.email || "",
           subject: "",
           message: "",
         });
@@ -563,7 +559,6 @@ const ContactPage = () => {
                     </p>
                   )}
                 </div>
-
 
 
                 <motion.button

@@ -21,7 +21,7 @@ export const useWishlistStore = create((set, get) => ({
         set({ wishlist: [], loading: false });
         return { success: true, data: [] };
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('wishlist.errors.fetchFailed', 'Failed to fetch wishlist');
       set({ error: errorMessage, loading: false, wishlist: [] });
       return { success: false, message: errorMessage };
@@ -46,7 +46,7 @@ export const useWishlistStore = create((set, get) => ({
       } else {
         throw new Error("Failed to add product to wishlist");
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('wishlist.errors.addFailed', 'Failed to add product to wishlist');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
@@ -70,7 +70,7 @@ export const useWishlistStore = create((set, get) => ({
       } else {
         throw new Error("Failed to remove product from wishlist");
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('wishlist.errors.removeFailed', 'Failed to remove product from wishlist');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });
@@ -91,7 +91,7 @@ export const useWishlistStore = create((set, get) => ({
       } else {
         throw new Error("Failed to clear wishlist");
       }
-    } catch (error) {
+    } catch {
       const errorMessage = getTranslation('wishlist.errors.clearFailed', 'Failed to clear wishlist');
       toast.error(errorMessage);
       set({ error: errorMessage, loading: false });

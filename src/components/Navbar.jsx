@@ -1,23 +1,12 @@
-/** @format */
-
-import React, { useState, useEffect, memo, useCallback, useRef } from "react";
+import { useState, useEffect, memo, useCallback, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
   NavigationMenuLink,
 } from "./ui/navigation-menu";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Badge } from "./ui/badge";
@@ -38,10 +27,7 @@ import {
   Headphones,
   Tablet,
   LogOut,
-  Settings,
   Package,
-  Bell,
-  Star,
   TrendingUp,
   Shield,
 } from "lucide-react";
@@ -64,7 +50,6 @@ const Navbar = memo(() => {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const userDropdownRef = useRef(null);
 
-  // Close dropdown on outside click
   useEffect(() => {
     if (!showUserDropdown) return;
     function handleClickOutside(event) {
@@ -81,13 +66,10 @@ const Navbar = memo(() => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout, debugAuthState, forceLogout } = useUserStore();
+  const { user, logout } = useUserStore();
   const { cart } = useCartStore();
   const { wishlist } = useWishlistStore();
 
-
-
-  // Handle scroll effect for navbar
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -96,7 +78,7 @@ const Navbar = memo(() => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Handle mobile menu body scroll lock
+  // Lock page scroll while the mobile menu is open.
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -108,7 +90,6 @@ const Navbar = memo(() => {
     };
   }, [isMenuOpen]);
 
-  // Handle escape key to close mobile menu
   useEffect(() => {
     const handleEscape = e => {
       if (e.key === "Escape" && isMenuOpen) {
@@ -168,14 +149,10 @@ const Navbar = memo(() => {
   ];
 
   const handleLogout = useCallback(async () => {
-    try {
-      await logout();
-      navigate("/");
-      // Close mobile menu if open
-      setIsMenuOpen(false);
-      setShowUserDropdown(false);
-    } catch (error) {
-    }
+    await logout();
+    navigate("/");
+    setIsMenuOpen(false);
+    setShowUserDropdown(false);
   }, [logout, navigate]);
 
   const handleSearch = useCallback(
@@ -190,39 +167,31 @@ const Navbar = memo(() => {
     [searchQuery, navigate]
   );
 
+  const suggestionTimeout = useRef(null);
+
+  useEffect(() => () => clearTimeout(suggestionTimeout.current), []);
+
   const handleSearchChange = useCallback(e => {
     const value = e.target.value;
     setSearchQuery(value);
+    clearTimeout(suggestionTimeout.current);
 
-    // Get search suggestions from API
-    if (value.length > 2) {
-      // Debounced API call for suggestions
-      const timeoutId = setTimeout(async () => {
-        try {
-          const url = buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.SEARCH_SUGGESTIONS) + `?search=${encodeURIComponent(value)}&limit=4`;
-          const response = await axios.get(url);
-          if (response.data.success) {
-            const suggestions = response.data.data || [];
-            setSearchSuggestions(suggestions);
-          }
-        } catch (error) {
-          // Fallback to mock suggestions if API fails
-          setSearchSuggestions([
-            { name: `${value} iPhone`, _id: "mock1" },
-            { name: `${value} Samsung`, _id: "mock2" },
-            { name: `${value} laptop`, _id: "mock3" },
-            { name: `${value} headphones`, _id: "mock4" },
-          ]);
-        }
-      }, 300);
-
-      return () => clearTimeout(timeoutId);
-    } else {
+    if (value.length <= 2) {
       setSearchSuggestions([]);
+      return;
     }
+
+    suggestionTimeout.current = setTimeout(async () => {
+      try {
+        const url = buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.SEARCH_SUGGESTIONS) + `?search=${encodeURIComponent(value)}&limit=4`;
+        const response = await axios.get(url);
+        setSearchSuggestions(response.data.success ? response.data.data || [] : []);
+      } catch {
+        setSearchSuggestions([]);
+      }
+    }, 300);
   }, []);
 
-  // Calculate total quantity in cart
   const cartItemCount = cart.reduce(
     (sum, item) => sum + (item.quantity || 1),
     0
@@ -335,25 +304,16 @@ const Navbar = memo(() => {
                   <div className="absolute top-full left-0 rtl:right-0 rtl:left-auto right-0 rtl:left-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50 min-w-[300px]">
                     {searchSuggestions.map((suggestion, index) => (
                       <button
-                        key={index}
+                        key={suggestion._id || index}
                         type="button"
                         onClick={() => {
-                          if (
-                            suggestion._id &&
-                            suggestion._id !== "mock1" &&
-                            suggestion._id !== "mock2" &&
-                            suggestion._id !== "mock3" &&
-                            suggestion._id !== "mock4"
-                          ) {
-                            // Navigate to product details
+                          if (suggestion._id) {
                             navigate(`/product/${suggestion._id}`);
                             setSearchQuery("");
-                            setIsSearchFocused(false);
                           } else {
-                            // For mock suggestions, set as search query
                             setSearchQuery(suggestion.name);
-                            setIsSearchFocused(false);
                           }
+                          setIsSearchFocused(false);
                         }}
                         className="w-full text-left px-6 py-3 hover:bg-gray-50 text-gray-700 transition-colors flex items-center justify-between"
                       >

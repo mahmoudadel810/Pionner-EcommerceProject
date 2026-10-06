@@ -15,6 +15,7 @@ import axios from "../lib/axios";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 import { useTranslation } from "react-i18next";
+import { formatCurrency, formatDate } from "../lib/currency";
 
 const ProfilePage = () => {
   const { t } = useTranslation();
@@ -206,7 +207,7 @@ const ProfilePage = () => {
                     {avatarPreview ? (
                       <img
                         src={avatarPreview}
-                        alt="Avatar"
+                        alt={t('nav.profile')}
                         className="w-16 h-16 rounded-full object-cover border-2 border-blue-200 shadow"
                       />
                     ) : (
@@ -233,7 +234,7 @@ const ProfilePage = () => {
                   <div className="flex items-center space-x-3">
                     <Calendar size={20} className="text-muted-foreground" />
                     <span className="text-foreground">
-                      {t('profile.memberSince')} {user.data?.user?.createdAt ? new Date(user.data.user.createdAt).toLocaleDateString() : t('profile.unknown')}
+                      {t('profile.memberSince')} {user.data?.user?.createdAt ? formatDate(user.data.user.createdAt) : t('profile.unknown')}
                     </span>
                   </div>
                   <div className="flex items-center space-x-3">
@@ -415,7 +416,7 @@ const ProfilePage = () => {
                               {t('profile.orderNumber')} #{order._id ? order._id.slice(-8) : t('profile.na')}
                             </p>
                             <p className="text-sm text-muted-foreground">
-                              {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : t('profile.unknownDate')}
+                              {order.createdAt ? formatDate(order.createdAt) : t('profile.unknownDate')}
                             </p>
                           </div>
                           <span
@@ -430,7 +431,7 @@ const ProfilePage = () => {
                               {order.products ? order.products.length : 0} {t('profile.items')}
                             </p>
                             <p className="font-medium text-foreground">
-                              ${order.totalAmount ? order.totalAmount.toFixed(2) : "0.00"}
+                              {formatCurrency(order.totalAmount)}
                             </p>
                             <p className="text-xs text-muted-foreground">
                               {t('profile.payment')}: {order.paymentStatus || t('profile.na')}
@@ -449,7 +450,7 @@ const ProfilePage = () => {
                           {isCancellable && (
                             <button
                               onClick={handleCancelOrder}
-                              className="ml-2 px-3 py-1 rounded bg-red-100 text-red-700 text-xs font-semibold hover:bg-red-200 transition-colors"
+                              className="ms-2 px-3 py-1 rounded bg-red-100 text-red-700 text-xs font-semibold hover:bg-red-200 transition-colors"
                             >
                               {t('profile.cancelOrder')}
                             </button>

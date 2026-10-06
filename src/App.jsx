@@ -164,7 +164,7 @@ const AppContent = () => {
         containerClassName=""
         containerStyle={{
           bottom: "20px",
-          right: "20px",
+          insetInline: "20px",
         }}
         toastOptions={{
           duration: 4000,

@@ -88,7 +88,7 @@ const ForgetPasswordPage = () => {
               to="/login"
               className="inline-flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-300 mb-6"
             >
-              <ArrowLeft size={20} />
+              <ArrowLeft className="rtl:rotate-180" size={20} />
               <span>{t('auth.backToLogin')}</span>
             </Link>
 
@@ -117,7 +117,7 @@ const ForgetPasswordPage = () => {
               <div className="relative">
                 <Mail
                   size={20}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                  className="absolute start-3 top-1/2 -translate-y-1/2 text-muted-foreground"
                 />
                 <input
                   type="email"
@@ -125,7 +125,7 @@ const ForgetPasswordPage = () => {
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
+                  className="w-full ps-10 pe-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
                   placeholder={t('auth.forgotPassword.emailPlaceholder')}
                 />
               </div>

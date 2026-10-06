@@ -31,7 +31,7 @@ const LanguageSwitcher = () => {
       code: 'ar',
       name: 'العربية',
       flag: '🇸🇦',
-      country: 'Saudi Arabia'
+      country: 'المملكة العربية السعودية'
     },
     {
       code: 'en',
@@ -94,7 +94,7 @@ const LanguageSwitcher = () => {
               <span className="text-xs text-gray-500">{language.country}</span>
             </div>
             {currentLang === language.code && (
-              <div className="ml-auto rtl:mr-auto rtl:ml-0 w-2 h-2 bg-blue-600 rounded-full"></div>
+              <div className="ms-auto w-2 h-2 bg-blue-600 rounded-full"></div>
             )}
           </DropdownMenuItem>
         ))}

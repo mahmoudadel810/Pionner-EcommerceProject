@@ -152,7 +152,7 @@ const LoginPage = () => {
     const hasError = errors[fieldName] && touched[fieldName];
     const hasValue = formData[fieldName] && formData[fieldName].length > 0;
 
-    return `w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 ${
+    return `w-full ps-10 pe-4 py-3 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-300 ${
       hasError
         ? "border-red-500 focus:border-red-500 focus:ring-red-500/50 bg-red-50"
         : hasValue
@@ -219,7 +219,7 @@ const LoginPage = () => {
               </label>
               <div className="relative">
                 <Mail
-                  className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${
+                  className={`absolute start-3 top-1/2 transform -translate-y-1/2 ${
                     errors.email && touched.email
                       ? "text-red-500"
                       : "text-muted-foreground"
@@ -241,7 +241,7 @@ const LoginPage = () => {
                 />
                 {errors.email && touched.email && (
                   <AlertCircle
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red-500"
+                    className="absolute end-3 top-1/2 transform -translate-y-1/2 text-red-500"
                     size={20}
                   />
                 )}
@@ -252,7 +252,7 @@ const LoginPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-1 text-sm text-red-500 flex items-center"
                 >
-                  <AlertCircle size={14} className="mr-1" />
+                  <AlertCircle size={14} className="me-1" />
                   {errors.email}
                 </motion.p>
               )}
@@ -268,7 +268,7 @@ const LoginPage = () => {
               </label>
               <div className="relative">
                 <Lock
-                  className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${
+                  className={`absolute start-3 top-1/2 transform -translate-y-1/2 ${
                     errors.password && touched.password
                       ? "text-red-500"
                       : "text-muted-foreground"
@@ -292,7 +292,7 @@ const LoginPage = () => {
                   placeholder={t('auth.placeholders.password')}
                   maxLength={128}
                 />
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+                <div className="absolute end-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
                   {errors.password && touched.password && (
                     <AlertCircle className="text-red-500" size={20} />
                   )}
@@ -311,7 +311,7 @@ const LoginPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-1 text-sm text-red-500 flex items-center"
                 >
-                  <AlertCircle size={14} className="mr-1" />
+                  <AlertCircle size={14} className="me-1" />
                   {errors.password}
                 </motion.p>
               )}
@@ -381,13 +381,13 @@ const LoginPage = () => {
           >
             {loading ? (
               <div className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white me-2"></div>
                 {t('auth.login.signingIn')}
               </div>
             ) : (
               <div className="flex items-center justify-center">
                 {t('auth.login.signIn')}
-                <ArrowRight size={20} className="ml-2" />
+                <ArrowRight size={20} className="rtl:rotate-180 ms-2" />
               </div>
             )}
           </motion.button>
@@ -412,7 +412,7 @@ const LoginPage = () => {
               type="button"
               className="w-full flex items-center justify-center px-4 py-2 border border-border rounded-lg hover:bg-secondary transition-colors duration-300"
             >
-              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 me-2" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -440,7 +440,7 @@ const LoginPage = () => {
               className="w-full flex items-center justify-center px-4 py-2 border border-border rounded-lg hover:bg-secondary transition-colors duration-300"
             >
               <svg
-                className="w-5 h-5 mr-2"
+                className="w-5 h-5 me-2"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >

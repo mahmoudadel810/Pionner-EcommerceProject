@@ -22,7 +22,7 @@ const CategoryItem = ({ category }) => {
             />
 
             {/* Content */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+            <div className="absolute bottom-0 start-0 end-0 p-6 z-20">
               <h3 className="text-white text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
                 {category.name}
               </h3>

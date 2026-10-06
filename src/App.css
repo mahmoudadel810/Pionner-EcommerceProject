@@ -7,47 +7,26 @@
   --font-english: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Apply appropriate font based on language direction */
-[dir="rtl"] {
-  font-family: var(--font-arabic);
-}
+/* Font and line height per language. Kept in the base layer so Tailwind
+   utilities (text-center, leading-*, font-mono) still apply; text alignment
+   follows the document direction on its own. */
+@layer base {
+  html[dir="rtl"] {
+    font-family: var(--font-arabic);
+    line-height: 1.7;
+  }
 
-[dir="ltr"] {
-  font-family: var(--font-english);
-}
+  html[dir="ltr"] {
+    font-family: var(--font-english);
+  }
 
-/* Ensure proper Arabic text rendering */
-[dir="rtl"] * {
-  font-family: var(--font-arabic);
-  text-align: right;
-  line-height: 1.6;
-  letter-spacing: 0.01em;
-}
+  [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6 {
+    line-height: 1.4;
+  }
 
-[dir="ltr"] * {
-  font-family: var(--font-english);
-  text-align: left;
-  line-height: 1.5;
-  letter-spacing: -0.01em;
-}
-
-/* Improve Arabic text readability */
-[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] h5, [dir="rtl"] h6 {
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-[dir="rtl"] p, [dir="rtl"] span, [dir="rtl"] div {
-  line-height: 1.7;
-}
-
-/* Fix button and input text alignment */
-[dir="rtl"] button, [dir="rtl"] input, [dir="rtl"] textarea, [dir="rtl"] select {
-  text-align: right;
-}
-
-[dir="ltr"] button, [dir="ltr"] input, [dir="ltr"] textarea, [dir="ltr"] select {
-  text-align: left;
+  button, input, textarea, select {
+    font-family: inherit;
+  }
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -156,6 +135,39 @@
   }
 }
 
+/* Primary and secondary buttons used by the auth and cart pages */
+@layer components {
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    font-weight: 600;
+    transition: background-color 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: color-mix(in oklch, var(--primary) 88%, black);
+    box-shadow: 0 8px 20px -8px color-mix(in oklch, var(--primary) 60%, transparent);
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: background-color 0.2s;
+  }
+  .btn-secondary:hover {
+    background-color: color-mix(in oklch, var(--secondary) 90%, black);
+  }
+}
+
 /* Custom Toast Animations */
 @layer components {
   /* Toast container animations */
@@ -243,7 +255,7 @@
   /* Force toast positioning - override any inline styles */
   .react-hot-toast__toast-container {
     bottom: 20px !important;
-    right: 20px !important;
+    inset-inline-end: 20px !important;
     top: auto !important;
     position: fixed !important;
     z-index: 9999 !important;
@@ -252,7 +264,7 @@
   /* Additional override for the container */
   div[data-sonner-toaster] {
     bottom: 20px !important;
-    right: 20px !important;
+    inset-inline-end: 20px !important;
     top: auto !important;
   }
 
@@ -272,17 +284,17 @@
 
   /* Success toast specific styles */
   .react-hot-toast__toast--success {
-    border-left: 4px solid #22c55e;
+    border-inline-start: 4px solid #22c55e;
   }
 
   /* Error toast specific styles */
   .react-hot-toast__toast--error {
-    border-left: 4px solid #ef4444;
+    border-inline-start: 4px solid #ef4444;
   }
 
   /* Loading toast specific styles */
   .react-hot-toast__toast--loading {
-    border-left: 4px solid #3b82f6;
+    border-inline-start: 4px solid #3b82f6;
   }
 }
 

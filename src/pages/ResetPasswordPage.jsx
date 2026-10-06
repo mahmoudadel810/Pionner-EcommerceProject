@@ -131,7 +131,7 @@ const ResetPasswordPage = () => {
               to="/login"
               className="inline-flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-300 mb-6"
             >
-              <ArrowLeft size={20} />
+              <ArrowLeft className="rtl:rotate-180" size={20} />
               <span>{t('auth.backToLogin')}</span>
             </Link>
 
@@ -199,7 +199,7 @@ const ResetPasswordPage = () => {
                   onChange={handleInputChange}
                   required
                   minLength={8}
-                  className={`w-full pr-10 pl-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 ${
+                  className={`w-full pe-10 ps-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300 ${
                     errors.newPassword
                       ? "border-red-500 focus:border-red-500"
                       : "border-border focus:border-primary"
@@ -209,7 +209,7 @@ const ResetPasswordPage = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className={`absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-300  ${
+                  className={`absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-300  ${
                     errors.newPassword
                       ? "border-red-500 focus:border-red-500"
                       : "border-border focus:border-primary"
@@ -245,13 +245,13 @@ const ResetPasswordPage = () => {
                   onChange={handleInputChange}
                   required
                   minLength={8}
-                  className="w-full pr-10 pl-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
+                  className="w-full pe-10 ps-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300"
                   placeholder={t('auth.confirmPasswordPlaceholder')}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-300"
+                  className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors duration-300"
                 >
                   {showConfirmPassword ? (
                     <EyeOff size={20} />

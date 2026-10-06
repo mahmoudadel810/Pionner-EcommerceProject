@@ -19,6 +19,8 @@ import axios from "../lib/axios";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 import { useTranslation } from "react-i18next";
+import { formatCurrency } from "../lib/currency";
+import { categoryLabel } from "../lib/categories";
 
 const CartPage = () => {
   const { t } = useTranslation();
@@ -160,7 +162,7 @@ const CartPage = () => {
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors"
               >
-                <ArrowLeft size={20} />
+                <ArrowLeft className="rtl:rotate-180" size={20} />
                 <span>{t('cart.continueShopping')}</span>
               </motion.button>
             </Link>
@@ -202,19 +204,19 @@ const CartPage = () => {
                     <div className="flex-1 min-w-0">
                       <Link to={`/product/${item._id}`}>
                         <h3 className="font-semibold text-lg hover:text-primary transition-colors">
-                          {item.name}
+                          <bdi>{item.name}</bdi>
                         </h3>
                       </Link>
                       <p className="text-muted-foreground text-sm mb-2">
-                        {item.category}
+                        {categoryLabel(t, item.category)}
                       </p>
                       <div className="flex items-center space-x-4">
                         <span className="text-lg font-bold text-primary">
-                          ${item.price}
+                          {formatCurrency(item.price)}
                         </span>
                         {item.originalPrice > item.price && (
                           <span className="text-sm text-muted-foreground line-through">
-                            ${item.originalPrice}
+                            {formatCurrency(item.originalPrice)}
                           </span>
                         )}
                       </div>
@@ -288,7 +290,7 @@ const CartPage = () => {
 
               <div className="mb-6">
                 <h3 className="font-semibold mb-3">{t('cart.haveCoupon')}</h3>
-                <div className="flex space-x-2 rtl:space-x-reverse">
+                <div className="flex space-x-2">
                   <input
                     type="text"
                     value={couponCode}
@@ -335,12 +337,12 @@ const CartPage = () => {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span>{t('cart.subtotal')}</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{formatCurrency(subtotal)}</span>
                 </div>
                 {coupon && isCouponApplied && (
                   <div className="flex justify-between text-green-600">
                     <span>{t('cart.discount')}</span>
-                    <span>-${(subtotal - total).toFixed(2)}</span>
+                    <span>-{formatCurrency(subtotal - total)}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
@@ -350,7 +352,7 @@ const CartPage = () => {
                 <hr className="border-border" />
                 <div className="flex justify-between text-lg font-bold">
                   <span>{t('cart.total')}</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>{formatCurrency(total)}</span>
                 </div>
               </div>
 

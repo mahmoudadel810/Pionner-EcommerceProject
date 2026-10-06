@@ -6,6 +6,8 @@ import { useCartStore } from "../stores/useCartStore";
 import { useWishlistStore } from "../stores/useWishlistStore";
 import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
+import { formatCurrency } from "../lib/currency";
+import { categoryLabel } from "../lib/categories";
 
 const ProductCard = ({ 
   product, 
@@ -21,6 +23,9 @@ const ProductCard = ({
 
   const isInWishlist = propIsInWishlist !== undefined ? propIsInWishlist : wishlist.some(item => item._id === product._id);
   const isProductInCart = isInCart(product._id);
+  const discountPercent = product.originalPrice > product.price
+    ? Math.round((1 - product.price / product.originalPrice) * 100)
+    : 0;
 
   const handleToggleCart = async e => {
     e.preventDefault();
@@ -69,7 +74,7 @@ const ProductCard = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      transition={{ duration: 0.6, delay: Math.min(index, 8) * 0.05 }}
       whileHover={{ y: -5 }}
       className="group bg-card rounded-2xl shadow-lg border border-border overflow-hidden"
     >
@@ -84,7 +89,7 @@ const ProductCard = ({
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
           {/* Action Buttons */}
-          <div className="absolute top-4 right-4 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute top-4 end-4 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -118,50 +123,46 @@ const ProductCard = ({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2 rtl:space-x-reverse"
+              className="bg-primary text-white px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
             >
               <Eye size={16} />
               <span>{t('product.quick_view')}</span>
             </motion.button>
           </div>
 
-          {/* Discount Badge */}
-          {product.discount && (
-            <div className="absolute top-4 left-4">
+          {/* Badges */}
+          <div className="absolute top-4 start-4 flex flex-col items-start gap-2">
+            {discountPercent > 0 && (
               <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                -{product.discount}%
+                <bdi>-{discountPercent}%</bdi>
               </span>
-            </div>
-          )}
-
-          {/* Featured Badge */}
-          {product.isFeatured && (
-            <div className="absolute top-4 left-4">
+            )}
+            {product.isFeatured && (
               <span className="bg-primary text-white px-2 py-1 rounded-full text-xs font-medium">
                 {t('featured.featured_badge')}
               </span>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Product Info */}
         <div className="p-4">
           <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300">
-            {product.name}
+            <bdi>{product.name}</bdi>
           </h3>
           <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-            {product.description}
+            <bdi>{product.description}</bdi>
           </p>
 
           {/* Rating */}
-          <div className="flex items-center space-x-2 rtl:space-x-reverse mb-3">
-            <div className="flex items-center space-x-1 rtl:space-x-reverse">
+          <div className="flex items-center space-x-2 mb-3">
+            <div className="flex items-center space-x-1">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
                   size={16}
                   className={
-                    i < (product.rating || 0)
+                    i < Math.round(product.averageRating || 0)
                       ? "text-yellow-400 fill-current"
                       : "text-gray-300"
                   }
@@ -169,27 +170,26 @@ const ProductCard = ({
               ))}
             </div>
             <span className="text-xs text-muted-foreground">
-              ({product.reviews?.length || 0})
+              ({product.reviewCount || 0})
             </span>
           </div>
 
           {/* Price and Actions */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 rtl:space-x-reverse">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex flex-wrap items-baseline gap-x-2">
               <span className="text-2xl font-bold text-primary">
-                {product.price} SR
+                {formatCurrency(product.price)}
               </span>
-              {product.originalPrice &&
-                product.originalPrice > product.price && (
+              {discountPercent > 0 && (
                   <span className="text-muted-foreground line-through">
-                    {product.originalPrice} SR
+                    {formatCurrency(product.originalPrice)}
                   </span>
                 )}
             </div>
 
             {/* Category */}
-            <span className="text-xs text-muted-foreground bg-secondary px-2 py-1 rounded-full">
-              {product.category}
+            <span className="text-xs text-muted-foreground bg-secondary px-2 py-1 rounded-full whitespace-nowrap">
+              {categoryLabel(t, product.category)}
             </span>
           </div>
 
@@ -198,7 +198,7 @@ const ProductCard = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleToggleCart}
-            className={`w-full mt-3 py-2 px-4 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center space-x-2 rtl:space-x-reverse ${
+            className={`w-full mt-3 py-2 px-4 rounded-lg font-medium transition-colors duration-300 flex items-center justify-center space-x-2 ${
               isProductInCart
                 ? "bg-red-500 text-white hover:bg-red-600"
                 : "bg-primary text-white hover:bg-primary/90"

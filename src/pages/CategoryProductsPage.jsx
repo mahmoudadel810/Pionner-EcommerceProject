@@ -17,6 +17,8 @@ import { useUserStore } from "../stores/useUserStore";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 import { handleImageError } from "../lib/imageFallback";
+import { formatCurrency } from "../lib/currency";
+import { categoryLabel } from "../lib/categories";
 
 const CategoryProductsPage = () => {
   const { t } = useTranslation();
@@ -161,7 +163,7 @@ const CategoryProductsPage = () => {
                   onError={handleImageError}
                 />
               </Link>
-              <div className="absolute top-2 right-2">
+              <div className="absolute top-2 end-2">
                 <Button
                   size="sm"
                   variant="ghost"
@@ -177,7 +179,7 @@ const CategoryProductsPage = () => {
                 </Button>
               </div>
               {product.isFeatured && (
-                <div className="absolute top-2 left-2">
+                <div className="absolute top-2 start-2">
                   <Badge variant="destructive" className="text-xs">
                     {t('categoryProducts.badges.featured')}
                   </Badge>
@@ -188,29 +190,29 @@ const CategoryProductsPage = () => {
           <CardContent className="p-4">
             <Link to={`/product/${product._id}`}>
               <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                {product.name}
+                <bdi>{product.name}</bdi>
               </h3>
             </Link>
             
             {/* Category Badge */}
             <div className="mb-2">
               <Badge variant="outline" className="text-xs">
-                {product.categoryId?.name || product.category}
+                {categoryLabel(t, product.categoryId?.name || product.category)}
               </Badge>
             </div>
 
             <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
-              {product.description}
+              <bdi>{product.description}</bdi>
             </p>
 
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span className="text-sm font-medium">4.5</span>
-                <span className="text-xs text-muted-foreground">(24)</span>
+                <span className="text-sm font-medium">{(product.averageRating || 0).toFixed(1)}</span>
+                <span className="text-xs text-muted-foreground">({product.reviewCount || 0})</span>
               </div>
               <span className="text-lg font-bold text-primary">
-                ${product.price.toFixed(2)}
+                {formatCurrency(product.price)}
               </span>
             </div>
 
@@ -226,7 +228,7 @@ const CategoryProductsPage = () => {
               }`}
               size="sm"
             >
-              <ShoppingCart className="h-4 w-4 mr-2" />
+              <ShoppingCart className="h-4 w-4 me-2" />
               {isInCart(product._id) ? t('categoryProducts.buttons.removeFromCart') : t('categoryProducts.buttons.addToCart')}
             </Button>
           </CardContent>
@@ -251,7 +253,7 @@ const CategoryProductsPage = () => {
                   onError={handleImageError}
                 />
                 {product.isFeatured && (
-                  <Badge variant="destructive" className="absolute top-2 left-2 text-xs">
+                  <Badge variant="destructive" className="absolute top-2 start-2 text-xs">
                     {t('categoryProducts.badges.featured')}
                   </Badge>
                 )}
@@ -262,17 +264,17 @@ const CategoryProductsPage = () => {
                   <div className="flex-1">
                     <Link to={`/product/${product._id}`}>
                       <h3 className="font-semibold text-lg mb-1 group-hover:text-primary transition-colors">
-                        {product.name}
+                        <bdi>{product.name}</bdi>
                       </h3>
                     </Link>
                     <div className="flex items-center gap-2 mb-2">
                       <Badge variant="outline" className="text-xs">
-                        {product.categoryId?.name || product.category}
+                        {categoryLabel(t, product.categoryId?.name || product.category)}
                       </Badge>
                       <div className="flex items-center gap-1">
                         <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs font-medium">4.5</span>
-                        <span className="text-xs text-muted-foreground">(24)</span>
+                        <span className="text-xs font-medium">{(product.averageRating || 0).toFixed(1)}</span>
+                        <span className="text-xs text-muted-foreground">({product.reviewCount || 0})</span>
                       </div>
                     </div>
                   </div>
@@ -292,12 +294,12 @@ const CategoryProductsPage = () => {
                 </div>
                 
                 <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
-                  {product.description}
+                  <bdi>{product.description}</bdi>
                 </p>
                 
                 <div className="flex items-center justify-between">
                   <span className="text-xl font-bold text-primary">
-                    ${product.price.toFixed(2)}
+                    {formatCurrency(product.price)}
                   </span>
                   <Button
                     onClick={(e) => {
@@ -307,7 +309,7 @@ const CategoryProductsPage = () => {
                     className={isInCart(product._id) ? "bg-red-500 hover:bg-red-600" : ""}
                     size="sm"
                   >
-                    <ShoppingCart className="h-4 w-4 mr-2" />
+                    <ShoppingCart className="h-4 w-4 me-2" />
                     {isInCart(product._id) ? t('categoryProducts.buttons.removeFromCart') : t('categoryProducts.buttons.addToCart')}
                   </Button>
                 </div>
@@ -365,7 +367,7 @@ const CategoryProductsPage = () => {
         <div className="flex items-center gap-4 mb-4">
           <Link to="/categories">
             <Button variant="ghost" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowLeft className="rtl:rotate-180 h-4 w-4 me-2" />
               {t('categoryProducts.navigation.backToCategories')}
             </Button>
           </Link>
@@ -382,8 +384,8 @@ const CategoryProductsPage = () => {
               />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">{category.name}</h1>
-              <p className="text-muted-foreground">{category.description}</p>
+              <h1 className="text-3xl font-bold">{categoryLabel(t, category.name)}</h1>
+              <p className="text-muted-foreground"><bdi>{category.description}</bdi></p>
             </div>
           </div>
         )}
@@ -394,12 +396,12 @@ const CategoryProductsPage = () => {
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Search */}
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder={t('categoryProducts.search.placeholder')}
               value={searchQuery}
               onChange={handleSearch}
-              className="pl-10"
+              className="ps-10"
             />
           </div>
 
@@ -424,7 +426,7 @@ const CategoryProductsPage = () => {
               variant={viewMode === "grid" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("grid")}
-              className="rounded-r-none"
+              className="rounded-e-none"
             >
               <Grid3X3 className="h-4 w-4" />
             </Button>
@@ -432,7 +434,7 @@ const CategoryProductsPage = () => {
               variant={viewMode === "list" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("list")}
-              className="rounded-l-none"
+              className="rounded-s-none"
             >
               <List className="h-4 w-4" />
             </Button>
@@ -526,7 +528,7 @@ const CategoryProductsPage = () => {
       {/* Results Count */}
       {!loading && products.length > 0 && (
         <div className="mt-8 text-center text-sm text-muted-foreground">
-          {t('categoryProducts.results.showing', { count: products.length, category: category?.name })}
+          {t('categoryProducts.results.showing', { count: products.length, category: categoryLabel(t, category?.name) })}
         </div>
       )}
     </div>

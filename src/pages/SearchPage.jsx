@@ -17,6 +17,8 @@ import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 import { useTranslation } from "react-i18next";
 import { handleImageError } from "../lib/imageFallback";
+import { formatCurrency } from "../lib/currency";
+import { categoryLabel } from "../lib/categories";
 
 // The API has no price filter, so the selected range is applied to the returned page.
 const isInPriceRange = (price, range) => {
@@ -291,7 +293,7 @@ const SearchPage = () => {
               onError={handleImageError}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            <div className="absolute top-4 right-4 flex gap-2">
+            <div className="absolute top-4 end-4 flex gap-2">
               <Button
                 variant="ghost"
                 size="sm"
@@ -318,34 +320,36 @@ const SearchPage = () => {
                 <Eye size={16} />
               </Button>
             </div>
-            <div className="absolute bottom-4 left-4 right-4">
+            <div className="absolute bottom-4 start-4 end-4">
               <h3 className="text-white font-bold text-lg mb-2 line-clamp-2">
-                {product.name}
+                <bdi>{product.name}</bdi>
               </h3>
               <div className="flex items-center gap-2">
                 <Badge variant="secondary" className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
-                  ${product.price}
+                  {formatCurrency(product.price)}
                 </Badge>
-                <div className="flex items-center gap-1">
-                  <Star size={14} className="text-yellow-400 fill-yellow-400" />
-                  <span className="text-white text-sm">{product.rating || 4.5}</span>
-                </div>
+                {product.reviewCount > 0 && (
+                  <div className="flex items-center gap-1">
+                    <Star size={14} className="text-yellow-400 fill-yellow-400" />
+                    <span className="text-white text-sm">{product.averageRating.toFixed(1)}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </CardHeader>
         <CardContent className="p-6">
           <p className="text-gray-600 text-sm line-clamp-2 mb-4 leading-relaxed">
-            {product.description}
+            <bdi>{product.description}</bdi>
           </p>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Badge variant="outline" className="text-xs">
-                {product.category}
+                {categoryLabel(t, product.category)}
               </Badge>
-              {product.featured && (
+              {product.isFeatured && (
                 <Badge variant="destructive" className="text-xs bg-gradient-to-r from-red-500 to-pink-500">
-                  Featured
+                  {t('featured.featured_badge')}
                 </Badge>
               )}
             </div>
@@ -360,13 +364,13 @@ const SearchPage = () => {
             >
               {isInCart(product._id) ? (
                 <>
-                  <ShoppingCart size={16} className="mr-1" />
-                  Remove
+                  <ShoppingCart size={16} className="me-1" />
+                  {t('home.remove_from_cart')}
                 </>
               ) : (
                 <>
-                  <ShoppingCart size={16} className="mr-1" />
-                  Add to Cart
+                  <ShoppingCart size={16} className="me-1" />
+                  {t('home.add_to_cart')}
                 </>
               )}
             </Button>
@@ -406,7 +410,7 @@ const SearchPage = () => {
               <Search size={32} className="text-white" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Search Error
+              {t('search.errorTitle')}
             </h1>
             <p className="text-gray-600 mb-8">{error}</p>
             <Button 
@@ -432,8 +436,8 @@ const SearchPage = () => {
       >
         {/* Background Elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 start-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 end-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-400/10 rounded-full blur-3xl"></div>
         </div>
         
@@ -454,7 +458,7 @@ const SearchPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-4xl lg:text-6xl font-bold text-gray-900 mb-4"
             >
-              {t('search.title')} <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{t('search.results')}</span>
+              {t('search.heroTitle')} <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">{t('search.heroHighlight')}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -473,13 +477,13 @@ const SearchPage = () => {
               className="max-w-2xl mx-auto"
             >
               <form onSubmit={handleSearch} className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Search className="absolute start-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <Input
                   type="text"
                   placeholder={t('search.placeholder')}
                   value={searchQuery}
                   onChange={handleSearchChange}
-                  className="w-full pl-12 pr-12 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-lg"
+                  className="w-full ps-12 pe-12 py-4 bg-white border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-lg"
                 />
                 {searchQuery && (
                   <Button
@@ -487,7 +491,7 @@ const SearchPage = () => {
                     variant="ghost"
                     size="sm"
                     onClick={clearSearch}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-10 w-10 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-all duration-200"
+                    className="absolute end-2 top-1/2 transform -translate-y-1/2 h-10 w-10 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-all duration-200"
                   >
                     <X className="h-5 w-5" />
                   </Button>
@@ -564,7 +568,7 @@ const SearchPage = () => {
                         variant={viewMode === "grid" ? "default" : "ghost"}
                         size="sm"
                         onClick={() => setViewMode("grid")}
-                        className="rounded-r-none bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
+                        className="rounded-e-none bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
                       >
                         <Grid3X3 className="h-4 w-4" />
                       </Button>
@@ -572,7 +576,7 @@ const SearchPage = () => {
                         variant={viewMode === "list" ? "default" : "ghost"}
                         size="sm"
                         onClick={() => setViewMode("list")}
-                        className="rounded-l-none bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
+                        className="rounded-s-none bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
                       >
                         <List className="h-4 w-4" />
                       </Button>
@@ -580,7 +584,7 @@ const SearchPage = () => {
 
                     {/* Items per page */}
                     <Select value={itemsPerPage.toString()} onValueChange={handleItemsPerPageChange}>
-                      <SelectTrigger className="w-28 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300">
+                      <SelectTrigger className="w-36 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300">
                         <SelectValue placeholder={t('search.filters.perPage')} />
                       </SelectTrigger>
                       <SelectContent>
@@ -599,7 +603,7 @@ const SearchPage = () => {
                       disabled={loading}
                       className="px-4 py-3 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-300"
                     >
-                      <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`h-4 w-4 me-2 ${loading ? 'animate-spin' : ''}`} />
                       {t('search.filters.refresh')}
                     </Button>
                   </div>
@@ -710,7 +714,7 @@ const SearchPage = () => {
                         disabled={!paginationInfo.hasPrevPage || loading}
                         className="rounded-xl px-3 py-2 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200"
                       >
-                        <ChevronLeft className="h-4 w-4" />
+                        <ChevronLeft className="rtl:rotate-180 h-4 w-4" />
                       </Button>
 
                       {/* Page Numbers */}
@@ -754,7 +758,7 @@ const SearchPage = () => {
                         disabled={!paginationInfo.hasNextPage || loading}
                         className="rounded-xl px-3 py-2 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200"
                       >
-                        <ChevronRight className="h-4 w-4" />
+                        <ChevronRight className="rtl:rotate-180 h-4 w-4" />
                       </Button>
 
                       {/* Last Page */}

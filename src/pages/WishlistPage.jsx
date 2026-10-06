@@ -6,6 +6,7 @@ import { useWishlistStore } from "../stores/useWishlistStore";
 import { useCartStore } from "../stores/useCartStore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { formatCurrency } from "../lib/currency";
 
 const WishlistPage = () => {
   const { t } = useTranslation();
@@ -90,7 +91,7 @@ const WishlistPage = () => {
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   {/* Action Buttons */}
-                  <div className="absolute top-4 right-4 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-4 end-4 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
@@ -113,29 +114,24 @@ const WishlistPage = () => {
                 {/* Product Info */}
                 <div className="p-4">
                   <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
-                    {product.name}
+                    <bdi>{product.name}</bdi>
                   </h3>
                   <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-                    {product.description}
+                    <bdi>{product.description}</bdi>
                   </p>
 
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2">
                       <span className="text-2xl font-bold text-primary">
-                        ${product.price}
+                        {formatCurrency(product.price)}
                       </span>
                       {product.originalPrice &&
                         product.originalPrice > product.price && (
                           <span className="text-muted-foreground line-through">
-                            ${product.originalPrice}
+                            {formatCurrency(product.originalPrice)}
                           </span>
                         )}
                     </div>
-                    {product.discount && (
-                      <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
-                        -{product.discount}%
-                      </span>
-                    )}
                   </div>
 
                   {/* Add to Cart Button */}

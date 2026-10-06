@@ -13,6 +13,7 @@ import { useWishlistStore } from "../stores/useWishlistStore";
 import ProductCard from "../components/ProductCard";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { STORE_CATEGORIES, categoryLabel, categorySlug } from "../lib/categories";
 
 const ShopPage = () => {
   const { t } = useTranslation();
@@ -21,7 +22,7 @@ const ShopPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     category: searchParams.get("category") || "",
-    priceRange: [0, 1000],
+    priceRange: ["", ""],
     sortBy: "newest",
   });
 
@@ -34,10 +35,7 @@ const ShopPage = () => {
   }, [fetchAllProducts]);
 
   useEffect(() => {
-    const category = searchParams.get("category");
-    if (category) {
-      setFilters(prev => ({ ...prev, category }));
-    }
+    setFilters(prev => ({ ...prev, category: searchParams.get("category") || "" }));
   }, [searchParams]);
 
   const handleToggleCart = async product => {
@@ -63,22 +61,14 @@ const ShopPage = () => {
   };
 
   const filteredProducts = products.filter(product => {
-    if (filters.category) {
-      // Normalize both the product category and filter category for comparison
-      const normalizedProductCategory = product.category.toLowerCase().replace(/\s+/g, '-');
-      const normalizedFilterCategory = filters.category.toLowerCase();
-      
-      if (normalizedProductCategory !== normalizedFilterCategory) {
-        return false;
-      }
-    }
-    
-    if (
-      product.price < filters.priceRange[0] ||
-      product.price > filters.priceRange[1]
-    ) {
+    if (filters.category && categorySlug(product.category) !== categorySlug(filters.category)) {
       return false;
     }
+
+    // An empty bound means no limit, so phones and laptops are not hidden by default.
+    const [min, max] = filters.priceRange;
+    if (min !== "" && product.price < Number(min)) return false;
+    if (max !== "" && product.price > Number(max)) return false;
     return true;
   });
 
@@ -96,14 +86,6 @@ const ShopPage = () => {
     }
   });
 
-  const categories = [
-    "smartphones",
-    "laptops", 
-    "gaming",
-    "smart-home",
-    "audio",
-    "tablets"
-  ];
 
   const FilterSection = () => (
     <motion.div
@@ -122,9 +104,9 @@ const ShopPage = () => {
               className="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-gray-50 focus:bg-white transition-all duration-200"
             >
               <option value="">{t('shop.filters.allCategories')}</option>
-              {categories.map(category => (
-                <option key={category} value={category}>
-                  {category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+              {STORE_CATEGORIES.map(category => (
+                <option key={category.key} value={categorySlug(category.name)}>
+                  {t(`categories.${category.key}`)}
                 </option>
               ))}
             </select>
@@ -142,7 +124,7 @@ const ShopPage = () => {
                 value={filters.priceRange[0]}
                 onChange={e =>
                   handleFilterChange("priceRange", [
-                    parseInt(e.target.value) || 0,
+                    e.target.value,
                     filters.priceRange[1],
                   ])
                 }
@@ -156,7 +138,7 @@ const ShopPage = () => {
                 onChange={e =>
                   handleFilterChange("priceRange", [
                     filters.priceRange[0],
-                    parseInt(e.target.value) || 1000,
+                    e.target.value,
                   ])
                 }
                 className="w-full px-3 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 bg-gray-50 focus:bg-white transition-all duration-200"
@@ -193,9 +175,7 @@ const ShopPage = () => {
           className="mb-8"
         >
           <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-orange-500 bg-clip-text text-transparent">
-            {filters.category
-              ? filters.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
-              : t('shop.title')}
+            {filters.category ? categoryLabel(t, filters.category) : t('shop.title')}
           </h1>
           <p className="text-gray-600 text-lg">
             {t('shop.productsFound', { count: sortedProducts.length })}

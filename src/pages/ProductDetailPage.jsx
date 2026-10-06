@@ -21,6 +21,7 @@ import axios from "../lib/axios";
 import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 import { getTranslation } from "../utils/i18nUtils.js";
+import { formatCurrency } from "../lib/currency";
 
 const ProductDetailPage = () => {
   const { t } = useTranslation();
@@ -177,7 +178,7 @@ const ProductDetailPage = () => {
             onClick={() => navigate(-1)}
             className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors duration-300"
           >
-         <ChevronLeft size={20} />
+            <ChevronLeft className="rtl:rotate-180" size={20} />
             <span>{t('productDetail.back')}</span>
           </button>
         </motion.div>
@@ -233,32 +234,25 @@ const ProductDetailPage = () => {
           >
             <div>
               <h1 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
-                {product.name}
+                <bdi>{product.name}</bdi>
               </h1>
               <p className="text-lg text-muted-foreground mb-6">
-                {product.description}
+                <bdi>{product.description}</bdi>
               </p>
             </div>
 
             {/* Price */}
             <div className="flex items-center space-x-4">
               <span className="text-3xl font-bold text-primary">
-                ${product.price}
+                {formatCurrency(product.price)}
               </span>
-              {product.originalPrice &&
-                product.originalPrice > product.price && (
+              {product.originalPrice > product.price && (
                   <>
                     <span className="text-xl text-muted-foreground line-through">
-                      ${product.originalPrice}
+                      {formatCurrency(product.originalPrice)}
                     </span>
                     <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      -
-                      {Math.round(
-                        ((product.originalPrice - product.price) /
-                          product.originalPrice) *
-                          100
-                      )}
-                      %
+                      <bdi>-{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%</bdi>
                     </span>
                   </>
                 )}
@@ -272,7 +266,7 @@ const ProductDetailPage = () => {
                     key={i}
                     size={20}
                     className={
-                      i < (product.rating || 0)
+                      i < Math.round(product.averageRating || 0)
                         ? "text-yellow-400 fill-current"
                         : "text-gray-300"
                     }
@@ -280,7 +274,7 @@ const ProductDetailPage = () => {
                 ))}
               </div>
               <span className="text-muted-foreground">
-                ({product.reviews?.length || 0} {t('productDetail.reviews')})
+                ({product.reviewCount || 0} {t('productDetail.reviews')})
               </span>
             </div>
 
@@ -415,10 +409,10 @@ const ProductDetailPage = () => {
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
-                      {relatedProduct.name}
+                      <bdi>{relatedProduct.name}</bdi>
                     </h3>
                     <p className="text-2xl font-bold text-primary">
-                      ${relatedProduct.price}
+                      {formatCurrency(relatedProduct.price)}
                     </p>
                   </div>
                 </motion.div>

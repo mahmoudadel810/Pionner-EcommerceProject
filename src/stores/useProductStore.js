@@ -44,16 +44,19 @@ export const useProductStore = create(set => ({
     
     set({ loading: true, error: null });
     try {
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_ALL) + "?limit=50");
-      if (response.data && response.data.success) {
-        // Handle paginated response
-        const products = response.data.data || [];
-        set({ products, loading: false });
-        return { success: true, data: products };
-      } else {
-        set({ products: [], loading: false });
-        return { success: true, data: [] };
+      // The API caps a page at 50 items, so walk every page.
+      const products = [];
+      let page = 1;
+      let hasNextPage = true;
+      while (hasNextPage) {
+        const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_ALL) + `?limit=50&page=${page}`);
+        if (!response.data?.success) break;
+        products.push(...(response.data.data || []));
+        hasNextPage = Boolean(response.data.pagination?.hasNextPage);
+        page += 1;
       }
+      set({ products, loading: false });
+      return { success: true, data: products };
     } catch {
       const errorMessage = getTranslation('product.errors.fetchFailed', 'Failed to fetch products');
       toast.error(errorMessage);

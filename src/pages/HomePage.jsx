@@ -18,14 +18,10 @@ import {
   ShoppingCart,
   ArrowRight,
   Crown,
-  Smartphone,
-  Laptop,
-  Gamepad2,
-  Home,
-  Headphones,
-  Tablet,
 } from "lucide-react";
+import { STORE_CATEGORIES, categorySlug } from "../lib/categories";
 import { toast } from "react-hot-toast";
+import { formatCurrency } from "../lib/currency";
 
 const HomePage = () => {
   const { t } = useTranslation();
@@ -37,50 +33,12 @@ const HomePage = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const hasFetchedRef = useRef(false);
 
-  const categories = [
-    {
-      name: t('categories.smartphones'),
-      icon: Smartphone,
-      href: "/shop?category=smartphones",
-      gradient: "from-blue-500 to-purple-600",
-      description: t('home.category_descriptions.smartphones')
-    },
-    {
-      name: t('categories.laptops'),
-      icon: Laptop,
-      href: "/shop?category=laptops",
-      gradient: "from-purple-500 to-pink-600",
-      description: t('home.category_descriptions.laptops')
-    },
-    {
-      name: t('categories.gaming'),
-      icon: Gamepad2,
-      href: "/shop?category=gaming",
-      gradient: "from-green-500 to-emerald-600",
-      description: t('home.category_descriptions.gaming')
-    },
-    {
-      name: t('categories.smart_home'),
-      icon: Home,
-      href: "/shop?category=smart-home",
-      gradient: "from-orange-500 to-red-600",
-      description: t('home.category_descriptions.smart_home')
-    },
-    {
-      name: t('categories.audio'),
-      icon: Headphones,
-      href: "/shop?category=audio",
-      gradient: "from-pink-500 to-rose-600",
-      description: t('home.category_descriptions.audio')
-    },
-    {
-      name: t('categories.tablets'),
-      icon: Tablet,
-      href: "/shop?category=tablets",
-      gradient: "from-indigo-500 to-blue-600",
-      description: t('home.category_descriptions.tablets')
-    }
-  ];
+  const categories = STORE_CATEGORIES.map((category) => ({
+    ...category,
+    label: t(`categories.${category.key}`),
+    href: `/shop?category=${categorySlug(category.name)}`,
+    description: t(`home.category_descriptions.${category.key}`),
+  }));
 
   const prefersReducedMotion = useReducedMotion();
   
@@ -125,7 +83,7 @@ const HomePage = () => {
   }, [fetchAllProducts]);
 
   const getProductsByCategory = useCallback((categoryName) => {
-    return products.filter(product => product.category.toLowerCase() === categoryName.toLowerCase());
+    return products.filter(product => categorySlug(product.category) === categorySlug(categoryName));
   }, [products]);
 
   const handleToggleCart = async (product) => {
@@ -149,7 +107,7 @@ const HomePage = () => {
       {/* Hero Section with Integrated Navbar */}
       <section className="relative">
         <HeroSlider />
-        <div className="absolute top-0 left-0 w-full z-50">
+        <div className="absolute top-0 start-0 w-full z-50">
           <Navbar />
         </div>
       </section>
@@ -192,7 +150,7 @@ const HomePage = () => {
                       <category.icon className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-gray-900">{category.name}</h3>
+                      <h3 className="text-2xl font-bold text-gray-900">{category.label}</h3>
                       <p className="text-gray-600">{category.description}</p>
                     </div>
                   </div>
@@ -202,7 +160,7 @@ const HomePage = () => {
                     className="hidden md:flex items-center gap-2"
                   >
                     {t('home.view_all')}
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="rtl:rotate-180 w-4 h-4" />
                   </Button>
                 </div>
 
@@ -233,26 +191,28 @@ const HomePage = () => {
                             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                           {product.isFeatured && (
-                            <Badge className="absolute top-2 left-2 bg-gradient-to-r from-yellow-500 to-orange-600 text-white">
+                            <Badge className="absolute top-2 start-2 bg-gradient-to-r from-yellow-500 to-orange-600 text-white">
                               {t('home.featured')}
                             </Badge>
                           )}
                         </div>
                         <CardContent className="p-4">
                           <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                            {product.name}
+                            <bdi>{product.name}</bdi>
                           </h3>
                           <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                            {product.description}
+                            <bdi>{product.description}</bdi>
                           </p>
                           <div className="flex items-center justify-between mb-3">
                             <span className="text-2xl font-bold text-blue-600">
-                              {product.price.toFixed(2)} SR
+                              {formatCurrency(product.price)}
                             </span>
-                            <div className="flex items-center gap-1 text-sm text-gray-500">
-                              <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                              <span>4.8</span>
-                            </div>
+                            {product.reviewCount > 0 && (
+                              <div className="flex items-center gap-1 text-sm text-gray-500">
+                                <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                                <span>{product.averageRating.toFixed(1)}</span>
+                              </div>
+                            )}
                           </div>
                           <Button 
                             onClick={(e) => {
@@ -265,7 +225,7 @@ const HomePage = () => {
                                 : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                             }`}
                           >
-                            <ShoppingCart className="w-4 h-4 mr-2 rtl:ml-2 rtl:mr-0" />
+                            <ShoppingCart className="w-4 h-4 me-2" />
                             {isInCart(product._id) ? t('home.remove_from_cart') : t('home.add_to_cart')}
                           </Button>
                         </CardContent>
@@ -282,7 +242,7 @@ const HomePage = () => {
                       className="md:hidden"
                     >
                       {t('home.view_all_products', { count: categoryProducts.length })}
-                      <ArrowRight className="w-4 h-4 ml-2 rtl:mr-2 rtl:ml-0" />
+                      <ArrowRight className="rtl:rotate-180 w-4 h-4 ms-2" />
                     </Button>
                   </div>
                 )}
@@ -304,6 +264,7 @@ const HomePage = () => {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
@@ -316,18 +277,20 @@ const HomePage = () => {
               <Button 
                 variant="secondary" 
                 size="lg" 
+                onClick={() => navigate("/shop")}
                 className="px-8 py-4 text-lg bg-white text-blue-600 hover:bg-gray-100 rounded-2xl shadow-lg"
               >
-                <Sparkles className="w-5 h-5 mr-2 rtl:ml-2 rtl:mr-0" />
+                <Sparkles className="w-5 h-5 me-2" />
                 {t('home.start_shopping')}
             </Button>
             {!user && (
               <Button
                 variant="outline"
                 size="lg"
+                onClick={() => navigate("/signup")}
                   className="px-8 py-4 text-lg bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-2xl"
               >
-                  <Crown className="w-5 h-5 mr-2 rtl:ml-2 rtl:mr-0" />
+                  <Crown className="w-5 h-5 me-2" />
                   {t('home.join_premium')}
               </Button>
             )}

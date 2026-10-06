@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { motion, useInView, useReducedMotion, useAnimation } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useProductStore } from "../stores/useProductStore";
 import { useUserStore } from "../stores/useUserStore";
@@ -11,7 +11,6 @@ import Navbar from "../components/Navbar";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
-import API_CONFIG, { buildApiUrl } from "../config/api.js";
 import {
   Sparkles,
   Star,
@@ -22,16 +21,17 @@ import {
 import { STORE_CATEGORIES, categorySlug } from "../lib/categories";
 import { toast } from "react-hot-toast";
 import { formatCurrency } from "../lib/currency";
+import { productImage } from "../lib/productImage";
 
 const HomePage = () => {
   const { t } = useTranslation();
-  const { products, fetchAllProducts, loading } = useProductStore();
+  const products = useProductStore((state) => state.products);
+  const featuredProducts = useProductStore((state) => state.featured);
+  const fetchAllProducts = useProductStore((state) => state.fetchAllProducts);
+  const fetchFeaturedProducts = useProductStore((state) => state.fetchFeaturedProducts);
   const { user } = useUserStore();
   const { toggleCart, isInCart } = useCartStore();
-  const navigate = useNavigate();
-  
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const hasFetchedRef = useRef(false);
+
 
   const categories = STORE_CATEGORIES.map((category) => ({
     ...category,
@@ -70,17 +70,9 @@ const HomePage = () => {
   }, [controls, isInView, prefersReducedMotion]);
 
   useEffect(() => {
-    if (hasFetchedRef.current) return;
-    hasFetchedRef.current = true;
-
     fetchAllProducts();
-    fetch(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_FEATURED))
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) setFeaturedProducts(data.data);
-      })
-      .catch(() => setFeaturedProducts([]));
-  }, [fetchAllProducts]);
+    fetchFeaturedProducts();
+  }, [fetchAllProducts, fetchFeaturedProducts]);
 
   const getProductsByCategory = useCallback((categoryName) => {
     return products.filter(product => categorySlug(product.category) === categorySlug(categoryName));
@@ -118,15 +110,7 @@ const HomePage = () => {
       {/* Category Products Preview - with performance optimizations */}
       <section 
         ref={ref}
-        className="py-20 bg-gradient-to-br from-gray-50 to-blue-50/30 will-change-transform"
-        style={{
-          transform: 'translateZ(0)',
-          backfaceVisibility: 'hidden',
-          WebkitBackfaceVisibility: 'hidden',
-          transformStyle: 'preserve-3d',
-          contentVisibility: 'auto',
-          contain: 'content',
-        }}
+        className="py-20 bg-gradient-to-br from-gray-50 to-blue-50/30"
       >
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -155,12 +139,14 @@ const HomePage = () => {
                     </div>
                   </div>
                   <Button
-                    onClick={() => navigate(category.href)}
+                    asChild
                     variant="outline"
                     className="hidden md:flex items-center gap-2"
                   >
-                    {t('home.view_all')}
-                    <ArrowRight className="rtl:rotate-180 w-4 h-4" />
+                    <Link to={category.href}>
+                      {t('home.view_all')}
+                      <ArrowRight className="rtl:rotate-180 w-4 h-4" />
+                    </Link>
                   </Button>
                 </div>
 
@@ -172,22 +158,18 @@ const HomePage = () => {
                       initial="hidden"
                       animate={controls}
                       custom={productIndex}
-                      style={{
-                        willChange: 'transform, opacity',
-                        transform: 'translateZ(0)',
-                        backfaceVisibility: 'hidden',
-                        WebkitBackfaceVisibility: 'hidden',
-                        contentVisibility: 'auto',
-                        transformStyle: 'preserve-3d',
-                      }}
-                      className="group cursor-pointer"
-                      onClick={() => navigate(`/product/${product._id}`)}
+                      className="group"
                     >
+                      <Link to={`/product/${product._id}`} className="block h-full">
                       <Card className="h-full bg-white/95 backdrop-blur-lg shadow-lg border border-gray-200/50 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300">
                         <div className="relative">
                           <img
-                            src={product.image}
+                            src={productImage(product.image, 480)}
                             alt={product.name}
+                            width={480}
+                            height={192}
+                            loading="lazy"
+                            decoding="async"
                             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                           {product.isFeatured && (
@@ -216,6 +198,7 @@ const HomePage = () => {
                           </div>
                           <Button 
                             onClick={(e) => {
+                              e.preventDefault();
                               e.stopPropagation();
                               handleToggleCart(product);
                             }}
@@ -230,19 +213,18 @@ const HomePage = () => {
                           </Button>
                         </CardContent>
                       </Card>
+                      </Link>
                     </motion.div>
                   ))}
                 </div>
 
                 {categoryProducts.length > 4 && (
                   <div className="text-center mt-8">
-                    <Button
-                      onClick={() => navigate(category.href)}
-                      variant="outline"
-                      className="md:hidden"
-                    >
-                      {t('home.view_all_products', { count: categoryProducts.length })}
-                      <ArrowRight className="rtl:rotate-180 w-4 h-4 ms-2" />
+                    <Button asChild variant="outline" className="md:hidden">
+                      <Link to={category.href}>
+                        {t('home.view_all_products', { count: categoryProducts.length })}
+                        <ArrowRight className="rtl:rotate-180 w-4 h-4 ms-2" />
+                      </Link>
                     </Button>
                   </div>
                 )}
@@ -253,7 +235,7 @@ const HomePage = () => {
       </section>
 
       {/* Featured Products Section */}
-      {!loading && featuredProducts?.length > 0 && (
+      {featuredProducts.length > 0 && (
         <FeaturedProducts featuredProducts={featuredProducts} />
       )}
 
@@ -277,21 +259,25 @@ const HomePage = () => {
               <Button 
                 variant="secondary" 
                 size="lg" 
-                onClick={() => navigate("/shop")}
+                asChild
                 className="px-8 py-4 text-lg bg-white text-blue-600 hover:bg-gray-100 rounded-2xl shadow-lg"
               >
-                <Sparkles className="w-5 h-5 me-2" />
-                {t('home.start_shopping')}
+                <Link to="/shop">
+                  <Sparkles className="w-5 h-5 me-2" />
+                  {t('home.start_shopping')}
+                </Link>
             </Button>
             {!user && (
               <Button
                 variant="outline"
                 size="lg"
-                onClick={() => navigate("/signup")}
+                asChild
                   className="px-8 py-4 text-lg bg-white/10 border-white/20 text-white hover:bg-white/20 rounded-2xl"
               >
+                <Link to="/signup">
                   <Crown className="w-5 h-5 me-2" />
                   {t('home.join_premium')}
+                </Link>
               </Button>
             )}
           </div>

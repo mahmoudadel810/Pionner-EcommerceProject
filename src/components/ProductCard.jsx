@@ -8,6 +8,7 @@ import { useUserStore } from "../stores/useUserStore";
 import { toast } from "react-hot-toast";
 import { formatCurrency } from "../lib/currency";
 import { categoryLabel } from "../lib/categories";
+import { productImage } from "../lib/productImage";
 
 const ProductCard = ({ 
   product, 
@@ -82,8 +83,12 @@ const ProductCard = ({
         {/* Product Image */}
         <div className="relative aspect-square overflow-hidden">
           <img
-            src={product.image}
+            src={productImage(product.image, 480)}
             alt={product.name}
+            width={480}
+            height={480}
+            loading={index < 4 ? "eager" : "lazy"}
+            decoding="async"
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
           />
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

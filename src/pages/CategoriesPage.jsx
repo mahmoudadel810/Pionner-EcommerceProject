@@ -93,12 +93,7 @@ const CategoriesPage = () => {
       };
 
       const queryString = new URLSearchParams(params).toString();
-      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_ALL) + `?${queryString}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.CATEGORIES.GET_ALL) + `?${queryString}`);
       
       const responseData = await response.json();
       

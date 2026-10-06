@@ -4,8 +4,26 @@ import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
 import { getTranslation } from "../utils/i18nUtils.js";
 
-export const useProductStore = create(set => ({
+// Catalogue lists are reused across pages for this long before being refetched in the background.
+const FRESH_FOR_MS = 60 * 1000;
+const PAGE_SIZE = 50;
+
+const isFresh = (fetchedAt) => Date.now() - fetchedAt < FRESH_FOR_MS;
+
+let allProductsRequest = null;
+let featuredRequest = null;
+
+const fetchProductsPage = async (page) => {
+  const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_ALL) + `?limit=${PAGE_SIZE}&page=${page}`);
+  if (!response.data?.success) throw new Error("Failed to fetch products");
+  return response.data;
+};
+
+export const useProductStore = create((set, get) => ({
   products: [],
+  productsFetchedAt: 0,
+  featured: [],
+  featuredFetchedAt: 0,
   loading: false,
   error: null,
 
@@ -35,52 +53,46 @@ export const useProductStore = create(set => ({
     }
   },
 
-  fetchAllProducts: async () => {
-    // Prevent duplicate requests if already loading
-    const currentState = useProductStore.getState();
-    if (currentState.loading) {
-      return { success: false, message: "Request already in progress" };
-    }
-    
-    set({ loading: true, error: null });
-    try {
-      // The API caps a page at 50 items, so walk every page.
-      const products = [];
-      let page = 1;
-      let hasNextPage = true;
-      while (hasNextPage) {
-        const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_ALL) + `?limit=50&page=${page}`);
-        if (!response.data?.success) break;
-        products.push(...(response.data.data || []));
-        hasNextPage = Boolean(response.data.pagination?.hasNextPage);
-        page += 1;
-      }
-      set({ products, loading: false });
+  // Returns the cached catalogue while it is fresh; otherwise refetches, keeping the cached
+  // list on screen (no spinner) until the new one arrives. `force` skips the cache.
+  fetchAllProducts: async ({ force = false } = {}) => {
+    const { products, productsFetchedAt } = get();
+    if (!force && products.length > 0 && isFresh(productsFetchedAt)) {
       return { success: true, data: products };
-    } catch {
-      const errorMessage = getTranslation('product.errors.fetchFailed', 'Failed to fetch products');
-      toast.error(errorMessage);
-      set({ error: errorMessage, loading: false, products: [] });
-      return { success: false, message: errorMessage };
     }
+    if (allProductsRequest) return allProductsRequest;
+
+    set({ loading: products.length === 0, error: null });
+    allProductsRequest = (async () => {
+      try {
+        // The API caps a page at 50 items; fetch the remaining pages in parallel.
+        const first = await fetchProductsPage(1);
+        const totalPages = first.pagination?.totalPages || 1;
+        const rest = await Promise.all(
+          Array.from({ length: totalPages - 1 }, (_, i) => fetchProductsPage(i + 2))
+        );
+        const all = [first, ...rest].flatMap((page) => page.data || []);
+        set({ products: all, productsFetchedAt: Date.now(), loading: false });
+        return { success: true, data: all };
+      } catch {
+        const errorMessage = getTranslation('product.errors.fetchFailed', 'Failed to fetch products');
+        if (get().products.length === 0) toast.error(errorMessage);
+        set({ error: errorMessage, loading: false });
+        return { success: false, message: errorMessage };
+      } finally {
+        allProductsRequest = null;
+      }
+    })();
+    return allProductsRequest;
   },
 
+  // Leaves the cached catalogue untouched; callers keep the result themselves.
   fetchProductsByCategory: async category => {
-    set({ loading: true, error: null });
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_BY_CATEGORY(category)));
-      if (response.data && response.data.success) {
-        set({ products: response.data.data, loading: false });
-        return { success: true, data: response.data.data };
-      } else {
-        set({ products: [], loading: false });
-        return { success: true, data: [] };
-      }
+      return { success: true, data: response.data?.success ? response.data.data : [] };
     } catch {
-      const errorMessage = getTranslation('product.errors.fetchFailed', 'Failed to fetch products');
-      toast.error(errorMessage);
-      set({ error: errorMessage, loading: false, products: [] });
-      return { success: false, message: errorMessage };
+      return { success: false, message: getTranslation('product.errors.fetchFailed', 'Failed to fetch products') };
     }
   },
 
@@ -134,28 +146,27 @@ export const useProductStore = create(set => ({
     }
   },
 
-  fetchFeaturedProducts: async () => {
-    // Prevent duplicate requests if already loading
-    const currentState = useProductStore.getState();
-    if (currentState.loading) {
-      return { success: false, message: "Request already in progress" };
+  fetchFeaturedProducts: async ({ force = false } = {}) => {
+    const { featured, featuredFetchedAt } = get();
+    if (!force && featuredFetchedAt && isFresh(featuredFetchedAt)) {
+      return { success: true, data: featured };
     }
-    
-    set({ loading: true, error: null });
-    try {
-      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_FEATURED));
-      if (response.data && response.data.success) {
-        set({ products: response.data.data, loading: false });
-        return { success: true, data: response.data.data };
-      } else {
-        set({ products: [], loading: false });
-        return { success: true, data: [] };
+    if (featuredRequest) return featuredRequest;
+
+    featuredRequest = (async () => {
+      try {
+        const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.GET_FEATURED));
+        const data = response.data?.success ? response.data.data || [] : [];
+        set({ featured: data, featuredFetchedAt: Date.now() });
+        return { success: true, data };
+      } catch {
+        const errorMessage = getTranslation('product.errors.fetchFeaturedFailed', 'Failed to fetch featured products');
+        if (!get().featuredFetchedAt) toast.error(errorMessage);
+        return { success: false, message: errorMessage };
+      } finally {
+        featuredRequest = null;
       }
-    } catch {
-      const errorMessage = getTranslation('product.errors.fetchFeaturedFailed', 'Failed to fetch featured products');
-      toast.error(errorMessage);
-      set({ error: errorMessage, loading: false, products: [] });
-      return { success: false, message: errorMessage };
-    }
+    })();
+    return featuredRequest;
   },
 }));

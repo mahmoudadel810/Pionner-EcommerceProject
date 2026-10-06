@@ -8,8 +8,9 @@ import { Card, CardContent, CardFooter } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { formatCurrency } from "../lib/currency";
+import { productImage } from "../lib/productImage";
 
 const FeaturedProducts = ({ featuredProducts }) => {
   const { t, i18n } = useTranslation();
@@ -19,7 +20,6 @@ const FeaturedProducts = ({ featuredProducts }) => {
   const { toggleCart, isInCart } = useCartStore();
   const { toggleWishlist, wishlist } = useWishlistStore();
   const { user } = useUserStore();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -110,15 +110,17 @@ const FeaturedProducts = ({ featuredProducts }) => {
                   key={product._id}
                   className="w-full sm:w-1/2 lg:w-1/3 xl:w-1/4 flex-shrink-0 px-2"
                 >
-                  <Card 
-                    className="h-full group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/30 cursor-pointer"
-                    onClick={() => navigate(`/product/${product._id}`)}
-                  >
+                  <Link to={`/product/${product._id}`} className="block h-full">
+                  <Card className="h-full group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/30">
                     <CardContent className="p-0">
                       <div className="relative overflow-hidden">
                         <img
-                          src={product.image}
+                          src={productImage(product.image, 480)}
                           alt={product.name}
+                          width={480}
+                          height={192}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         {product.isFeatured && (
@@ -131,6 +133,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
                           variant="ghost"
                           className="absolute top-2 end-2 bg-background/80 hover:bg-background/90 opacity-0 group-hover:opacity-100 transition-opacity"
                           onClick={(e) => {
+                            e.preventDefault();
                             e.stopPropagation();
                             handleToggleWishlist(product);
                           }}
@@ -162,6 +165,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
 
                       <Button
                         onClick={(e) => {
+                          e.preventDefault();
                           e.stopPropagation();
                           handleToggleCart(product);
                         }}
@@ -177,6 +181,7 @@ const FeaturedProducts = ({ featuredProducts }) => {
                       </Button>
                     </CardFooter>
                   </Card>
+                  </Link>
                 </div>
               ))}
             </div>

@@ -28,60 +28,20 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
+        // Only the framework is grouped; everything else is split per route so a page
+        // never pulls another page's dependencies (Stripe loads with the checkout page only).
         manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
-              return 'react-vendor';
-            }
-            if (id.includes('@radix-ui')) {
-              return 'radix-ui-vendor';
-            }
-            if (id.includes('framer-motion')) {
-              return 'animation-vendor';
-            }
-            if (id.includes('zustand') || id.includes('axios')) {
-              return 'utils-vendor';
-            }
-            if (id.includes('lucide-react')) {
-              return 'icons-vendor';
-            }
-            if (id.includes('tailwind') || id.includes('clsx') || id.includes('class-variance-authority')) {
-              return 'styling-vendor';
-            }
-            return 'vendor';
+          if (/[\\/]node_modules[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/.test(id)) {
+            return 'react-vendor';
           }
-          
-          if (id.includes('/pages/')) {
-            if (id.includes('LoginPage') || id.includes('SignUpPage') || id.includes('ForgetPasswordPage') || id.includes('ResetPasswordPage') || id.includes('EmailConfirmationPage')) {
-              return 'auth-pages';
-            }
-            if (id.includes('ShopPage') || id.includes('ProductDetailPage') || id.includes('CategoriesPage') || id.includes('CategoryProductsPage')) {
-              return 'shop-pages';
-            }
-            if (id.includes('ProfilePage') || id.includes('CartPage') || id.includes('WishlistPage')) {
-              return 'user-pages';
-            }
-            if (id.includes('AdminDashboard')) {
-              return 'admin-pages';
-            }
-            if (id.includes('PurchaseSuccessPage') || id.includes('PurchaseCancelPage')) {
-              return 'payment-pages';
-            }
-            return 'other-pages';
-          }
-          
-          if (id.includes('/components/')) {
-            return 'components';
-          }
-          
-          if (id.includes('/stores/')) {
-            return 'stores';
+          if (/[\\/]node_modules[\\/](framer-motion|motion-dom|motion-utils)[\\/]/.test(id)) {
+            return 'animation-vendor';
           }
         },
         chunkFileNames: (chunkInfo) => {
           const facadeModuleId = chunkInfo.facadeModuleId
             ? chunkInfo.facadeModuleId.split('/').pop().replace('.jsx', '').replace('.js', '')
-            : 'chunk';
+            : chunkInfo.name;
           return `js/${facadeModuleId}-[hash].js`;
         },
         entryFileNames: 'js/[name]-[hash].js',

@@ -1379,7 +1379,8 @@
     "errors": {
       "productNotFound": "Product not found",
       "loginRequired": "Please log in to manage your cart",
-      "cartUpdateFailed": "Failed to update cart"
+      "cartUpdateFailed": "Failed to update cart",
+      "loadFailed": "We couldn't load this product. Check your connection and try again."
     }
   },
   "deals": {
@@ -1469,5 +1470,17 @@
     "supportNote": "Still having trouble? Our support team is here to help.",
     "email": "Email:",
     "phone": "Phone:"
+  },
+  "titles": {
+    "home": "Electronics and accessories",
+    "search": "Search",
+    "signup": "Create account",
+    "checkout": "Checkout",
+    "forgotPassword": "Forgot password",
+    "resetPassword": "Reset password",
+    "confirmEmail": "Confirm email",
+    "purchaseSuccess": "Order confirmed",
+    "purchaseCancel": "Payment cancelled",
+    "searchFor": "Search: {{query}}"
   }
 }

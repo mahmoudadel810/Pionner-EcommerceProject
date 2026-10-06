@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 const NotFoundPage = () => {
   const { t } = useTranslation();
-  
+  useDocumentTitle(t('errors.page_not_found'));
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
       <motion.div

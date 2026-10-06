@@ -2,9 +2,12 @@ import { Suspense, lazy, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Toaster } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import LoadingSpinner from "./components/LoadingSpinner";
+import ScrollManager from "./components/ScrollManager";
+import { useDocumentTitle } from "./hooks/useDocumentTitle";
 import { useUserStore } from "./stores/useUserStore";
 import { useCartStore } from "./stores/useCartStore";
 import { useWishlistStore } from "./stores/useWishlistStore";
@@ -37,17 +40,70 @@ const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const preloadCommonPages = (isLoggedIn) => {
   import("./pages/ShopPage");
   import("./pages/ProductDetailPage");
+  import("./pages/CategoriesPage");
+  import("./pages/CategoryProductsPage");
+  import("./pages/SearchPage");
   if (!isLoggedIn) {
     import("./pages/LoginPage");
     import("./pages/SignUpPage");
   }
 };
 
+// Pages with a fixed title; product, category and 404 pages set their own.
+const PAGE_TITLES = {
+  "/": "",
+  "/shop": "nav.shop",
+  "/deals": "nav.deals",
+  "/about": "nav.about",
+  "/contact": "nav.contact",
+  "/categories": "nav.categories",
+  "/search": "titles.search",
+  "/login": "nav.signin",
+  "/signup": "titles.signup",
+  "/forget-password": "titles.forgotPassword",
+  "/reset-password": "titles.resetPassword",
+  "/profile": "nav.profile",
+  "/cart": "nav.cart",
+  "/checkout": "titles.checkout",
+  "/wishlist": "nav.wishlist",
+  "/purchase-success": "titles.purchaseSuccess",
+  "/purchase-cancel": "titles.purchaseCancel",
+  "/admin": "nav.admin",
+};
+
+const RouteTitle = () => {
+  const { t } = useTranslation();
+  const { pathname } = useLocation();
+  const key = pathname.startsWith("/confirm-email/") ? "titles.confirmEmail" : PAGE_TITLES[pathname];
+  useDocumentTitle(key === undefined ? null : key && t(key));
+  return null;
+};
+
+const RequireAuth = ({ user, children }) => {
+  const location = useLocation();
+  if (!user) return <Navigate to="/login" replace state={{ from: location }} />;
+  return children;
+};
+
+const RequireAdmin = ({ user, children }) => {
+  const location = useLocation();
+  if (!user) return <Navigate to="/login" replace state={{ from: location }} />;
+  if (user.data?.user?.role !== "admin") return <Navigate to="/" replace />;
+  return children;
+};
+
+// Signed-in visitors skip the login and sign-up pages and go where they were headed.
+const GuestOnly = ({ user, children }) => {
+  const location = useLocation();
+  if (user) return <Navigate to={location.state?.from || "/"} replace />;
+  return children;
+};
+
 const AppContent = () => {
   const location = useLocation();
-  const { user, checkAuth, checkingAuth, justLoggedOut, initializeUser } = useUserStore();
-  const { getCartItems } = useCartStore();
-  const { fetchWishlist } = useWishlistStore();
+  const { user, checkAuth, justLoggedOut, initializeUser } = useUserStore();
+  const getCartItems = useCartStore((state) => state.getCartItems);
+  const fetchWishlist = useWishlistStore((state) => state.fetchWishlist);
 
   useEffect(() => {
     const storedUser = initializeUser();
@@ -60,17 +116,16 @@ const AppContent = () => {
     return () => clearTimeout(timer);
   }, [justLoggedOut, initializeUser, checkAuth]);
 
+  // Keyed on the account id: the stored user and the verified profile are different objects
+  // for the same person and must not trigger a second fetch.
+  const userId = user?.data?.user?._id;
   useEffect(() => {
-    if (user) {
+    if (userId) {
       // Both stores report their own errors.
       getCartItems().catch(() => {});
       fetchWishlist().catch(() => {});
     }
-  }, [user, getCartItems, fetchWishlist]);
-
-  if (checkingAuth) {
-    return <LoadingSpinner />;
-  }
+  }, [userId, getCartItems, fetchWishlist]);
 
   // The home page renders its own navbar over the hero section.
   const showGlobalNavbar = location.pathname !== "/";
@@ -78,6 +133,8 @@ const AppContent = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <ScrollManager />
+      <RouteTitle />
       {showGlobalNavbar && <Navbar />}
 
       <Suspense fallback={<LoadingSpinner />}>
@@ -100,35 +157,17 @@ const AppContent = () => {
             <Route path="/product/:id" element={<ProductDetailPage />} />
 
             {/* Auth Routes */}
-            <Route
-              path="/login"
-              element={!user ? <LoginPage /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/signup"
-              element={!user ? <SignUpPage /> : <Navigate to="/" />}
-            />
+            <Route path="/login" element={<GuestOnly user={user}><LoginPage /></GuestOnly>} />
+            <Route path="/signup" element={<GuestOnly user={user}><SignUpPage /></GuestOnly>} />
             <Route path="/forget-password" element={<ForgetPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/confirm-email/:token" element={<EmailConfirmationPage />} />
 
             {/* Protected Routes */}
-            <Route
-              path="/profile"
-              element={user ? <ProfilePage /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/cart"
-              element={user ? <CartPage /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/checkout"
-              element={user ? <CheckoutPage /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/wishlist"
-              element={user ? <WishlistPage /> : <Navigate to="/login" />}
-            />
+            <Route path="/profile" element={<RequireAuth user={user}><ProfilePage /></RequireAuth>} />
+            <Route path="/cart" element={<RequireAuth user={user}><CartPage /></RequireAuth>} />
+            <Route path="/checkout" element={<RequireAuth user={user}><CheckoutPage /></RequireAuth>} />
+            <Route path="/wishlist" element={<RequireAuth user={user}><WishlistPage /></RequireAuth>} />
             <Route
               path="/purchase-success"
               element={<PurchaseSuccessPage />}
@@ -139,16 +178,7 @@ const AppContent = () => {
             />
 
             {/* Admin Routes */}
-            <Route
-              path="/admin"
-              element={
-                user?.data?.user?.role === "admin" ? (
-                  <AdminDashboard />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
+            <Route path="/admin" element={<RequireAdmin user={user}><AdminDashboard /></RequireAdmin>} />
 
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

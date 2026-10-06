@@ -1,151 +1,85 @@
-# Pionner E-Commerce Platform
+# Pionner Client
 
-A modern, production-ready e-commerce platform built with React, Vite, and Tailwind CSS.
+The storefront and admin dashboard for Pionner, an electronics shop with Arabic and English support.
+
+Live demo: https://pionner-v21.vercel.app
+Backend (Node.js / Express / MongoDB): https://github.com/mahmoudadel810/Pionner-Server-Prod-V0.1
 
 ## Features
 
-- **Modern UI/UX**: Built with React 18 and Tailwind CSS
-- **Responsive Design**: Mobile-first approach with custom hooks
-- **State Management**: Zustand for efficient state management
-- **Component Library**: Custom UI components with shadcn/ui
-- **Performance Optimized**: Vite for fast development and builds
-- **Production Ready**: Optimized for deployment with proper error handling
+- Product catalog with filtering, sorting, featured products and a deals page
+- Categories with per-category product listings
+- Search with live suggestions
+- Cart with quantity updates and per-customer coupon codes
+- Wishlist
+- Checkout with Stripe Payment Element
+- Order history and order cancellation on the profile page
+- Sign up with email confirmation, login, forgotten-password and reset flows
+- Profile editing with a profile picture upload
+- Contact form
+- Admin dashboard: products, categories, orders (order and payment status), users, coupons, customer messages and sales analytics
+- Arabic and English, with full right-to-left layout for Arabic
 
-## Project Structure
+## Stack
 
+- React 18 and React Router 7
+- Vite 6
+- Tailwind CSS 4 and shadcn/ui (Radix UI)
+- Zustand for state
+- i18next / react-i18next
+- Axios
+- Stripe (`@stripe/react-stripe-js`)
+- Framer Motion
 
+## Getting started
 
-## Tech Stack
+Requirements: Node.js 22 and pnpm.
 
-- **Frontend**: React 18, Vite, Tailwind CSS
-- **State Management**: Zustand
-- **UI Components**: shadcn/ui
-- **Styling**: Tailwind CSS
-- **Build Tool**: Vite
-- **Package Manager**: pnpm
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+ 
-- pnpm (recommended) or npm
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/mahmoudadel810/Pionner-EcommerceProject.git
-cd Pionner-EcommerceProject
-```
-
-2. Install dependencies:
 ```bash
 pnpm install
-```
-
-3. Start the development server:
-```bash
+cp .env.example .env
 pnpm dev
 ```
 
-4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+The app runs at http://localhost:5173.
 
-### Building for Production
+### Environment variables
 
-```bash
-pnpm build
+| Variable | Description |
+| --- | --- |
+| `VITE_API_URL` | Base URL of the API, e.g. `http://localhost:8000/api/v2`. Defaults to the hosted API. |
+| `VITE_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key (`pk_test_...`). Defaults to the demo test key. |
+
+To run against a local backend, start the server from the backend repository and set `VITE_API_URL` to its `/api/v2` URL.
+
+## Scripts
+
+| Command | Description |
+| --- | --- |
+| `pnpm dev` | Start the development server |
+| `pnpm build` | Build for production into `dist/` |
+| `pnpm preview` | Serve the production build locally |
+| `pnpm lint` | Run ESLint |
+| `pnpm format` | Format the code with Prettier |
+
+## Project structure
+
 ```
-
-The build output will be in the `dist/` directory.
-
-## Available Scripts
-
-- `pnpm dev` - Start development server
-- `pnpm build` - Build for production
-- `pnpm preview` - Preview production build
-- `pnpm lint` - Run ESLint
-- `pnpm lint:fix` - Fix ESLint issues
-
-## Architecture
-
-### State Management
-- **useCartStore**: Shopping cart functionality
-- **useProductStore**: Product data and filtering
-- **useUserStore**: User authentication and profile
-- **useWishlistStore**: Wishlist management
-- **usePaymentStore**: Payment processing
-
-### Component Structure
-- **Pages**: Main route components
-- **Components**: Reusable UI components
-- **UI**: shadcn/ui component library
-- **Hooks**: Custom React hooks for business logic
-
-## Design System
-
-The project uses a consistent design system with:
-- **Colors**: Tailwind CSS color palette
-- **Typography**: Custom font stack
-- **Spacing**: Consistent spacing scale
-- **Components**: Reusable UI components
-
-## Configuration
-
-### Environment Variables
-Create a `.env` file in the root directory:
-
-```env
-VITE_API_URL=your_api_url_here
-VITE_APP_NAME=Pionner E-Commerce
+src/
+  components/   shared components; ui/ holds the shadcn/ui primitives
+  config/       API base URL and endpoint map
+  hooks/        reusable hooks
+  i18n/         i18next setup
+  lib/          axios instance and helpers
+  locales/      en and ar translation files
+  pages/        route components
+  stores/       Zustand stores (user, cart, wishlist, products, categories, payments)
 ```
-
-### Vite Configuration
-The project uses Vite for fast development and optimized builds. Configuration is in `vite.config.js`.
-
-## Responsive Design
-
-The application is fully responsive with:
-- Mobile-first approach
-- Custom hooks for responsive behavior
-- Optimized images and assets
-- Touch-friendly interactions
 
 ## Deployment
 
-### Render.com (Recommended)
-1. Connect your GitHub repository to Render.com
-2. Configure build settings:
-   - Build Command: `pnpm build`
-   - Output Directory: `dist`
-3. Deploy automatically on push to main branch
-
-### Other Platforms
-The project can be deployed to any static hosting platform:
-- Netlify
-- AWS S3 + CloudFront
-- Firebase Hosting
-- GitHub Pages
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+The app is deployed on Vercel. `vercel.json` rewrites all routes to `index.html` so client-side routing works on refresh.
 
 ## License
 
-This project is licensed under the MIT License.
-
-## Support
-
-For support and questions:
-- Create an issue on GitHub
-- Check the documentation
-- Review the deployment guide
-
----
-
-Built with ❤️ for modern e-commerce 
+[MIT](LICENSE)

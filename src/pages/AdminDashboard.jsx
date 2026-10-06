@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,43 +11,48 @@ import {
   DollarSign,
   TrendingUp,
   Search,
-  Filter,
-  MoreVertical,
   Shield,
   ShoppingCart,
   Tag,
-  Settings,
+  Ticket,
+  Power,
   BarChart3,
-  CheckCircle,
   XCircle,
-  AlertCircle,
-  Clock,
-  Star,
-  Heart,
-  Download,
-  Upload,
   RefreshCw,
-  Calendar,
-  CreditCard,
-  Truck,
-  CheckSquare,
-  Square,
-  ChevronDown,
-  ChevronUp,
-  Filter as FilterIcon,
-  SortAsc,
-  SortDesc,
 } from "lucide-react";
 import { useProductStore } from "../stores/useProductStore";
 import { useCategoryStore } from "../stores/useCategoryStore";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
 import API_CONFIG, { buildApiUrl } from "../config/api.js";
- 
+
+const emptyProductForm = {
+  name: "",
+  description: "",
+  price: "",
+  category: "",
+  stockQuantity: "",
+  images: [],
+};
+
+const emptyCategoryForm = {
+  name: "",
+  description: "",
+  image: null,
+  featured: false,
+  order: "",
+};
+
+const emptyCouponForm = {
+  code: "",
+  email: "",
+  discountPercentage: "",
+  expiryDate: "",
+};
 
 const AdminDashboard = () => {
   const { t } = useTranslation();
-  const { products, fetchAllProducts, deleteProduct, loading } = useProductStore();
+  const { products, fetchAllProducts, deleteProduct } = useProductStore();
   const { 
     createCategory, 
     updateCategory, 
@@ -55,36 +60,25 @@ const AdminDashboard = () => {
     loading: categoryLoading 
   } = useCategoryStore();
 
-  // Local categories state (aligned with CategoriesPage fetching)
   const [dashboardCategories, setDashboardCategories] = useState([]);
-  
-// console.log(categories,storeCategories );
-
   const [isLoading, setIsLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
-   //===================coupon code==>
-  // const [coupons, setCoupons] = useState([]);
+  const [coupons, setCoupons] = useState([]);
   const [stats, setStats] = useState({
     totalProducts: 0,
     totalOrders: 0,
     totalRevenue: 0,
     totalCustomers: 0,
-    pendingOrders: 0,
-    paidOrders: 0,
-    cancelledOrders: 0,
   });
   const [activeTab, setActiveTab] = useState("overview");
   const [searchQuery, setSearchQuery] = useState("");
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [showOrderDetails, setShowOrderDetails] = useState(null);
-  const [showUserDetails, setShowUserDetails] = useState(null);
   const [showProductDetails, setShowProductDetails] = useState(null);
-   //===================coupon code==>
-  // const [showCouponForm, setShowCouponForm] = useState(false);
-  // const [editingCoupon, setEditingCoupon] = useState(null);
+  const [showCouponForm, setShowCouponForm] = useState(false);
+  const [editingCoupon, setEditingCoupon] = useState(null);
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [filters, setFilters] = useState({
@@ -93,48 +87,15 @@ const AdminDashboard = () => {
     userRole: "",
     productCategory: "",
   });
-  const [sortConfig, setSortConfig] = useState({
-    key: "createdAt",
-    direction: "desc",
-  });
 
-  // Form states
-  const [productForm, setProductForm] = useState({
-    name: "",
-    description: "",
-    price: "",
-    category: "",
-    stockQuantity: "",
-    images: [], // Changed to array for multiple images
-  });
-
-  //===================coupon code==>
-  // const [couponForm, setCouponForm] = useState({
-  //   code: "",
-  //   description: "",
-  //   discountType: "percentage",
-  //   discountValue: "",
-  //   minimumAmount: "",
-  //   maximumUsage: "",
-  //   expiryDate: "",
-  // });
-
-  const [categoryForm, setCategoryForm] = useState({
-    name: "",
-    description: "",
-    image: null,
-    featured: false,
-    order: "",
-  });
+  const [productForm, setProductForm] = useState(emptyProductForm);
+  const [couponForm, setCouponForm] = useState(emptyCouponForm);
+  const [categoryForm, setCategoryForm] = useState(emptyCategoryForm);
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- load once on mount
   }, []);
-
-  // Debug: Log categories when they change
-  useEffect(() => {
-    console.log("📋 Dashboard categories updated:", dashboardCategories);
-  }, [dashboardCategories]);
 
   const fetchData = async () => {
     try {
@@ -145,10 +106,10 @@ const AdminDashboard = () => {
         fetchOrders(),
         fetchUsers(),
         fetchCategories(),
-        // fetchCoupons(),
+        fetchCoupons(),
         fetchStats(),
       ]);
-    } catch (error) {
+    } catch {
       toast.error(t('admin.errors.failedToFetchData'));
     } finally {
       setIsLoading(false);
@@ -159,8 +120,7 @@ const AdminDashboard = () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.CONTACT.GET_ALL));
       setContacts(Array.isArray(response.data.data) ? response.data.data : []);
-    } catch (error) {
-      console.error("Failed to fetch contacts:", error);
+    } catch {
       setContacts([]);
     }
   };
@@ -169,8 +129,7 @@ const AdminDashboard = () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.GET_ALL));
       setOrders(Array.isArray(response.data.data) ? response.data.data : []);
-    } catch (error) {
-      console.error("Failed to fetch orders:", error);
+    } catch {
       setOrders([]);
     }
   };
@@ -179,15 +138,13 @@ const AdminDashboard = () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.GET_ALL_USERS));
       setUsers(Array.isArray(response.data.data) ? response.data.data : []);
-    } catch (error) {
-      console.error("Failed to fetch users:", error);
+    } catch {
       setUsers([]);
     }
   };
 
   const fetchCategories = async () => {
     try {
-      console.log("🔄 Fetching categories (AdminDashboard, same as CategoriesPage)...");
       const params = {
         search: '',
         sortBy: 'order',
@@ -205,35 +162,37 @@ const AdminDashboard = () => {
         const data = responseData.data;
         const items = data?.data || data;
         setDashboardCategories(Array.isArray(items) ? items : []);
-        console.log("✅ Categories fetched:", items?.length || 0);
       } else {
         setDashboardCategories([]);
-        console.warn("⚠️ Categories fetch not successful:", responseData);
       }
-    } catch (error) {
-      console.error("❌ Failed to fetch categories:", error);
+    } catch {
       setDashboardCategories([]);
     }
   };
- //===================coupon code==>
-  // const fetchCoupons = async () => {
-  //   try {
-  //     const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.GET_ALL));
-  //     setCoupons(Array.isArray(response.data.data) ? response.data.data : []);
-  //     console.log(response);
-      
-  //   } catch (error) {
-  //     console.error("Failed to fetch coupons:", error);
-  //     setCoupons([]);
-  //   }
-  // };
+
+  const fetchCoupons = async () => {
+    try {
+      const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.GET_ALL), {
+        params: { limit: 100 },
+      });
+      setCoupons(Array.isArray(response.data.data) ? response.data.data : []);
+    } catch {
+      setCoupons([]);
+    }
+  };
 
   const fetchStats = async () => {
     try {
       const response = await axios.get(buildApiUrl(API_CONFIG.ENDPOINTS.ANALYTICS.GET));
-      setStats(response.data.data);
-    } catch (error) {
-      console.error("Failed to fetch stats:", error);
+      const data = response.data.data || {};
+      setStats({
+        totalProducts: data.products ?? 0,
+        totalOrders: data.totalSales ?? 0,
+        totalRevenue: data.totalRevenue ?? 0,
+        totalCustomers: data.users ?? 0,
+      });
+    } catch {
+      toast.error(t('admin.errors.failedToFetchData'));
     }
   };
 
@@ -242,7 +201,7 @@ const AdminDashboard = () => {
       try {
         await deleteProduct(productId);
         toast.success(t('admin.success.productDeleted'));
-      } catch (error) {
+      } catch {
         toast.error(t('admin.errors.failedToDeleteProduct'));
       }
     }
@@ -250,167 +209,122 @@ const AdminDashboard = () => {
 
   const handleUpdateOrderStatus = async (orderId, newStatus) => {
     try {
-      await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.UPDATE_STATUS.replace(":id", orderId)), {
+      await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.UPDATE_STATUS(orderId)), {
         status: newStatus,
       });
       toast.success(t('admin.success.orderStatusUpdated', { status: newStatus }));
-      fetchOrders(); // Refresh orders
-    } catch (error) {
+      fetchOrders();
+    } catch {
       toast.error(t('admin.errors.failedToUpdateOrderStatus'));
     }
   };
 
   const handleUpdatePaymentStatus = async (orderId, newPaymentStatus) => {
     try {
-      await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.UPDATE_PAYMENT_STATUS.replace(":id", orderId)), {
+      await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.ORDERS.UPDATE_PAYMENT_STATUS(orderId)), {
         paymentStatus: newPaymentStatus,
       });
       toast.success(t('admin.success.paymentStatusUpdated', { status: newPaymentStatus }));
-      fetchOrders(); // Refresh orders
-    } catch (error) {
+      fetchOrders();
+    } catch {
       toast.error(t('admin.errors.failedToUpdatePaymentStatus'));
     }
   };
 
   const handleToggleUserStatus = async (userId, newStatus) => {
     try {
-      await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.UPDATE_USER_STATUS.replace(":id", userId)), {
+      await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.AUTH.UPDATE_USER_STATUS(userId)), {
         status: newStatus,
       });
       toast.success(t('admin.success.userStatusUpdated', { status: newStatus }));
-      fetchUsers(); // Refresh users
-    } catch (error) {
+      fetchUsers();
+    } catch {
       toast.error(t('admin.errors.failedToUpdateUserStatus'));
     }
   };
- //===================coupon code==>
-  // const handleDeleteCoupon = async (couponId) => {
-  //   if (window.confirm(t('admin.confirmations.deleteCoupon'))) {
-  //     try {
-  //       await axios.delete(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.DELETE.replace(":id", couponId)));
-  //       toast.success(t('admin.success.couponDeleted'));
-  //       fetchCoupons(); // Refresh coupons
-  //     } catch (error) {
-  //       toast.error(t('admin.errors.failedToDeleteCoupon'));
-  //     }
-  //   }
-  // };
+  const handleDeleteCoupon = async (couponId) => {
+    if (!window.confirm(t('admin.confirmations.deleteCoupon'))) return;
+    try {
+      await axios.delete(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.DELETE(couponId)));
+      toast.success(t('admin.success.couponDeleted'));
+      fetchCoupons();
+    } catch (error) {
+      toast.error(error.response?.data?.message || t('admin.errors.failedToDeleteCoupon'));
+    }
+  };
+
+  const handleToggleCouponStatus = async (couponId) => {
+    try {
+      await axios.patch(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.TOGGLE_STATUS(couponId)));
+      toast.success(t('admin.success.couponUpdated'));
+      fetchCoupons();
+    } catch (error) {
+      toast.error(error.response?.data?.message || t('admin.errors.failedToSaveCoupon'));
+    }
+  };
 
   const handleProductSubmit = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      
-      // Debug: Log form data being sent
-      console.log('📝 Product form data:', productForm);
-      
-      // Handle regular form fields
-      Object.keys(productForm).forEach(key => {
-        if (key !== 'images' && productForm[key] !== "") {
-          formData.append(key, productForm[key]);
-          console.log(`📋 Added field: ${key} = ${productForm[key]}`);
+      Object.entries(productForm).forEach(([key, value]) => {
+        if (key !== 'images' && value !== "") {
+          formData.append(key, value);
         }
       });
-      
-      // Handle image files separately with correct field name
-      if (productForm.images && productForm.images.length > 0) {
-        productForm.images.forEach(file => {
-          formData.append('images', file); // Use 'images' field name that server expects
-          console.log(`🖼️ Added image: ${file.name}`);
-        });
-      }
+      productForm.images.forEach((file) => formData.append('images', file));
 
-      const endpoint = editingProduct 
-        ? buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.UPDATE(editingProduct._id))
-        : buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.CREATE);
-      
-      console.log(`🌐 Making ${editingProduct ? 'PUT' : 'POST'} request to:`, endpoint);
-
+      const config = { headers: { 'Content-Type': 'multipart/form-data' } };
       if (editingProduct) {
-        const response = await axios.put(endpoint, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        console.log('✅ Product update response:', response.data);
+        await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.UPDATE(editingProduct._id)), formData, config);
         toast.success(t('admin.success.productUpdated'));
       } else {
-        const response = await axios.post(endpoint, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        console.log('✅ Product create response:', response.data);
+        await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.PRODUCTS.CREATE), formData, config);
         toast.success(t('admin.success.productCreated'));
       }
 
       setShowCreateForm(false);
       setEditingProduct(null);
-      setProductForm({
-        name: "",
-        description: "",
-        price: "",
-        category: "",
-        stockQuantity: "",
-        images: [],
-      });
+      setProductForm(emptyProductForm);
       fetchAllProducts();
     } catch (error) {
-      console.error('❌ Product submit error:', error);
-      console.error('❌ Error response:', error.response?.data);
-      console.error('❌ Error status:', error.response?.status);
-      console.error('❌ Error message:', error.message);
-      
-      // Show more specific error message if available
-      const errorMessage = error.response?.data?.message || error.message || t('admin.errors.failedToSaveProduct');
-      toast.error(errorMessage);
+      toast.error(error.response?.data?.message || error.message || t('admin.errors.failedToSaveProduct'));
     }
   };
- //===================coupon code==>
-  // const handleCouponSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     if (editingCoupon) {
-  //       await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.UPDATE.replace(":id", editingCoupon._id)), couponForm);
-  //       toast.success(t('admin.success.couponUpdated'));
-  //     } else {
-  //       console.log(couponForm);
-  //       console.log(await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.CREATE), couponForm));
-  //       await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.CREATE), couponForm);
-        
-        
-  //       toast.success(t('admin.success.couponCreated'));
-  //     }
 
-  //     setShowCouponForm(false);
-  //     setEditingCoupon(null);
-  //     setCouponForm({
-  //       code: "",
-  //       description: "",
-  //       discountType: "percentage",
-  //       discountValue: "",
-  //       minimumAmount: "",
-  //       maximumUsage: "",
-  //       expiryDate: "",
-  //       valiedEmail: "",
-  //     });
-  //     fetchCoupons();
-  //   } catch (error) {
-  //     toast.error(t('admin.errors.failedToSaveCoupon'));
-  //     toast.error(error.response.data.error);
-  //     console.log(error);
-      
-  //   }
-  // };
+  const handleCouponSubmit = async (e) => {
+    e.preventDefault();
+    // Field names match the coupon API contract (`valiedEmail` is the server's spelling).
+    const payload = {
+      code: couponForm.code.trim(),
+      discountValue: Number(couponForm.discountPercentage),
+      expiryDate: couponForm.expiryDate,
+    };
+    try {
+      if (editingCoupon) {
+        await axios.put(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.UPDATE(editingCoupon._id)), payload);
+        toast.success(t('admin.success.couponUpdated'));
+      } else {
+        await axios.post(buildApiUrl(API_CONFIG.ENDPOINTS.COUPON.CREATE), {
+          ...payload,
+          valiedEmail: couponForm.email.trim(),
+        });
+        toast.success(t('admin.success.couponCreated'));
+      }
+      setShowCouponForm(false);
+      setEditingCoupon(null);
+      setCouponForm(emptyCouponForm);
+      fetchCoupons();
+    } catch (error) {
+      toast.error(error.response?.data?.message || t('admin.errors.failedToSaveCoupon'));
+    }
+  };
 
   const openProductForm = (product = null) => {
-    // Ensure categories are loaded when opening the product form
-    if (!Array.isArray(storeCategories) || storeCategories.length === 0) {
-      console.log(storeCategories);
-      
-      fetchAllCategories();
+    if (dashboardCategories.length === 0) {
+      fetchCategories();
     }
-    
+
     if (product) {
       setEditingProduct(product);
       setProductForm({
@@ -419,64 +333,39 @@ const AdminDashboard = () => {
         price: product.price || "",
         category: product.category || "",
         stockQuantity: product.stockQuantity || "",
-        images: [], // Reset images for editing - user can upload new ones
+        images: [],
       });
     } else {
       setEditingProduct(null);
-      setProductForm({
-        name: "",
-        description: "",
-        price: "",
-        category: "",
-        stockQuantity: "",
-        images: [],
-      });
+      setProductForm(emptyProductForm);
     }
     setShowCreateForm(true);
   };
- //===================coupon code==>
-  // const openCouponForm = (coupon = null) => {
-  //   if (coupon) {
-  //     setEditingCoupon(coupon);
-  //     setCouponForm({
-  //       code: coupon.code || "",
-  //       description: coupon.description || "",
-  //       discountType: coupon.discountType || "percentage",
-  //       discountValue: coupon.discountValue || "",
-  //       minimumAmount: coupon.minimumAmount || "",
-  //       maximumUsage: coupon.maxUsage || "",
-  //       expiryDate: coupon.expiryDate ? new Date(coupon.expiryDate).toISOString().split('T')[0] : "",
-  //       valiedEmail: coupon.valiedEmail || "",
-  //     });
-  //   } else {
-  //     setEditingCoupon(null);
-  //     setCouponForm({
-  //       code: "",
-  //       description: "",
-  //       discountType: "percentage",
-  //       discountValue: "",
-  //       minimumAmount: "",
-  //       maximumUsage: "",
-  //       expiryDate: "",
-  //       valiedEmail:""
-  //     });
-  //   }
-  //   setShowCouponForm(true);
-  // };
+  const openCouponForm = (coupon = null) => {
+    if (coupon) {
+      setEditingCoupon(coupon);
+      setCouponForm({
+        code: coupon.code || "",
+        email: "",
+        discountPercentage: coupon.discountPercentage ?? "",
+        expiryDate: coupon.expiryDate ? new Date(coupon.expiryDate).toISOString().split('T')[0] : "",
+      });
+    } else {
+      setEditingCoupon(null);
+      setCouponForm(emptyCouponForm);
+    }
+    setShowCouponForm(true);
+  };
 
   const handleCategorySubmit = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      
-      // Handle regular form fields
       Object.keys(categoryForm).forEach(key => {
         if (key !== 'image' && categoryForm[key] !== "") {
           formData.append(key, categoryForm[key]);
         }
       });
-      
-      // Handle image file
       if (categoryForm.image) {
         formData.append('image', categoryForm.image);
       }
@@ -497,15 +386,10 @@ const AdminDashboard = () => {
       if (result.success) {
         setShowCategoryForm(false);
         setEditingCategory(null);
-        setCategoryForm({
-          name: "",
-          description: "",
-          image: null,
-          featured: false,
-          order: "",
-        });
+        setCategoryForm(emptyCategoryForm);
+        fetchCategories();
       }
-    } catch (error) {
+    } catch {
       toast.error(t('admin.errors.failedToSaveCategory'));
     }
   };
@@ -516,22 +400,14 @@ const AdminDashboard = () => {
       setCategoryForm({
         name: category.name || "",
         description: category.description || "",
-        image: null, // Reset image for editing - user can upload new one
+        image: null,
         featured: category.featured || false,
         order: category.order || "",
       });
     } else {
       setEditingCategory(null);
-      setCategoryForm({
-        name: "",
-        description: "",
-        image: null,
-        featured: false,
-        order: "",
-      });
+      setCategoryForm(emptyCategoryForm);
     }
-    console.log(categoryForm);
-    
     setShowCategoryForm(true);
   };
 
@@ -541,10 +417,10 @@ const AdminDashboard = () => {
         const result = await deleteCategory(categoryId);
         if (result.success) {
           toast.success(t('admin.success.categoryDeleted'));
+          fetchCategories();
         }
-      } catch (error) {
+      } catch {
         toast.error(t('admin.errors.failedToDeleteCategory'));
-        console.error("Failed to delete category:", error);
       }
     }
   };
@@ -554,6 +430,11 @@ const AdminDashboard = () => {
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const countOrders = (predicate) => (orders || []).filter(predicate).length;
+  const pendingOrders = countOrders((order) => order.status === "pending");
+  const cancelledOrders = countOrders((order) => order.status === "cancelled");
+  const paidOrders = countOrders((order) => order.paymentStatus === "paid");
 
   const filteredOrders = (orders || []).filter((order) => {
     if (filters.orderStatus && order.status !== filters.orderStatus) return false;
@@ -566,15 +447,8 @@ const AdminDashboard = () => {
     return true;
   });
 
-  // Ensure dashboardCategories is always an array
   const categoriesArray = Array.isArray(dashboardCategories) ? dashboardCategories : [];
-  // 
-  console.log(dashboardCategories,"categories");
-  // categoriesArray.map(cat=>{
-  //   console.log(cat.name);
-    
-  // })
-  
+
   const filteredCategories = categoriesArray.filter(
     (category) =>
       (category.name && category.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -587,7 +461,7 @@ const AdminDashboard = () => {
     { id: "categories", name: t("admin.tabs.categories"), icon: Tag },
     { id: "orders", name: t("admin.tabs.orders"), icon: ShoppingCart },
     { id: "users", name: t("admin.tabs.users"), icon: Users },
-    // { id: "coupons", name: t("admin.tabs.coupons"), icon: Tag },
+    { id: "coupons", name: t("admin.tabs.coupons"), icon: Ticket },
     { id: "analytics", name: t("admin.tabs.analytics"), icon: TrendingUp },
   ];
 
@@ -679,7 +553,7 @@ const AdminDashboard = () => {
                   {stats.totalOrders}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {stats.pendingOrders} {t("admin.stats.pending_orders")}
+                  {pendingOrders} {t("admin.stats.pending_orders")}
                 </p>
               </div>
               <div className="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center">
@@ -696,7 +570,7 @@ const AdminDashboard = () => {
                   {stats.totalRevenue?.toFixed(2) || "0.00"} SR
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  {stats.paidOrders} {t("admin.stats.paid_orders")}
+                  {paidOrders} {t("admin.stats.paid_orders")}
                 </p>
               </div>
               <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center">
@@ -1221,13 +1095,6 @@ const AdminDashboard = () => {
                           <option value="failed">{t("admin.orders.payment.failed")}</option>
                           <option value="refunded">{t("admin.orders.payment.refunded")}</option>
                         </select>
-                        <button
-                          onClick={() => setShowOrderDetails(order)}
-                          className="p-1 text-blue-500 hover:bg-blue-500/10 rounded"
-                          title={t("admin.orders.view_details")}
-                        >
-                          <Eye size={14} />
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -1340,13 +1207,6 @@ const AdminDashboard = () => {
                               <option value="active">{t("admin.users.active")}</option>
                               <option value="inactive">{t("admin.users.inactive")}</option>
                             </select>
-                            <button
-                              onClick={() => setShowUserDetails(user)}
-                              className="p-2 text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors duration-300"
-                              title={t("admin.users.view_details")}
-                            >
-                              <Eye size={16} />
-                            </button>
                           </div>
                         </td>
                       </tr>
@@ -1357,7 +1217,7 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* {activeTab === "coupons" && (
+          {activeTab === "coupons" && (
             <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-foreground">
@@ -1367,75 +1227,71 @@ const AdminDashboard = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => openCouponForm()}
-                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2"
+                  className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors duration-300 flex items-center space-x-2 rtl:space-x-reverse"
                 >
                   <Plus size={16} />
                   <span>{t("admin.coupons.add_coupon")}</span>
                 </motion.button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {(coupons || []).map((coupon) => (
-                  <div
-                    key={coupon._id}
-                    className="p-4 bg-background rounded-lg border border-border"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-foreground">
-                        {coupon.code}
-                      </h3>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                          coupon.isActive ? "active" : "inactive"
-                        )}`}
-                      >
-                        {coupon.isActive ? t("admin.coupons.active") : t("admin.coupons.inactive")}
-                      </span>
+              {coupons.length === 0 ? (
+                <p className="text-muted-foreground">{t("admin.coupons.empty")}</p>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {coupons.map((coupon) => (
+                    <div
+                      key={coupon._id}
+                      className="p-4 bg-background rounded-lg border border-border"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-semibold text-foreground">{coupon.code}</h3>
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                            coupon.isActive ? "active" : "inactive"
+                          )}`}
+                        >
+                          {coupon.isActive ? t("admin.coupons.active") : t("admin.coupons.inactive")}
+                        </span>
+                      </div>
+                      <div className="space-y-1 text-sm">
+                        <p>
+                          <span className="text-muted-foreground">{t("admin.coupons.discount")}:</span>{" "}
+                          {coupon.discountPercentage}%
+                        </p>
+                        <p>
+                          <span className="text-muted-foreground">{t("admin.coupons.expires")}:</span>{" "}
+                          {new Date(coupon.expiryDate).toLocaleDateString()}
+                        </p>
+                      </div>
+                      <div className="flex space-x-2 rtl:space-x-reverse mt-3">
+                        <button
+                          onClick={() => openCouponForm(coupon)}
+                          className="p-1 text-blue-500 hover:bg-blue-500/10 rounded"
+                          title={t("admin.coupons.edit_coupon")}
+                        >
+                          <Edit size={14} />
+                        </button>
+                        <button
+                          onClick={() => handleToggleCouponStatus(coupon._id)}
+                          className="p-1 text-amber-500 hover:bg-amber-500/10 rounded"
+                          title={t("admin.coupons.toggle_status")}
+                        >
+                          <Power size={14} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteCoupon(coupon._id)}
+                          className="p-1 text-red-500 hover:bg-red-500/10 rounded"
+                          title={t("admin.coupons.delete_coupon")}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {coupon.description}
-                    </p>
-                    <div className="space-y-1 text-sm">
-                      <p>
-                        <span className="text-muted-foreground">{t("admin.coupons.discount")}:</span>{" "}
-                        {coupon.discountType === "percentage"
-                          ? `${coupon.discountValue}%`
-                          : `$${coupon.discountValue}`}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">{t("admin.coupons.min_amount")}:</span>{" "}
-                        ${coupon.minimumAmount}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">{t("admin.coupons.usage")}:</span>{" "}
-                        {coupon.usageCount || 0} / {coupon.maxUsage || "∞"}
-                      </p>
-                      <p>
-                        <span className="text-muted-foreground">{t("admin.coupons.expires")}:</span>{" "}
-                        {new Date(coupon.expiryDate).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="flex space-x-2 mt-3">
-                                             <button
-                         onClick={() => openCouponForm(coupon)}
-                         className="p-1 text-blue-500 hover:bg-blue-500/10 rounded"
-                         title={t("admin.coupons.edit_coupon")}
-                       >
-                         <Edit size={14} />
-                       </button>
-                      <button
-                        onClick={() => handleDeleteCoupon(coupon._id)}
-                        className="p-1 text-red-500 hover:bg-red-500/10 rounded"
-                        title={t("admin.coupons.delete_coupon")}
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
-          )} */}
+          )}
 
           {activeTab === "analytics" && (
             <div className="space-y-8">
@@ -1475,19 +1331,19 @@ const AdminDashboard = () => {
                   <div className="p-4 bg-background rounded-lg text-center">
                     <p className="text-sm text-muted-foreground">{t("admin.analytics.pending")}</p>
                     <p className="text-2xl font-bold text-yellow-600">
-                      {stats.pendingOrders}
+                      {pendingOrders}
                     </p>
                   </div>
                   <div className="p-4 bg-background rounded-lg text-center">
                     <p className="text-sm text-muted-foreground">{t("admin.analytics.paid")}</p>
                     <p className="text-2xl font-bold text-green-600">
-                      {stats.paidOrders}
+                      {paidOrders}
                     </p>
                   </div>
                   <div className="p-4 bg-background rounded-lg text-center">
                     <p className="text-sm text-muted-foreground">{t("admin.analytics.cancelled")}</p>
                     <p className="text-2xl font-bold text-red-600">
-                      {stats.cancelledOrders}
+                      {cancelledOrders}
                     </p>
                   </div>
                   <div className="p-4 bg-background rounded-lg text-center">
@@ -1551,24 +1407,14 @@ const AdminDashboard = () => {
                   >
                     <option value="">{t("admin.products.form.select_category")}</option>
                     
-                    {categoriesArray
+                    {[...categoriesArray]
                       .sort((a, b) => (a.order || 0) - (b.order || 0) || a.name.localeCompare(b.name))
                       .map((cat) => (
-                        
-                        
                         <option key={cat._id} value={cat.name}>
                           {cat.name}
                         </option>
                       ))}
                   </select>
-                  {/* Debug info - remove this after testing */}
-                  {process.env.NODE_ENV === 'development' && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      Categories loaded: {categoriesArray?.length || 0} (only active categories)
-                      <br />
-                      If you have 37 in DB but see fewer here, some categories might be inactive
-                    </p>
-                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">{t("admin.products.form.stock_quantity")}</label>
@@ -1597,7 +1443,7 @@ const AdminDashboard = () => {
                       setProductForm({ ...productForm, images: files });
                     }}
                     className="w-full p-2 border rounded"
-                    required={!editingProduct} // Only required for new products
+                    required={!editingProduct}
                   />
                   {productForm.images && productForm.images.length > 0 && (
                     <p className="text-sm text-gray-600 mt-1">
@@ -1630,8 +1476,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Coupon Form Modal */}
-        {/* {showCouponForm && (
+        {showCouponForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl font-semibold mb-4">
@@ -1639,84 +1484,51 @@ const AdminDashboard = () => {
               </h2>
               <form onSubmit={handleCouponSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.code")}</label>
+                  <label htmlFor="coupon-code" className="block text-sm font-medium mb-1">{t("admin.coupons.form.code")}</label>
                   <input
+                    id="coupon-code"
                     type="text"
                     value={couponForm.code}
                     onChange={(e) => setCouponForm({ ...couponForm, code: e.target.value })}
                     className="w-full p-2 border rounded"
+                    minLength={3}
+                    maxLength={20}
                     required
                   />
                 </div>
+                {!editingCoupon && (
+                  <div>
+                    <label htmlFor="coupon-email" className="block text-sm font-medium mb-1">{t("admin.coupons.form.email")}</label>
+                    <input
+                      id="coupon-email"
+                      type="email"
+                      value={couponForm.email}
+                      onChange={(e) => setCouponForm({ ...couponForm, email: e.target.value })}
+                      className="w-full p-2 border rounded"
+                      required
+                    />
+                  </div>
+                )}
                 <div>
-                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.valiedEmail")}</label>
-                  <input
-                    type="text"
-                    value={couponForm.valiedEmail}
-                    onChange={(e) => setCouponForm({ ...couponForm, valiedEmail: e.target.value })}
-                    className="w-full p-2 border rounded"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.description")}</label>
-                  <textarea
-                    value={couponForm.description}
-                    onChange={(e) => setCouponForm({ ...couponForm, description: e.target.value })}
-                    className="w-full p-2 border rounded"
-                    rows={3}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.discount_type")}</label>
-                  <select
-                    value={couponForm.discountType}
-                    onChange={(e) => setCouponForm({ ...couponForm, discountType: e.target.value })}
-                    className="w-full p-2 border rounded"
-                    required
-                  >
-                    <option value="percentage">{t("admin.coupons.form.percentage")}</option>
-                    <option value="fixed">{t("admin.coupons.form.fixed_amount")}</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    {t("admin.coupons.form.discount_value")} {couponForm.discountType === "percentage" ? "(%)" : "(SR)"}
+                  <label htmlFor="coupon-discount" className="block text-sm font-medium mb-1">
+                    {t("admin.coupons.form.discount_value")} (%)
                   </label>
                   <input
+                    id="coupon-discount"
                     type="number"
-                    step={couponForm.discountType === "percentage" ? "1" : "0.01"}
-                    value={couponForm.discountValue}
-                    onChange={(e) => setCouponForm({ ...couponForm, discountValue: e.target.value })}
+                    min="1"
+                    max="100"
+                    step="1"
+                    value={couponForm.discountPercentage}
+                    onChange={(e) => setCouponForm({ ...couponForm, discountPercentage: e.target.value })}
                     className="w-full p-2 border rounded"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.minimum_amount")}</label>
+                  <label htmlFor="coupon-expiry" className="block text-sm font-medium mb-1">{t("admin.coupons.form.expiry_date")}</label>
                   <input
-                    type="number"
-                    step="0.01"
-                    value={couponForm.minimumAmount}
-                    onChange={(e) => setCouponForm({ ...couponForm, minimumAmount: e.target.value })}
-                    className="w-full p-2 border rounded"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.maximum_usage")}</label>
-                  <input
-                    type="number"
-                    value={couponForm.maximumUsage}
-                    onChange={(e) => setCouponForm({ ...couponForm, maximumUsage: e.target.value })}
-                    className="w-full p-2 border rounded"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">{t("admin.coupons.form.expiry_date")}</label>
-                  <input
+                    id="coupon-expiry"
                     type="date"
                     value={couponForm.expiryDate}
                     onChange={(e) => setCouponForm({ ...couponForm, expiryDate: e.target.value })}
@@ -1724,7 +1536,7 @@ const AdminDashboard = () => {
                     required
                   />
                 </div>
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 rtl:space-x-reverse">
                   <button
                     type="submit"
                     className="flex-1 bg-primary text-white py-2 rounded hover:bg-primary/90"
@@ -1742,7 +1554,7 @@ const AdminDashboard = () => {
               </form>
             </div>
           </div>
-        )} */}
+        )}
 
         {/* Category Form Modal */}
         {showCategoryForm && (
@@ -1782,7 +1594,7 @@ const AdminDashboard = () => {
                       setCategoryForm({ ...categoryForm, image: file });
                     }}
                     className="w-full p-2 border rounded"
-                    required={!editingCategory} // Only required for new categories
+                    required={!editingCategory}
                   />
                   {editingCategory && (
                     <p className="text-sm text-gray-500 mt-1">

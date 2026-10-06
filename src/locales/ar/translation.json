@@ -804,36 +804,35 @@
       "delete_product":"حزف المنتج",
       
       "add_product": "إضافة منتج",
-      "add_new_product": " إضافة منتج جديد ",
+      "add_new_product": "إضافة منتج جديد",
       "search_placeholder": "البحث في المنتجات...",
       "featured": "مميز",
       "regular": "عادي",
       "edit": "تعديل المنتج",
       "delete": "حذف المنتج",
       "view_details": "عرض التفاصيل",
-      "form":{
-              "add_product": "إضافة منتج",
-              "name": "اسم المنتج ",
-              "description": "وصف المنتج ",
-              "price": "سعر المنتج ",
-              "category": "نوع المنتج ",
-              "select_category": "تحديد نوع  المنتج ",
-              "stock_quantity": "عدد قطع المنتج ",
-              "images": "صور المنتج  ",
-              "images_selected": "تحديد صورة للمنتج  ",
-              "image_update_hint": "تحميل معلومة عن صورة المنتج ",
-              "update": "تحميل ",
-              "create": " انشاء ",
-              "cancel": " الغاء "
-
+      "form": {
+        "add_product": "إضافة منتج",
+        "name": "اسم المنتج",
+        "description": "الوصف",
+        "price": "السعر",
+        "category": "التصنيف",
+        "select_category": "اختر التصنيف",
+        "stock_quantity": "المخزون",
+        "images": "الصور",
+        "images_selected": "تم اختيار {{count}} صورة",
+        "image_update_hint": "اترك الحقل فارغاً للإبقاء على الصور الحالية.",
+        "update": "تحديث",
+        "create": "إنشاء",
+        "cancel": "إلغاء"
       },
-      "table":{
-        "product":"المنتج",
-        "category":"التصنيف",
-        "price":"السعر",
-        "stock":"القطعة",
-        "status":"الحالة",
-        "actions":"الافعال"
+      "table": {
+        "product": "المنتج",
+        "category": "التصنيف",
+        "price": "السعر",
+        "stock": "المخزون",
+        "status": "الحالة",
+        "actions": "الإجراءات"
       },
       "product_details": "تفاصيل المنتج",
       "created_at": "تاريخ الإنشاء",
@@ -932,35 +931,24 @@
       "search_placeholder": "البحث في الكوبونات...",
       "edit": "تعديل الكوبون",
       "delete": "حذف الكوبون",
-      "active":"نشط",
-      "inactive":"غير نشط",
-      "discount":"الخصم",
-      "min_amount":"اقل قيمة",
-      "usage":"مستخدم",
-      "expires":"منتهي",
-      "edit_coupon":"تعديل الكوبون",
-      "delete_coupon":"حزف الكوبون",
-      "add_new_coupon":"إضافة كوبون جديد",
-      "form":{
-        "code":"كود",
-        "description":"الوصف",
-        "discount_type":"نوع الخصم",
-        "percentage":"النسبة المؤوية",
-        "fixed_amount":"القيمة الثابتة ",
-        "discount_value":"قيمة الخصم",
-        "minimum_amount":"الحد الادني",
-        "maximum_usage":"اقصي أستخدام",
-        "update":"تحميل ",
-        "expiry_date":"تاريخ الانتهاء",
-        "create":"إنشاء",
-        "cancel":"ألغاء",
-              "valiedEmail":"اميل مستخم الكوبون"
-
-
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "discount": "الخصم",
+      "expires": "ينتهي في",
+      "edit_coupon": "تعديل الكوبون",
+      "delete_coupon": "حذف الكوبون",
+      "toggle_status": "تفعيل / إيقاف",
+      "add_new_coupon": "إضافة كوبون جديد",
+      "empty": "لا توجد كوبونات بعد.",
+      "form": {
+        "code": "الكود",
+        "email": "بريد العميل",
+        "discount_value": "الخصم",
+        "expiry_date": "تاريخ الانتهاء",
+        "update": "تحديث",
+        "create": "إنشاء",
+        "cancel": "إلغاء"
       }
-
-
-
     },
     "forms": {
       "name": "الاسم",

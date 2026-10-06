@@ -1,9 +1,15 @@
-import React, { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Toaster } from "react-hot-toast";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import LoadingSpinner from "./components/LoadingSpinner";
+import { useUserStore } from "./stores/useUserStore";
+import { useCartStore } from "./stores/useCartStore";
+import { useWishlistStore } from "./stores/useWishlistStore";
+import "./App.css";
 
-// Lazy load pages with better chunk splitting
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ShopPage = lazy(() => import("./pages/ShopPage"));
 const DealsPage = lazy(() => import("./pages/DealsPage"));
@@ -27,29 +33,11 @@ const PurchaseSuccessPage = lazy(() => import("./pages/PurchaseSuccessPage"));
 const PurchaseCancelPage = lazy(() => import("./pages/PurchaseCancelPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 
-// Components
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import LoadingSpinner from "./components/LoadingSpinner";
-
-// Stores
-import { useUserStore } from "./stores/useUserStore";
-import { useCartStore } from "./stores/useCartStore";
-import { useWishlistStore } from "./stores/useWishlistStore";
-
-// Utilities
-import { preloadCommonComponents } from "./lib/dynamicImports";
-
-import "./App.css";
-
-// Preload critical pages for better UX
-const preloadCriticalPages = () => {
-  // Preload shop and product pages as they're commonly accessed
-  const shopPromise = import("./pages/ShopPage");
-  const productPromise = import("./pages/ProductDetailPage");
-  
-  // Preload auth pages if user is not logged in
-  if (!localStorage.getItem('token')) {
+// Warm up the most visited pages once the first screen has rendered.
+const preloadCommonPages = (isLoggedIn) => {
+  import("./pages/ShopPage");
+  import("./pages/ProductDetailPage");
+  if (!isLoggedIn) {
     import("./pages/LoginPage");
     import("./pages/SignUpPage");
   }
@@ -62,38 +50,30 @@ const AppContent = () => {
   const { fetchWishlist } = useWishlistStore();
 
   useEffect(() => {
-    // Initialize user from localStorage first
     const storedUser = initializeUser();
-    
-    // Only verify authentication if there's stored user data and user hasn't just logged out
+
+    // Verify the stored session with the server, unless the user has just logged out.
     if (storedUser && !justLoggedOut) {
-      checkAuth(true); // Force server check only if we have stored user data
+      checkAuth(true);
     }
-    // Preload critical pages after initial load
-    const timer = setTimeout(preloadCriticalPages, 2000);
-    // Preload common UI components
-    preloadCommonComponents();
+    const timer = setTimeout(() => preloadCommonPages(Boolean(storedUser)), 2000);
     return () => clearTimeout(timer);
-  }, [justLoggedOut, initializeUser]); // Removed checkAuth from dependencies
+  }, [justLoggedOut, initializeUser, checkAuth]);
 
   useEffect(() => {
     if (user) {
-      getCartItems().catch(error => {
-        // Cart fetch error
-      });
-      fetchWishlist().catch(error => {
-        // Wishlist fetch error
-      });
+      // Both stores report their own errors.
+      getCartItems().catch(() => {});
+      fetchWishlist().catch(() => {});
     }
-  }, [user]); // Removed getCartItems and fetchWishlist from dependencies
+  }, [user, getCartItems, fetchWishlist]);
 
   if (checkingAuth) {
     return <LoadingSpinner />;
   }
 
-  // Don't show the global navbar on the homepage since it has its own integrated navbar
+  // The home page renders its own navbar over the hero section.
   const showGlobalNavbar = location.pathname !== "/";
-  // Don't show footer on auth pages and admin dashboard
   const showFooter = !["/login", "/signup", "/forget-password", "/reset-password", "/admin"].includes(location.pathname);
 
   return (
@@ -170,7 +150,6 @@ const AppContent = () => {
               }
             />
 
-            {/* Catch all */}
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </motion.div>

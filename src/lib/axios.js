@@ -1,163 +1,122 @@
 import axios from "axios";
-import { getApiBaseUrl } from "../config/api.js";
-import API_CONFIG from "../config/api.js";
+import API_CONFIG, { getApiBaseUrl } from "../config/api.js";
+
+const ACCESS_TOKEN_MAX_AGE = 60 * 60 * 24 * 7;
+const REFRESH_TOKEN_MAX_AGE = 60 * 60 * 24 * 30;
 
 const axiosInstance = axios.create({
   baseURL: getApiBaseUrl(),
-  withCredentials: true, // send cookies to the server
-  timeout: 10000, // 10 second timeout
+  withCredentials: true,
+  timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  }
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
 });
 
-// Add a response interceptor to handle errors
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // Handle image loading errors
-    if (error.config && error.config.url && error.config.url.includes('images.unsplash.com')) {
-      return Promise.resolve({ data: null, status: 200 });
-    }
-    
-    // Handle CORS errors
-    if (error.code === 'ERR_NETWORK' || error.message === 'Network Error') {
-      console.error('Network error - please check your connection and try again');
-    }
-    
-    // Log 403 errors for debugging
-    if (error.response?.status === 403) {
-      console.error('[Axios] 403 Forbidden:', error.config?.url, '\nHeaders:', error.config?.headers, '\nCookies:', document.cookie);
-    }
-    return Promise.reject(error);
+const readCookie = (name) =>
+  document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`))
+    ?.split("=")[1];
+
+const storeToken = (name, value, maxAge) => {
+  localStorage.setItem(name, value);
+  sessionStorage.setItem(name, value);
+  const secure = import.meta.env.PROD ? "; secure" : "";
+  document.cookie = `${name}=${value}; path=/; max-age=${maxAge}; samesite=Lax${secure}`;
+};
+
+const clearTokens = () => {
+  for (const name of ["accessToken", "refreshToken"]) {
+    localStorage.removeItem(name);
+    sessionStorage.removeItem(name);
+    document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
   }
-);
+};
 
-// Request interceptor for production
-axiosInstance.interceptors.request.use(
-  (config) => {
-    // Skip token check for auth endpoints to prevent infinite loops
-    const authEndpoints = ['/auth/refresh-token', '/auth/login', '/auth/signup'];
-    if (authEndpoints.some(endpoint => config.url?.includes(endpoint))) {
-      return config;
-    }
-    
-    // Try to get token from multiple sources (cookies, localStorage, sessionStorage)
-    let accessToken = document.cookie.split("; ")
-      .find(row => row.startsWith("accessToken="))
-      ?.split("=")[1] || 
-      localStorage.getItem("accessToken") || 
-      sessionStorage.getItem("accessToken");
+const storeTokensFromHeaders = (headers) => {
+  const accessToken = headers["x-access-token"];
+  const refreshToken = headers["x-refresh-token"];
+  if (accessToken) storeToken("accessToken", accessToken, ACCESS_TOKEN_MAX_AGE);
+  if (refreshToken) storeToken("refreshToken", refreshToken, REFRESH_TOKEN_MAX_AGE);
+  return accessToken;
+};
 
-    if (accessToken && !config.headers.Authorization) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
+axiosInstance.interceptors.request.use((config) => {
+  // Auth endpoints manage their own tokens; attaching a stale one can cause refresh loops.
+  const authEndpoints = ["/auth/refresh-token", "/auth/login", "/auth/signup"];
+  if (authEndpoints.some((endpoint) => config.url?.includes(endpoint))) {
     return config;
-  },
-  (error) => {
-    return Promise.reject(error);
   }
-);
 
-// Response interceptor for error handling
+  const accessToken =
+    readCookie("accessToken") ||
+    localStorage.getItem("accessToken") ||
+    sessionStorage.getItem("accessToken");
+
+  if (accessToken && !config.headers.Authorization) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+  return config;
+});
+
 axiosInstance.interceptors.response.use(
   (response) => {
-    // Skip token capture for login and refresh endpoints to prevent loops
-    if (response.config.url?.includes('/auth/refresh-token') || 
-        response.config.url?.includes('/auth/login')) {
-      return response;
+    const url = response.config.url || "";
+    if (!url.includes("/auth/refresh-token") && !url.includes("/auth/login")) {
+      // Cross-origin deployments cannot read the API's cookies, so tokens are also sent as headers.
+      storeTokensFromHeaders(response.headers);
     }
-
-    // Capture tokens from headers if present (for cross-origin requests)
-    const accessToken = response.headers['x-access-token'];
-    const refreshToken = response.headers['x-refresh-token'];
-
-    if (accessToken) {
-      localStorage.setItem('accessToken', accessToken);
-      sessionStorage.setItem('accessToken', accessToken);
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=${60 * 60 * 24 * 7}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`; // 7 days
-    }
-    if (refreshToken) {
-      localStorage.setItem('refreshToken', refreshToken);
-      sessionStorage.setItem('refreshToken', refreshToken);
-      document.cookie = `refreshToken=${refreshToken}; path=/; max-age=${60 * 60 * 24 * 30}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`; // 30 days
-    }
-
     return response;
   },
   async (error) => {
     const originalRequest = error.config;
 
-    // Don't retry if it's already been retried or if it's a refresh token request
-    if (originalRequest.url?.includes('/auth/refresh-token') || 
-        originalRequest.url?.includes('/auth/login') ||
-        originalRequest._retry) {
+    if (
+      !originalRequest ||
+      originalRequest._retry ||
+      originalRequest.url?.includes("/auth/refresh-token") ||
+      originalRequest.url?.includes("/auth/login") ||
+      error.response?.status !== 401
+    ) {
       return Promise.reject(error);
     }
 
-    // Handle 401 errors (token expired)
-    if (error.response?.status === 401) {
-      originalRequest._retry = true;
+    originalRequest._retry = true;
 
-      try {
-        // Try to get refresh token from multiple sources
-        const refreshToken = localStorage.getItem('refreshToken') ||
-          sessionStorage.getItem('refreshToken') ||
-          document.cookie.split('; ').find(row => row.startsWith('refreshToken='))?.split('=')[1];
+    const refreshToken =
+      localStorage.getItem("refreshToken") ||
+      sessionStorage.getItem("refreshToken") ||
+      readCookie("refreshToken");
 
-        if (refreshToken) {
-          // Try to refresh the token - use the full URL without baseURL to prevent double prefixing
-          const response = await axios.post(
-            `${API_CONFIG.BASE_URL}/auth/refresh-token`,
-            {},
-            {
-              withCredentials: true,
-              headers: {
-                'Authorization': `Bearer ${refreshToken}`,
-                'Content-Type': 'application/json'
-              }
-            }
-          );
+    if (!refreshToken) {
+      return Promise.reject(error);
+    }
 
-          if (response.status === 200 && response.data?.success) {
-            // Update tokens
-            const newAccessToken = response.headers['x-access-token'];
-            const newRefreshToken = response.headers['x-refresh-token'];
-
-            if (newAccessToken) {
-              localStorage.setItem('accessToken', newAccessToken);
-              sessionStorage.setItem('accessToken', newAccessToken);
-              document.cookie = `accessToken=${newAccessToken}; path=/; max-age=${60 * 60 * 24 * 7}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`;
-            }
-            
-            if (newRefreshToken) {
-              localStorage.setItem('refreshToken', newRefreshToken);
-              sessionStorage.setItem('refreshToken', newRefreshToken);
-              document.cookie = `refreshToken=${newRefreshToken}; path=/; max-age=${60 * 60 * 24 * 30}; secure=${process.env.NODE_ENV === 'production'}; samesite=Lax`;
-            }
-
-            // Update the original request with the new token
-            originalRequest.headers.Authorization = `Bearer ${newAccessToken || ''}`;
-            
-            // Retry the original request with the new token
-            return axiosInstance(originalRequest);
-          }
+    try {
+      // Plain axios, not the instance, so this request skips the interceptors above.
+      const response = await axios.post(
+        `${API_CONFIG.BASE_URL}/auth/refresh-token`,
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+            "Content-Type": "application/json",
+          },
         }
-      } catch (refreshError) {
-        console.error('Token refresh failed:', refreshError);
-        // Clear all auth data
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        sessionStorage.removeItem('accessToken');
-        sessionStorage.removeItem('refreshToken');
-        document.cookie = 'accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-        document.cookie = 'refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
-        
-        // Only redirect if not already on login page to prevent loops
-        if (!window.location.pathname.includes('/login')) {
-          window.location.href = '/login';
-        }
+      );
+
+      if (response.status === 200 && response.data?.success) {
+        const newAccessToken = storeTokensFromHeaders(response.headers);
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken || ""}`;
+        return axiosInstance(originalRequest);
+      }
+    } catch {
+      clearTokens();
+      if (!window.location.pathname.includes("/login")) {
+        window.location.href = "/login";
       }
     }
 
@@ -166,5 +125,3 @@ axiosInstance.interceptors.response.use(
 );
 
 export default axiosInstance;
-
-

@@ -1,9 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import path from "path";
+import { fileURLToPath } from "node:url";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
@@ -11,9 +10,6 @@ export default defineConfig({
     host: true,
     cors: true,
     open: false,
-
-
-    allowedHosts: ['5174-ihkfje5ha9ofr4jrb6vtx-7f1f3943.manusvm.computer']
   },
   preview: {
     port: 4173,
@@ -22,20 +18,17 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "use-sync-external-store/shim": path.resolve(__dirname, "node_modules/use-sync-external-store/shim/index.js"),
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "use-sync-external-store/shim": fileURLToPath(
+        new URL("./node_modules/use-sync-external-store/shim/index.js", import.meta.url)
+      ),
     },
   },
   build: {
-    // Ensure _redirects is copied to the build output
-    copyPublicDir: true,
-    // Increase chunk size warning limit
     chunkSizeWarningLimit: 1000,
     rollupOptions: {
       output: {
-        // Manual chunk splitting for better caching and loading performance
         manualChunks: (id) => {
-          // Vendor chunks for third-party libraries
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
               return 'react-vendor';
@@ -55,11 +48,9 @@ export default defineConfig({
             if (id.includes('tailwind') || id.includes('clsx') || id.includes('class-variance-authority')) {
               return 'styling-vendor';
             }
-            // Group other node_modules
             return 'vendor';
           }
           
-          // Feature-based chunks for your application code
           if (id.includes('/pages/')) {
             if (id.includes('LoginPage') || id.includes('SignUpPage') || id.includes('ForgetPasswordPage') || id.includes('ResetPasswordPage') || id.includes('EmailConfirmationPage')) {
               return 'auth-pages';
@@ -87,7 +78,6 @@ export default defineConfig({
             return 'stores';
           }
         },
-        // Optimize chunk naming for better caching
         chunkFileNames: (chunkInfo) => {
           const facadeModuleId = chunkInfo.facadeModuleId
             ? chunkInfo.facadeModuleId.split('/').pop().replace('.jsx', '').replace('.js', '')
@@ -108,13 +98,10 @@ export default defineConfig({
         }
       }
     },
-    // Disable source maps for production security
     sourcemap: false,
-    // Optimize dependencies
     commonjsOptions: {
       include: [/node_modules/],
     },
-    // Minify options
     minify: 'terser',
     terserOptions: {
       compress: {
@@ -127,7 +114,6 @@ export default defineConfig({
       },
     },
   },
-  // Optimize dependencies
   optimizeDeps: {
     include: [
       'react',
@@ -141,11 +127,9 @@ export default defineConfig({
       'use-sync-external-store'
     ],
     esbuildOptions: {
-      // Ensure proper resolution of use-sync-external-store
       resolveExtensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
     exclude: [
-      // Exclude heavy packages that should be loaded on demand
       '@radix-ui/react-accordion',
       '@radix-ui/react-alert-dialog',
       '@radix-ui/react-aspect-ratio',

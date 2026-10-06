@@ -14,10 +14,10 @@ i18n
       ar: { translation: ar },
     },
     fallbackLng: 'ar',
-    lng: 'ar',
     supportedLngs: ['en', 'ar'],
+    // Arabic by default (from <html lang="ar">) unless the visitor picked a language before.
     detection: {
-      order: ['localStorage', 'navigator', 'htmlTag'],
+      order: ['localStorage', 'htmlTag'],
       caches: ['localStorage'],
     },
     interpolation: { escapeValue: false },

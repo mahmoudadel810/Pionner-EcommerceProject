@@ -21,10 +21,10 @@ const DealsPage = () => {
   }, [fetchFeaturedProducts]);
 
   const dealStats = [
-    { number: "500+", label: t('deals.stats.activeDeals'), icon: Zap, color: "from-purple-500 to-purple-600" },
-    { number: "24hr", label: t('deals.stats.flashSales'), icon: Flame, color: "from-red-500 to-red-600" },
-    { number: "70%", label: t('deals.stats.maxDiscount'), icon: Percent, color: "from-green-500 to-green-600" },
-    { number: "10K+", label: t('deals.stats.happyBuyers'), icon: ShoppingBag, color: "from-blue-500 to-blue-600" },
+    { number: t('deals.stats.activeDealsValue'), label: t('deals.stats.activeDeals'), icon: Zap, color: "from-purple-500 to-purple-600" },
+    { number: t('deals.stats.flashSalesValue'), label: t('deals.stats.flashSales'), icon: Flame, color: "from-red-500 to-red-600" },
+    { number: t('deals.stats.maxDiscountValue'), label: t('deals.stats.maxDiscount'), icon: Percent, color: "from-green-500 to-green-600" },
+    { number: t('deals.stats.happyBuyersValue'), label: t('deals.stats.happyBuyers'), icon: ShoppingBag, color: "from-blue-500 to-blue-600" },
   ];
 
   if (loading) {
@@ -48,8 +48,8 @@ const DealsPage = () => {
       >
         {/* Background Elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-red-400/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 start-1/4 w-72 h-72 bg-red-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 end-1/4 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl"></div>
         </div>
         

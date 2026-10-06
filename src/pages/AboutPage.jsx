@@ -50,10 +50,10 @@ const AboutPage = () => {
   ];
 
   const stats = [
-    { number: "10K+", label: t('about.stats.happyCustomers'), icon: Heart, color: "from-pink-500 to-pink-600" },
-    { number: "50K+", label: t('about.stats.productsSold'), icon: Award, color: "from-yellow-500 to-yellow-600" },
-    { number: "99%", label: t('about.stats.satisfactionRate'), icon: Star, color: "from-indigo-500 to-indigo-600" },
-    { number: "24/7", label: t('about.stats.customerSupport'), icon: CheckCircle, color: "from-emerald-500 to-emerald-600" },
+    { number: t('about.stats.happyCustomersValue'), label: t('about.stats.happyCustomers'), icon: Heart, color: "from-pink-500 to-pink-600" },
+    { number: t('about.stats.productsAvailableValue'), label: t('about.stats.productsAvailable'), icon: Award, color: "from-yellow-500 to-yellow-600" },
+    { number: t('about.stats.customerRatingValue'), label: t('about.stats.customerRating'), icon: Star, color: "from-indigo-500 to-indigo-600" },
+    { number: t('about.stats.citiesServedValue'), label: t('about.stats.citiesServed'), icon: CheckCircle, color: "from-emerald-500 to-emerald-600" },
   ];
 
   const values = [
@@ -90,8 +90,8 @@ const AboutPage = () => {
       >
         {/* Background Elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 start-1/4 w-72 h-72 bg-blue-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 end-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl"></div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-indigo-400/10 rounded-full blur-3xl"></div>
         </div>
         
@@ -192,7 +192,7 @@ const AboutPage = () => {
                 </p>
                 
                 {/* Hover effect border */}
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${feature.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}></div>
+                <div className={`absolute bottom-0 start-0 end-0 h-1 bg-gradient-to-r ${feature.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}></div>
               </motion.div>
             ))}
           </div>
@@ -253,8 +253,8 @@ const AboutPage = () => {
               className="relative bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden p-12"
             >
               {/* Background decoration */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full -translate-y-16 translate-x-16"></div>
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full translate-y-12 -translate-x-12"></div>
+              <div className="absolute top-0 end-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full -translate-y-16 translate-x-16"></div>
+              <div className="absolute bottom-0 start-0 w-24 h-24 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full translate-y-12 -translate-x-12"></div>
               
               <div className="relative text-center">
                 <motion.div

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  Facebook,
   Twitter,
+  Youtube,
   Instagram,
   Linkedin,
   Mail,
@@ -44,10 +44,10 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Twitter, href: "#", label: "Twitter" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
+    { icon: Twitter, href: "#", label: "X @pionner_sa" },
+    { icon: Instagram, href: "#", label: "Instagram @pionner_sa" },
+    { icon: Youtube, href: "#", label: "YouTube @pionner_sa" },
+    { icon: Linkedin, href: "#", label: "LinkedIn pionner-sa" },
   ];
 
   return (
@@ -146,19 +146,19 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold text-lg mb-4">{t('footer.contact.title')}</h4>
             <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <MapPin size={20} className="text-muted-foreground" />
+              <div className="flex items-start space-x-3">
+                <MapPin size={20} className="text-muted-foreground shrink-0" />
                 <span className="text-muted-foreground">
                   {t('company.address')}
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone size={20} className="text-muted-foreground" />
-                <span className="text-muted-foreground">{t('company.phone')}</span>
+                <span className="text-muted-foreground" dir="ltr">{t('company.phone')}</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail size={20} className="text-muted-foreground" />
-                <span className="text-muted-foreground">
+                <span className="text-muted-foreground" dir="ltr">
                   {t('company.email')}
                 </span>
               </div>
@@ -170,15 +170,15 @@ const Footer = () => {
       {/* Bottom Footer */}
       <div className="border-t border-border">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
-            <div className="flex items-center space-x-2 text-muted-foreground">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-2 text-muted-foreground">
               <span>© {currentYear} {t('footer.rights_reserved')}</span>
               <span>•</span>
               <span>{t('footer.madeWith')}</span>
               <Heart size={16} className="text-red-500 fill-current" />
               <span>{t('footer.forYou')}</span>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
               {footerLinks.legal.map((link, index) => (
                 <Link
                   key={index}
@@ -198,8 +198,8 @@ const Footer = () => {
         onClick={scrollToTop}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        className="fixed bottom-6 right-6 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-50"
-        aria-label="Scroll to top"
+        className="fixed bottom-6 end-6 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-50"
+        aria-label={t('footer.scroll_to_top')}
       >
         <ArrowUp size={20} />
       </motion.button>

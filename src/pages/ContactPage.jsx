@@ -6,6 +6,10 @@ import {
   Send,
   CheckCircle,
   AlertCircle,
+  Phone,
+  MessageCircle,
+  Mail,
+  Clock,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "../lib/axios";
@@ -15,7 +19,7 @@ import API_CONFIG from "../config/api.js";
 import { buildApiUrl } from "../config/api.js";
 
 const ContactPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { user } = useUserStore();
   const [formData, setFormData] = useState({
@@ -52,7 +56,7 @@ const ContactPage = () => {
           error = t('contact.validation.nameMinLength');
         } else if (value.trim().length > 50) {
           error = t('contact.validation.nameMaxLength');
-        } else if (!/^[a-zA-Z\s'-]+$/.test(value.trim())) {
+        } else if (!/^[\p{L}\s'.-]+$/u.test(value.trim())) {
           error = t('contact.validation.nameInvalid');
         }
         break;
@@ -357,8 +361,8 @@ const ContactPage = () => {
               className="relative bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden"
             >
               {/* Background decoration */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full -translate-y-16 translate-x-16"></div>
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full translate-y-12 -translate-x-12"></div>
+              <div className="absolute top-0 end-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full -translate-y-16 translate-x-16"></div>
+              <div className="absolute bottom-0 start-0 w-24 h-24 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full translate-y-12 -translate-x-12"></div>
               
               <div className="relative p-8 lg:p-12">
                 <div className="text-center mb-10">
@@ -387,7 +391,7 @@ const ContactPage = () => {
                       viewport={{ once: true }}
                       className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6 mb-8 max-w-md mx-auto"
                     >
-                      <div className="flex items-center space-x-3 rtl:space-x-reverse mb-4">
+                      <div className="flex items-center space-x-3 mb-4">
                         <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                           <span className="text-white text-sm font-bold">💡</span>
                         </div>
@@ -411,7 +415,7 @@ const ContactPage = () => {
                       viewport={{ once: true }}
                       className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-6 mb-8 max-w-md mx-auto"
                     >
-                      <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                      <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
                           <span className="text-white text-sm font-bold">✅</span>
                         </div>
@@ -446,10 +450,10 @@ const ContactPage = () => {
                         maxLength={50}
                       />
                       {touched.name && !errors.name && formData.name && (
-                        <CheckCircle className="absolute right-3 top-3 h-5 w-5 text-green-500" />
+                        <CheckCircle className="absolute end-3 top-3 h-5 w-5 text-green-500" />
                       )}
                       {errors.name && touched.name && (
-                        <AlertCircle className="absolute right-3 top-3 h-5 w-5 text-red-500" />
+                        <AlertCircle className="absolute end-3 top-3 h-5 w-5 text-red-500" />
                       )}
                     </div>
                     {errors.name && touched.name && (
@@ -477,10 +481,10 @@ const ContactPage = () => {
                         maxLength={100}
                       />
                       {touched.email && !errors.email && formData.email && (
-                        <CheckCircle className="absolute right-3 top-3 h-5 w-5 text-green-500" />
+                        <CheckCircle className="absolute end-3 top-3 h-5 w-5 text-green-500" />
                       )}
                       {errors.email && touched.email && (
-                        <AlertCircle className="absolute right-3 top-3 h-5 w-5 text-red-500" />
+                        <AlertCircle className="absolute end-3 top-3 h-5 w-5 text-red-500" />
                       )}
                     </div>
                     {errors.email && touched.email && (
@@ -511,10 +515,10 @@ const ContactPage = () => {
                       maxLength={100}
                     />
                     {touched.subject && !errors.subject && formData.subject && (
-                      <CheckCircle className="absolute right-3 top-3 h-5 w-5 text-green-500" />
+                      <CheckCircle className="absolute end-3 top-3 h-5 w-5 text-green-500" />
                     )}
                     {errors.subject && touched.subject && (
-                      <AlertCircle className="absolute right-3 top-3 h-5 w-5 text-red-500" />
+                      <AlertCircle className="absolute end-3 top-3 h-5 w-5 text-red-500" />
                     )}
                   </div>
                   {errors.subject && touched.subject && (
@@ -530,8 +534,8 @@ const ContactPage = () => {
                     className="block text-sm font-semibold text-gray-700 mb-3"
                   >
                     {t('contact.message')} <span className="text-red-500">*</span>
-                    <span className="text-xs text-gray-500 ml-2 rtl:mr-2 rtl:ml-0">
-                      ({formData.message.length}/1000 characters)
+                    <span className="text-xs text-gray-500 ms-2">
+                      ({t('contact.charactersCount', { count: formData.message.length, max: 1000 })})
                     </span>
                   </label>
                   <div className="relative">
@@ -547,10 +551,10 @@ const ContactPage = () => {
                       maxLength={1000}
                     />
                     {touched.message && !errors.message && formData.message && (
-                      <CheckCircle className="absolute right-3 top-3 h-5 w-5 text-green-500" />
+                      <CheckCircle className="absolute end-3 top-3 h-5 w-5 text-green-500" />
                     )}
                     {errors.message && touched.message && (
-                      <AlertCircle className="absolute right-3 top-3 h-5 w-5 text-red-500" />
+                      <AlertCircle className="absolute end-3 top-3 h-5 w-5 text-red-500" />
                     )}
                   </div>
                   {errors.message && touched.message && (
@@ -568,7 +572,7 @@ const ContactPage = () => {
                   }
                   whileHover={{ scale: loading ? 1 : 1.02 }}
                   whileTap={{ scale: loading ? 1 : 0.98 }}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-8 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 rtl:space-x-reverse shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-8 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   {loading ? (
                     <>
@@ -619,18 +623,40 @@ const ContactPage = () => {
               {t('contact.ourLocation')}
             </h3>
             <p className="text-lg text-gray-600 mb-8">
-              {t('contact.address')}
+              {t('company.address')}
             </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-start">
+              <a href={`tel:${t('company.phoneDial')}`} className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors">
+                <Phone size={20} className="text-blue-600 shrink-0" />
+                <span className="text-gray-700" dir="ltr">{t('company.phone')}</span>
+              </a>
+              <a href={`https://wa.me/${t('company.whatsapp').replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 hover:bg-green-50 transition-colors">
+                <MessageCircle size={20} className="text-green-600 shrink-0" />
+                <span className="text-gray-700">{t('company.whatsappLabel')}: <bdi dir="ltr">{t('company.whatsapp')}</bdi></span>
+              </a>
+              <a href={`mailto:${t('company.email')}`} className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors">
+                <Mail size={20} className="text-blue-600 shrink-0" />
+                <span className="text-gray-700" dir="ltr">{t('company.email')}</span>
+              </a>
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-gray-50">
+                <Clock size={20} className="text-purple-600 shrink-0 mt-0.5" />
+                <div className="text-gray-700 text-sm">
+                  <p className="font-semibold">{t('company.hoursTitle')}</p>
+                  <p>{t('company.hoursWeekdays')}</p>
+                  <p>{t('company.hoursFriday')}</p>
+                </div>
+              </div>
+            </div>
             <div className="w-full h-80 rounded-2xl overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233668.38703692693!2d46.43831082812499!3d24.713551699999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f03890d489399%3A0xba974d1c98e79fd5!2sRiyadh%20Saudi%20Arabia!5e0!3m2!1sen!2s!4v1703123456789!5m2!1sen!2s"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent("King Fahd Road, Al Olaya, Riyadh 12214")}&z=15&hl=${i18n.language === "ar" ? "ar" : "en"}&output=embed`}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Riyadh Location"
+                title={t('contact.mapTitle')}
               ></iframe>
             </div>
           </motion.div>
